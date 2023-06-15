@@ -33,9 +33,9 @@ public class FXShitAntiNode extends EntityFX
         this.motionX = mX;
         this.motionY = mY;
         this.motionZ = mZ;
-        this.particleScale *= 1F;
+        this.particleScale *= 0.75F;
         this.particleAlpha = 1.0F;
-        this.particleMaxAge = 20;
+        this.particleMaxAge = 4;
         this.noClip = true;
         this.particleGravity = 0;
         //ATTENTION!!!! WE MUST DO THIS IN ORDER TO PREVENT GRAPHIC BUGS EITH TELEPORTING PARTICLES!!!!!!
