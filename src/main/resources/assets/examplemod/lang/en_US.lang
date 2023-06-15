@@ -1,0 +1,21 @@
+itemGroup.examplemod=ExampleMod
+
+#item.ring.name=Кольцо
+#item.paint_can.name=Банка краски
+#item.cherry.name=Черешня
+#
+#item.ruby_axe.name=Рубиновый топор
+#item.ruby_hoe.name=Рубиновая мотыга
+#item.ruby_pickaxe.name=Рубиновая кирка
+#item.ruby_spade.name=Рубиновая лопата
+#item.ruby_sword.name=Рубиновый меч
+#item.ruby_multi_tool.name=Рубиновый мультиинструмент
+#
+#entity.mcmodding.goose.name=Гусь
+
+tile.ruby.name=Рубиновый блок
+tile.colored_stone.name= Цветной камень
+tile.face.name= лицевой блок
+tile.storage.name=хранилище
+tile.blockEssentiaReservoirVoid.name=Void Essentia Reservoir
+

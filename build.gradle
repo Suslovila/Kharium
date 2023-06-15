@@ -1,0 +1,142 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+           url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+       classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.0.+') {
+           changing = true
+       }
+    }
+}
+
+apply plugin: 'forge'
+
+version = "1.0"
+group= "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "modid"
+
+ // Активация поддержки Java 8 (без этой строчки будет использоваться Java 6)
+ targetCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
+
+minecraft {
+    version = "1.7.10-10.13.4.1614-1.7.10"
+
+    runDir = "eclipse"
+}
+
+ // Активация поддержки юникода, чтобы не было кракозябр
+ tasks.withType(JavaCompile) {
+ }
+repositories {
+    mavenCentral()
+    maven { url = "https://repo.spongepowered.org/maven" }
+    flatDir {
+        dirs 'lib'
+    }
+}
+//version = "1.7.10-4.2.3.5"
+//group= "thaumcraft"
+//archivesBaseName = "Thaumcraft"
+
+dependencies {
+    compile files('lib/Thaumcraft-1.7.10-4.2.3.5.jar')
+    compile fileTree(dir: 'lib', include: ['*.jar'])
+    //compile name: "Thaumcraft" + '-' + "1.7.10-4.2.3.5" + '-dev'
+    //compile group: 'lib', name: 'Thaumcraft', version: '4.2.3.5', classifier: 'dev'
+
+
+//    implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+//        exclude module: "launchwrapper"
+//        exclude module: 'guava'
+//    }
+
+    annotationProcessor("org.spongepowered:mixin:0.7.11-SNAPSHOT")
+
+    // you may put jars on which you depend on in ./libs
+    // or you may define them like so..
+    //compile "some.group:artifact:version:classifier"
+    //compile "some.group:artifact:version"
+   // implementation 'org.hibernate:hibernate-core:3.6.7.Final'
+    // real examples
+    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
+    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+
+    // for more info...
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
+}
+
+jar {
+    manifest {
+        attributes([
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : project.version,
+                "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+                "MixinConfigs": "mixins.examplemod.json",
+                "FMLCorePluginContainsFMLMod": "true",  // Не забываем указать эти два флага,
+                "ForceLoadAsMod": "true",               // чтобы Forge нормально загрузил и мод, и миксины
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+processResources
+{
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+
+ext {
+    mixinSrg = new File(project.buildDir, 'mixins/mixin.examplemod.srg')
+    mixinRefMapName = "mixins.examplemod.refmap.json";
+    mixinRefMap = new File(project.buildDir, "mixins/" + mixinRefMapName)
+}
+
+jar {
+    from project.mixinRefMap
+}
+
+reobf {
+    addExtraSrgFile project.mixinSrg
+}
+
+compileJava {
+    options.compilerArgs += [
+            '-Xlint:-processing',
+            "-AoutSrgFile=${project.mixinSrg.canonicalPath}",
+            "-AoutRefMapFile=${project.mixinRefMap.canonicalPath}",
+            "-AreobfSrgFile=${project.file('build/srgs/mcp-srg.srg').canonicalPath}"
+    ]
+}
+
+task copySrgs(type: Copy, dependsOn: 'genSrgs') {
+    from plugins.getPlugin("forge").delayedFile('{SRG_DIR}')
+
+    include '**/*.srg'
+    into 'build/srgs'
+}
+
+compileJava.dependsOn copySrgs

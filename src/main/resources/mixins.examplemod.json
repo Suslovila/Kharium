@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.7.11",
+  "compatibilityLevel": "JAVA_8",
+  "package": "com.suslovila.mixin",
+  "refmap": "mixins.examplemod.refmap.json",
+  "mixins": [
+    "MixinEntityPlayer",
+    "MixinTesselator"
+  ],
+  "client": [],
+  "server": []
+}
