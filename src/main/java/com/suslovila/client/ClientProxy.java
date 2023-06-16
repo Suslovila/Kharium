@@ -1,5 +1,6 @@
 package com.suslovila.client;
 
+import com.suslovila.client.particles.antiNodeBolt.AntiNodeBolt;
 import com.suslovila.client.render.ClientEventHandler;
 import com.suslovila.client.render.MyTileEntityRenderer;
 import com.suslovila.client.render.block.BlockEssentiaReservoirVoidRenderer;
@@ -17,12 +18,19 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.item.Item;
+import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
+import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 public class ClientProxy extends CommonProxy
 {
-
+    public void nodeAntiBolt(World worldObj, float x, float y, float z, float x2, float y2, float z2) {
+        AntiNodeBolt bolt = new AntiNodeBolt(worldObj, (double)x, (double)y, (double)z, (double)x2, (double)y2, (double)z2, worldObj.rand.nextLong(), 10, 4.0F, 5);
+        bolt.defaultFractal();
+        bolt.setType(0);
+        bolt.finalizeBolt();
+    }
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);

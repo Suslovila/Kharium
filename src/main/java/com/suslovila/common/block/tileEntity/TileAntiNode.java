@@ -9,6 +9,8 @@ import java.util.HashMap;
 
 public class TileAntiNode extends TileNode {
     public HashMap<SUSVec3, ArrayList<Object>> cordsForShadows = new HashMap<>();
+    //public HashMap<SUSVec3, ArrayList<Object>> cordsForRings = new HashMap<>();
+
     public int timer = 0;
 
 

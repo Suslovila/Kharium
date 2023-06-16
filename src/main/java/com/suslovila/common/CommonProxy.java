@@ -15,6 +15,7 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 import static com.suslovila.research.ACAspect.initAspects;
 
@@ -28,7 +29,9 @@ public class CommonProxy implements IGuiHandler
         ModBlocks.register();
         initAspects();
     }
+    public void nodeAntiBolt(World worldObj, float x, float y, float z, float x2, float y2, float z2) {
 
+    }
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         ExampleMod.NETWORK.registerMessage(new ServerMessagePacket.Handler(), ServerMessagePacket.class,0, Side.SERVER);

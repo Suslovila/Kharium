@@ -25,6 +25,7 @@ import thaumcraft.client.lib.UtilsFX;
 @SideOnly(Side.CLIENT)
 public class FXShitAntiNode extends EntityFX
 {
+    float maxParticleScale = 0.8f;
     private static final ResourceLocation WellingFXTexture = new ResourceLocation(ExampleMod.MOD_ID, "textures/particles/antiNodeFX.png");
 
     public FXShitAntiNode(World world, double x, double y, double z, double mX, double mY, double mZ)
@@ -33,9 +34,10 @@ public class FXShitAntiNode extends EntityFX
         this.motionX = mX;
         this.motionY = mY;
         this.motionZ = mZ;
-        this.particleScale *= 0.75F;
-        this.particleAlpha = 1.0F;
-        this.particleMaxAge = 4;
+        this.particleScale= maxParticleScale;
+        System.out.println(particleScale);
+        this.particleAlpha = 0.5F;
+        this.particleMaxAge = 20;
         this.noClip = true;
         this.particleGravity = 0;
         //ATTENTION!!!! WE MUST DO THIS IN ORDER TO PREVENT GRAPHIC BUGS EITH TELEPORTING PARTICLES!!!!!!
@@ -103,8 +105,17 @@ public class FXShitAntiNode extends EntityFX
 //    {
 //        return null;
 //    }
-    public void onUpdate()
-    {
-        super.onUpdate();
+    public void onUpdate() {
+        this.prevPosX = this.posX;
+        this.prevPosY = this.posY;
+        this.prevPosZ = this.posZ;
+
+        if (this.particleAge++ >= this.particleMaxAge) this.setDead();
+
+        fadeOut();
+    }
+    private void fadeOut(){
+        particleScale = maxParticleScale * (particleMaxAge - particleAge)/particleMaxAge;
+        particleAlpha = (float) (particleMaxAge - particleAge) / particleMaxAge;
     }
 }

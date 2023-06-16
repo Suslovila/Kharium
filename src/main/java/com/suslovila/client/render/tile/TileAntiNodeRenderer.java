@@ -27,6 +27,7 @@ import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.fx.ParticleEngine;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.tile.TileNodeRenderer;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.tiles.TileJarNode;
 import thaumcraft.common.tiles.TileNode;
@@ -41,6 +42,8 @@ import static org.lwjgl.opengl.GL11.glAlphaFunc;
 
 public class TileAntiNodeRenderer extends TileNodeRenderer {
     Random random = new Random();
+    //todo: fix the center; fix size
+
 
     public static final ResourceLocation nodetex = new ResourceLocation(ExampleMod.MOD_ID, "textures/antinode/antinodetexture.png");
 
@@ -214,7 +217,11 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
 //            FXShitAntiNode particle2 = new FXShitAntiNode(viewer.worldObj, tile.xCoord + 0.5D, tile.yCoord + 1D, tile.zCoord + 0.5D, 0, 0, 0);
 //            ParticleEngine.instance.addEffect(viewer.worldObj, particle2);
             renderNode(viewer, viewDistance, condition, depthIgnore, size, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, ((INode)tile).getAspects(), ((INode)tile).getNodeType(), ((INode)tile).getNodeModifier());
-            spawnShadowParticles((TileAntiNode)tile, viewer, 6,7,5,1D,2D, 0.9, 1.1,0,0.01,0,0.01,0,0.01,tile.xCoord + 0.5D,tile.yCoord + 0.5D,tile.zCoord + 0.5D);
+            spawnShadowParticles((TileAntiNode)tile, viewer, 5,3,3,1.28D,1.33D, 0.9, 1.1,0,0.01,0,0.01,0,0.01,tile.xCoord + 0.5D,tile.yCoord + 0.5D,tile.zCoord + 0.5D);
+            if(!Minecraft.getMinecraft().isGamePaused()) {
+                if (random.nextInt(12) == 10)
+                    ExampleMod.proxy.nodeAntiBolt(viewer.worldObj, tile.xCoord + 0.5f, tile.yCoord + 0.5f, tile.zCoord + 0.5f, (float) (tile.xCoord  + nextDouble(-3, 3)), (float) (tile.yCoord  + nextDouble(-3, 3)), (float) (tile.zCoord + nextDouble(-3, 3)));
+            }
             //spawnCircleMovingParticle((TileAntiNode)tile,viewer);
             if(tile instanceof TileNode && ((TileNode)tile).drainEntity != null && ((TileNode)tile).drainCollision != null) {
                 Entity drainEntity = ((TileNode)tile).drainEntity;
@@ -299,7 +306,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
             for (int h = 0; h < speed; h++) {
                 int timer = (int) list.get(2);
                 //randomising the rotation
-                coreVector = coreVector.add(nextDouble(-0.01, 0.01), nextDouble(-0.01, 0.01), nextDouble(-0.01, 0.01));
+                //coreVector = coreVector.add(nextDouble(-0.01, 0.01), nextDouble(-0.01, 0.01), nextDouble(-0.01, 0.01));
 //                coreVector = coreVector.xRot((float)(Math.PI* Math.cos(timer/1000)));
 //                coreVector = coreVector.yRot((float)(Math.PI* Math.sin(timer/1000)));
 //                coreVector = coreVector.zRot((float)(Math.PI* Math.cos(timer/1000)));
@@ -333,9 +340,9 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                 FXShitAntiNode particle = new FXShitAntiNode(viewer.worldObj, endPosition.x, endPosition.y, endPosition.z, 0,0,0 );
                 ParticleEngine.instance.addEffect(viewer.worldObj, particle);
 
-//                if (random.nextInt(300) == 37) {
-//                    cordsForShadows.remove(dotInSpace);
-//                }
+               if (random.nextInt(300) == 37) {
+                   tile.cordsForShadows.remove(dotInSpace);
+               }
             }
         }
     }
