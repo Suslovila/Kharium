@@ -9,8 +9,11 @@ import com.suslovila.utils.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityBubbleFX;
 import net.minecraft.client.particle.EntityCritFX;
+import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
@@ -25,6 +28,7 @@ import thaumcraft.api.nodes.IRevealer;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.fx.ParticleEngine;
+import thaumcraft.client.lib.QuadHelper;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.tile.TileNodeRenderer;
 import thaumcraft.common.Thaumcraft;
@@ -47,7 +51,73 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
 
     public static final ResourceLocation nodetex = new ResourceLocation(ExampleMod.MOD_ID, "textures/antinode/antinodetexture.png");
 
-    public static void renderNode(EntityLivingBase viewer, double viewDistance, boolean visible, boolean depthIgnore, float size, int x, int y, int z, float partialTicks, AspectList aspects, NodeType type, NodeModifier mod) {
+    public static void renderAntiNode(TileAntiNode tileAntiNode, EntityLivingBase viewer, double viewDistance, boolean visible, boolean depthIgnore, float size, int px, int py, int pz, float partialTicks, AspectList aspects, NodeType type, NodeModifier mod) {
+        long nt = System.nanoTime();
+        long time = nt / 50000000L;
+        float scaley = 1.5F;
+        int e = (int)(50.0F);
+
+        float scale = (float)e / 50.0F * 1.3F;
+        py = py + 1;
+//        float m = (1.0F - portal.getHealth() / portal.getMaxHealth()) / 3.0F;
+//        float bob = MathHelper.sin((float)portal.ticksExisted / (5.0F - 12.0F * m)) * m + m;
+//        float bob2 = MathHelper.sin((float)portal.ticksExisted / (6.0F - 15.0F * m)) * m + m;
+        float alpha = 1.0F;
+//        scaley = scaley - bob / 4.0F;
+//        scale = scale - bob2 / 3.0F;
+        UtilsFX.bindTexture(nodetex);
+        GL11.glPushMatrix();
+//        GL11.glEnable(3042);
+//        GL11.glBlendFunc(770, 771);
+//        GL11.glColor4f(1.0F, 1.0F, 1.0F, alpha);
+        if(Minecraft.getMinecraft().renderViewEntity instanceof EntityPlayer) {
+            Tessellator tessellator = Tessellator.instance;
+            float arX = ActiveRenderInfo.rotationX;
+            float arZ = ActiveRenderInfo.rotationZ;
+            float arYZ = ActiveRenderInfo.rotationYZ;
+            float arXY = ActiveRenderInfo.rotationXY;
+            float arXZ = ActiveRenderInfo.rotationXZ;
+            EntityPlayer player = (EntityPlayer)Minecraft.getMinecraft().renderViewEntity;
+            double iPX = player.prevPosX + (player.posX - player.prevPosX) * (double)partialTicks;
+            double iPY = player.prevPosY + (player.posY - player.prevPosY) * (double)partialTicks;
+            double iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * (double)partialTicks;
+            GL11.glTranslated(-iPX, -iPY, -iPZ);
+            tessellator.startDrawingQuads();
+            tessellator.setBrightness(220);
+            //tessellator.setColorRGBA_I(color, (int)(alpha * 255.0F));
+            Vec3 v1 = Vec3.createVectorHelper((double)(-arX * scale - arYZ * scale), (double)(-arXZ * scale), (double)(-arZ * scale - arXY * scale));
+            Vec3 v2 = Vec3.createVectorHelper((double)(-arX * scale + arYZ * scale), (double)(arXZ * scale), (double)(-arZ * scale + arXY * scale));
+            Vec3 v3 = Vec3.createVectorHelper((double)(arX * scale + arYZ * scale), (double)(arXZ * scale), (double)(arZ * scale + arXY * scale));
+            Vec3 v4 = Vec3.createVectorHelper((double)(arX * scale - arYZ * scale), (double)(-arXZ * scale), (double)(arZ * scale - arXY * scale));
+//            if(angle != 0.0F) {
+//                Vec3 pvec = Vec3.createVectorHelper(iPX, iPY, iPZ);
+//                Vec3 tvec = Vec3.createVectorHelper(px, py, pz);
+//                Vec3 qvec = pvec.subtract(tvec).normalize();
+//                QuadHelper.setAxis(qvec, (double)angle).rotate(v1);
+//                QuadHelper.setAxis(qvec, (double)angle).rotate(v2);
+//                QuadHelper.setAxis(qvec, (double)angle).rotate(v3);
+//                QuadHelper.setAxis(qvec, (double)angle).rotate(v4);
+//            }
+
+//            float f2 = (float)frame / (float)frames;
+//            float f3 = (float)(frame + 1) / (float)frames;
+//            float f4 = (float)strip / (float)frames;
+//            float f5 = ((float)strip + 1.0F) / (float)frames;
+            tessellator.setNormal(0.0F, 0.0F, -1.0F);
+            tessellator.addVertexWithUV(px + v1.xCoord, py + v1.yCoord, pz + v1.zCoord, (double)1, (double)1);
+            tessellator.addVertexWithUV(px + v2.xCoord, py + v2.yCoord, pz + v2.zCoord, (double)1, (double)0);
+            tessellator.addVertexWithUV(px + v3.xCoord, py + v3.yCoord, pz + v3.zCoord, (double)0, (double)0);
+            tessellator.addVertexWithUV(px + v4.xCoord, py + v4.yCoord, pz + v4.zCoord, (double)0, (double)1);
+            tessellator.draw();
+        }
+
+
+
+        //GL11.glDisable(3042);
+        GL11.glPopMatrix();
+
+    }
+        public static void renderNode(EntityLivingBase viewer, double viewDistance, boolean visible, boolean depthIgnore, float size, int x, int y, int z, float partialTicks, AspectList aspects, NodeType type, NodeModifier mod) {
         long nt = System.nanoTime();
 
 //        if(nt % 10000 == 0) {
@@ -113,7 +183,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                 scale = MathHelper.sin((float)viewer.ticksExisted / (14.0F - (float)count)) * bscale + bscale * 2.0F;
                 scale = 0.2F + scale * ((float)aspects.getAmount(aspect) / 50.0F);
                 scale = scale * size;
-                angle = (float)(time % (long)(5000 + 500 * count)) / (5000.0F + (float)(500 * count)) * rad;
+                //angle = (float)(time % (long)(5000 + 500 * count)) / (5000.0F + (float)(500 * count)) * rad;
                 UtilsFX.renderFacingStrip((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, angle, scale, alpha / Math.max(1.0F, (float)aspects.size() / 2.0F), frames, 0, i, partialTicks, aspect.getColor());
                 GL11.glDisable(3042);
                 GL11.glPopMatrix();
@@ -211,18 +281,21 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                     viewDistance = 48.0D;
                 }
             }
-//            EntityCritFX particle = new EntityCritFX(viewer.worldObj, tile.xCoord + 0.5D, tile.yCoord + 1D, tile.zCoord + 0.5D, 0, 0, 0);
-//            ParticleEngine.instance.addEffect(viewer.worldObj, particle);
-//
-//            FXShitAntiNode particle2 = new FXShitAntiNode(viewer.worldObj, tile.xCoord + 0.5D, tile.yCoord + 1D, tile.zCoord + 0.5D, 0, 0, 0);
-//            ParticleEngine.instance.addEffect(viewer.worldObj, particle2);
             renderNode(viewer, viewDistance, condition, depthIgnore, size, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, ((INode)tile).getAspects(), ((INode)tile).getNodeType(), ((INode)tile).getNodeModifier());
+
             spawnShadowParticles((TileAntiNode)tile, viewer, 5,3,3,1.28D,1.33D, 0.9, 1.1,0,0.01,0,0.01,0,0.01,tile.xCoord + 0.5D,tile.yCoord + 0.5D,tile.zCoord + 0.5D);
+
+            //handling anti-node bolt
             if(!Minecraft.getMinecraft().isGamePaused()) {
-                if (random.nextInt(12) == 10)
+                if (random.nextInt(9) == 6)
                     ExampleMod.proxy.nodeAntiBolt(viewer.worldObj, tile.xCoord + 0.5f, tile.yCoord + 0.5f, tile.zCoord + 0.5f, (float) (tile.xCoord  + nextDouble(-3, 3)), (float) (tile.yCoord  + nextDouble(-3, 3)), (float) (tile.zCoord + nextDouble(-3, 3)));
             }
-            //spawnCircleMovingParticle((TileAntiNode)tile,viewer);
+
+
+
+
+
+            //handling taking vis
             if(tile instanceof TileNode && ((TileNode)tile).drainEntity != null && ((TileNode)tile).drainCollision != null) {
                 Entity drainEntity = ((TileNode)tile).drainEntity;
                 if(drainEntity instanceof EntityPlayer && !((EntityPlayer)drainEntity).isUsingItem()) {
@@ -310,7 +383,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
 //                coreVector = coreVector.xRot((float)(Math.PI* Math.cos(timer/1000)));
 //                coreVector = coreVector.yRot((float)(Math.PI* Math.sin(timer/1000)));
 //                coreVector = coreVector.zRot((float)(Math.PI* Math.cos(timer/1000)));
-                System.out.println(timer);
+                //System.out.println(timer);
                 SUSVec3 m = new SUSVec3(coreVector.z, 0, -coreVector.x);
                 m = m.normalize();
                 SUSVec3 k = coreVector.cross(m);
