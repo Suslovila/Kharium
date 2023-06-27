@@ -7,11 +7,13 @@ import com.suslovila.client.render.block.BlockEssentiaReservoirVoidRenderer;
 import com.suslovila.client.render.item.ItemAntiNodeRenderer;
 import com.suslovila.client.render.tile.TileAntiNodeRenderer;
 import com.suslovila.client.render.tile.TileEssentiaReservoirVoidRenderer;
+import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeControllerBaseRenderer;
 import com.suslovila.common.CommonProxy;
 import com.suslovila.common.block.ModBlocks;
 import com.suslovila.common.block.tileEntity.StorageTile;
 import com.suslovila.common.block.tileEntity.TileAntiNode;
 import com.suslovila.common.block.tileEntity.TileEssentiaReservoirVoid;
+import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -44,6 +46,10 @@ public class ClientProxy extends CommonProxy
         ClientRegistry.bindTileEntitySpecialRenderer(StorageTile.class, new MyTileEntityRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNode.class, new TileAntiNodeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEssentiaReservoirVoid.class, new TileEssentiaReservoirVoidRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeControllerBase.class, new TileAntiNodeControllerBaseRenderer());
+
+
+
         RenderingRegistry.registerBlockHandler(new BlockEssentiaReservoirVoidRenderer());
 
     }

@@ -2,11 +2,13 @@ package com.suslovila.common.block;
 
 import com.suslovila.client.render.RubyBlockRenderer;
 import com.suslovila.client.render.block.RenderPoppetChest;
+import com.suslovila.common.block.blockAntiNodeController.BlockAntiNodeControllerBase;
 import com.suslovila.common.block.container.*;
 import com.suslovila.common.block.tileEntity.SmelterTile;
 import com.suslovila.common.block.tileEntity.StorageTile;
 import com.suslovila.common.block.tileEntity.TileAntiNode;
 import com.suslovila.common.block.tileEntity.TileEssentiaReservoirVoid;
+import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase;
 import com.suslovila.common.item.BlockEssentiaReservoirVoidItem;
 import com.suslovila.common.item.ColoredStoneBlockItem;
 import com.suslovila.examplemod.ExampleMod;
@@ -22,6 +24,7 @@ public class ModBlocks {
     public static final SmelterBlock SMELTER_BLOCK = new SmelterBlock();
 
     public static BlockAntiNode ANTI_NODE = new BlockAntiNode();
+    public static BlockAntiNodeControllerBase BLOCK_ANTI_NODE_CONTROLLER = new BlockAntiNodeControllerBase();
     public static final BlockEssentiaReservoirVoid BlockEssentiaReservoirVoid = (new BlockEssentiaReservoirVoid());
 
     public static void register(){
@@ -31,12 +34,15 @@ public class ModBlocks {
         GameRegistry.registerBlock(SMELTER_BLOCK, "smelter");
         GameRegistry.registerBlock(BlockEssentiaReservoirVoid, BlockEssentiaReservoirVoidItem.class,"EssentiaReservoirVoid");
         GameRegistry.registerBlock(ANTI_NODE,"AntiNode");
+        GameRegistry.registerBlock(BLOCK_ANTI_NODE_CONTROLLER,"BlockAntiNodeControllerBase");
 
 
         GameRegistry.registerTileEntity(StorageTile.class, ExampleMod.MOD_ID + ":storage");
         GameRegistry.registerTileEntity(SmelterTile.class, ExampleMod.MOD_ID + "smelter");
         GameRegistry.registerTileEntity(TileEssentiaReservoirVoid.class, ExampleMod.MOD_ID + "TileEssentiaReservoirVoid");
         GameRegistry.registerTileEntity(TileAntiNode.class, ExampleMod.MOD_ID + "TileAntiNode");
+        GameRegistry.registerTileEntity(TileAntiNodeControllerBase.class, ExampleMod.MOD_ID + "TileControllerBase");
+
     }
     public static void registerRender(){
         rubyRenderId = RenderingRegistry.getNextAvailableRenderId();
