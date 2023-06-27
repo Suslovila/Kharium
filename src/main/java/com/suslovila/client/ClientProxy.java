@@ -28,7 +28,7 @@ import thaumcraft.client.fx.bolt.FXLightningBolt;
 public class ClientProxy extends CommonProxy
 {
     public void nodeAntiBolt(World worldObj, float x, float y, float z, float x2, float y2, float z2) {
-        AntiNodeBolt bolt = new AntiNodeBolt(worldObj, (double)x, (double)y, (double)z, (double)x2, (double)y2, (double)z2, worldObj.rand.nextLong(), 10, 4.0F, 5);
+        AntiNodeBolt bolt = new AntiNodeBolt(worldObj, (double)x, (double)y, (double)z, (double)x2, (double)y2, (double)z2, worldObj.rand.nextLong(), 10, 3.0F, 5);
         bolt.defaultFractal();
         bolt.setType(0);
         bolt.finalizeBolt();

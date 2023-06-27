@@ -3,6 +3,7 @@ package com.suslovila.utils;
 
 
 public class SUSVec3 {
+   //JUST COPIED FROM 1.18 VERSION BECAUSE I FIND VECTORS ON IT MORE COMFORTABLE AND USEFUL
    public static final SUSVec3 ZERO = new SUSVec3(0.0D, 0.0D, 0.0D);
    public final double x;
    public final double y;
@@ -14,7 +15,7 @@ public class SUSVec3 {
       double d2 = (double)(p_82502_ & 255) / 255.0D;
       return new SUSVec3(d0, d1, d2);
    }
-//
+
 //   public static Vec3 atCenterOf(Vec3 p_82513_) {
 //      return new Vec3((double)p_82513_.getX() + 0.5D, (double)p_82513_.getY() + 0.5D, (double)p_82513_.getZ() + 0.5D);
 //   }

@@ -1,6 +1,5 @@
 package com.suslovila.client.particles;
 
-
 import com.suslovila.examplemod.ExampleMod;
 import com.suslovila.mixin.MixinTesselator;
 import com.suslovila.utils.mixins.Tesselator;
@@ -12,8 +11,11 @@ import static org.lwjgl.opengl.GL11.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.culling.Frustrum;
+import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -25,26 +27,29 @@ import thaumcraft.client.lib.UtilsFX;
 @SideOnly(Side.CLIENT)
 public class FXShitAntiNode extends EntityFX
 {
-    float maxParticleScale = 0.8f;
+    float maxParticleScale = 1.1f;
+    float partialTicks = 0;
     private static final ResourceLocation WellingFXTexture = new ResourceLocation(ExampleMod.MOD_ID, "textures/particles/antiNodeFX.png");
 
-    public FXShitAntiNode(World world, double x, double y, double z, double mX, double mY, double mZ)
+    public FXShitAntiNode(World world, double x, double y, double z, double mX, double mY, double mZ, int lifeTime, float particleSize)
     {
         super(world, x, y, z, mX, mY, mZ);
         this.motionX = mX;
         this.motionY = mY;
         this.motionZ = mZ;
         this.particleScale= maxParticleScale;
+        this.maxParticleScale = particleSize;
         //System.out.println(particleScale);
-        this.particleAlpha = 0.5F;
-        this.particleMaxAge = 20;
+        //this.particleAlpha = 0.5F;
+        this.particleMaxAge = lifeTime;
         this.noClip = true;
         this.particleGravity = 0;
-        //ATTENTION!!!! WE MUST DO THIS IN ORDER TO PREVENT GRAPHIC BUGS EITH TELEPORTING PARTICLES!!!!!!
+        //ATTENTION!!!! WE MUST DO THIS IN ORDER TO PREVENT GRAPHIC BUGS SUCH AS TELEPORTING PARTICLES!!!!!!
         this.onUpdate();
     }
 
     public void renderParticle(Tessellator tessellator, float partialTick, float x, float y, float z, float u, float v) {
+        partialTicks = partialTick;
         glPushMatrix();
         tessellator.draw();
         Minecraft.getMinecraft().renderEngine.bindTexture(WellingFXTexture);
@@ -80,37 +85,22 @@ public class FXShitAntiNode extends EntityFX
 
 
 
-//
-//    public int getBrightnessForRender(float brightnessFR)
-//    {
-//        return 15728880;
-//    }
-//
-//    public float getBrightness(float brightness)
-//    {
-//        return 1.0F;
-//    }
-//
-//    public boolean canBePushed()
-//    {
-//        return false;
-//    }
-//
-//    public int getFXLayer()
-//    {
-//        return 0;
-//    }
 
-    //    public AxisAlignedBB getBoundingBox()
-//    {
-//        return null;
-//    }
     public void onUpdate() {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-
-        if (this.particleAge++ >= this.particleMaxAge) this.setDead();
+//        ICamera camera = new Frustrum();
+//        EntityLivingBase entitylivingbase = Minecraft.getMinecraft().renderViewEntity;
+//        double d0 = entitylivingbase.lastTickPosX + (entitylivingbase.posX - entitylivingbase.lastTickPosX) * (double)partialTicks;
+//        double d1 = entitylivingbase.lastTickPosY + (entitylivingbase.posY - entitylivingbase.lastTickPosY) * (double)partialTicks;
+//        double d2 = entitylivingbase.lastTickPosZ + (entitylivingbase.posZ - entitylivingbase.lastTickPosZ) * (double)partialTicks;
+//        camera.setPosition(d0, d1, d2);
+//        System.out.println(boundingBox);
+//        if(!camera.isBoundingBoxInFrustum(boundingBox)) {
+//            this.setDead();
+//        }
+        if (this.particleAge++ >= this.particleMaxAge || !(Minecraft.getMinecraft().thePlayer.canEntityBeSeen(this))) this.setDead();
 
         fadeOut();
     }

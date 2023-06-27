@@ -28,7 +28,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 @SideOnly(Side.CLIENT)
 public class RenderPoppetChest extends TileEntitySpecialRenderer {
-
+//copied
    final ModelPoppetChest model = new ModelPoppetChest();
    private RenderItem renderItems = new RenderItem() {
       public byte getMiniItemCountForItemStack(ItemStack stack) {
