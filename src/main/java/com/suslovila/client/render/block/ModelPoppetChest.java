@@ -8,6 +8,8 @@ import net.minecraft.entity.Entity;
 
 @SideOnly(Side.CLIENT)
 public class ModelPoppetChest extends ModelBase {
+   //copied - WILL BE DELETED
+
 
    ModelRenderer table;
 

@@ -4,6 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 public class ModelAntiNodeControllerBase extends ModelBase {
+   //ALSO A TEST CLASS - WILL BE DELETED
    ModelRenderer Crossbar;
    ModelRenderer Dingus1;
    ModelRenderer Dingus2;

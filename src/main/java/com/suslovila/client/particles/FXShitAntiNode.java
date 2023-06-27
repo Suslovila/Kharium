@@ -37,7 +37,7 @@ public class FXShitAntiNode extends EntityFX
         this.motionX = mX;
         this.motionY = mY;
         this.motionZ = mZ;
-        this.particleScale= maxParticleScale;
+        this.particleScale= particleSize;
         this.maxParticleScale = particleSize;
         //System.out.println(particleScale);
         //this.particleAlpha = 0.5F;

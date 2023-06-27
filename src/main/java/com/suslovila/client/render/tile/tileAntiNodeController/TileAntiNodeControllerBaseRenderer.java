@@ -21,6 +21,7 @@ import thaumcraft.common.tiles.TileNodeStabilizer;
 import static org.lwjgl.opengl.GL11.*;
 
 public class TileAntiNodeControllerBaseRenderer extends TileEntitySpecialRenderer {
+    //JUST A TEST CLASS FOR WORKING WITH CIRCLES
     private IModelCustom model;
     private static final ResourceLocation MODEL = new ResourceLocation(ExampleMod.MOD_ID, "models/test.obj");
 

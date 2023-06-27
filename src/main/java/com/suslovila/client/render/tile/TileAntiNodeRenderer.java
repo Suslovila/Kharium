@@ -1,6 +1,6 @@
 package com.suslovila.client.render.tile;
 
-import com.suslovila.client.particles.FXAntiNode;
+
 import com.suslovila.client.particles.FXShitAntiNode;
 import com.suslovila.common.block.tileEntity.TileAntiNode;
 import com.suslovila.examplemod.ExampleMod;
@@ -81,7 +81,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
             renderNodeVersion2(viewer, viewDistance, condition, depthIgnore, size, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, ((INode)tile).getAspects(), ((INode)tile).getNodeType(), ((INode)tile).getNodeModifier());
             double distance = viewer.getDistance((double)tile.xCoord + 0.5D, (double)tile.yCoord + 0.5D, (double)tile.zCoord + 0.5D);
             if(distance <= 48) {
-                spawnShadowParticlesOld((TileAntiNode)tile, viewer, 5,1,3,1.28D,1.33D, 0.9, 1.1,0,0.01,0,0.01,0,0.01,tile.xCoord + 0.5D,tile.yCoord + 0.5D,tile.zCoord + 0.5D, 20, 1f);
+                spawnShadowParticlesOld((TileAntiNode)tile, viewer, 5,3,3,1.28D,1.33D, 0.9, 1.1,0,0.01,0,0.01,0,0.01,tile.xCoord + 0.5D,tile.yCoord + 0.5D,tile.zCoord + 0.5D, 20, 0.8f);
                 //handling anti-node bolt
                 if(!Minecraft.getMinecraft().isGamePaused()) {
                     if (random.nextInt(9) == 6) {
@@ -271,7 +271,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
 
 
 
-//alternative version (not planned to use)
+    //alternative version (not planned to use)
     protected void spawnShadowParticlesVortexVersion(TileAntiNode tile, EntityLivingBase viewer, int maxShadowsAmount, int minSpeed,int maxSpeed, int wholeIterationAmount, double minRadius, double maxRadius, double minDelta, double maxDelta, double minParticleSize, double maxParticleSize, double minXOffset, double maxXOffset, double minYOffset, double maxYOffset, double minZOffset, double maxZOffset, double x, double y, double z, int particleLifeTime, float particleSize){
 
         for(int hl = 0; hl < wholeIterationAmount; hl++){

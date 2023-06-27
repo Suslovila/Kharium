@@ -17,6 +17,7 @@ import thaumcraft.common.tiles.TileEssentiaReservoir;
 import static com.suslovila.common.block.ModBlocks.EssentiaReservoirVoidRI;
 
 public class BlockEssentiaReservoirVoidRenderer extends BlockRenderer implements ISimpleBlockRenderingHandler {
+
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
        block.setBlockBounds(W2, W2, W2, W14, W14, W14);
        renderer.setRenderBoundsFromBlock(block);

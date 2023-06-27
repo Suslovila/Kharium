@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
-
+//КОД ИЗ УЧЕБНИКА - ПУСКАЙ ЛЕЖИТ, ПОЛЕЗНО
 public class StorageTile extends TileEntity {
     private ItemStack stack;
 

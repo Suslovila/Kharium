@@ -30,7 +30,7 @@ public class ClientEventHandler {
         Profiler profiler = Minecraft.getMinecraft().mcProfiler;
 
         profiler.startSection("botania-particles");
-        ParticleRenderDispatcher.dispatch();
+        //ParticleRenderDispatcher.dispatch();
 
     }
 
