@@ -17,7 +17,7 @@ public class FXShitAntiNode extends EntityFX
 {
     float maxParticleScale = 1.1f;
     float partialTicks = 0;
-    private static final ResourceLocation WellingFXTexture = new ResourceLocation(ExampleMod.MOD_ID, "textures/particles/antiNodeFX.png");
+    private static final ResourceLocation FXTexture = new ResourceLocation(ExampleMod.MOD_ID, "textures/particles/antinodefx.png");
 
     public FXShitAntiNode(World world, double x, double y, double z, double mX, double mY, double mZ, int lifeTime, float particleSize)
     {
@@ -35,12 +35,12 @@ public class FXShitAntiNode extends EntityFX
         //ATTENTION!!!! WE MUST DO THIS IN ORDER TO PREVENT GRAPHIC BUGS SUCH AS TELEPORTING PARTICLES!!!!!!
         this.onUpdate();
     }
-
+@Override
     public void renderParticle(Tessellator tessellator, float partialTick, float x, float y, float z, float u, float v) {
         partialTicks = partialTick;
         glPushMatrix();
         tessellator.draw();
-        Minecraft.getMinecraft().renderEngine.bindTexture(WellingFXTexture);
+        Minecraft.getMinecraft().renderEngine.bindTexture(FXTexture);
 
         glDepthMask(false);
         glEnable(GL_BLEND);
@@ -67,7 +67,7 @@ public class FXShitAntiNode extends EntityFX
         glAlphaFunc(GL_GREATER, 0.1F);
         tessellator.startDrawingQuads();
         glPopMatrix();
-        Minecraft.getMinecraft().renderEngine.bindTexture(UtilsFX.getParticleTexture());
+        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("minecraft", "textures/particle/particles.png"));
 
     }
 

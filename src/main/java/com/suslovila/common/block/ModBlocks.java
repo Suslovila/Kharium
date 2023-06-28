@@ -11,7 +11,6 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 public class ModBlocks {
-    public static int rubyRenderId = -1;
     public static int EssentiaReservoirVoidRI = -1;
     public static BlockAntiNode ANTI_NODE = new BlockAntiNode();
     public static BlockAntiNodeControllerBase BLOCK_ANTI_NODE_CONTROLLER = new BlockAntiNodeControllerBase();
@@ -30,7 +29,6 @@ public class ModBlocks {
 
     }
     public static void registerRender(){
-        rubyRenderId = RenderingRegistry.getNextAvailableRenderId();
         EssentiaReservoirVoidRI = RenderingRegistry.getNextAvailableRenderId();
 
 

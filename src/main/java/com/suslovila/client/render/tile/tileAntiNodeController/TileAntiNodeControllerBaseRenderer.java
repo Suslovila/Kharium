@@ -5,6 +5,7 @@ import com.suslovila.ExampleMod;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import thaumcraft.client.lib.UtilsFX;
 
@@ -16,7 +17,7 @@ public class TileAntiNodeControllerBaseRenderer extends TileEntitySpecialRendere
     private static final ResourceLocation MODEL = new ResourceLocation(ExampleMod.MOD_ID, "models/controllertest.obj");
 
     public TileAntiNodeControllerBaseRenderer() {
-        //this.model = AdvancedModelLoader.loadModel(MODEL);
+        this.model = AdvancedModelLoader.loadModel(MODEL);
     }
     public void renderTileEntityAt(TileAntiNodeControllerBase tile, double par2, double par4, double par6, float par8) {
         glPushMatrix();

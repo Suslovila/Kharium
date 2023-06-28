@@ -1,5 +1,6 @@
 package com.suslovila.client;
 
+import com.suslovila.ExampleMod;
 import com.suslovila.client.particles.antiNodeBolt.AntiNodeBolt;
 import com.suslovila.client.render.ClientEventHandler;
 import com.suslovila.client.render.block.BlockEssentiaReservoirVoidRenderer;
@@ -17,13 +18,16 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 
-public class ClientProxy extends CommonProxy
+public class ClientProxy extends CommonProxy implements IGuiHandler
 {
     public void nodeAntiBolt(World worldObj, float x, float y, float z, float x2, float y2, float z2) {
         AntiNodeBolt bolt = new AntiNodeBolt(worldObj, (double)x, (double)y, (double)z, (double)x2, (double)y2, (double)z2, worldObj.rand.nextLong(), 10, 3.0F, 5);
@@ -49,17 +53,31 @@ public class ClientProxy extends CommonProxy
 
         RenderingRegistry.registerBlockHandler(new BlockEssentiaReservoirVoidRenderer());
 
+
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
     }
+
     @Override
     public void registerRenderers() {
         MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
     }
     private void setupItemRenderers() {
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.ANTI_NODE), new ItemAntiNodeRenderer());
+    }
+
+    @Override
+    public Object getServerGuiElement(int guiId, EntityPlayer player, World world, int x, int y, int z)
+    {
+        return null;
+    }
+
+    @Override
+    public Object getClientGuiElement(int guiId, EntityPlayer player, World world, int x, int y, int z)
+    {
+        return null;
     }
 }

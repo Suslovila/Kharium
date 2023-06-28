@@ -1,5 +1,6 @@
 package com.suslovila;
 
+import com.suslovila.client.ClientProxy;
 import com.suslovila.common.CommonProxy;
 import com.suslovila.research.AntiCraftResearchRegistry;
 import cpw.mods.fml.common.SidedProxy;
@@ -25,27 +26,13 @@ public class ExampleMod
     public static final String MOD_ID = "examplemod";
     public static final String VERSION = "1.0";
     
-    @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-        proxy.init(event);
-		// some example code
-        System.out.println("DIRT BLOCK >> "+Blocks.dirt.getUnlocalizedName());
-    }
+
     @Mod.Instance(MOD_ID)
     public static ExampleMod instance;
 
     @SidedProxy(clientSide = "com.suslovila.client.ClientProxy", serverSide = "com.suslovila.common.CommonProxy")
     public static CommonProxy proxy;
 
-    /** This is used to keep track of GUIs that we make*/
-    private static int modGuiIndex = 0;
-
-    /** Set our custom inventory Gui index to the next available Gui index */
-    public static final int GUI_ITEM_INV = modGuiIndex++;
-
-    // ITEMS ETC.
-    public static Item itemstore;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -55,14 +42,15 @@ public class ExampleMod
     }
 
     @EventHandler
-    public void load(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
-        // no renderers or entities to register, but whatever
+        proxy.init(event);
         proxy.registerRenderers();
-        // register CommonProxy as our GuiHandler
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, new CommonProxy());
-    }
 
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new ClientProxy());
+
+
+    }
     @EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
