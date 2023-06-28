@@ -1,10 +1,7 @@
-package com.suslovila.examplemod;
+package com.suslovila;
 
 import com.suslovila.common.CommonProxy;
-import com.suslovila.common.item.MyItem;
-import com.suslovila.research.AntiCraftResearchItem;
 import com.suslovila.research.AntiCraftResearchRegistry;
-import com.suslovila.utils.Vector3;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -12,7 +9,6 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -20,7 +16,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Vec3;
 
 @Mod(modid = ExampleMod.MOD_ID, version = ExampleMod.VERSION)
 public class ExampleMod
@@ -56,8 +51,7 @@ public class ExampleMod
     public void preInit(FMLPreInitializationEvent event)
     {
         proxy.preInit(event);
-        itemstore = new MyItem().setUnlocalizedName("diamond").setCreativeTab(CreativeTabs.tabMisc);
-        GameRegistry.registerItem(itemstore, "item_store");
+
     }
 
     @EventHandler
@@ -80,7 +74,4 @@ public class ExampleMod
         if (!itemStack.hasTagCompound()) itemStack.setTagCompound(new NBTTagCompound());
         return itemStack.getTagCompound();
     }
-//    public static Vec3 getEntityPos(Entity entity){
-//        return new Vec3(entity.posX, entity.posY, entity.posZ);
-//    }
 }

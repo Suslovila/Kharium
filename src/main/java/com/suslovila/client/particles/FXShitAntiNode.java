@@ -1,27 +1,15 @@
 package com.suslovila.client.particles;
 
-import com.suslovila.examplemod.ExampleMod;
-import com.suslovila.mixin.MixinTesselator;
-import com.suslovila.utils.mixins.Tesselator;
+import com.suslovila.ExampleMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.particle.EntityFX;
 
 import static org.lwjgl.opengl.GL11.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.culling.Frustrum;
-import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 
 @SideOnly(Side.CLIENT)

@@ -1,7 +1,6 @@
 package com.suslovila.common.block.tileEntity;
 
 import com.suslovila.utils.SUSVec3;
-import com.suslovila.utils.Vector3;
 import thaumcraft.common.tiles.TileNode;
 
 import java.util.ArrayList;

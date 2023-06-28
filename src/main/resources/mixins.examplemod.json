@@ -5,8 +5,7 @@
   "package": "com.suslovila.mixin",
   "refmap": "mixins.examplemod.refmap.json",
   "mixins": [
-    "MixinEntityPlayer",
-    "MixinTesselator"
+
   ],
   "client": [],
   "server": []

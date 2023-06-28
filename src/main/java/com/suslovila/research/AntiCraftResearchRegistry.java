@@ -1,7 +1,7 @@
 package com.suslovila.research;
 
 import com.suslovila.common.block.ModBlocks;
-import com.suslovila.examplemod.ExampleMod;
+import com.suslovila.ExampleMod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import thaumcraft.api.aspects.Aspect;

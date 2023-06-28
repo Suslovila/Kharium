@@ -3,8 +3,7 @@ package com.suslovila.common;
 import com.suslovila.common.block.ModBlocks;
 import com.suslovila.common.event.FMLEventListener;
 import com.suslovila.common.event.SweetMixinListener;
-import com.suslovila.common.network.ServerMessagePacket;
-import com.suslovila.examplemod.ExampleMod;
+import com.suslovila.ExampleMod;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -15,7 +14,6 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 import static com.suslovila.research.ACAspect.initAspects;
 
@@ -34,7 +32,6 @@ public class CommonProxy implements IGuiHandler
     }
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        ExampleMod.NETWORK.registerMessage(new ServerMessagePacket.Handler(), ServerMessagePacket.class,0, Side.SERVER);
     }
 
     @Mod.EventHandler
@@ -52,7 +49,6 @@ public class CommonProxy implements IGuiHandler
         if (guiId == ExampleMod.GUI_ITEM_INV)
         {
             // Use the player's held item to create the inventory
-            return new MyItemContainer(player, player.inventory, new MyItemInventory(player.getHeldItem()));
         }
         return null;
     }
@@ -64,7 +60,6 @@ public class CommonProxy implements IGuiHandler
         {
             // We have to cast the new container as our custom class
             // and pass in currently held item for the inventory
-            return new MyItemInventoryGui(new MyItemContainer(player, player.inventory, new MyItemInventory(player.getHeldItem())));
         }
         return null;
     }
