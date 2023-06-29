@@ -1,6 +1,7 @@
 package com.suslovila.client.render;
 
 
+import com.suslovila.client.particles.ParticleRenderDispatcher;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,6 +22,13 @@ import static org.lwjgl.opengl.GL11.glPopMatrix;
 
 @SideOnly(Side.CLIENT)
 public class ClientEventHandler {
- // client event renderers
+    // client event renderers
+    @SubscribeEvent
+    public void onRenderWorldLast(RenderWorldLastEvent event) {
+        Profiler profiler = Minecraft.getMinecraft().mcProfiler;
+        profiler.startSection("botania-particles");
+        ParticleRenderDispatcher.dispatch();
+        profiler.endSection();
+    }
 }
 

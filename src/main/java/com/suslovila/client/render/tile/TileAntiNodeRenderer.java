@@ -36,7 +36,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
             double distance = viewer.getDistance((double)tile.xCoord + 0.5D, (double)tile.yCoord + 0.5D, (double)tile.zCoord + 0.5D);
             if(distance <= viewDistance) {
                 renderNodeVersion2(viewer, viewDistance, true, 1.0F, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, 0.5f);
-                spawnShadowParticlesOld((TileAntiNode)tile, viewer, 5,3,3,1.28D,1.33D, 0.9, 1.1,0,0.01,0,0.01,0,0.01,tile.xCoord + 0.5D,tile.yCoord + 0.5D,tile.zCoord + 0.5D, 20, 0.8f);
+                spawnShadowParticlesOld((TileAntiNode)tile, viewer, 5,2,3,1.28D,1.33D, 0.9, 1.1,0,0.01,0,0.01,0,0.01,tile.xCoord + 0.5D,tile.yCoord + 0.5D,tile.zCoord + 0.5D, 13, 0.8f);
                 //handling anti-node bolt
                 if(!Minecraft.getMinecraft().isGamePaused()) {
                     if (random.nextInt(9) == 6) {
@@ -157,7 +157,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                 list.add(timer + 1);
                 SUSVec3 endPosition = dotInSpace.add(a);
                 //now whe have a pos to add particle!
-                FXShitAntiNode particle = new FXShitAntiNode(viewer.worldObj, endPosition.x, endPosition.y, endPosition.z, 0,0,0, particleLifeTime, particleSize);
+                FXShitAntiNode particle = new FXShitAntiNode(viewer.worldObj, endPosition.x, endPosition.y, endPosition.z, 0,0,0, particleLifeTime, particleSize, false);
                 ParticleEngine.instance.addEffect(viewer.worldObj, particle);
 
                 if (random.nextInt(300) == 37) tile.cordsForShadows.remove(dotInSpace);
@@ -212,7 +212,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                     list.add(radius - delta); // 0
                     list.add(timer + 1); // 3
                     SUSVec3 endPosition = dotInSpace.add(a);
-                    FXShitAntiNode particle = new FXShitAntiNode(viewer.worldObj, endPosition.x, endPosition.y, endPosition.z, 0, 0, 0, particleLifeTime, particleSize);
+                    FXShitAntiNode particle = new FXShitAntiNode(viewer.worldObj, endPosition.x, endPosition.y, endPosition.z, 0, 0, 0, particleLifeTime, particleSize, false);
                     ParticleEngine.instance.addEffect(viewer.worldObj, particle);
                 }
             }
