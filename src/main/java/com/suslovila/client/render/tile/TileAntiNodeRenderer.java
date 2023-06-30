@@ -57,9 +57,8 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
             glAlphaFunc(516, 0.003921569F);
             glAlphaFunc(516, 0.003921569F);
             GL11.glDepthMask(false);
-            if(depthIgnore) {
-                GL11.glDisable(2929);
-            }
+            if(depthIgnore) GL11.glDisable(2929);
+
 
             GL11.glDisable(2884);
             float bscale = 0.25F;
@@ -71,9 +70,8 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
 
             for(int j = 0; j < 2; j ++){
                 //first - "perditio" color(because it fits the theme of node), second - fictive(terra color, does not matter, bacause we only draw red color)
-                if(j == 0) {
-                    alpha = (float)((double)alpha * 1.5D);
-                }
+                if(j == 0) alpha = (float)((double)alpha * 1.5D);
+
 
                 average += (float)(j == 0 ? 25:50);
                 GL11.glPushMatrix();
@@ -87,9 +85,8 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                 GL11.glDisable(3042);
                 GL11.glPopMatrix();
                 ++count;
-                if(j == 0) {
-                    alpha = (float)((double)alpha / 1.5D);
-                }
+                if(j == 0) alpha = (float)((double)alpha / 1.5D);
+
             }
             average = average * sizeOfNode;
             GL11.glPushMatrix();
@@ -104,9 +101,8 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
             GL11.glPopMatrix();
             GL11.glPopMatrix();
             glEnable(2884);
-            if(depthIgnore) {
-                glEnable(2929);
-            }
+            if(depthIgnore) glEnable(2929);
+
 
             GL11.glDepthMask(true);
             glAlphaFunc(516, 0.1F);
@@ -157,7 +153,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                 list.add(timer + 1);
                 SUSVec3 endPosition = dotInSpace.add(a);
                 //now whe have a pos to add particle!
-                FXShitAntiNode particle = new FXShitAntiNode(viewer.worldObj, endPosition.x, endPosition.y, endPosition.z, 0,0,0, particleLifeTime, particleSize, false);
+                FXShitAntiNode particle = new FXShitAntiNode(viewer.worldObj, endPosition.x, endPosition.y, endPosition.z, 0,0,0, particleLifeTime, particleSize, true);
                 ParticleEngine.instance.addEffect(viewer.worldObj, particle);
 
                 if (random.nextInt(300) == 37) tile.cordsForShadows.remove(dotInSpace);
@@ -212,7 +208,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                     list.add(radius - delta); // 0
                     list.add(timer + 1); // 3
                     SUSVec3 endPosition = dotInSpace.add(a);
-                    FXShitAntiNode particle = new FXShitAntiNode(viewer.worldObj, endPosition.x, endPosition.y, endPosition.z, 0, 0, 0, particleLifeTime, particleSize, false);
+                    FXShitAntiNode particle = new FXShitAntiNode(viewer.worldObj, endPosition.x, endPosition.y, endPosition.z, 0, 0, 0, particleLifeTime, particleSize, true);
                     ParticleEngine.instance.addEffect(viewer.worldObj, particle);
                 }
             }

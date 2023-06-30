@@ -1,64 +1,41 @@
-[12:23:22] [main/INFO]: Setting user: Player968
-[12:23:23] [Client thread/INFO]: LWJGL Version: 2.9.1
-[12:23:29] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Baubles, FMLFileResourcePack:Thaumcraft, FMLFileResourcePack:Example Mod
-[12:23:31] [Sound Library Loader/INFO]: Sound engine started
-[12:23:32] [Client thread/INFO]: Created: 16x16 textures/blocks-atlas
-[12:23:32] [Client thread/INFO]: Created: 16x16 textures/items-atlas
-[12:23:32] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Baubles, FMLFileResourcePack:Thaumcraft, FMLFileResourcePack:Example Mod
-[12:23:33] [Client thread/INFO]: Created: 512x512 textures/blocks-atlas
-[12:23:33] [Client thread/INFO]: Created: 512x512 textures/items-atlas
-[12:23:34] [Sound Library Loader/INFO]: Sound engine started
-[12:24:01] [Server thread/INFO]: Starting integrated minecraft server version 1.7.10
-[12:24:01] [Server thread/INFO]: Generating keypair
-[12:24:01] [Server thread/INFO]: Preparing start region for level 0
-[12:24:02] [Server thread/INFO]: Changing view distance to 12, from 10
-[12:24:03] [Server thread/INFO]: Player968[local:E:eb0a44d4] logged in with entity id 285 at (-108.42812456419891, 69.0, 250.57088036918856)
-[12:24:03] [Server thread/INFO]: Player968 joined the game
-[12:25:40] [Server thread/INFO]: Saving and pausing game...
-[12:25:40] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[12:25:40] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[12:25:40] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-[12:25:40] [Server thread/INFO]: Saving chunks for level 'New World'/The Outer Lands
-[12:25:49] [Client thread/INFO]: [CHAT] 'daY' is not a valid number
-[12:25:52] [Server thread/INFO]: [Player968: Set the time to 1000]
-[12:25:52] [Client thread/INFO]: [CHAT] Set the time to 1000
-[12:26:08] [Server thread/INFO]: Saving and pausing game...
-[12:26:08] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[12:26:08] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[12:26:08] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-[12:26:08] [Server thread/INFO]: Saving chunks for level 'New World'/The Outer Lands
-[12:27:14] [Server thread/INFO]: Saving and pausing game...
-[12:27:14] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[12:27:14] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[12:27:14] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-[12:27:14] [Server thread/INFO]: Saving chunks for level 'New World'/The Outer Lands
-[12:27:40] [Server thread/INFO]: Saving and pausing game...
-[12:27:40] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[12:27:40] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[12:27:40] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-[12:27:40] [Server thread/INFO]: Saving chunks for level 'New World'/The Outer Lands
-[12:28:24] [Server thread/INFO]: Saving and pausing game...
-[12:28:24] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[12:28:24] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[12:28:24] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-[12:28:24] [Server thread/INFO]: Saving chunks for level 'New World'/The Outer Lands
-[12:29:18] [Server thread/INFO]: Saving and pausing game...
-[12:29:18] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[12:29:18] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[12:29:18] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-[12:29:18] [Server thread/INFO]: Saving chunks for level 'New World'/The Outer Lands
-[12:29:55] [Server thread/INFO]: Saving and pausing game...
-[12:29:55] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[12:29:55] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[12:29:55] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-[12:29:55] [Server thread/INFO]: Saving chunks for level 'New World'/The Outer Lands
-[12:30:19] [Server thread/INFO]: Saving and pausing game...
-[12:30:19] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[12:30:19] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[12:30:19] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-[12:30:19] [Server thread/INFO]: Saving chunks for level 'New World'/The Outer Lands
-[12:30:41] [Server thread/INFO]: Saving and pausing game...
-[12:30:41] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
-[12:30:41] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
-[12:30:41] [Server thread/INFO]: Saving chunks for level 'New World'/The End
-[12:30:41] [Server thread/INFO]: Saving chunks for level 'New World'/The Outer Lands
+[21:55:33] [main/INFO]: Setting user: Player734
+[21:55:34] [Client thread/INFO]: LWJGL Version: 2.9.1
+[21:55:40] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Baubles, FMLFileResourcePack:Thaumcraft, FMLFileResourcePack:Example Mod
+[21:55:42] [Sound Library Loader/INFO]: Sound engine started
+[21:55:42] [Client thread/INFO]: Created: 16x16 textures/blocks-atlas
+[21:55:42] [Client thread/INFO]: Created: 16x16 textures/items-atlas
+[21:55:42] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Baubles, FMLFileResourcePack:Thaumcraft, FMLFileResourcePack:Example Mod
+[21:55:43] [Client thread/INFO]: Created: 512x512 textures/blocks-atlas
+[21:55:43] [Client thread/INFO]: Created: 512x512 textures/items-atlas
+[21:55:44] [Sound Library Loader/INFO]: Sound engine started
+[21:55:46] [Server thread/INFO]: Starting integrated minecraft server version 1.7.10
+[21:55:46] [Server thread/INFO]: Generating keypair
+[21:55:46] [Server thread/INFO]: Preparing start region for level 0
+[21:55:46] [Server thread/INFO]: Changing view distance to 12, from 10
+[21:55:47] [Server thread/INFO]: Player734[local:E:15d6f48b] logged in with entity id 277 at (-119.2817948514711, 69.0, 248.19106952820178)
+[21:55:47] [Server thread/INFO]: Player734 joined the game
+[21:55:49] [Server thread/INFO]: Saving and pausing game...
+[21:55:49] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[21:55:49] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[21:55:49] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[21:55:49] [Server thread/INFO]: Saving chunks for level 'New World'/The Outer Lands
+[21:56:12] [Server thread/INFO]: Player734 has just earned the achievement [Taking Inventory]
+[21:56:12] [Client thread/INFO]: [CHAT] Player734 has just earned the achievement [Taking Inventory]
+[21:56:34] [Server thread/INFO]: Saving and pausing game...
+[21:56:34] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[21:56:34] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[21:56:34] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[21:56:34] [Server thread/INFO]: Saving chunks for level 'New World'/The Outer Lands
+[21:56:34] [Server thread/INFO]: Stopping server
+[21:56:34] [Server thread/INFO]: Saving players
+[21:56:34] [Server thread/INFO]: Saving worlds
+[21:56:34] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[21:56:34] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[21:56:34] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[21:56:34] [Server thread/INFO]: Saving chunks for level 'New World'/The Outer Lands
+[21:56:36] [Server thread/INFO]: Starting integrated minecraft server version 1.7.10
+[21:56:36] [Server thread/INFO]: Generating keypair
+[21:56:36] [Server thread/INFO]: Preparing start region for level 0
+[21:56:36] [Server thread/INFO]: Changing view distance to 12, from 10
+[21:56:36] [Server thread/INFO]: Player734[local:E:9fb5aedf] logged in with entity id 19265 at (-119.67736157027288, 69.0, 248.50922826561742)
+[21:56:36] [Server thread/INFO]: Player734 joined the game

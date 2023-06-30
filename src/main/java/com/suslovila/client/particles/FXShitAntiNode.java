@@ -8,6 +8,9 @@ import net.minecraft.client.particle.EntityFX;
 import static org.lwjgl.opengl.GL11.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.culling.Frustrum;
+import net.minecraft.client.renderer.culling.ICamera;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
@@ -22,7 +25,7 @@ public class FXShitAntiNode extends EntityFX
     float maxParticleScale = 1.1f;
     float partialTick = 0;
     float x,  y,  z,  u,  v = 0;
-    boolean depthTest = false;
+    boolean depthTest;
 
     private static final ResourceLocation FXTexture = new ResourceLocation(ExampleMod.MOD_ID, "textures/particles/antinodefx.png");
     public static Queue<FXShitAntiNode> queuedRenders = new ArrayDeque();
@@ -110,9 +113,18 @@ public class FXShitAntiNode extends EntityFX
         this.z = z;
         this.u = u;
         this.v = v;
+    ICamera camera = new Frustrum();
+    EntityLivingBase entitylivingbase = Minecraft.getMinecraft().renderViewEntity;
+    double d0 = entitylivingbase.lastTickPosX + (entitylivingbase.posX - entitylivingbase.lastTickPosX) * (double)partialTick;
+    double d1 = entitylivingbase.lastTickPosY + (entitylivingbase.posY - entitylivingbase.lastTickPosY) * (double)partialTick;
+    double d2 = entitylivingbase.lastTickPosZ + (entitylivingbase.posZ - entitylivingbase.lastTickPosZ) * (double)partialTick;
+    camera.setPosition(d0, d1, d2);
+    if(!camera.isBoundingBoxInFrustum(boundingBox)) this.kill();
+
     if(depthTest)
         queuedRenders.add(this);
     else queuedDepthIgnoringRenders.add(this);
+
     }
 
 
@@ -125,18 +137,15 @@ public class FXShitAntiNode extends EntityFX
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         //trying not to render particles when player does not see them
-
 //        ICamera camera = new Frustrum();
 //        EntityLivingBase entitylivingbase = Minecraft.getMinecraft().renderViewEntity;
-//        double d0 = entitylivingbase.lastTickPosX + (entitylivingbase.posX - entitylivingbase.lastTickPosX) * (double)partialTicks;
-//        double d1 = entitylivingbase.lastTickPosY + (entitylivingbase.posY - entitylivingbase.lastTickPosY) * (double)partialTicks;
-//        double d2 = entitylivingbase.lastTickPosZ + (entitylivingbase.posZ - entitylivingbase.lastTickPosZ) * (double)partialTicks;
+//        double d0 = entitylivingbase.lastTickPosX + (entitylivingbase.posX - entitylivingbase.lastTickPosX) * (double)partialTick;
+//        double d1 = entitylivingbase.lastTickPosY + (entitylivingbase.posY - entitylivingbase.lastTickPosY) * (double)partialTick;
+//        double d2 = entitylivingbase.lastTickPosZ + (entitylivingbase.posZ - entitylivingbase.lastTickPosZ) * (double)partialTick;
 //        camera.setPosition(d0, d1, d2);
-//        System.out.println(boundingBox);
-//        if(!camera.isBoundingBoxInFrustum(boundingBox)) {
-//            this.setDead();
-//        }
-        if (this.particleAge++ >= this.particleMaxAge || !(Minecraft.getMinecraft().thePlayer.canEntityBeSeen(this))) this.setDead();
+//        if(!camera.isBoundingBoxInFrustum(boundingBox)) this.setDead();
+
+         if (this.particleAge++ >= this.particleMaxAge) this.setDead();
 
         //it seems it does not work because particles are black. I need to "play" with blend and alpha to find out the solution
         fadeOut();
