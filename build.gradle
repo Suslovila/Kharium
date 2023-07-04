@@ -3,14 +3,16 @@ buildscript {
 		mavenCentral()
 		maven {
 			name = "forge"
-			url = "https://maven.minecraftforge.net/"
+			url = "https://files.minecraftforge.net/maven"
+		}
+		maven {
+			name = "github"
+			url = "https://github.com/juanmuscaria/maven/raw/master"
 		}
 	}
 	dependencies {
+		classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-1.5.6-SNAPSHOT'
 		classpath 'com.integral.grimoire:GrimoireShenanigans:[1.5.3,)'
-		classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.0.+') {
-			changing = true
-		}
 	}
 }
 
@@ -39,6 +41,9 @@ repositories {
 	maven {
 		name = 'spongepowered-repo'
 		url = "https://repo.spongepowered.org/maven"
+	}
+	maven {
+		url = "https://jitpack.io"
 	}
 	flatDir {
 		dirs 'libs'
