@@ -7,6 +7,7 @@ buildscript {
 		}
 	}
 	dependencies {
+		classpath 'com.integral.grimoire:GrimoireShenanigans:[1.5.3,)'
 		classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.0.+') {
 			changing = true
 		}
@@ -15,6 +16,7 @@ buildscript {
 
 apply plugin: 'scala'
 apply plugin: 'forge'
+apply plugin: 'grimoire-shenanigans'
 
 minecraft {
 	version = "1.7.10-10.13.4.1614-1.7.10"
@@ -34,12 +36,19 @@ tasks.withType(ScalaCompile).configureEach {
 
 repositories {
 	mavenCentral()
+	maven {
+		name = 'spongepowered-repo'
+		url = "https://repo.spongepowered.org/maven"
+	}
 	flatDir {
 		dirs 'libs'
 	}
 }
 
 dependencies {
+	compile group: "org.spongepowered", name: "mixin", version: "0.7.11-SNAPSHOT"
+	annotationProcessor 'org.spongepowered:mixin:0.7.11-SNAPSHOT:processor'
+
 	compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
@@ -78,13 +87,3 @@ tasks.register('serverJar', Jar) {
 }
 
 build.dependsOn clientJar, serverJar
-
-tasks.register('copySrgs', Copy) {
-	dependsOn 'genSrgs'
-	from plugins.getPlugin("forge").delayedFile('{SRG_DIR}')
-
-	include '**/*.srg'
-	into 'build/srgs'
-}
-
-compileJava.dependsOn copySrgs
