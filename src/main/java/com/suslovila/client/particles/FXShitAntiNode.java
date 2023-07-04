@@ -80,7 +80,7 @@ public class FXShitAntiNode extends EntityFX
     }
     private void renderQueued(Tessellator tessellator) {
         glPushMatrix();
-        glDepthMask(false);
+        //glDepthMask(false);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glAlphaFunc(GL_GREATER, 0.003921569F);
@@ -99,7 +99,7 @@ public class FXShitAntiNode extends EntityFX
         tessellator.addVertexWithUV((double)(f11 + x * f10 - u * f10), (double)(f12 - y * f10), (double)(f13 + z * f10 - v * f10), 1, 0);
 
         glDisable(GL_BLEND);
-        glDepthMask(true);
+        //glDepthMask(true);
         glAlphaFunc(GL_GREATER, 0.1F);
         glPopMatrix();
     }

@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import thaumcraft.client.fx.WRVector3;
 
 public class FXLightningBoltCommon {
-   ArrayList<FXLightningBoltCommon.Segment> segments;
+   ArrayList<Segment> segments;
    WRVector3 start;
    WRVector3 end;
    HashMap splitparents;
@@ -48,7 +48,7 @@ public class FXLightningBoltCommon {
       this.particleMaxAge = 3 + this.rand.nextInt(3) - 1;
       this.multiplier = 1.0F;
       this.particleAge = -((int)(this.length * 3.0F));
-      this.segments.add(new FXLightningBoltCommon.Segment(this.start, this.end));
+      this.segments.add(new Segment(this.start, this.end));
    }
 
    public FXLightningBoltCommon(World world, Entity detonator, Entity target, long seed) {
@@ -88,14 +88,14 @@ public class FXLightningBoltCommon {
 
    public void fractal(int splits, float amount, float splitchance, float splitlength, float splitangle) {
       if(!this.finalized) {
-         ArrayList<FXLightningBoltCommon.Segment> oldsegments = this.segments;
+         ArrayList<Segment> oldsegments = this.segments;
          this.segments = new ArrayList();
-         FXLightningBoltCommon.Segment prev = null;
+         Segment prev = null;
 
-         for(FXLightningBoltCommon.Segment segment : oldsegments) {
+         for(Segment segment : oldsegments) {
             prev = segment.prev;
             WRVector3 subsegment = segment.diff.copy().scale(1.0F / (float)splits);
-            FXLightningBoltCommon.BoltPoint[] newpoints = new FXLightningBoltCommon.BoltPoint[splits + 1];
+            BoltPoint[] newpoints = new BoltPoint[splits + 1];
             WRVector3 startpoint = segment.startpoint.point;
             newpoints[0] = segment.startpoint;
             newpoints[splits] = segment.endpoint;
@@ -104,11 +104,11 @@ public class FXLightningBoltCommon {
                WRVector3 randoff = WRVector3.getPerpendicular(segment.diff).rotate(this.rand.nextFloat() * 360.0F, segment.diff);
                randoff.scale((this.rand.nextFloat() - 0.5F) * amount);
                WRVector3 basepoint = startpoint.copy().add(subsegment.copy().scale((float)i));
-               newpoints[i] = new FXLightningBoltCommon.BoltPoint(basepoint, randoff);
+               newpoints[i] = new BoltPoint(basepoint, randoff);
             }
 
             for(int i = 0; i < splits; ++i) {
-               FXLightningBoltCommon.Segment next = new FXLightningBoltCommon.Segment(newpoints[i], newpoints[i + 1], segment.light, segment.segmentno * splits + i, segment.splitno);
+               Segment next = new Segment(newpoints[i], newpoints[i + 1], segment.light, segment.segmentno * splits + i, segment.splitno);
                next.prev = prev;
                if(prev != null) {
                   prev.next = next;
@@ -119,7 +119,7 @@ public class FXLightningBoltCommon {
                   WRVector3 diff = next.diff.copy().rotate((this.rand.nextFloat() * 0.66F + 0.33F) * splitangle, splitrot).scale(splitlength);
                   ++this.numsplits;
                   this.splitparents.put(Integer.valueOf(this.numsplits), Integer.valueOf(next.splitno));
-                  FXLightningBoltCommon.Segment split = new FXLightningBoltCommon.Segment(newpoints[i], new FXLightningBoltCommon.BoltPoint(newpoints[i + 1].basepoint, newpoints[i + 1].offsetvec.copy().add(diff)), segment.light / 2.0F, next.segmentno, this.numsplits);
+                  Segment split = new Segment(newpoints[i], new BoltPoint(newpoints[i + 1].basepoint, newpoints[i + 1].offsetvec.copy().add(diff)), segment.light / 2.0F, next.segmentno, this.numsplits);
                   split.prev = prev;
                   this.segments.add(split);
                }
@@ -149,11 +149,11 @@ public class FXLightningBoltCommon {
 
    private void calculateCollisionAndDiffs() {
       HashMap lastactivesegment = new HashMap();
-      Collections.sort(this.segments, new FXLightningBoltCommon.SegmentSorter());
+      Collections.sort(this.segments, new SegmentSorter());
       int lastsplitcalc = 0;
       int lastactiveseg = 0;
 
-      for(FXLightningBoltCommon.Segment segment : this.segments) {
+      for(Segment segment : this.segments) {
          if(segment.splitno > lastsplitcalc) {
             lastactivesegment.put(Integer.valueOf(lastsplitcalc), Integer.valueOf(lastactiveseg));
             lastsplitcalc = segment.splitno;
@@ -167,9 +167,9 @@ public class FXLightningBoltCommon {
       lastsplitcalc = 0;
       lastactiveseg = ((Integer)lastactivesegment.get(Integer.valueOf(0))).intValue();
 
-      FXLightningBoltCommon.Segment segment;
+      Segment segment;
       for(Iterator iterator = this.segments.iterator(); iterator.hasNext(); segment.calcEndDiffs()) {
-         segment = (FXLightningBoltCommon.Segment)iterator.next();
+         segment = (Segment)iterator.next();
          if(lastsplitcalc != segment.splitno) {
             lastsplitcalc = segment.splitno;
             lastactiveseg = ((Integer)lastactivesegment.get(Integer.valueOf(segment.splitno))).intValue();
@@ -186,7 +186,7 @@ public class FXLightningBoltCommon {
       if(!this.finalized) {
          this.finalized = true;
          this.calculateCollisionAndDiffs();
-         Collections.sort(this.segments, new FXLightningBoltCommon.SegmentLightSorter());
+         Collections.sort(this.segments, new SegmentLightSorter());
       }
    }
 
@@ -212,11 +212,11 @@ public class FXLightningBoltCommon {
    }
 
    public class Segment {
-      public FXLightningBoltCommon.BoltPoint startpoint;
-      public FXLightningBoltCommon.BoltPoint endpoint;
+      public BoltPoint startpoint;
+      public BoltPoint endpoint;
       public WRVector3 diff;
-      public FXLightningBoltCommon.Segment prev;
-      public FXLightningBoltCommon.Segment next;
+      public Segment prev;
+      public Segment next;
       public WRVector3 nextdiff;
       public WRVector3 prevdiff;
       public float sinprev;
@@ -257,7 +257,7 @@ public class FXLightningBoltCommon {
          return this.startpoint.point.toString() + " " + this.endpoint.point.toString();
       }
 
-      public Segment(FXLightningBoltCommon.BoltPoint start, FXLightningBoltCommon.BoltPoint end, float light, int segmentnumber, int splitnumber) {
+      public Segment(BoltPoint start, BoltPoint end, float light, int segmentnumber, int splitnumber) {
          this.this$0 = FXLightningBoltCommon.this;
          this.startpoint = start;
          this.endpoint = end;
@@ -275,25 +275,25 @@ public class FXLightningBoltCommon {
    public class SegmentLightSorter implements Comparator {
       final FXLightningBoltCommon this$0 = FXLightningBoltCommon.this;
 
-      public int compare(FXLightningBoltCommon.Segment o1, FXLightningBoltCommon.Segment o2) {
+      public int compare(Segment o1, Segment o2) {
          return Float.compare(o2.light, o1.light);
       }
 
       public int compare(Object obj, Object obj1) {
-         return this.compare((FXLightningBoltCommon.Segment)obj, (FXLightningBoltCommon.Segment)obj1);
+         return this.compare((Segment)obj, (Segment)obj1);
       }
    }
 
    public class SegmentSorter implements Comparator {
       final FXLightningBoltCommon this$0 = FXLightningBoltCommon.this;
 
-      public int compare(FXLightningBoltCommon.Segment o1, FXLightningBoltCommon.Segment o2) {
+      public int compare(Segment o1, Segment o2) {
          int comp = Integer.valueOf(o1.splitno).compareTo(Integer.valueOf(o2.splitno));
          return comp == 0?Integer.valueOf(o1.segmentno).compareTo(Integer.valueOf(o2.segmentno)):comp;
       }
 
       public int compare(Object obj, Object obj1) {
-         return this.compare((FXLightningBoltCommon.Segment)obj, (FXLightningBoltCommon.Segment)obj1);
+         return this.compare((Segment)obj, (Segment)obj1);
       }
    }
 }
