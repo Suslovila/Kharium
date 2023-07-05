@@ -25,6 +25,10 @@ public class ClientEventHandler {
     // client event renderers
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
+        handleParticles();
+
+    }
+    private static void handleParticles(){
         Profiler profiler = Minecraft.getMinecraft().mcProfiler;
         profiler.startSection("botania-particles");
         ParticleRenderDispatcher.dispatch();

@@ -57,7 +57,7 @@ public class TileAntiNodeControllerBaseRenderer extends TileEntitySpecialRendere
         //GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         glAlphaFunc(516, 0.003921569F);
-        glColor4f(1,1,1,0.5f);
+        glColor4f(1,1,1,0.7f);
         glTranslatef((float) par2 + 0.5F, (float) par4 + 0.5f, (float) par6 + 0.5F);
         glTranslatef(0,1,0);
         glRotatef(tile.timer++/4, 0,1,0);
