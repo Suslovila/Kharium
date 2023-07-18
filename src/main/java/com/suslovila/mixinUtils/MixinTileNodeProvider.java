@@ -5,4 +5,5 @@ public interface MixinTileNodeProvider {
     public void addTime(int n);
     public int getTransformationAspectSize();
     public void setTransformationAspectSize(int size);
+    boolean isNodeBeingTransformed();
 }

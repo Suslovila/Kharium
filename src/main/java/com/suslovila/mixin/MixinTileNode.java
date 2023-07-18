@@ -2,6 +2,7 @@ package com.suslovila.mixin;
 
 import com.suslovila.client.render.item.ItemCrystallizedAntiMatter;
 import com.suslovila.common.block.ModBlocks;
+import com.suslovila.common.block.tileEntity.TileAntiNode;
 import com.suslovila.mixinUtils.MixinTileNodeProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -16,6 +17,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -76,10 +78,12 @@ public abstract class MixinTileNode extends TileThaumcraft implements MixinTileN
     }
     @Inject(remap = false, method = "updateEntity", at = @At(value = "TAIL"))
     public void addTimer(CallbackInfo ci) {
-        transformationTimer += (transformationTimer != -1 ? 1 : 0);
-        transformationTimer = transformationTimer % (halfConvertionTime * 2);
-        if (transformationTimer < halfConvertionTime && transformationTimer != -1) {
-            int iterationAmount = (random.nextBoolean() ? 1 : 0) + getTransformationAspectSize() / (halfConvertionTime);
+        //ticking transformation
+        transformationTimer += (isNodeBeingTransformed() ? 1 : 0);
+
+        //removing aspects from node
+        if (isNodeBeingTransformed() && transformationTimer < halfConvertionTime) {
+            int iterationAmount = 1 + getTransformationAspectSize() / (halfConvertionTime);
             for (int i = 0; i < iterationAmount; i++) {
                 Aspect[] aspects = getAspects().getAspects();
                 if (aspects.length != 0) {
@@ -90,12 +94,17 @@ public abstract class MixinTileNode extends TileThaumcraft implements MixinTileN
             }
         }
         if(transformationTimer == halfConvertionTime){
-            Aspect[] aspects = this.getAspects().getAspects();
-            for(Aspect aspect : aspects) this.getAspects().remove(aspect);
+//            //removing redundant aspects
+//            for(Aspect aspect : this.getAspects().getAspects()) this.getAspects().remove(aspect);
+
+
+            //handling anti-node initialization
             this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.ANTI_NODE);
+            TileAntiNode antiNode = (TileAntiNode)worldObj.getTileEntity(xCoord, yCoord, zCoord);
+            antiNode.energy = transformationAspectSize;
+
         }
     }
-
 
 
     @Inject(remap = false, method = "writeCustomNBT", at = @At(value = "TAIL"))
@@ -106,4 +115,5 @@ public abstract class MixinTileNode extends TileThaumcraft implements MixinTileN
     public void readFromNBT(NBTTagCompound nbttagcompound, CallbackInfo ci) {
         transformationTimer = nbttagcompound.getInteger("transformationTimer");
     }
+    public boolean isNodeBeingTransformed(){return transformationTimer != -1;}
 }

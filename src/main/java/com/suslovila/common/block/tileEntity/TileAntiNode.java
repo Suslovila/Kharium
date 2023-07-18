@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TileAntiNode extends TileEntity {
     public ConcurrentHashMap<SUSVec3, ArrayList<Object>> cordsForShadows = new ConcurrentHashMap<>();
     public int tickExisted;
+    public int energy;
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.readCustomNBT(nbttagcompound);
@@ -31,6 +32,7 @@ public class TileAntiNode extends TileEntity {
 
     public void readCustomNBT(NBTTagCompound nbttagcompound) {
         tickExisted = nbttagcompound.getInteger("timer");
+        energy = nbttagcompound.getInteger("energy");
     }
 
     public void writeToNBT(NBTTagCompound nbttagcompound) {
@@ -40,6 +42,7 @@ public class TileAntiNode extends TileEntity {
 
     public void writeCustomNBT(NBTTagCompound nbttagcompound) {
         nbttagcompound.setInteger("timer", tickExisted);
+        nbttagcompound.setInteger("energy", energy);
     }
 
     public Packet getDescriptionPacket() {

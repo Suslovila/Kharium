@@ -52,7 +52,7 @@ public abstract class MixinTileNodeRenderer extends TileEntitySpecialRenderer {
             }
         }
 
-       if (!(tile instanceof TileJarNode) && ((MixinTileNodeProvider)tile).getTransformationTimer() != -1) {
+       if (tile != null && !(tile instanceof TileJarNode) && ((MixinTileNodeProvider)tile).isNodeBeingTransformed()) {
            int transformationTimer = ((MixinTileNodeProvider)tile).getTransformationTimer();
            float globalScaleTransformationFactor = (float)(halfConvertionTime - transformationTimer) / halfConvertionTime;
                glTranslateRandomEqualD(0.08 * globalScaleTransformationFactor);
