@@ -16,8 +16,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class TileAntiNodeControllerBaseRenderer extends TileEntitySpecialRenderer {
     //JUST A TEST CLASS FOR WORKING WITH CIRCLES
-    private IModelCustom model;
-    private static final ResourceLocation MODEL = new ResourceLocation(ExampleMod.MOD_ID, "models/field.obj");
+    public static IModelCustom model;
+    private static final ResourceLocation MODEL = new ResourceLocation(ExampleMod.MOD_ID, "models/shieldSphere.obj");
 
     public TileAntiNodeControllerBaseRenderer() {
         this.model = AdvancedModelLoader.loadModel(MODEL);
@@ -45,32 +45,32 @@ public class TileAntiNodeControllerBaseRenderer extends TileEntitySpecialRendere
 //        }
 //        glPopMatrix();
 //
-//        tile.timer++;
-
-        glPushMatrix();
-       // RenderHelper.enableStandardItemLighting();
-        glEnable(GL_BLEND);
-        glDisable(GL_ALPHA_TEST);
-        glDisable(GL_LIGHTING);
-        GL11.glDepthMask(false);
-        //GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-        //GL11.glEnable(GL11.GL_BLEND);
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        glAlphaFunc(516, 0.003921569F);
-        glColor4f(1,1,1,0.7f);
-        glTranslatef((float) par2 + 0.5F, (float) par4 + 0.5f, (float) par6 + 0.5F);
-        glTranslatef(0,1,0);
-        glRotatef(tile.timer++/4, 0,1,0);
-        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/antinode/controller/field.png");
-        glScalef(4,4,4);
-        model.renderAll();
-
-
-        glDisable(GL_BLEND);
-        glDisable(GL_ALPHA_TEST);
-        glEnable(GL_LIGHTING);
-        GL11.glDepthMask(true);
-        glPopMatrix();
+////        tile.timer++;
+//
+//        glPushMatrix();
+//       // RenderHelper.enableStandardItemLighting();
+//        glEnable(GL_BLEND);
+//        glDisable(GL_ALPHA_TEST);
+//        glDisable(GL_LIGHTING);
+//        //GL11.glDepthMask(false);
+//        //GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+//        //GL11.glEnable(GL11.GL_BLEND);
+//        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+//        glAlphaFunc(516, 0.003921569F);
+//        glColor4f(1,1,1,0.7f);
+//        glTranslatef((float) par2 + 0.5F, (float) par4 + 0.5f, (float) par6 + 0.5F);
+//        glTranslatef(0,1,0);
+//        glRotatef(tile.timer++/4, 0,1,0);
+//        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/antinode/controller/field.png");
+//        glScalef(4,4,4);
+//        model.renderAll();
+//
+//
+//        glDisable(GL_BLEND);
+//        glDisable(GL_ALPHA_TEST);
+//        glEnable(GL_LIGHTING);
+//        //GL11.glDepthMask(true);
+//        glPopMatrix();
         //RenderHelper.disableStandardItemLighting();
     }
 @Override

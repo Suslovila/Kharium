@@ -81,8 +81,9 @@ public class FXShitAntiNode extends EntityFX
     private void renderQueued(Tessellator tessellator) {
         glPushMatrix();
         //glDepthMask(false);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(3042);
+        GL11.glBlendFunc(770, 771);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1);
         glAlphaFunc(GL_GREATER, 0.003921569F);
         glAlphaFunc(GL_GREATER, 0.6F - ((float)this.particleAge + partialTick - 1.0F) * 0.25F * 0.5F);
 
@@ -99,6 +100,7 @@ public class FXShitAntiNode extends EntityFX
         tessellator.addVertexWithUV((double)(f11 + x * f10 - u * f10), (double)(f12 - y * f10), (double)(f13 + z * f10 - v * f10), 1, 0);
 
         glDisable(GL_BLEND);
+//        GL11.glDisable('耺');
         //glDepthMask(true);
         glAlphaFunc(GL_GREATER, 0.1F);
         glPopMatrix();
@@ -119,7 +121,10 @@ public class FXShitAntiNode extends EntityFX
     double d1 = entitylivingbase.lastTickPosY + (entitylivingbase.posY - entitylivingbase.lastTickPosY) * (double)partialTick;
     double d2 = entitylivingbase.lastTickPosZ + (entitylivingbase.posZ - entitylivingbase.lastTickPosZ) * (double)partialTick;
     camera.setPosition(d0, d1, d2);
-    if(!camera.isBoundingBoxInFrustum(boundingBox)) this.kill();
+    if(!camera.isBoundingBoxInFrustum(boundingBox)) {
+
+        this.kill();
+    }
 
     if(depthTest)
         queuedRenders.add(this);
@@ -136,17 +141,7 @@ public class FXShitAntiNode extends EntityFX
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-        //trying not to render particles when player does not see them
-//        ICamera camera = new Frustrum();
-//        EntityLivingBase entitylivingbase = Minecraft.getMinecraft().renderViewEntity;
-//        double d0 = entitylivingbase.lastTickPosX + (entitylivingbase.posX - entitylivingbase.lastTickPosX) * (double)partialTick;
-//        double d1 = entitylivingbase.lastTickPosY + (entitylivingbase.posY - entitylivingbase.lastTickPosY) * (double)partialTick;
-//        double d2 = entitylivingbase.lastTickPosZ + (entitylivingbase.posZ - entitylivingbase.lastTickPosZ) * (double)partialTick;
-//        camera.setPosition(d0, d1, d2);
-//        if(!camera.isBoundingBoxInFrustum(boundingBox)) this.setDead();
-
          if (this.particleAge++ >= this.particleMaxAge) this.setDead();
-
         //it seems it does not work because particles are black. I need to "play" with blend and alpha to find out the solution
         fadeOut();
     }

@@ -1,84 +1,154 @@
+apply plugin: 'kotlin'
 buildscript {
+	ext.kotlin_version = '1.9.0'
 	repositories {
 		mavenCentral()
 		maven {
 			name = "forge"
-			url = "https://files.minecraftforge.net/maven"
+			url = "https://maven.minecraftforge.net/"
 		}
 		maven {
-			name = "github"
-			url = "https://github.com/juanmuscaria/maven/raw/master"
-		}
-		maven {
-			name = 'spongepowered-repo'
-			url = "https://repo.spongepowered.org/maven"
+			name = "sonatype"
+			url = "https://oss.sonatype.org/content/repositories/snapshots/"
 		}
 	}
 	dependencies {
-		classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-1.5.6-SNAPSHOT'
-		classpath 'com.integral.grimoire:GrimoireShenanigans:[1.5.3,)'
+		classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.0.+') {
+			changing = true
+		}
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 	}
 }
 
-apply plugin: 'scala'
 apply plugin: 'forge'
-apply plugin: 'grimoire-shenanigans'
+
+
+version = "1.0"
+group= "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "modid"
+
+// Активация поддержки Java 8 (без этой строчки будет использоваться Java 6)
+targetCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
 
 minecraft {
 	version = "1.7.10-10.13.4.1614-1.7.10"
-	runDir = "run"
-	replace("@version@", version)
+
+	runDir = "eclipse"
 }
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
-tasks.withType(JavaCompile).configureEach {
-	options.encoding = "UTF-8"
+// Активация поддержки юникода, чтобы не было кракозябр
+tasks.withType(JavaCompile) {
 }
-
-compileScala.sourceCompatibility = compileScala.targetCompatibility = '1.8'
-tasks.withType(ScalaCompile).configureEach {
-	options.encoding = "UTF-8"
+repositories {
+	mavenCentral()
+	maven { url = "https://repo.spongepowered.org/maven" }
+	flatDir {
+		dirs 'lib'
+	}
 }
+//version = "1.7.10-4.2.3.5"
+//group= "thaumcraft"
+//archivesBaseName = "Thaumcraft"
 
 dependencies {
-	compile group: "org.spongepowered", name: "mixin", version: "0.7.11-SNAPSHOT"
-	annotationProcessor 'org.spongepowered:mixin:0.7.11-SNAPSHOT:processor'
+	implementation  fileTree(dir: 'lib', include: ['*.jar'])
+	//compile name: "Thaumcraft" + '-' + "1.7.10-4.2.3.5" + '-dev'
+	//compile group: 'lib', name: 'Thaumcraft', version: '4.2.3.5', classifier: 'dev'
 
-	compile fileTree(dir: 'libs', include: ['*.jar'])
+
+//    implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+//        exclude module: "launchwrapper"
+//        exclude module: 'guava'
+//    }
+
+	annotationProcessor("org.spongepowered:mixin:0.7.11-SNAPSHOT")
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+	// you may put jars on which you depend on in ./libs
+	// or you may define them like so..
+	//compile "some.group:artifact:version:classifier"
+	//compile "some.group:artifact:version"
+	// implementation 'org.hibernate:hibernate-core:3.6.7.Final'
+	// real examples
+	//compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
+	//compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+
+	// for more info...
+	// http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+	// http://www.gradle.org/docs/current/userguide/dependency_management.html
+
 }
 
-processResources {
-	from(sourceSets.main.resources.srcDirs) {
-		include 'mcmod.info'
-		expand 'version': version, 'mcversion': project.minecraft.version
+jar {
+	manifest {
+		attributes([
+				"Implementation-Title"    : project.name,
+				"Implementation-Version"  : project.version,
+				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+				"MixinConfigs": "mixins.examplemod.json",
+				"FMLCorePluginContainsFMLMod": "true",  // Не забываем указать эти два флага,
+				"ForceLoadAsMod": "true",               // чтобы Forge нормально загрузил и мод, и миксины
+				"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+		])
 	}
-	from(sourceSets.main.resources.srcDirs) {
-		include 'application.conf'
-		filter { line ->
-			line.replaceAll("@version@", "${version}")
+}
+processResources
+		{
+			// this will ensure that this task is redone when the versions change.
+			inputs.property "version", project.version
+			inputs.property "mcversion", project.minecraft.version
+
+			// replace stuff in mcmod.info, nothing else
+			from(sourceSets.main.resources.srcDirs) {
+				include 'mcmod.info'
+
+				// replace version and mcversion
+				expand 'version':project.version, 'mcversion':project.minecraft.version
+			}
+
+			// copy everything else, thats not the mcmod.info
+			from(sourceSets.main.resources.srcDirs) {
+				exclude 'mcmod.info'
+			}
 		}
+
+
+ext {
+	mixinSrg = new File(project.buildDir, 'mixins/mixin.examplemod.srg')
+	mixinRefMapName = "mixins.examplemod.refmap.json";
+	mixinRefMap = new File(project.buildDir, "mixins/" + mixinRefMapName)
+}
+
+jar {
+	from project.mixinRefMap
+}
+
+reobf {
+	addExtraSrgFile project.mixinSrg
+}
+
+compileJava {
+	options.compilerArgs += [
+			'-Xlint:-processing',
+			"-AoutSrgFile=${project.mixinSrg.canonicalPath}",
+			"-AoutRefMapFile=${project.mixinRefMap.canonicalPath}",
+			"-AreobfSrgFile=${project.file('build/srgs/mcp-srg.srg').canonicalPath}"
+	]
+}
+
+task copySrgs(type: Copy, dependsOn: 'genSrgs') {
+	from plugins.getPlugin("forge").delayedFile('{SRG_DIR}')
+
+	include '**/*.srg'
+	into 'build/srgs'
+}
+
+compileJava.dependsOn copySrgs
+compileKotlin {
+	kotlinOptions {
+		jvmTarget = "1.8"
+		freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+
 	}
-	from(sourceSets.main.resources.srcDirs) {
-		exclude 'mcmod.info'
-		exclude 'application.conf'
-	}
 }
 
-tasks.register('clientJar', Jar) {
-	from sourceSets.main.scala
-	from sourceSets.main.java
-	archiveClassifier.set 'client'
-	exclude "com/suslovila/server/**"
-	exclude 'META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'module-info.class'
-}
-
-tasks.register('serverJar', Jar) {
-	from sourceSets.main.scala
-	from sourceSets.main.java
-	archiveClassifier.set 'server'
-	exclude "com/suslovila/client/**"
-	exclude "assets/**"
-	exclude 'META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'module-info.class'
-}
-
-build.dependsOn clientJar, serverJar

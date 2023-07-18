@@ -74,7 +74,6 @@ public class TileEssentiaReservoirVoidRenderer extends TileEssentiaReservoirRend
             GL11.glPushMatrix();
             GL11.glEnable(3042);
             GL11.glBlendFunc(770, 771);
-            World world = te.getWorldObj();
             RenderBlocks renderBlocks = new RenderBlocks();
             GL11.glDisable(2896);
             float level = (float)te.essentia.visSize() / (float)te.maxAmount;
@@ -82,7 +81,6 @@ public class TileEssentiaReservoirVoidRenderer extends TileEssentiaReservoirRend
             renderBlocks.setRenderBounds((double) BlockRenderer.W3, (double)BlockRenderer.W3, (double)BlockRenderer.W3, (double)BlockRenderer.W13, (double)(BlockRenderer.W3 + BlockRenderer.W10 * level), (double)BlockRenderer.W13);
             t.startDrawingQuads();
             t.setColorRGBA_F(te.cr, te.cg, te.cb, 0.9F);
-            int bright = 200;
             t.setBrightness(200);
             IIcon icon = ((BlockJar) ConfigBlocks.blockJar).iconLiquid;
             this.field_147501_a.field_147553_e.bindTexture(TextureMap.locationBlocksTexture);

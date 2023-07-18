@@ -24,7 +24,6 @@ public class BlockEssentiaReservoirVoidRenderer extends BlockRenderer implements
             drawFaces(renderer, block, ((BlockEssentiaReservoirVoid) block).icon, true);
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
             TileEntityRendererDispatcher.instance.renderTileEntityAt(new TileEssentiaReservoirVoid(), 0.0D, 0.0D, 0.0D, 0.0F);
-       //GL11.glEnable('耺');
 
     }
 

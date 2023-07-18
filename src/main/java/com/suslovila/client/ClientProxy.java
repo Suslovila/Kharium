@@ -1,6 +1,5 @@
 package com.suslovila.client;
 
-import com.suslovila.ExampleMod;
 import com.suslovila.client.particles.antiNodeBolt.AntiNodeBolt;
 import com.suslovila.client.render.ClientEventHandler;
 import com.suslovila.client.render.block.BlockEssentiaReservoirVoidRenderer;
@@ -19,13 +18,11 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
-import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 public class ClientProxy extends CommonProxy implements IGuiHandler
 {

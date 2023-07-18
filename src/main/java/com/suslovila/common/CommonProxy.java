@@ -3,6 +3,7 @@ package com.suslovila.common;
 import com.suslovila.common.block.ModBlocks;
 import com.suslovila.common.event.FMLEventListener;
 import com.suslovila.common.event.SweetMixinListener;
+import com.suslovila.common.item.ModItems;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -19,8 +20,10 @@ public class CommonProxy
 
     public void preInit(FMLPreInitializationEvent event) {
         FMLCommonHandler.instance().bus().register(new FMLEventListener());
+        MinecraftForge.EVENT_BUS.register(new FMLEventListener());
         MinecraftForge.EVENT_BUS.register(new SweetMixinListener());
         ModBlocks.register();
+        ModItems.register();
         initAspects();
     }
     public void nodeAntiBolt(World worldObj, float x, float y, float z, float x2, float y2, float z2) {
