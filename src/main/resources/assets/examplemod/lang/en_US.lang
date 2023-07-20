@@ -12,7 +12,7 @@ itemGroup.examplemod=ExampleMod
 #item.ruby_multi_tool.name=Рубиновый мультиинструмент
 #
 #entity.mcmodding.goose.name=Гусь
-tc.aspect.Himilitas=Control
+tc.aspect.Himilitas=restraint, captivity, control
 tile.ruby.name=Рубиновый блок
 tile.colored_stone.name= Цветной камень
 tile.face.name= лицевой блок

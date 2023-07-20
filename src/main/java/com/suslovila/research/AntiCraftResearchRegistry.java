@@ -15,7 +15,6 @@ public class AntiCraftResearchRegistry {
         (new AntiCraftResearchItem("GenericTheory", "AntiCraft", (new AspectList()).add(Aspect.VOID, 8).add(Aspect.WATER, 4).add(Aspect.MAGIC, 6), 0, 0, 1, new ItemStack(ModBlocks.BlockEssentiaReservoirVoid))).setSpecial().setRound().setPages(new ResearchPage[] { new ResearchPage("1"), new ResearchPage("2"), new ResearchPage("3"), new ResearchPage("4"), new ResearchPage("5")
         }).setParents(new String[] {"ESSENTIARESERVOIR"
        }).registerResearchItem();
-        /*     */
-        /*     */
+
     }
 }

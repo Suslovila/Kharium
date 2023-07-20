@@ -66,16 +66,7 @@ public abstract class MixinTileNode extends TileThaumcraft implements MixinTileN
 
      if(!eo.isEntityAlive() && eo instanceof EntityItem && ((EntityItem)eo).getEntityItem().getItem() instanceof ItemCrystallizedAntiMatter) startNodeTransformation((TileNode)(Object)this);
     }
-    @Inject(remap = false, method = "handleHungryNodeFirst", at = @At("HEAD"), cancellable = true)
-    public void hungryNodeAnimationPreventer(boolean change, CallbackInfoReturnable<Boolean> cir) {
-        if(getTransformationTimer() > 120) cir.setReturnValue(false);
 
-    }
-    @Inject(remap = false, method = "handleHungryNodeSecond", at = @At("HEAD"), cancellable = true)
-    public void hungryNodeEatingPreventer(boolean change, CallbackInfoReturnable<Boolean> cir) {
-        if(getTransformationTimer() > 120) cir.setReturnValue(false);
-
-    }
     @Inject(remap = false, method = "updateEntity", at = @At(value = "TAIL"))
     public void addTimer(CallbackInfo ci) {
         //ticking transformation

@@ -32,12 +32,14 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
+            TileAntiNode antiNode = (TileAntiNode) tile;
             double viewDistance = 48;
             EntityLivingBase viewer = Minecraft.getMinecraft().renderViewEntity;
             double distance = viewer.getDistance((double)tile.xCoord + 0.5D, (double)tile.yCoord + 0.5D, (double)tile.zCoord + 0.5D);
             if(distance <= viewDistance) {
-                renderAntiNode(viewer, viewDistance, false, 1.0F, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, 0.5f * Math.min((float) ((TileAntiNode) tile).tickExisted / 120, (float) 1));
-                spawnShadowParticlesOutPutVersion((TileAntiNode)tile, viewer, 5,2,3,3,1.28D,1.33D, 0.003,0.005,0.9, 1.1,0,0.01,0,0.01,0,0.01,tile.xCoord + 0.5D,tile.yCoord + 0.5D,tile.zCoord + 0.5D, 13, 0.8f);
+                renderAntiNode(viewer, viewDistance, false, 1.0F, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, 0.5f * Math.min((float)antiNode.tickExisted / 120, (float) 1));
+                if(antiNode.tickExisted > halfConvertionTime / 2) spawnShadowParticlesOutPutVersion((TileAntiNode)tile, viewer, 5,2,3,3,1.28D,1.33D, 0.003,0.005,0.9, 1.1,0,0.01,0,0.01,0,0.01,tile.xCoord + 0.5D,tile.yCoord + 0.5D,tile.zCoord + 0.5D, 13, 0.8f);
+
                 //handling anti-node bolt
                 if(!Minecraft.getMinecraft().isGamePaused()) {
                     if (random.nextInt(9) == 6) {
