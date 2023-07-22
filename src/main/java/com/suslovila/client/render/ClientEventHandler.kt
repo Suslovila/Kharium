@@ -42,12 +42,12 @@ class ClientEventHandler {
                 val posZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks
                 GL11.glTranslated(tile.xCoord - posX, tile.yCoord - posY, tile.zCoord - posZ)
 
-                /* 181 */GL11.glDepthMask(false)
-                /* 182 */GL11.glDisable(GL11.GL_CULL_FACE)
-                /* 183 */GL11.glDisable(GL11.GL_ALPHA_TEST)
-                /* 184 */GL11.glEnable(GL11.GL_BLEND)
-                /* 185 */GL11.glDisable(GL11.GL_LIGHTING)
-                GL11.glColor4f(0f, 0f, 1f, 255f)
+                GL11.glDepthMask(false)
+                GL11.glDisable(GL11.GL_CULL_FACE)
+                GL11.glDisable(GL11.GL_ALPHA_TEST)
+                GL11.glEnable(GL11.GL_BLEND)
+                GL11.glDisable(GL11.GL_LIGHTING)
+                GL11.glColor4f(0f, 0f, 1f, 1f)
                 UtilsFX.bindTexture(ExampleMod.MOD_ID, "testWaste/shieldSphere.png")
                 GL11.glScalef(4f, 4f, 4f)
                 TileAntiNodeControllerBaseRenderer.model.renderAll()
@@ -57,11 +57,12 @@ class ClientEventHandler {
                 //glDisable(GL_ALPHA_TEST);
                 //glEnable(GL_LIGHTING);
                 GL11.glEnable(GL11.GL_CULL_FACE)
-                /* 215 */GL11.glEnable(GL11.GL_ALPHA_TEST)
-                /* 216 */GL11.glDisable(GL11.GL_BLEND)
-                /* 217 */GL11.glEnable(GL11.GL_LIGHTING)
-                /* 218 */GL11.glDepthMask(true)
-                /* 219 */GL11.glPopMatrix()
+                GL11.glEnable(GL11.GL_ALPHA_TEST)
+                GL11.glDisable(GL11.GL_BLEND)
+                GL11.glEnable(GL11.GL_LIGHTING)
+                GL11.glDepthMask(true)
+
+                GL11.glPopMatrix()
             }
         }
     }

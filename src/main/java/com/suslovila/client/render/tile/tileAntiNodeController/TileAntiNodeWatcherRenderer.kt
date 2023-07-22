@@ -2,31 +2,31 @@ package com.suslovila.client.render.tile.tileAntiNodeController
 
 import com.suslovila.ExampleMod;
 import com.suslovila.common.block.tileEntity.TileAntiNodeWatcher;
-import com.suslovila.utils.SUSUtils.random
-import com.suslovila.utils.SUSUtils.randomSign
+import com.suslovila.utils.SUSUtils.*
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL11.*
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.block.BlockRenderer;
+import thaumcraft.codechicken.lib.math.MathHelper
 import thaumcraft.common.config.ConfigBlocks;
+import kotlin.math.abs
 
- class TileAntiNodeWatcherRenderer : TileEntitySpecialRenderer() {
+class TileAntiNodeWatcherRenderer : TileEntitySpecialRenderer() {
     private val mechanicalEyeModel : IModelCustom
 
     private val eyeModel : IModelCustom
     lateinit var  baseModel : IModelCustom
-    private val lenses = listOf<Lens>(Lens(0.5), Lens(0.5), Lens(0.5))
-     private val wholeLength = lenses.sumOf { it.width };
+    //private val lenses = listOf<Lens>(Lens(0.5), Lens(0.5), Lens(0.5))
 
     companion object{
         val eyeTexture =  ResourceLocation(ExampleMod.MOD_ID, "textures/blocks/watcher_eye.png");
@@ -35,7 +35,7 @@ import thaumcraft.common.config.ConfigBlocks;
     init{
         //baseModel = AdvancedModelLoader.loadModel(ResourceLocation(ExampleMod.MOD_ID, "models/blocks/watcher_base.obj"));
         eyeModel = AdvancedModelLoader.loadModel(ResourceLocation(ExampleMod.MOD_ID, "models/blocks/watcher_eye.obj"));
-        mechanicalEyeModel = AdvancedModelLoader.loadModel( ResourceLocation("thaumcraft", "textures/models/scanner.obj"));
+        mechanicalEyeModel = AdvancedModelLoader.loadModel( ResourceLocation(ExampleMod.MOD_ID, "models/blocks/watcher.obj"));
     }
 
     fun renderWatcher(tile : TileAntiNodeWatcher,par2 : Double, par4 : Double, par6 : Double, partialTicks : Float) {
@@ -44,36 +44,94 @@ import thaumcraft.common.config.ConfigBlocks;
 
 
       private fun renderMechanicalEye(tile : TileAntiNodeWatcher, par2 : Double, par4 : Double, par6 : Double, partialTicks : Float) {
+          var playermp = Minecraft.getMinecraft().thePlayer
         glPushMatrix();
-        UtilsFX.bindTexture("thaumcraft", "textures/models/scanner.png");
+        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/blocks/scanner2.png");
           //starting rotation
           glRotated(90.0, 1.0,0.0,0.0)
-          lenses.forEach{lens -> if(lens.turningSide == 0 && random.nextInt(100) == 50) lens.turningSide = randomSign() }
-          glTranslated(0.0, -wholeLength / 2,0.0)
-          lenses.forEach{
+          glScaled(0.7,0.7,0.7)
+          tile.lenses.forEach { lens ->
+              with(lens) {
+                  if (turningSide == 0) {
+                      if (random.nextInt(120) == 50) {
+                          turningSide = randomSign()
+                          speedDelta = abs(defaultSpeedDelta)
+                          spinningSpeed = 0.0
+                          //if(random.nextInt(100) == 50) lens.spinningSpeed = nextDouble(1.0, 2.0)
+                      }
+                  }
+              }
+          }
+          glTranslated(0.0, -tile.wholeLength / 2,0.0)
+          tile.lenses.forEach{
               with(it) {
                   glTranslated(0.0, width / 2, 0.0)
                   glPushMatrix()
-                  //glScaled(it.width, 1.0,1.0)
-                  if (angle % 60 == 0 && random.nextBoolean()) turningSide = 0
-                  angle += (timer % 360) * turningSide
-                  glRotatef(angle.toFloat() / 20, 0F, 1F, 0F)
-                  mechanicalEyeModel.renderAll()
+                  glPushMatrix()
+                  glScaled(0.7,8.0,0.7)
+                  mechanicalEyeModel.renderOnly("scanner")
                   glPopMatrix()
 
-                  timer = (timer + 1) % 360
+                  spinningSpeed = Math.min(spinningSpeed + speedDelta, 1.0)
+                  speedDelta = Math.min(speedDelta + 0.01 * if(speedDelta > 0) 1 else -1, defaultSpeedDelta)
+                  if(spinningSpeed <= 0) turningSide = 0
+                  if (random.nextInt(80) == 30) speedDelta*=-1
+                  if(turningSide != 0) angle = (angle + (spinningSpeed * turningSide)) % 360
+                  glRotatef(angle.toFloat(), 0F, 1F, 0F)
+
+                  for(i in 1..6) mechanicalEyeModel.renderOnly("inner$i")
+                  mechanicalEyeModel.renderOnly("scanner")
+
+                  renderOuterCrystals()
+
+                  renderGlasses(playermp)
+
+                  glTranslated(0.0, width / 2, 0.0)
+                  UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/blocks/scanner2.png");
+
               }
           }
-        mechanicalEyeModel.renderAll();
+        //mechanicalEyeModel.renderAll();
         UtilsFX.bindTexture(TextureMap.locationBlocksTexture);
         glPopMatrix();
     }
 
+
+        private fun renderOuterCrystals(){
+            glDepthMask(false)
+            glDisable(GL_CULL_FACE)
+            glDisable(GL_ALPHA_TEST)
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+            glDisable(GL_LIGHTING)
+
+            glColor4f(1f, 1f, 1f, 0.3f)
+            for(i in 1..6) mechanicalEyeModel.renderOnly("outer$i")
+            glEnable(GL_CULL_FACE)
+            glEnable(GL_ALPHA_TEST)
+            glDisable( GL_BLEND)
+            glEnable( GL_LIGHTING)
+            glDepthMask(true)
+
+        }
+    private fun renderGlasses(player : EntityPlayer){
+        glPushMatrix()
+        glRotated(30.0, 0.0, 1.0,0.0)
+        glRotated(90.0, 1.0,0.0,0.0)
+        glPushMatrix()
+        UtilsFX.renderQuadCenteredFromTexture(ResourceLocation("thaumcraft", "textures/models/scanscreen.png"), 2.5F, 1.0F, 1.0F, 1.0F, (190.0F + MathHelper.sin(((player.ticksExisted - player.worldObj.rand.nextInt(2)).toDouble())) * 10.0F + 10.0F).toInt(), 771, 1.0F);
+        glPopMatrix()
+        glRotated(180.0, 1.0,0.0,0.0)
+        UtilsFX.renderQuadCenteredFromTexture(ResourceLocation("thaumcraft", "textures/models/scanscreen.png"), 2.5F, 1.0F, 1.0F, 1.0F, (190.0F + MathHelper.sin(((player.ticksExisted - player.worldObj.rand.nextInt(2)).toDouble())) * 10.0F + 10.0F).toInt(), 771, 1.0F);
+
+        glPopMatrix()
+
+    }
     private fun renderEye(tile : TileAntiNodeWatcher, par2 : Double, par4 : Double, par6 : Double, partialTicks : Float) {
         glPushMatrix();
 
         glTranslated(0.0, 0.08 * Math.sin((Minecraft.getSystemTime() /500).toDouble()), 0.0);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+         glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         UtilsFX.bindTexture(eyeTexture);
         val player = Minecraft.getMinecraft().thePlayer;
         val posX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
