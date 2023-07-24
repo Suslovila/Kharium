@@ -23,13 +23,13 @@ public class ModBlocks {
         GameRegistry.registerBlock(BlockEssentiaReservoirVoid, BlockEssentiaReservoirVoidItem.class,"EssentiaReservoirVoid");
         GameRegistry.registerBlock(ANTI_NODE,"AntiNode");
         GameRegistry.registerBlock(BLOCK_ANTI_NODE_CONTROLLER,"BlockAntiNodeControllerBase");
-        GameRegistry.registerBlock(ANTI_NODE_WATCHER, "AntiNodeWatcher");
+        GameRegistry.registerBlock(ANTI_NODE_WATCHER, "BlockAntiNodeWatcher");
         
 
         GameRegistry.registerTileEntity(TileEssentiaReservoirVoid.class, ExampleMod.MOD_ID + "TileEssentiaReservoirVoid");
         GameRegistry.registerTileEntity(TileAntiNode.class, ExampleMod.MOD_ID + "TileAntiNode");
         GameRegistry.registerTileEntity(TileAntiNodeControllerBase.class, ExampleMod.MOD_ID + "TileControllerBase");
-        GameRegistry.registerTileEntity(TileAntiNodeWatcher.class, ExampleMod.MOD_ID + "AntiNodeWatcher");
+        GameRegistry.registerTileEntity(TileAntiNodeWatcher.class, ExampleMod.MOD_ID + "TileAntiNodeWatcher");
 
     }
     public static void registerRender(){

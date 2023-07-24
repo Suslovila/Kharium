@@ -53,9 +53,7 @@ class ClientEventHandler {
                 TileAntiNodeControllerBaseRenderer.model.renderAll()
 
 
-                //glDisable(GL_BLEND);
-                //glDisable(GL_ALPHA_TEST);
-                //glEnable(GL_LIGHTING);
+
                 GL11.glEnable(GL11.GL_CULL_FACE)
                 GL11.glEnable(GL11.GL_ALPHA_TEST)
                 GL11.glDisable(GL11.GL_BLEND)

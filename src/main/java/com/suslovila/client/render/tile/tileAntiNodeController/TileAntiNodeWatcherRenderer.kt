@@ -115,6 +115,7 @@ class TileAntiNodeWatcherRenderer : TileEntitySpecialRenderer() {
 
         }
     private fun renderGlasses(player : EntityPlayer){
+        glDepthMask(false)
         glPushMatrix()
         glRotated(30.0, 0.0, 1.0,0.0)
         glRotated(90.0, 1.0,0.0,0.0)
@@ -123,7 +124,8 @@ class TileAntiNodeWatcherRenderer : TileEntitySpecialRenderer() {
         glPopMatrix()
         glRotated(180.0, 1.0,0.0,0.0)
         UtilsFX.renderQuadCenteredFromTexture(ResourceLocation("thaumcraft", "textures/models/scanscreen.png"), 2.5F, 1.0F, 1.0F, 1.0F, (190.0F + MathHelper.sin(((player.ticksExisted - player.worldObj.rand.nextInt(2)).toDouble())) * 10.0F + 10.0F).toInt(), 771, 1.0F);
-
+        glPopMatrix()
+        glDepthMask(true)
         glPopMatrix()
 
     }
