@@ -5,7 +5,9 @@
   "package": "com.suslovila.mixin",
   "refmap": "mixins.examplemod.refmap.json",
   "mixins": [
-
+    "MixinTileInfusionMatrix",
+    "MixinTileNode",
+    "MixinTileNodeRenderer"
   ],
   "client": [],
   "server": []
