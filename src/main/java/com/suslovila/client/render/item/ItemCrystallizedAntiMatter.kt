@@ -14,7 +14,7 @@ class ItemCrystallizedAntiMatter : Item() {
     init {
         unlocalizedName = "anti_matter";
             setTextureName(ExampleMod.MOD_ID + ":anti_matter");
-            setMaxStackSize(1);
+            setMaxStackSize(64);
     }
 
     override fun onItemUse(stack : ItemStack, player: EntityPlayer, world : World, x: Int, y: Int, z: Int, side : Int, p_77648_8_: Float, p_77648_9_: Float, p_77648_10_: Float): Boolean {

@@ -54,16 +54,19 @@ public abstract class MixinTileNode extends TileThaumcraft implements MixinTileN
     private int transformationAspectSize;
     private int transformationTimer = -1;
     public int getTransformationTimer(){return transformationTimer;}
-    public void addTime(int n){transformationTimer += n;}
+    public void addTime(int n){
+        transformationTimer += n;
+        markDirty();
+    }
 
     public int getTransformationAspectSize(){return transformationAspectSize;}
     public void setTransformationAspectSize(int n){transformationAspectSize = n;}
 
 
-    @Inject(remap = false, method = "handleHungryNodeFirst", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;func_70097_a(Lnet/minecraft/util/DamageSource;F)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void hungryNodeTransformationInvoker(boolean change, CallbackInfoReturnable<Boolean> cir, List ents, Iterator i$, Object ent, Entity eo, double d) {
-        if(!worldObj.isRemote)for(Object player : ((WorldServer)worldObj).playerEntities) ((EntityPlayer)player).addChatMessage((IChatComponent)new ChatComponentText((Object)EnumChatFormatting.RED + "text")); //рендер текста
-        //if(!eo.isEntityAlive() && eo instanceof EntityItem && ((EntityItem)eo).getEntityItem().getItem() instanceof ItemCrystallizedAntiMatter) startNodeTransformation((TileNode)(Object)this);
+    @Inject(remap = false, method = "handleHungryNodeFirst", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;func_70097_a(Lnet/minecraft/util/DamageSource;F)Z", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
+    public void hungryNodeTransformationInvoker(boolean change, CallbackInfoReturnable<Boolean> cir,List list, Iterator iterator, Object entity) {
+        Entity ent = (Entity) entity;
+        if(!ent.isEntityAlive() && ent instanceof EntityItem && ((EntityItem)ent).getEntityItem().getItem() instanceof ItemCrystallizedAntiMatter && !worldObj.isRemote) startNodeTransformation((TileNode)(Object)this);
     }
 
     @Inject(remap = true, method = "updateEntity", at = @At(value = "TAIL"))
