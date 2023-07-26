@@ -62,6 +62,7 @@ public abstract class MixinTileNode extends TileThaumcraft implements MixinTileN
     public int getTransformationAspectSize(){return transformationAspectSize;}
     public void setTransformationAspectSize(int n){transformationAspectSize = n;}
 
+//USE OBFUSCATION FUNCTION NAME OR THINGS ARE NOT GOING TO WORK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     @Inject(remap = false, method = "handleHungryNodeFirst", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;func_70097_a(Lnet/minecraft/util/DamageSource;F)Z", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
     public void hungryNodeTransformationInvoker(boolean change, CallbackInfoReturnable<Boolean> cir,List list, Iterator iterator, Object entity) {
@@ -72,30 +73,32 @@ public abstract class MixinTileNode extends TileThaumcraft implements MixinTileN
     @Inject(remap = true, method = "updateEntity", at = @At(value = "TAIL"))
     public void addTimer(CallbackInfo ci) {
         //ticking transformation
-        transformationTimer += (isNodeBeingTransformed() ? 1 : 0);
+        if(!worldObj.isRemote) {
+            addTime(isNodeBeingTransformed() ? 1 : 0);
 
-        //removing aspects from node
-        if (isNodeBeingTransformed() && transformationTimer < halfConvertionTime) {
-            int iterationAmount = 1 + getTransformationAspectSize() / (halfConvertionTime);
-            for (int i = 0; i < iterationAmount; i++) {
-                Aspect[] aspects = getAspects().getAspects();
-                if (aspects.length != 0) {
-                    Aspect aspect = aspects[random.nextInt(aspects.length)];
-                    if (this.getAspects().getAmount(aspect) != 0)
-                        this.takeFromContainer(aspects[random.nextInt(aspects.length)], 1);
+            //removing aspects from node
+            if (isNodeBeingTransformed() && transformationTimer < halfConvertionTime) {
+                int iterationAmount = 1 + getTransformationAspectSize() / (halfConvertionTime);
+                for (int i = 0; i < iterationAmount; i++) {
+                    Aspect[] aspects = getAspects().getAspects();
+                    if (aspects.length != 0) {
+                        Aspect aspect = aspects[random.nextInt(aspects.length)];
+                        if (this.getAspects().getAmount(aspect) != 0)
+                            this.takeFromContainer(aspects[random.nextInt(aspects.length)], 1);
+                    }
                 }
             }
-        }
-        if(transformationTimer == halfConvertionTime){
+            if (transformationTimer == halfConvertionTime) {
 //            //removing redundant aspects
 //            for(Aspect aspect : this.getAspects().getAspects()) this.getAspects().remove(aspect);
 
 
-            //handling anti-node initialization
-            this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.ANTI_NODE);
-            TileAntiNode antiNode = (TileAntiNode)worldObj.getTileEntity(xCoord, yCoord, zCoord);
-            antiNode.energy = transformationAspectSize;
+                //handling anti-node initialization
+                this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.ANTI_NODE);
+                TileAntiNode antiNode = (TileAntiNode) worldObj.getTileEntity(xCoord, yCoord, zCoord);
+                antiNode.energy = transformationAspectSize;
 
+            }
         }
     }
 
@@ -109,4 +112,8 @@ public abstract class MixinTileNode extends TileThaumcraft implements MixinTileN
         transformationTimer = nbttagcompound.getInteger("transformationTimer");
     }
     public boolean isNodeBeingTransformed(){return transformationTimer != -1;}
+    public void markDirty() {
+        super.worldObj.markBlockForUpdate(super.xCoord, super.yCoord, super.zCoord);
+        super.markDirty();
+    }
 }
