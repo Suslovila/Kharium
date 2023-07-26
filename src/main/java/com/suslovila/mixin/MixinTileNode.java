@@ -60,7 +60,7 @@ public abstract class MixinTileNode extends TileThaumcraft implements MixinTileN
     public void setTransformationAspectSize(int n){transformationAspectSize = n;}
 
 
-    @Inject(remap = false, method = "handleHungryNodeFirst", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(remap = false, method = "handleHungryNodeFirst", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;func_70097_a(Lnet/minecraft/util/DamageSource;F)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void hungryNodeTransformationInvoker(boolean change, CallbackInfoReturnable<Boolean> cir, List ents, Iterator i$, Object ent, Entity eo, double d) {
         if(!worldObj.isRemote)for(Object player : ((WorldServer)worldObj).playerEntities) ((EntityPlayer)player).addChatMessage((IChatComponent)new ChatComponentText((Object)EnumChatFormatting.RED + "text")); //рендер текста
         //if(!eo.isEntityAlive() && eo instanceof EntityItem && ((EntityItem)eo).getEntityItem().getItem() instanceof ItemCrystallizedAntiMatter) startNodeTransformation((TileNode)(Object)this);

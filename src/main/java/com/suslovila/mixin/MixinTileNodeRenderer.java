@@ -31,7 +31,7 @@ import static com.suslovila.client.render.tile.TileAntiNodeRenderer.renderAntiNo
 import static com.suslovila.utils.SUSUtils.*;
 import static thaumcraft.client.renderers.tile.TileNodeRenderer.renderNode;
 
-@Mixin(value = TileNodeRenderer.class)
+@Mixin(value = TileNodeRenderer.class, remap = false)
 public abstract class MixinTileNodeRenderer extends TileEntitySpecialRenderer {
 
     @Inject(remap = true, method = "renderTileEntityAt", at = @At(value = "INVOKE", target = "Lthaumcraft/client/renderers/tile/TileNodeRenderer;renderNode(Lnet/minecraft/entity/EntityLivingBase;DZZFIIIFLthaumcraft/api/aspects/AspectList;Lthaumcraft/api/nodes/NodeType;Lthaumcraft/api/nodes/NodeModifier;)V"))
