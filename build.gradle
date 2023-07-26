@@ -68,12 +68,10 @@ dependencies {
 
 
 //    implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
-//        exclude module: "launchwrapper"
-//        exclude module: 'guava'
-//    }
-	annotationProcessor('org.ow2.asm:asm-debug-all:5.0.3')
-	annotationProcessor("org.spongepowered:mixin:0.7.11-SNAPSHOT")
 
+	annotationProcessor('org.ow2.asm:asm-debug-all:5.0.3')
+	//annotationProcessor("org.spongepowered:mixin:0.8.3")
+	annotationProcessor("org.spongepowered:mixin:0.8.3:processor")
 	// you may put jars on which you depend on in ./libs
 	// or you may define them like so..
 	//compile "some.group:artifact:version:classifier"
