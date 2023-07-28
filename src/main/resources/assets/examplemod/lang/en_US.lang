@@ -13,9 +13,6 @@ itemGroup.examplemod=ExampleMod
 #
 #entity.mcmodding.goose.name=Гусь
 tc.aspect.Himilitas=restraint, captivity, control
-tile.ruby.name=Рубиновый блок
-tile.colored_stone.name= Цветной камень
-tile.face.name= лицевой блок
-tile.storage.name=хранилище
-tile.blockEssentiaReservoirVoid.name=Void Essentia Reservoir
 
+tile.blockEssentiaReservoirVoid.name=Void Essentia Reservoir
+diary.text=You can't understand what is written here. Maybe, you are not ready?

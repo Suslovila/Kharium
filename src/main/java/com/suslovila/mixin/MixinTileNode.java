@@ -1,41 +1,22 @@
 package com.suslovila.mixin;
 
-import com.suslovila.client.render.item.ItemCrystallizedAntiMatter;
+import com.suslovila.common.item.ItemCrystallizedAntiMatter;
 import com.suslovila.common.block.ModBlocks;
 import com.suslovila.common.block.tileEntity.TileAntiNode;
 import com.suslovila.mixinUtils.MixinTileNodeProvider;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemCarrotOnAStick;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.nodes.NodeModifier;
-import thaumcraft.api.nodes.NodeType;
-import thaumcraft.api.research.ScanResult;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.Config;
-import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.tiles.TileNode;
 
 import java.util.Iterator;
@@ -74,7 +55,7 @@ public abstract class MixinTileNode extends TileThaumcraft implements MixinTileN
     public void addTimer(CallbackInfo ci) {
         //ticking transformation
         if(!worldObj.isRemote) {
-            addTime(isNodeBeingTransformed() ? 1 : 0);
+            if(isNodeBeingTransformed()) addTime(1);
 
             //removing aspects from node
             if (isNodeBeingTransformed() && transformationTimer < halfConvertionTime) {
@@ -106,12 +87,15 @@ public abstract class MixinTileNode extends TileThaumcraft implements MixinTileN
     @Inject(remap = false, method = "writeCustomNBT", at = @At(value = "TAIL"))
     public void writeToNBT(NBTTagCompound nbttagcompound, CallbackInfo ci) {
         nbttagcompound.setInteger("transformationTimer", getTransformationTimer());
+        nbttagcompound.setInteger("transformationAspectSize", getTransformationAspectSize());
     }
     @Inject(remap = false, method = "readCustomNBT", at = @At(value = "TAIL"))
     public void readFromNBT(NBTTagCompound nbttagcompound, CallbackInfo ci) {
         transformationTimer = nbttagcompound.getInteger("transformationTimer");
+        transformationAspectSize = nbttagcompound.getInteger("transformationAspectSize");
     }
     public boolean isNodeBeingTransformed(){return transformationTimer != -1;}
+
     public void markDirty() {
         super.worldObj.markBlockForUpdate(super.xCoord, super.yCoord, super.zCoord);
         super.markDirty();

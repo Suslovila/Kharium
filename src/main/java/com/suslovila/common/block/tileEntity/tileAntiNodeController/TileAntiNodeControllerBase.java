@@ -18,9 +18,9 @@ public class TileAntiNodeControllerBase extends TileEntity {
         if (!tiles.contains(pos)) tiles.add(pos);
         super.worldObj.markBlockForUpdate(super.xCoord, super.yCoord, super.zCoord);
     }
-    @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox() {
-        return INFINITE_EXTENT_AABB;
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public AxisAlignedBB getRenderBoundingBox() {
+//        return INFINITE_EXTENT_AABB;
+//    }
 }

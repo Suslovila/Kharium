@@ -1,6 +1,7 @@
 package com.suslovila.research;
 
 import com.suslovila.ExampleMod;
+import com.suslovila.utils.SUSUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -21,7 +22,7 @@ public class ACAspect
 
 
   public static void initAspects() {
-      HIMILITAS = new Aspect("Himilitas", 16727457, new Aspect[]{ Aspect.TRAP, Aspect.VOID}, new ResourceLocation(ExampleMod.MOD_ID, "textures/aspects/himilitas.png"), 1){};
+      HIMILITAS = new Aspect("Himilitas", SUSUtils.himilitasColor, new Aspect[]{ Aspect.TRAP, Aspect.VOID}, new ResourceLocation(ExampleMod.MOD_ID, "textures/aspects/himilitas.png"), 1){};
   }
     public static void initItemsAspects() {
       //nether star

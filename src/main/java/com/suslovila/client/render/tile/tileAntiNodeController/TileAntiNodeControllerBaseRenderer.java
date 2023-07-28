@@ -2,6 +2,8 @@ package com.suslovila.client.render.tile.tileAntiNodeController;
 
 import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase;
 import com.suslovila.ExampleMod;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -74,6 +76,35 @@ public class TileAntiNodeControllerBaseRenderer extends TileEntitySpecialRendere
 //        //GL11.glDepthMask(true);
 //        glPopMatrix();
         //RenderHelper.disableStandardItemLighting();
+        UtilsFX.bindTexture(ExampleMod.MOD_ID, "testWaste/shieldSphere.png");
+
+        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+
+        glPushMatrix();
+        double posX = player.lastTickPosX + (player.posX - player.lastTickPosX) * par8;
+        double posY = player.lastTickPosY + (player.posY - player.lastTickPosY) * par8;
+        double posZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * par8;
+        glTranslated(tile.xCoord - posX, tile.yCoord - posY, tile.zCoord - posZ);
+
+        glDepthMask(false);
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_ALPHA_TEST);
+        glEnable(GL_BLEND);
+        glDisable(GL_LIGHTING);
+
+        glColor4f(0f, 0f, 1f, 1f);
+        glScalef(4f, 4f, 4f);
+        TileAntiNodeControllerBaseRenderer.model.renderAll();
+
+
+
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_ALPHA_TEST);
+        glDisable(GL_BLEND);
+        glEnable(GL_LIGHTING);
+        glDepthMask(true);
+        glPopMatrix();
+
     }
 @Override
     public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
