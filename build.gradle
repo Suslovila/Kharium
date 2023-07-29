@@ -37,8 +37,9 @@ minecraft {
 }
 
 // Активация поддержки юникода, чтобы не было кракозябр
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
 }
+
 repositories {
 	mavenCentral()
 	maven { url = "https://repo.spongepowered.org/maven" }
@@ -63,28 +64,10 @@ jar {
 }
 dependencies {
 	implementation  fileTree(dir: 'lib', include: ['*.jar'])
-	//compile name: "Thaumcraft" + '-' + "1.7.10-4.2.3.5" + '-dev'
-	//compile group: 'lib', name: 'Thaumcraft', version: '4.2.3.5', classifier: 'dev'
 
-
-//    implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
-
-	annotationProcessor('org.ow2.asm:asm-debug-all:5.0.3')
-	//annotationProcessor("org.spongepowered:mixin:0.8.3")
-	annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
-	// you may put jars on which you depend on in ./libs
-	// or you may define them like so..
-	//compile "some.group:artifact:version:classifier"
-	//compile "some.group:artifact:version"
-	// implementation 'org.hibernate:hibernate-core:3.6.7.Final'
-	// real examples
-	//compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-	//compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-	// for more info...
-	// http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-	// http://www.gradle.org/docs/current/userguide/dependency_management.html
-
+	implementation 'org.scala-lang:scala-library:2.10.4'
+	annotationProcessor 'org.ow2.asm:asm-debug-all:5.0.3'
+	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 jar {
@@ -144,7 +127,8 @@ compileJava {
 	]
 }
 
-task copySrgs(type: Copy, dependsOn: 'genSrgs') {
+tasks.register('copySrgs', Copy) {
+	dependsOn 'genSrgs'
 	from plugins.getPlugin("forge").delayedFile('{SRG_DIR}')
 
 	include '**/*.srg'
