@@ -26,27 +26,27 @@ class TileAntiNodeStabilizerRenderer : TileEntitySpecialRenderer() {
 
     }
     override fun renderTileEntityAt(tile: TileEntity, x: Double, y: Double, z: Double, ticks: Float) {
-        //SUSUtils.renderComplexTileEntity(x,y,z,tile as TileAntiNodeStabilizer,ticks, render(tile, ticks))
+        SUSUtils.renderComplexTileEntity(x,y,z,tile as TileAntiNodeStabilizer,ticks, ::render)
+        arrayOf(1).forEach {  }
         glPushMatrix()
         glTranslated(x,y,z)
         UtilsFX.bindTexture(glassTexture)
-//        glDepthMask(false)
-//        glDisable(GL_CULL_FACE)
-//        glDisable(GL_ALPHA_TEST)
-//        glEnable(GL_BLEND)
-//        glDisable(GL_LIGHTING)
-//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-//        glColor4f(1f, 1f, 1f, 1f)
-//        glScalef(4f, 4f, 4f)
-//        glassModel.renderAll()
-//
-//
-//
-//        glDisable(GL_CULL_FACE)
-//        glDisable(GL_ALPHA_TEST)
-//        glEnable(GL_BLEND)
-//        glDisable(GL_LIGHTING)
-//        glDepthMask(true)
+            glDepthMask(false)
+            glDisable(GL_CULL_FACE)
+            glDisable(GL_ALPHA_TEST)
+            glEnable(GL_BLEND)
+            glDisable(GL_LIGHTING)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+            glColor4f(1f, 1f, 1f, 1f)
+            glScalef(4f, 4f, 4f)
+            glassModel.renderAll()
+
+
+            glDisable(GL_CULL_FACE)
+            glDisable(GL_ALPHA_TEST)
+            glEnable(GL_BLEND)
+            glDisable(GL_LIGHTING)
+            glDepthMask(true)
         glPopMatrix()
     }
     fun render(tile : TileAntiNodeStabilizer, partialTicks : Float) {
