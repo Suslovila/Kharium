@@ -1,5 +1,6 @@
 package com.suslovila.common.item
 
+import com.suslovila.Config
 import com.suslovila.ExampleMod
 import com.suslovila.mixinUtils.MixinStaticMethods.isNodeBeingTransformed
 import com.suslovila.mixinUtils.MixinStaticMethods.startNodeTransformation
@@ -31,12 +32,14 @@ class ItemCrystallizedAntiMatter : Item() {
         val tile = world.getTileEntity(x,y,z) as? TileNode ?: return false
         if(tile.nodeType == NodeType.HUNGRY && !isNodeBeingTransformed(tile)) {
             startNodeTransformation(tile)
-            --stack.stackSize
+            if(Config.consumeEldritchDiaryAfterUse) --stack.stackSize
             return true
         }
         else return false
     }
 }
+
+
 object ItemCrystallizedAntiMatterRenderer : IItemRenderer{
     val model : IModelCustom
     init {
@@ -46,11 +49,12 @@ object ItemCrystallizedAntiMatterRenderer : IItemRenderer{
 
     override fun shouldUseRenderHelper(type: IItemRenderer.ItemRenderType?, item: ItemStack?, helper: IItemRenderer.ItemRendererHelper?) = true
 
-    override fun renderItem(type: IItemRenderer.ItemRenderType?, item: ItemStack?, vararg data: Any?) {
+    override fun renderItem(type: IItemRenderer.ItemRenderType, item: ItemStack?, vararg data: Any?) {
         glPushMatrix()
-        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/scanner2.png")
-        glTranslatef(2f, 0f,0f)
-        model.renderPart("inner")
+        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/items/anti_matter.png")
+        if(type == IItemRenderer.ItemRenderType.EQUIPPED) glTranslatef(0.5f, 0.5f,0.5f)
+        glScalef(2f,2f,2f)
+        model.renderPart("inner_inner")
         renderOuterCristal()
         glPopMatrix()
     }
@@ -63,7 +67,7 @@ object ItemCrystallizedAntiMatterRenderer : IItemRenderer{
         glDisable(GL_LIGHTING)
 
         glColor4f(1f, 1f, 1f, 0.3f)
-        model.renderOnly("outer")
+        model.renderOnly("outer_outer")
         glEnable(GL_CULL_FACE)
         glEnable(GL_ALPHA_TEST)
         glDisable( GL_BLEND)

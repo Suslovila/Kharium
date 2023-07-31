@@ -37,8 +37,8 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
             EntityLivingBase viewer = Minecraft.getMinecraft().renderViewEntity;
             double distance = viewer.getDistance((double)tile.xCoord + 0.5D, (double)tile.yCoord + 0.5D, (double)tile.zCoord + 0.5D);
             if(distance <= viewDistance) {
-                renderAntiNode(viewer, viewDistance, false, 1.0F, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, 0.5f * Math.min((float)antiNode.tickExisted / 120, (float) 1));
-                if(antiNode.tickExisted > halfConvertionTime / 2) spawnShadowParticlesOutPutVersion((TileAntiNode)tile, viewer, 5,2,3,3,1.28D,1.33D, 0.003,0.005,0.9, 1.1,0,0.01,0,0.01,0,0.01,tile.xCoord + 0.5D,tile.yCoord + 0.5D,tile.zCoord + 0.5D, 13, 0.8f);
+                renderAntiNode(viewer, viewDistance, false, 1.0F, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, 0.5f * Math.min((float)antiNode.getTickExisted() / 120, (float) 1));
+                if(antiNode.getTickExisted() > halfConvertionTime / 2) spawnShadowParticlesOutPutVersion((TileAntiNode)tile, viewer, 5,2,3,3,1.28D,1.33D, 0.003,0.005,0.9, 1.1,0,0.01,0,0.01,0,0.01,tile.xCoord + 0.5D,tile.yCoord + 0.5D,tile.zCoord + 0.5D, 13, 0.8f);
 
                 //handling anti-node bolt
                 if(!Minecraft.getMinecraft().isGamePaused()) {
@@ -109,10 +109,12 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
 
 
 
-    protected void spawnShadowParticlesOld(TileAntiNode tile, EntityLivingBase viewer, int maxShadowsAmount, int speed, int wholeIterationAmount, double minRadius, double maxRadius, double minParticleSize, double maxParticleSize, double minXOffset, double maxXOffset, double minYOffset, double maxYOffset, double minZOffset, double maxZOffset, double x, double y, double z, int particleLifeTime, float particleSize) {
+    protected void spawnShadowParticlesOld(TileAntiNode tile, EntityLivingBase viewer, int maxShadowsAmount, int speed, int wholeIterationAmount, double minRadius, double maxRadius,
+        double minParticleSize, double maxParticleSize, double minXOffset, double maxXOffset, double minYOffset, double maxYOffset,
+           double minZOffset, double maxZOffset, double x, double y, double z, int particleLifeTime, float particleSize) {
 
-        for(int hl = 0; hl < wholeIterationAmount; hl++){
-            if (tile.cordsForShadows.size() < maxShadowsAmount) {
+        for (int hl = 0; hl < wholeIterationAmount; hl++) {
+            if (tile.getCordsForShadows().size() < maxShadowsAmount) {
                 double radius = nextDouble(minRadius, maxRadius);
                 //creating random vector
                 SUSVec3 coreVector = new SUSVec3(nextDouble(-1,1), nextDouble(-1,1), nextDouble(-1, 1));
@@ -123,14 +125,14 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                 //adding timer
                 arrayList.add(0);
                 //I created some offsets if needed but haven't used them though
-                tile.cordsForShadows.put(new SUSVec3(x + nextDouble(-minXOffset, maxXOffset), y + nextDouble(-minYOffset, maxYOffset), z + nextDouble(-minZOffset, maxZOffset)), arrayList);
+                tile.getCordsForShadows().put(new SUSVec3(x + nextDouble(-minXOffset, maxXOffset), y + nextDouble(-minYOffset, maxYOffset), z + nextDouble(-minZOffset, maxZOffset)), arrayList);
             }
         }
-        Iterator<SUSVec3> iterator = tile.cordsForShadows.keySet().iterator();
+        Iterator<SUSVec3> iterator = tile.getCordsForShadows().keySet().iterator();
         while (iterator.hasNext()) {
             //so, our arrayList is like: 0 - radius, 1 - coreVector to rotate around, 2 - timer for each black "line"
             SUSVec3 dotInSpace = iterator.next();
-            ArrayList<Object> list = tile.cordsForShadows.get(dotInSpace);
+            ArrayList<Object> list = tile.getCordsForShadows().get(dotInSpace);
             double radius = (double) list.get(0);
             SUSVec3 coreVector = ((SUSVec3)list.get(1));
             //iterating and making particles
@@ -153,7 +155,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                 FXShitAntiNode particle = new FXShitAntiNode(viewer.worldObj, endPosition.x, endPosition.y, endPosition.z, 0,0,0, particleLifeTime, particleSize, true);
                 ParticleEngine.instance.addEffect(viewer.worldObj, particle);
 
-                if (random.nextInt(300) == 37) tile.cordsForShadows.remove(dotInSpace);
+                if (random.nextInt(300) == 37) tile.getCordsForShadows().remove(dotInSpace);
             }
         }
     }
@@ -168,7 +170,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
     protected void spawnShadowParticlesVortexVersion(TileAntiNode tile, EntityLivingBase viewer, int maxShadowsAmount, int minSpeed,int maxSpeed, int wholeIterationAmount, double minRadius, double maxRadius, double minDelta, double maxDelta, double minParticleSize, double maxParticleSize, double minXOffset, double maxXOffset, double minYOffset, double maxYOffset, double minZOffset, double maxZOffset, double x, double y, double z, int particleLifeTime, float particleSize){
 
         for(int hl = 0; hl < wholeIterationAmount; hl++){
-            if ((tile.cordsForShadows.size() < maxShadowsAmount && random.nextInt(50) == 37)) {
+            if ((tile.getCordsForShadows().size() < maxShadowsAmount && random.nextInt(50) == 37)) {
                 double radius = nextDouble(minRadius, maxRadius);
                 int timer = 0;
                 SUSVec3 coreVector = new SUSVec3(nextDouble(-1,1), nextDouble(-1,1), nextDouble(-1, 1));
@@ -179,19 +181,19 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                 arrayList.add((int)nextDouble(minSpeed, maxSpeed)); // 2
                 arrayList.add(radius); // 3
                 arrayList.add(timer); // 4
-                tile.cordsForShadows.put(new SUSVec3(x + nextDouble(-minXOffset, maxXOffset), y + nextDouble(-minYOffset, maxYOffset), z + nextDouble(-minZOffset, maxZOffset)), arrayList);
+                tile.getCordsForShadows().put(new SUSVec3(x + nextDouble(-minXOffset, maxXOffset), y + nextDouble(-minYOffset, maxYOffset), z + nextDouble(-minZOffset, maxZOffset)), arrayList);
             }
         }
-        Iterator<SUSVec3> iterator = tile.cordsForShadows.keySet().iterator();
+        Iterator<SUSVec3> iterator = tile.getCordsForShadows().keySet().iterator();
         while (iterator.hasNext()) {
             SUSVec3 dotInSpace = iterator.next();
-            ArrayList<Object> list = tile.cordsForShadows.get(dotInSpace);
+            ArrayList<Object> list = tile.getCordsForShadows().get(dotInSpace);
             SUSVec3 coreVector = ((SUSVec3)list.get(1));
             double delta =(double) list.get(0);
             int speed = (int)list.get(2);
-            for (int h = 0; h < speed && tile.cordsForShadows.containsKey(dotInSpace); h++) {
+            for (int h = 0; h < speed && tile.getCordsForShadows().containsKey(dotInSpace); h++) {
                 double radius = (double) list.get(3);
-                if(radius<= 0) tile.cordsForShadows.remove(dotInSpace);
+                if(radius<= 0) tile.getCordsForShadows().remove(dotInSpace);
                 else{
                     int timer = (int) list.get(4);
                     SUSVec3 m = new SUSVec3(coreVector.z, 0, -coreVector.x);
@@ -214,7 +216,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
     protected void spawnShadowParticlesOutPutVersion(TileAntiNode tile, EntityLivingBase viewer, int maxShadowsAmount, int minSpeed,int maxSpeed, int wholeIterationAmount, double minRadius, double maxRadius, double minDelta, double maxDelta, double minParticleSize, double maxParticleSize, double minXOffset, double maxXOffset, double minYOffset, double maxYOffset, double minZOffset, double maxZOffset, double x, double y, double z, int particleLifeTime, float particleSize){
 
         for(int hl = 0; hl < wholeIterationAmount; hl++){
-            if ((tile.cordsForShadows.size() < maxShadowsAmount && random.nextInt(50) == 37)) {
+            if ((tile.getCordsForShadows().size() < maxShadowsAmount && random.nextInt(50) == 37)) {
                 double resultRadius = nextDouble(minRadius, maxRadius);
                 int timer = 0;
                 SUSVec3 coreVector = new SUSVec3(nextDouble(-1,1), nextDouble(-1,1), nextDouble(-1, 1));
@@ -226,17 +228,17 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                 arrayList.add(resultRadius); // 3 - the maximum radius a line can reach
                 arrayList.add(0D); // 4 - actual radius(zero by default)
                 arrayList.add(timer); // 5
-                tile.cordsForShadows.put(new SUSVec3(x + nextDouble(-minXOffset, maxXOffset), y + nextDouble(-minYOffset, maxYOffset), z + nextDouble(-minZOffset, maxZOffset)), arrayList);
+                tile.getCordsForShadows().put(new SUSVec3(x + nextDouble(-minXOffset, maxXOffset), y + nextDouble(-minYOffset, maxYOffset), z + nextDouble(-minZOffset, maxZOffset)), arrayList);
             }
         }
-        Iterator<SUSVec3> iterator = tile.cordsForShadows.keySet().iterator();
+        Iterator<SUSVec3> iterator = tile.getCordsForShadows().keySet().iterator();
         while (iterator.hasNext()) {
             SUSVec3 dotInSpace = iterator.next();
-            ArrayList<Object> list = tile.cordsForShadows.get(dotInSpace);
+            ArrayList<Object> list = tile.getCordsForShadows().get(dotInSpace);
             SUSVec3 coreVector = ((SUSVec3)list.get(1));
             double delta =(double) list.get(0);
             int speed = (int)list.get(2);
-            for (int h = 0; h < speed && tile.cordsForShadows.containsKey(dotInSpace); h++) {
+            for (int h = 0; h < speed && tile.getCordsForShadows().containsKey(dotInSpace); h++) {
                 double actualRadius = (double) list.get(4);
                 if(actualRadius <= (double)list.get(3)) actualRadius += delta; // comparing actual radius with the maximum
 
@@ -255,7 +257,7 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                     FXShitAntiNode particle = new FXShitAntiNode(viewer.worldObj, endPosition.x, endPosition.y, endPosition.z, 0, 0, 0, particleLifeTime, particleSize, true);
                     ParticleEngine.instance.addEffect(viewer.worldObj, particle);
 
-                    if (random.nextInt(300) == 37 && tile.cordsForShadows.size() >= maxShadowsAmount) tile.cordsForShadows.remove(dotInSpace);
+                    if (random.nextInt(300) == 37 && tile.getCordsForShadows().size() >= maxShadowsAmount) tile.getCordsForShadows().remove(dotInSpace);
 
             }
         }

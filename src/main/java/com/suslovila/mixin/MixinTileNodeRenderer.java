@@ -1,6 +1,7 @@
 package com.suslovila.mixin;
 
 import com.suslovila.mixinUtils.MixinTileNodeProvider;
+import com.suslovila.utils.SUSUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
@@ -60,7 +61,7 @@ public abstract class MixinTileNodeRenderer extends TileEntitySpecialRenderer {
        if (tile != null && !(tile instanceof TileJarNode) && ((MixinTileNodeProvider)tile).isNodeBeingTransformed()) {
            int transformationTimer = ((MixinTileNodeProvider)tile).getTransformationTimer();
            float globalScaleTransformationFactor = (float)(halfConvertionTime - transformationTimer) / halfConvertionTime;
-               glTranslateRandomEqualD(0.08 * globalScaleTransformationFactor);
+               SUSUtils.INSTANCE.glTranslateRandomEqualD(0.08 * globalScaleTransformationFactor);
                renderHungryNodeTransformation(transformationTimer, tile, viewer, viewDistance, condition, depthIgnore, size, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, ((INode)tile).getAspects(), ((INode)tile).getNodeType(), ((INode)tile).getNodeModifier());
        }
        else renderNode(viewer, viewDistance, condition, depthIgnore, size, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, ((INode)tile).getAspects(), ((INode)tile).getNodeType(), ((INode)tile).getNodeModifier());

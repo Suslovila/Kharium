@@ -7,6 +7,7 @@ import com.suslovila.client.render.item.ItemAntiNodeRenderer
 import com.suslovila.client.render.tile.TileAntiNodeRenderer
 import com.suslovila.client.render.tile.TileEssentiaReservoirVoidRenderer
 import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeControllerBaseRenderer
+import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeStabilizerRenderer
 import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeWatcherRenderer
 import com.suslovila.common.CommonProxy
 import com.suslovila.common.block.ModBlocks
@@ -14,6 +15,7 @@ import com.suslovila.common.block.tileEntity.TileAntiNode
 import com.suslovila.common.block.tileEntity.TileAntiNodeWatcher
 import com.suslovila.common.block.tileEntity.TileEssentiaReservoirVoid
 import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase
+import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer
 import com.suslovila.common.item.ItemCrystallizedAntiMatterRenderer
 import com.suslovila.common.item.ModItems
 import cpw.mods.fml.client.registry.ClientRegistry
@@ -51,6 +53,7 @@ class ClientProxy : CommonProxy(), IGuiHandler {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEssentiaReservoirVoid::class.java, TileEssentiaReservoirVoidRenderer())
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeControllerBase::class.java, TileAntiNodeControllerBaseRenderer())
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeWatcher::class.java, TileAntiNodeWatcherRenderer())
+        ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeStabilizer::class.java, TileAntiNodeStabilizerRenderer())
 
 
         RenderingRegistry.registerBlockHandler(BlockEssentiaReservoirVoidRenderer())

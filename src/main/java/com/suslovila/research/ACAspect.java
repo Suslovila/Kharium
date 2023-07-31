@@ -10,9 +10,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigItems;
 
-import java.awt.*;
 
-import static com.suslovila.utils.SUSUtils.getAspectList;
 
 
 public class ACAspect
@@ -30,7 +28,7 @@ public class ACAspect
        addAspectsToItem(new ItemStack(ConfigItems.itemEldritchObject, 1, 3), new AspectList().add(HIMILITAS, 16));
     }
     private static void addAspectsToItem(ItemStack itemStack, AspectList aspectsToAdd){
-        AspectList list = getAspectList(itemStack);
+        AspectList list = SUSUtils.INSTANCE.getAspectList(itemStack);
         list.add(aspectsToAdd);
         ThaumcraftApi.registerObjectTag(itemStack, list);
     }

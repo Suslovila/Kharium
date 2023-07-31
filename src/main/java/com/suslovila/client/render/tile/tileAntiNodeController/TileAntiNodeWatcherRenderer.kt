@@ -2,7 +2,8 @@ package com.suslovila.client.render.tile.tileAntiNodeController
 
 import com.suslovila.ExampleMod;
 import com.suslovila.common.block.tileEntity.TileAntiNodeWatcher;
-import com.suslovila.utils.SUSUtils.*
+import com.suslovila.utils.SUSUtils
+import com.suslovila.utils.SUSUtils.random
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -55,7 +56,7 @@ class TileAntiNodeWatcherRenderer : TileEntitySpecialRenderer() {
               with(lens) {
                   if (turningSide == 0) {
                       if (random.nextInt(120) == 50) {
-                          turningSide = randomSign()
+                          turningSide = SUSUtils.randomSign()
                           speedDelta = abs(defaultSpeedDelta)
                           spinningSpeed = 0.0
                           //if(random.nextInt(100) == 50) lens.spinningSpeed = nextDouble(1.0, 2.0)

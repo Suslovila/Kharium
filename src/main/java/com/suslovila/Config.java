@@ -7,12 +7,20 @@ import java.io.File;
 public class Config {
     public static boolean pvpLiteEnabled = false;
     public static int arenaWorldId;
+
+    public static boolean consumeEldritchDiaryAfterUse;
     public static String modPrefix = "§8[&bI&8] §8[§4Малышка§8] §8Gerda§f: §f";
 
 
     public static void registerServerConfig(File modCfg) {
         Configuration cfg = new Configuration(modCfg);
         try {
+            consumeEldritchDiaryAfterUse = cfg.getBoolean(
+                    "consumeEldritchDiaryAfterUse",
+                    "General",
+                    false,
+                    "Включить ограничения для PvPLite мира");
+
             pvpLiteEnabled = cfg.getBoolean(
 				"EnablePvPLite",
 	            "PvPLite",

@@ -4,6 +4,7 @@ import com.suslovila.common.item.ItemCrystallizedAntiMatter;
 import com.suslovila.common.block.ModBlocks;
 import com.suslovila.common.block.tileEntity.TileAntiNode;
 import com.suslovila.mixinUtils.MixinTileNodeProvider;
+import com.suslovila.utils.SUSUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
@@ -63,9 +64,9 @@ public abstract class MixinTileNode extends TileThaumcraft implements MixinTileN
                 for (int i = 0; i < iterationAmount; i++) {
                     Aspect[] aspects = getAspects().getAspects();
                     if (aspects.length != 0) {
-                        Aspect aspect = aspects[random.nextInt(aspects.length)];
+                        Aspect aspect = aspects[SUSUtils.INSTANCE.getRandom().nextInt(aspects.length)];
                         if (this.getAspects().getAmount(aspect) != 0)
-                            this.takeFromContainer(aspects[random.nextInt(aspects.length)], 1);
+                            this.takeFromContainer(aspects[SUSUtils.INSTANCE.getRandom().nextInt(aspects.length)], 1);
                     }
                 }
             }
@@ -77,7 +78,7 @@ public abstract class MixinTileNode extends TileThaumcraft implements MixinTileN
                 //handling anti-node initialization
                 this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.ANTI_NODE);
                 TileAntiNode antiNode = (TileAntiNode) worldObj.getTileEntity(xCoord, yCoord, zCoord);
-                antiNode.energy = transformationAspectSize;
+                antiNode.setMaxEnergy(transformationAspectSize);
 
             }
         }

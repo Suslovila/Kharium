@@ -59,8 +59,5 @@ public class ExampleMod {
 		proxy.postInit(event);
 
 	}
-	public static NBTTagCompound getOrCreateTag(ItemStack itemStack){
-		if (!itemStack.hasTagCompound()) itemStack.setTagCompound(new NBTTagCompound());
-		return itemStack.getTagCompound();
-	}
+
 }

@@ -22,9 +22,7 @@ public class TileAntiNodeControllerBaseRenderer extends TileEntitySpecialRendere
     private static final ResourceLocation MODEL = new ResourceLocation(ExampleMod.MOD_ID, "models/shieldSphere.obj");
 
     public TileAntiNodeControllerBaseRenderer() {
-       this.model = AdvancedModelLoader.
-
-               loadModel(MODEL);
+       this.model = AdvancedModelLoader.loadModel(MODEL);
     }
     public void renderTileEntityAt(TileAntiNodeControllerBase tile, double par2, double par4, double par6, float par8) {
 //        glPushMatrix();
@@ -98,10 +96,10 @@ public class TileAntiNodeControllerBaseRenderer extends TileEntitySpecialRendere
 
 
 
-        glEnable(GL_CULL_FACE);
-        glEnable(GL_ALPHA_TEST);
-        glDisable(GL_BLEND);
-        glEnable(GL_LIGHTING);
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_ALPHA_TEST);
+        glEnable(GL_BLEND);
+        glDisable(GL_LIGHTING);
         glDepthMask(true);
         glPopMatrix();
 
