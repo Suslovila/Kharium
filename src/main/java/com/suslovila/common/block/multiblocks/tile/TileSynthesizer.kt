@@ -1,5 +1,6 @@
 package com.suslovila.common.block.multiblocks.tile
 
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.common.util.ForgeDirection
 import thaumcraft.api.TileThaumcraft
 import thaumcraft.api.aspects.Aspect
@@ -10,25 +11,20 @@ import thaumcraft.api.aspects.IEssentiaTransport
 class TileSynthesizer: TileThaumcraft(), IEssentiaTransport, IAspectSource {
 	private val inputs: Array<ForgeDirection> = arrayOf(ForgeDirection.DOWN, ForgeDirection.UP)
 //	private val inputs = ForgeDirection.UP
-	private val output: ForgeDirection = ForgeDirection.NORTH
+	private var output: ForgeDirection = ForgeDirection.NORTH
 
 	private val maxAmount = 1024
 
 	private var essentia: AspectList = AspectList()
 
-	override fun isConnectable(face: ForgeDirection): Boolean {
-		println("axyet")
-		println(face == this.inputs[0] || face == this.inputs[1] || face == this.output)
-		return face == this.inputs[0] || face == this.inputs[1] || face == this.output
-	}
+	override fun isConnectable(face: ForgeDirection): Boolean =
+		face == this.inputs[0] || face == this.inputs[1] || face == this.output
 
 	override fun canInputFrom(face: ForgeDirection): Boolean =
 		face == this.inputs[0] || face == this.inputs[1]
 
-	override fun canOutputTo(face: ForgeDirection): Boolean {
-		println("pizda")
-		return face == this.output
-	}
+	override fun canOutputTo(face: ForgeDirection): Boolean =
+		face == this.output
 
 	override fun setSuction(aspect: Aspect, i: Int) {
 	}
@@ -52,7 +48,7 @@ class TileSynthesizer: TileThaumcraft(), IEssentiaTransport, IAspectSource {
 		this.essentia.visSize()
 
 	override fun getMinimumSuction(): Int =
-		24
+		1
 
 	override fun renderExtendedTube(): Boolean =
 		false
@@ -70,20 +66,22 @@ class TileSynthesizer: TileThaumcraft(), IEssentiaTransport, IAspectSource {
 	override fun addToContainer(asp: Aspect, am: Int): Int {
 		var amount = 0
 
-        if (am != 0) {
-            val space: Int = this.maxAmount - this.essentia.visSize()
-            if (space >= am) {
-                this.essentia.add(asp, am)
-            } else {
-                this.essentia.add(asp, space)
-                amount = am - space
-            }
+		if (this.essentia.size() <= 2) {
+			if (am != 0) {
+				val space: Int = this.maxAmount - this.essentia.visSize()
+				if (space >= am) {
+					this.essentia.add(asp, am)
+				} else {
+					this.essentia.add(asp, space)
+					amount = am - space
+				}
 
-            if (space > 0) {
-                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord)
-                this.markDirty()
-            }
-        }
+				if (space > 0) {
+					this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord)
+					this.markDirty()
+				}
+			}
+		}
 
 		return amount
 	}
@@ -117,7 +115,6 @@ class TileSynthesizer: TileThaumcraft(), IEssentiaTransport, IAspectSource {
 		return true
 	}
 
-	override fun containerContains(aspect: Aspect): Int {
-		return this.essentia.getAmount(aspect)
-	}
+	override fun containerContains(aspect: Aspect): Int =
+		this.essentia.getAmount(aspect)
 }

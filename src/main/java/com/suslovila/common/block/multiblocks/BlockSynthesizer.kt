@@ -2,9 +2,9 @@ package com.suslovila.common.block.multiblocks
 
 import com.suslovila.ExampleMod.MOD_ID
 import com.suslovila.ExampleMod.tab
-import com.suslovila.common.block.ModBlocks
 import com.suslovila.common.block.multiblocks.tile.TileSynthesizer
 import cpw.mods.fml.common.registry.GameRegistry
+import net.minecraft.block.Block
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.material.Material
 import net.minecraft.tileentity.TileEntity
@@ -17,9 +17,10 @@ class BlockSynthesizer(name: String): BlockContainer(Material.iron) {
 		this.setBlockName(name)
 		this.setCreativeTab(tab)
 		this.setBlockTextureName("$MOD_ID:synthesizer")
-		//GameRegistry.registerBlock(this, MOD_ID + name)
 
+		GameRegistry.registerBlock(this, name)
 	}
 
-	override fun createNewTileEntity(world: World, metadata: Int): TileEntity = TileSynthesizer()
+	override fun createNewTileEntity(p0: World?, p1: Int): TileEntity =
+		TileSynthesizer()
 }
