@@ -1,6 +1,7 @@
 package com.suslovila.client.render.tile.tileAntiNodeController
 
 import com.suslovila.ExampleMod;
+import com.suslovila.client.render.tile.SusTileRenderer
 import com.suslovila.common.block.tileEntity.TileAntiNodeWatcher;
 import com.suslovila.utils.SUSUtils
 import com.suslovila.utils.SUSUtils.random
@@ -22,7 +23,7 @@ import thaumcraft.codechicken.lib.math.MathHelper
 import thaumcraft.common.config.ConfigBlocks;
 import kotlin.math.abs
 
-class TileAntiNodeWatcherRenderer : TileEntitySpecialRenderer() {
+class TileAntiNodeWatcherRenderer : SusTileRenderer<TileAntiNodeWatcher>() {
     private val mechanicalEyeModel : IModelCustom
 
     private val eyeModel : IModelCustom
@@ -39,12 +40,10 @@ class TileAntiNodeWatcherRenderer : TileEntitySpecialRenderer() {
         mechanicalEyeModel = AdvancedModelLoader.loadModel( ResourceLocation(ExampleMod.MOD_ID, "models/blocks/watcher.obj"));
     }
 
-    fun renderWatcher(tile : TileAntiNodeWatcher,par2 : Double, par4 : Double, par6 : Double, partialTicks : Float) {
-        renderMechanicalEye(tile, par2, par4, par6, partialTicks);
+    override fun render(tile: TileAntiNodeWatcher, partialTicks: Float) {
+        this.renderMechanicalEye(tile, partialTicks);
     }
-
-
-      private fun renderMechanicalEye(tile : TileAntiNodeWatcher, par2 : Double, par4 : Double, par6 : Double, partialTicks : Float) {
+      private fun renderMechanicalEye(tile : TileAntiNodeWatcher, partialTicks : Float) {
           var playermp = Minecraft.getMinecraft().thePlayer
           glPushMatrix(); // 0
 
@@ -185,13 +184,6 @@ class TileAntiNodeWatcherRenderer : TileEntitySpecialRenderer() {
 
             glPopMatrix();
         }
-    }
-
-    override fun renderTileEntityAt(par1TileEntity : TileEntity, par2 : Double, par4 : Double, par6 : Double, par8 : Float) {
-        glPushMatrix();
-        glTranslated(par2+0.5, par4+0.5, par6+0.5);
-        this.renderWatcher(par1TileEntity as TileAntiNodeWatcher, par2, par4, par6, par8);
-        glPopMatrix();
     }
 
 }

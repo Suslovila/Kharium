@@ -1,14 +1,10 @@
 package com.suslovila.common.block.tileEntity.tileAntiNodeController
 
+import net.minecraft.util.AxisAlignedBB
 import thaumcraft.api.TileThaumcraft
 
+
 class TileAntiNodeStabilizer : TileThaumcraft() {
-    companion object {
-        public val intFunction: (Int) -> Int = IntTransformer()
-    }
+    override fun getRenderBoundingBox() : AxisAlignedBB = INFINITE_EXTENT_AABB
 
-    class IntTransformer : (Int) -> Int {
-        override operator fun invoke(x: Int): Int = TODO()
-
-    }
 }
