@@ -16,9 +16,7 @@ class AspectListOne: AspectList() {
 		return Pair(this.add(asp, 1), true)
 	}
 
-	fun canAdd(asp: Aspect) =
-		!this.aspects.containsKey(asp) && this.aspects.size <= 2
+	fun canAdd(asp: Aspect) = !this.aspects.containsKey(asp) && this.aspects.size <= 2
 
-	fun canAdd() =
-		this.aspects.size <= 2
+	fun canAdd() = this.aspects.size <= 2
 }
