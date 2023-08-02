@@ -1,15 +1,12 @@
 package com.suslovila.mixin;
 
-import com.suslovila.mixinUtils.MixinTileNodeProvider;
+import com.suslovila.mixinUtils.IMixinTileNodeProvider;
 import com.suslovila.utils.SUSUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,7 +25,6 @@ import thaumcraft.client.renderers.tile.TileNodeRenderer;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.tiles.TileJarNode;
 
-import static com.suslovila.client.render.tile.TileAntiNodeRenderer.renderAntiNode;
 import static com.suslovila.utils.SUSUtils.*;
 import static thaumcraft.client.renderers.tile.TileNodeRenderer.renderNode;
 
@@ -58,8 +54,8 @@ public abstract class MixinTileNodeRenderer extends TileEntitySpecialRenderer {
             }
         }
 
-       if (tile != null && !(tile instanceof TileJarNode) && ((MixinTileNodeProvider)tile).isNodeBeingTransformed()) {
-           int transformationTimer = ((MixinTileNodeProvider)tile).getTransformationTimer();
+       if (tile != null && !(tile instanceof TileJarNode) && ((IMixinTileNodeProvider)tile).isNodeBeingTransformed()) {
+           int transformationTimer = ((IMixinTileNodeProvider)tile).getTransformationTimer();
            float globalScaleTransformationFactor = (float)(halfConvertionTime - transformationTimer) / halfConvertionTime;
                SUSUtils.INSTANCE.glTranslateRandomEqualD(0.08 * globalScaleTransformationFactor);
                renderHungryNodeTransformation(transformationTimer, tile, viewer, viewDistance, condition, depthIgnore, size, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, ((INode)tile).getAspects(), ((INode)tile).getNodeType(), ((INode)tile).getNodeModifier());

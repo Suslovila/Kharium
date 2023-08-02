@@ -3,7 +3,7 @@ package com.suslovila.mixin;
 import com.suslovila.common.item.ItemCrystallizedAntiMatter;
 import com.suslovila.common.block.ModBlocks;
 import com.suslovila.common.block.tileEntity.TileAntiNode;
-import com.suslovila.mixinUtils.MixinTileNodeProvider;
+import com.suslovila.mixinUtils.IMixinTileNodeProvider;
 import com.suslovila.utils.SUSUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -27,7 +27,7 @@ import static com.suslovila.mixinUtils.MixinStaticMethods.startNodeTransformatio
 import static com.suslovila.utils.SUSUtils.*;
 
 @Mixin(value = TileNode.class)
-public abstract class MixinTileNode extends TileThaumcraft implements MixinTileNodeProvider {
+public abstract class IMixinTileNode extends TileThaumcraft implements IMixinTileNodeProvider {
 
     @Shadow(remap = false)
     public abstract AspectList getAspects();

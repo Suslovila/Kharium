@@ -61,20 +61,5 @@ object SUSUtils {
         return itemStack.tagCompound
     }
 
-    fun applyTranslucentSettings() {}
-    fun <T : TileEntity?> renderSimpleTileEntity(dx: Double, dy: Double, dz: Double, tile: T, partialTicks: Float, render: BiConsumer<T, Float?>?, model: IModelCustom, location: ResourceLocation) {
-        UtilsFX.bindTexture(location)
-        glPushMatrix()
-        glTranslated(dx, dy, dz)
-        model.renderAll()
-        glPopMatrix()
-        UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
-    }
 
-    fun <T : TileEntity> renderComplexTileEntity(dx: Double, dy: Double, dz: Double, tile: T, partialTicks: Float, render: (te : T, ticks : Float) -> Unit) {
-        glPushMatrix()
-        glTranslated(dx, dy, dz)
-        render(tile, partialTicks)
-        glPopMatrix()
-    }
 }

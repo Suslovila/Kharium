@@ -6,7 +6,7 @@
   "refmap": "mixins.examplemod.refmap.json",
   "mixins": [
     "MixinTileInfusionMatrix",
-    "MixinTileNode",
+    "IMixinTileNode",
     "MixinTileNodeRenderer"
   ],
   "client": [],
