@@ -21,6 +21,5 @@ class BlockSynthesizer(name: String): BlockContainer(Material.iron) {
 		GameRegistry.registerBlock(this, name)
 	}
 
-	override fun createNewTileEntity(p0: World?, p1: Int): TileEntity =
-		TileSynthesizer()
+	override fun createNewTileEntity(p0: World?, p1: Int) = TileSynthesizer()
 }

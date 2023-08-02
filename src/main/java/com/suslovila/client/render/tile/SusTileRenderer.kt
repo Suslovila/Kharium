@@ -9,7 +9,7 @@ abstract class SusTileRenderer<T : TileEntity> : TileEntitySpecialRenderer() {
     override fun renderTileEntityAt(
         tile: TileEntity, x: Double, y: Double, z: Double, ticks: Float) {
         glPushMatrix()
-        glTranslated(x,y,z)
+        glTranslated(x + 0.5,y+ 0.5,z+ 0.5)
          tile as? T ?: throw Exception("can't cast to Renderer's bound TileEntity class")
         render(tile, ticks)
         glPopMatrix()

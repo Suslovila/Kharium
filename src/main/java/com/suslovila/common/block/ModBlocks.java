@@ -2,6 +2,7 @@ package com.suslovila.common.block;
 
 import com.suslovila.ExampleMod;
 import com.suslovila.common.block.blockAntiNodeController.BlockAntiNodeControllerBase;
+import com.suslovila.common.block.blockAntiNodeController.BlockAntiNodeStabilizer;
 import com.suslovila.common.block.container.BlockAntiNode;
 import com.suslovila.common.block.container.BlockAntiNodeWatcher;
 import com.suslovila.common.block.container.BlockEssentiaReservoirVoid;
@@ -11,6 +12,7 @@ import com.suslovila.common.block.tileEntity.TileAntiNode;
 import com.suslovila.common.block.tileEntity.TileAntiNodeWatcher;
 import com.suslovila.common.block.tileEntity.TileEssentiaReservoirVoid;
 import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase;
+import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer;
 import com.suslovila.common.item.BlockEssentiaReservoirVoidItem;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -19,9 +21,11 @@ import static com.suslovila.ExampleMod.MOD_ID;
 
 public class ModBlocks {
     public static int EssentiaReservoirVoidRI = -1;
+
     public static BlockAntiNode ANTI_NODE = new BlockAntiNode();
     public static BlockAntiNodeWatcher ANTI_NODE_WATCHER = new BlockAntiNodeWatcher();
-    public static BlockSynthesizer synthesizer = new BlockSynthesizer("pizda");
+    public static BlockSynthesizer synthesizer = new BlockSynthesizer("synthesizer");
+    public static BlockAntiNodeStabilizer stabilizer = new BlockAntiNodeStabilizer("stabilizer");
     public static BlockAntiNodeControllerBase BLOCK_ANTI_NODE_CONTROLLER = new BlockAntiNodeControllerBase();
     public static final BlockEssentiaReservoirVoid BlockEssentiaReservoirVoid = (new BlockEssentiaReservoirVoid());
 
@@ -37,7 +41,10 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TileAntiNode.class, MOD_ID + "TileAntiNode");
         GameRegistry.registerTileEntity(TileAntiNodeControllerBase.class, MOD_ID + "TileControllerBase");
         GameRegistry.registerTileEntity(TileAntiNodeWatcher.class, MOD_ID + "TileAntiNodeWatcher");
-        GameRegistry.registerTileEntity(TileSynthesizer.class, MOD_ID + "MOD_ID");
+        GameRegistry.registerTileEntity(TileSynthesizer.class, MOD_ID + "TileSynthesizer");
+        GameRegistry.registerTileEntity(TileAntiNodeStabilizer.class, MOD_ID + "TileAntiNodeStabilizer");
+
+
 
     }
 
