@@ -3,7 +3,9 @@ package com.suslovila.client.render
 import com.suslovila.ExampleMod
 import com.suslovila.client.particles.ParticleRenderDispatcher
 import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeControllerBaseRenderer
+import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeStabilizerRenderer
 import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase
+import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer
 import cpw.mods.fml.common.eventhandler.EventPriority
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import cpw.mods.fml.relauncher.Side
@@ -20,10 +22,41 @@ class ClientEventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun onRenderWorldLast(event: RenderWorldLastEvent) {
+        //handleStabilizer(event)
+
         handleParticles()
+
         //handleField(event)
+
     }
 
+
+    private fun handleStabilizer(event: RenderWorldLastEvent) {
+        for (pos in TileAntiNodeStabilizer.tiles) {
+            if (Minecraft.getMinecraft().theWorld.getTileEntity(pos.x.toInt(), pos.y.toInt(), pos.z.toInt()) is TileAntiNodeStabilizer) {
+                val tile = Minecraft.getMinecraft().theWorld.getTileEntity(pos.x.toInt(), pos.y.toInt(), pos.z.toInt()) as TileAntiNodeStabilizer
+                val player = Minecraft.getMinecraft().thePlayer
+
+                glPushMatrix()
+
+                val posX = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks
+                val posY = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks
+                val posZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks
+                glTranslated(tile.xCoord - posX + 0.5, tile.yCoord - posY+ 0.5, tile.zCoord - posZ+ 0.5)
+
+
+
+                TileAntiNodeStabilizerRenderer.renderGlasses()
+
+                glPopMatrix()
+
+
+            } else TileAntiNodeStabilizer.tiles.remove(pos)
+        }
+
+        UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
+
+    }
     private fun handleParticles() {
         val profiler = Minecraft.getMinecraft().mcProfiler
         profiler.startSection("botania-particles")
@@ -32,6 +65,7 @@ class ClientEventHandler {
     }
 
     private fun handleField(event: RenderWorldLastEvent) {
+
         UtilsFX.bindTexture(ExampleMod.MOD_ID, "testWaste/shieldSphere.png")
         for (pos in TileAntiNodeControllerBase.tiles) {
             if (Minecraft.getMinecraft().theWorld.getTileEntity(pos.x.toInt(), pos.y.toInt(), pos.z.toInt()) is TileAntiNodeControllerBase) {
@@ -51,7 +85,6 @@ class ClientEventHandler {
                 glDisable(GL_LIGHTING)
 
                 glColor4f(0f, 0f, 1f, 1f)
-                glScalef(4f, 4f, 4f)
                 TileAntiNodeControllerBaseRenderer.model.renderAll()
 
 
@@ -69,5 +102,4 @@ class ClientEventHandler {
         glColor4f(1f, 1f, 1f, 1f)
 
     }
-
 }

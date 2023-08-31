@@ -8,6 +8,7 @@ import com.suslovila.common.event.SweetMixinListener
 import com.suslovila.common.item.ModItems
 import com.suslovila.research.ACAspect
 import com.suslovila.research.AntiCraftResearchRegistry
+import com.suslovila.api.utils.SusVec3
 import cpw.mods.fml.common.FMLCommonHandler
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.event.FMLPostInitializationEvent
@@ -43,4 +44,9 @@ open class CommonProxy {
     }
 
     open fun registerRenderers() {}
+
+    open fun castPrimordialExplosion(pos : SusVec3){
+        //TODO: implement
+        //requires implementation on both sides
+    }
 }

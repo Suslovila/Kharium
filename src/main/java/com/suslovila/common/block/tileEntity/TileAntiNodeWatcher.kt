@@ -2,11 +2,7 @@ package com.suslovila.common.block.tileEntity
 
 import net.minecraft.tileentity.TileEntity
 
-
-import com.suslovila.utils.SUSVec3;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
- class TileAntiNodeWatcher : TileEntity() {
+class TileAntiNodeWatcher : TileEntity() {
 
   val lenses = listOf<Lens>(Lens(0.5), Lens(0.5), Lens(0.5))
   public val wholeLength = lenses.sumOf { it.width };

@@ -1,7 +1,7 @@
 package com.suslovila.common.item
 
 import com.suslovila.ExampleMod
-import com.suslovila.utils.SUSUtils.completeNormalResearch
+import com.suslovila.api.utils.SUSUtils.completeNormalResearch
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -16,6 +16,8 @@ class ItemDiary : Item() {
         unlocalizedName = "diary";
         setTextureName(ExampleMod.MOD_ID + ":diary");
         setMaxStackSize(1);
+        creativeTab = ExampleMod.tab
+
     }
     override fun onItemRightClick(stack : ItemStack, world : World, player : EntityPlayer) : ItemStack {
         if (!world.isRemote && !ResearchManager.isResearchComplete(player.commandSenderName, "DIARY")) {

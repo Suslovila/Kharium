@@ -1,4 +1,4 @@
-package com.suslovila.utils
+package com.suslovila.api.utils
 
 import thaumcraft.api.aspects.Aspect
 import thaumcraft.api.aspects.AspectList

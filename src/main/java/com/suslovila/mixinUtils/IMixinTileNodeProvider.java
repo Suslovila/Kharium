@@ -6,4 +6,7 @@ public interface IMixinTileNodeProvider {
      int getTransformationAspectSize();
      void setTransformationAspectSize(int size);
     boolean isNodeBeingTransformed();
+     int getRequiredTimeForTransformation();
+     String getOwnerName();
+    void setOwnerName(String name);
 }

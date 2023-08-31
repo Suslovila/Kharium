@@ -27,7 +27,6 @@ import cpw.mods.fml.common.network.IGuiHandler
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.world.World
-import net.minecraftforge.client.IItemRenderer
 import net.minecraftforge.client.MinecraftForgeClient
 import net.minecraftforge.common.MinecraftForge
 
@@ -53,7 +52,7 @@ class ClientProxy : CommonProxy(), IGuiHandler {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEssentiaReservoirVoid::class.java, TileEssentiaReservoirVoidRenderer())
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeControllerBase::class.java, TileAntiNodeControllerBaseRenderer())
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeWatcher::class.java, TileAntiNodeWatcherRenderer())
-        ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeStabilizer::class.java, TileAntiNodeStabilizerRenderer())
+        ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeStabilizer::class.java, TileAntiNodeStabilizerRenderer)
 
 
         RenderingRegistry.registerBlockHandler(BlockEssentiaReservoirVoidRenderer())
@@ -66,7 +65,7 @@ class ClientProxy : CommonProxy(), IGuiHandler {
 
     override fun registerRenderers() {
         MinecraftForge.EVENT_BUS.register(ClientEventHandler())
-        MinecraftForgeClient.registerItemRenderer(ModItems.antiMatter, ItemCrystallizedAntiMatterRenderer)
+        MinecraftForgeClient.registerItemRenderer(ModItems.crystallizedKharu, ItemCrystallizedAntiMatterRenderer)
     }
 
     private fun setupItemRenderers() {

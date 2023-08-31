@@ -1,19 +1,15 @@
 package com.suslovila.common.block.tileEntity
 
-import com.suslovila.utils.SUSVec3
+import com.suslovila.api.utils.SusVec3
 import cpw.mods.fml.relauncher.Side
 import cpw.mods.fml.relauncher.SideOnly
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.network.NetworkManager
-import net.minecraft.network.Packet
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity
-import net.minecraft.tileentity.TileEntity
 import thaumcraft.api.TileThaumcraft
 import java.util.concurrent.ConcurrentHashMap
 
 class TileAntiNode : TileThaumcraft() {
     @SideOnly(Side.CLIENT)
-    var cordsForShadows = ConcurrentHashMap<SUSVec3, ArrayList<Any>>()
+    var cordsForShadows = ConcurrentHashMap<SusVec3, ArrayList<Any>>()
 
     public var tickExisted = 0
 

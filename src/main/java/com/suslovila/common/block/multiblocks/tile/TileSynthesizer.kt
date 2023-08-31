@@ -1,6 +1,6 @@
 package com.suslovila.common.block.multiblocks.tile
 
-import com.suslovila.utils.AspectListOne
+import com.suslovila.api.utils.AspectListOne
 import net.minecraftforge.common.util.ForgeDirection
 import thaumcraft.api.TileThaumcraft
 import thaumcraft.api.aspects.Aspect

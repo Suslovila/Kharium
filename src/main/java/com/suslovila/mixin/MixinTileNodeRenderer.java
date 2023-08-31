@@ -1,7 +1,7 @@
 package com.suslovila.mixin;
 
 import com.suslovila.mixinUtils.IMixinTileNodeProvider;
-import com.suslovila.utils.SUSUtils;
+import com.suslovila.api.utils.SUSUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,7 +25,6 @@ import thaumcraft.client.renderers.tile.TileNodeRenderer;
 import thaumcraft.common.items.relics.ItemThaumometer;
 import thaumcraft.common.tiles.TileJarNode;
 
-import static com.suslovila.utils.SUSUtils.*;
 import static thaumcraft.client.renderers.tile.TileNodeRenderer.renderNode;
 
 @Mixin(value = TileNodeRenderer.class, remap = false)
@@ -56,9 +55,10 @@ public abstract class MixinTileNodeRenderer extends TileEntitySpecialRenderer {
 
        if (tile != null && !(tile instanceof TileJarNode) && ((IMixinTileNodeProvider)tile).isNodeBeingTransformed()) {
            int transformationTimer = ((IMixinTileNodeProvider)tile).getTransformationTimer();
-           float globalScaleTransformationFactor = (float)(halfConvertionTime - transformationTimer) / halfConvertionTime;
-               SUSUtils.INSTANCE.glTranslateRandomEqualD(0.08 * globalScaleTransformationFactor);
-               renderHungryNodeTransformation(transformationTimer, tile, viewer, viewDistance, condition, depthIgnore, size, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, ((INode)tile).getAspects(), ((INode)tile).getNodeType(), ((INode)tile).getNodeModifier());
+           int requiredTime = ((IMixinTileNodeProvider)tile).getRequiredTimeForTransformation();
+           float globalScaleTransformationFactor = (float)(requiredTime - transformationTimer) / requiredTime;
+               SUSUtils.INSTANCE.glTranslateRandomWithEqualD(0.08 * globalScaleTransformationFactor);
+               renderHungryNodeTransformation(transformationTimer,requiredTime,  tile, viewer, viewDistance, condition, depthIgnore, size, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, ((INode)tile).getAspects(), ((INode)tile).getNodeType(), ((INode)tile).getNodeModifier());
        }
        else renderNode(viewer, viewDistance, condition, depthIgnore, size, tile.xCoord, tile.yCoord, tile.zCoord, partialTicks, ((INode)tile).getAspects(), ((INode)tile).getNodeType(), ((INode)tile).getNodeModifier());
 
@@ -76,10 +76,10 @@ public abstract class MixinTileNodeRenderer extends TileEntitySpecialRenderer {
 
 
     //NOTHING NEW, THE ONLY THING I NEEDED WAS TO CHANGE THE SIZE todo: remove with injection
-    private static void renderHungryNodeTransformation(int transformationTimer, TileEntity node, EntityLivingBase viewer, double viewDistance, boolean visible, boolean depthIgnore, float size, int x, int y, int z, float partialTicks, AspectList aspects, NodeType type, NodeModifier mod) {
+    private static void renderHungryNodeTransformation(int transformationTimer, int maxTransformationTime, TileEntity node, EntityLivingBase viewer, double viewDistance, boolean visible, boolean depthIgnore, float size, int x, int y, int z, float partialTicks, AspectList aspects, NodeType type, NodeModifier mod) {
         long nt = System.nanoTime();
-        UtilsFX.bindTexture(transformationTimer > 120 ? com.suslovila.client.render.tile.TileAntiNodeRenderer.nodetex : TileNodeRenderer.nodetex);
-        float globalScaleTransformationFactor = (transformationTimer <= 120 ? (float)(120 - transformationTimer) / 120 : (float) transformationTimer / 120);
+        UtilsFX.bindTexture(TileNodeRenderer.nodetex);
+        float globalScaleTransformationFactor = (float) (maxTransformationTime - transformationTimer) / maxTransformationTime;
         int frames = 32;
         if(aspects.size() > 0 && visible) {
             double distance = viewer.getDistance((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D);

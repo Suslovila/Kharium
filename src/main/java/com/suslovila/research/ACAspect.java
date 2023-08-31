@@ -1,7 +1,7 @@
 package com.suslovila.research;
 
 import com.suslovila.ExampleMod;
-import com.suslovila.utils.SUSUtils;
+import com.suslovila.api.utils.SUSUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

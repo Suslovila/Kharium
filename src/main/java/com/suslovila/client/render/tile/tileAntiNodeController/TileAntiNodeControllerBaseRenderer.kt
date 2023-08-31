@@ -1,11 +1,9 @@
 package com.suslovila.client.render.tile.tileAntiNodeController
 
 import com.suslovila.ExampleMod
-import com.suslovila.client.render.tile.SusTileRenderer
+import com.suslovila.api.SusTileRenderer
 import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
-import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
@@ -75,10 +73,7 @@ class TileAntiNodeControllerBaseRenderer : SusTileRenderer<TileAntiNodeControlle
         UtilsFX.bindTexture(ExampleMod.MOD_ID, "testWaste/shieldSphere.png")
         val player = Minecraft.getMinecraft().thePlayer
         GL11.glPushMatrix()
-        val posX = player.lastTickPosX + (player.posX - player.lastTickPosX) * par8
-        val posY = player.lastTickPosY + (player.posY - player.lastTickPosY) * par8
-        val posZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * par8
-        GL11.glTranslated(tile.xCoord - posX, tile.yCoord - posY, tile.zCoord - posZ)
+
         GL11.glDepthMask(false)
         GL11.glDisable(GL11.GL_CULL_FACE)
         GL11.glDisable(GL11.GL_ALPHA_TEST)

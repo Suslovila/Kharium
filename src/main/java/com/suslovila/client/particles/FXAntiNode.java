@@ -14,13 +14,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.client.lib.UtilsFX;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
 
 @SideOnly(Side.CLIENT)
-public class FXShitAntiNode extends EntityFX
+public class FXAntiNode extends EntityFX
 {
     float maxParticleScale = 1.1f;
     float partialTick = 0;
@@ -28,11 +27,11 @@ public class FXShitAntiNode extends EntityFX
     boolean depthTest;
 
     private static final ResourceLocation FXTexture = new ResourceLocation(ExampleMod.MOD_ID, "textures/particles/antinodefx.png");
-    public static Queue<FXShitAntiNode> queuedRenders = new ArrayDeque();
-    public static Queue<FXShitAntiNode> queuedDepthIgnoringRenders = new ArrayDeque();
+    public static Queue<FXAntiNode> queuedRenders = new ArrayDeque();
+    public static Queue<FXAntiNode> queuedDepthIgnoringRenders = new ArrayDeque();
 
 
-    public FXShitAntiNode(World world, double x, double y, double z, double mX, double mY, double mZ, int lifeTime, float particleSize, boolean depthTest)
+    public FXAntiNode(World world, double x, double y, double z, double mX, double mY, double mZ, int lifeTime, float particleSize, boolean depthTest)
     {
         super(world, x, y, z, mX, mY, mZ);
         this.motionX = mX;
@@ -61,7 +60,7 @@ public class FXShitAntiNode extends EntityFX
 
         if(!queuedRenders.isEmpty()) {
             tessellator.startDrawingQuads();
-            for(FXShitAntiNode wisp : queuedRenders)
+            for(FXAntiNode wisp : queuedRenders)
                 wisp.renderQueued(tessellator);
             tessellator.draw();
         }
@@ -69,7 +68,7 @@ public class FXShitAntiNode extends EntityFX
         if(!queuedDepthIgnoringRenders.isEmpty()) {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
             tessellator.startDrawingQuads();
-            for(FXShitAntiNode wisp : queuedDepthIgnoringRenders)
+            for(FXAntiNode wisp : queuedDepthIgnoringRenders)
                 wisp.renderQueued(tessellator);
             tessellator.draw();
             GL11.glEnable(GL11.GL_DEPTH_TEST);

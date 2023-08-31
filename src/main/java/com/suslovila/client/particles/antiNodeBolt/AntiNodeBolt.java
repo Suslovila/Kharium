@@ -15,7 +15,7 @@ import thaumcraft.client.lib.UtilsFX;
 public class AntiNodeBolt extends EntityFX {
     //COPIED FROM THAUMCRAFT - NEEDED TO BE OPTIMISIZED A BIT
     private int type = 0;
-    private float width = 0.05F;
+    private float width = 0.02F;
     private FXLightningBoltCommon main;
 
     public AntiNodeBolt(World world, WRVector3 jammervec, WRVector3 targetvec, long seed) {

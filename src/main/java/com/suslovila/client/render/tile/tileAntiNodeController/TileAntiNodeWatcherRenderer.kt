@@ -1,18 +1,16 @@
 package com.suslovila.client.render.tile.tileAntiNodeController
 
 import com.suslovila.ExampleMod;
-import com.suslovila.client.render.tile.SusTileRenderer
+import com.suslovila.api.SusTileRenderer
 import com.suslovila.common.block.tileEntity.TileAntiNodeWatcher;
-import com.suslovila.utils.SUSUtils
-import com.suslovila.utils.SUSUtils.random
+import com.suslovila.api.utils.SUSUtils
+import com.suslovila.api.utils.SUSUtils.random
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;

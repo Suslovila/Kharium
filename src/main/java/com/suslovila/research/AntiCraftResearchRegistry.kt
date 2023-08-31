@@ -35,7 +35,16 @@ object AntiCraftResearchRegistry {
             ItemStack(ModBlocks.BlockEssentiaReservoirVoid)).setPages(ResearchPage("1"), ResearchPage(recipes["IessentiaReservoirVoid"])).setParents("ESSENTIARESERVOIR").registerResearchItem()
 
         AntiCraftResearchItem("DIARY", "ANTICRAFT", AspectList(), 0, 4, 0, ItemStack(ModItems.diary)).setPages(ResearchPage("1"), ResearchPage("2")).setStub().setHidden().setRound().setSpecial().registerResearchItem()
+
+        AntiCraftResearchItem("CRYSTALLIZED_KHARU", "ANTICRAFT", AspectList(), 0, 7, 0, ItemStack(ModItems.crystallizedKharu)).setPages(ResearchPage("1"), ResearchPage("2")).setStub().setHidden().setRound().setSpecial().registerResearchItem()
+
+        AntiCraftResearchItem("ANTI_NODE_HIDDEN", "ANTICRAFT", AspectList(), 4, 5, 0, ResourceLocation(ExampleMod.MOD_ID, "textures/misc/antinode.png")).setPages(ResearchPage("1"), ResearchPage("2")).setVirtual().registerResearchItem()
+
+        AntiCraftResearchItem("ANTI_NODE", "ANTICRAFT", AspectList(), 4, 7, 0, ResourceLocation(ExampleMod.MOD_ID, "textures/misc/antinode.png")).setPages(ResearchPage("1"), ResearchPage("2")).setStub().setHidden().setRound().setSpecial().setParents("CRYSTALLIZED_KHARU").registerResearchItem()
+
+
         ThaumcraftApi.addWarpToResearch("DIARY", 10)
+        ThaumcraftApi.addWarpToResearch("CRYSTALLIZED_KHARU", 20)
     }
 
 }

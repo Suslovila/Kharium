@@ -40,7 +40,7 @@ public final class ParticleRenderDispatcher {
 		GL11.glDisable(GL11.GL_LIGHTING);
 
 		profiler.startSection("black_particle");
-		FXShitAntiNode.dispatchQueuedRenders(tessellator);
+		FXAntiNode.dispatchQueuedRenders(tessellator);
 		profiler.endSection();
 
 		GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
