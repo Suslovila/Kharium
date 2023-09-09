@@ -1,12 +1,15 @@
 package com.suslovila.api.utils
 
+import com.suslovila.api.kharu.IKharuTransport
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.MathHelper
 import net.minecraft.world.World
-import org.lwjgl.opengl.GL11.*
+import net.minecraftforge.common.util.ForgeDirection
+import org.lwjgl.opengl.GL11.glTranslated
 import thaumcraft.api.ThaumcraftApiHelper
 import thaumcraft.api.aspects.AspectList
 import thaumcraft.common.Thaumcraft
@@ -60,6 +63,10 @@ object SUSUtils {
     fun ItemStack.getOrCreateTag(): NBTTagCompound {
         if (!hasTagCompound()) tagCompound = NBTTagCompound()
         return tagCompound
+    }
+    fun getConnectableTile(world: World, x: Int, y: Int, z: Int, face: ForgeDirection): TileEntity? {
+        val te = world.getTileEntity(x + face.offsetX, y + face.offsetY, z + face.offsetZ)
+        return if (te is IKharuTransport && te.isConnectable(face)) te else null
     }
 }
 

@@ -142,3 +142,8 @@ compileKotlin {
 	}
 }
 
+task AAAAAA {
+	doLast{
+		println 'SomeThing happens'
+	}
+}

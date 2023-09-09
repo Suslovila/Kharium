@@ -1,5 +1,6 @@
 package com.suslovila.common.block.tileEntity
 
+import com.suslovila.api.kharu.IKharuSupplier
 import com.suslovila.api.utils.SusVec3
 import cpw.mods.fml.relauncher.Side
 import cpw.mods.fml.relauncher.SideOnly
@@ -7,13 +8,14 @@ import net.minecraft.nbt.NBTTagCompound
 import thaumcraft.api.TileThaumcraft
 import java.util.concurrent.ConcurrentHashMap
 
-class TileAntiNode : TileThaumcraft() {
+class TileAntiNode : TileThaumcraft(), IKharuSupplier {
+
     @SideOnly(Side.CLIENT)
     var cordsForShadows = ConcurrentHashMap<SusVec3, ArrayList<Any>>()
 
     public var tickExisted = 0
 
-    //I wish it be val, but in this case it will be impossible to write it to nbt(
+    //I wish it would be val, but in this case it will be impossible to write it to nbt :(
     public var  maxEnergy = 0
 
     public var actualEnergy = 0
@@ -21,7 +23,7 @@ class TileAntiNode : TileThaumcraft() {
 
 
     fun calculateStabilisation(){
-
+        //TODO: implement
     }
 
 
@@ -44,4 +46,6 @@ class TileAntiNode : TileThaumcraft() {
         super.updateEntity()
         tickExisted = (tickExisted + 1) % Int.MAX_VALUE
     }
+
+    override fun getKharuOutputAmount() = actualEnergy
 }
