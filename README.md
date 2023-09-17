@@ -9,3 +9,5 @@ What does mod contain:
 *some features are still not implemented, wait for updates!*
 
 some videos with spoilers are posted here: https://www.youtube.com/watch?v=9O8p2kJtyoo
+
+Discord Server - https://discord.gg/Ez73uu47
