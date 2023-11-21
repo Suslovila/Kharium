@@ -43,7 +43,7 @@ class TileAntiNodeWatcherRenderer : SusTileRenderer<TileAntiNodeWatcher>() {
     }
       private fun renderMechanicalEye(tile : TileAntiNodeWatcher, partialTicks : Float) {
           var playermp = Minecraft.getMinecraft().thePlayer
-          glPushMatrix(); // 0
+          glPushMatrix()
 
             UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/blocks/scanner2.png");
             //starting rotation
@@ -99,9 +99,8 @@ class TileAntiNodeWatcherRenderer : SusTileRenderer<TileAntiNodeWatcher>() {
               }
           }
         UtilsFX.bindTexture(TextureMap.locationBlocksTexture);
-        glPopMatrix(); // 0
+        glPopMatrix()
     }
-
 
         private fun renderOuterCrystals(){
             glDepthMask(false)

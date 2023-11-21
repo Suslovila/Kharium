@@ -29,7 +29,7 @@ object AntiCraftResearchRegistry {
 
     fun integrateResearch() {
 
-        ResearchCategories.registerCategory("ANTICRAFT", ResourceLocation(ExampleMod.MOD_ID, "textures/misc/antinode.png"), ResourceLocation("thaumcraft:textures/gui/gui_researchback.png"))
+        ResearchCategories.registerCategory("ANTICRAFT", ResourceLocation(ExampleMod.MOD_ID, "textures/misc/antinode.png"), ResourceLocation(ExampleMod.MOD_ID, "textures/misc/backTexture.png"))
 
         AntiCraftResearchItem("ESSENTIARESERVOIRVOID", "ANTICRAFT", AspectList().add(Aspect.VOID, 8).add(Aspect.WATER, 4).add(Aspect.MAGIC, 6), 0, 0, 1,
             ItemStack(ModBlocks.BlockEssentiaReservoirVoid)).setPages(ResearchPage("1"), ResearchPage(recipes["IessentiaReservoirVoid"])).setParents("ESSENTIARESERVOIR").registerResearchItem()

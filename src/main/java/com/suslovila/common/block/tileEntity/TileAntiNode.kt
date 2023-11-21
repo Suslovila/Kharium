@@ -13,12 +13,12 @@ class TileAntiNode : TileThaumcraft(), IKharuSupplier {
     @SideOnly(Side.CLIENT)
     var cordsForShadows = ConcurrentHashMap<SusVec3, ArrayList<Any>>()
 
-    public var tickExisted = 0
+    var tickExisted = 0
 
     //I wish it would be val, but in this case it will be impossible to write it to nbt :(
-    public var  maxEnergy = 0
+    var  maxEnergy = 0
 
-    public var actualEnergy = 0
+    var actualEnergy = 0
         set(value) {field = Math.min(value, maxEnergy)}
 
 
@@ -47,5 +47,9 @@ class TileAntiNode : TileThaumcraft(), IKharuSupplier {
         tickExisted = (tickExisted + 1) % Int.MAX_VALUE
     }
 
-    override fun getKharuOutputAmount() = actualEnergy
+    override fun takeFromItself(amount: Int): Int {
+        TODO("Not yet implemented")
+    }
+
+
 }

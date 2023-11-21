@@ -12,8 +12,11 @@ public class MixinEntityFX implements IFxScaleProvider {
 
 
     @Override
-    public void setScale(float scale) {particleScale = scale;}
+    public void setScale(float scale) {
+        particleScale = scale;
+    }
 
     @Override
-    public void setMaxParticleAge(int age) {}
+    public void setMaxParticleAge(int age) {
+    }
 }

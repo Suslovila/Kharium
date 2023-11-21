@@ -37,7 +37,7 @@ public class FMLEventListener {
             ResearchManager.scheduleSave(player);
             PacketHandler.INSTANCE.sendTo(new PacketSyncAspects(player), (EntityPlayerMP) player);
             ItemStack drop = new ItemStack(ConfigItems.itemJarNode);
-            ((ItemJarNode) drop.getItem()).setAspects(drop, new AspectList().add(Aspect.HUNGER, 100).add(Aspect.WATER, 100).add(Aspect.ELDRITCH, 100).add(ACAspect.HIMILITAS, 100));
+            ((ItemJarNode) drop.getItem()).setAspects(drop, new AspectList().add(Aspect.HUNGER, 100).add(Aspect.WATER, 100).add(Aspect.ELDRITCH, 100).add(ACAspect.HUMILITAS, 100));
             ((ItemJarNode) drop.getItem()).setNodeAttributes(drop, NodeType.HUNGRY, NodeModifier.BRIGHT, "");
             event.player.worldObj.spawnEntityInWorld(new EntityItem(event.player.worldObj, player.posX, player.posY, player.posZ, drop));
         }
@@ -47,7 +47,7 @@ public class FMLEventListener {
         if (event.entity instanceof EntityEldritchWarden) event.entity.entityDropItem(new ItemStack(ModItems.diary), 1.5F);
     }
     @SubscribeEvent
-    public void onPlayerPickedUpKharu(PlayerEvent.ItemPickupEvent event) {
+    public void onPlayerPickedUpCrystallizedKharu(PlayerEvent.ItemPickupEvent event) {
         if (event.pickedUp.getEntityItem().getItem() == ModItems.crystallizedKharu) {
             SUSUtils.INSTANCE.getOrCreateTag(event.pickedUp.getEntityItem()).removeTag(ItemCrystallizedAntiMatter.Companion.getGlobalOwnerName());
             if (!ResearchManager.isResearchComplete(event.player.getCommandSenderName(), "CRYSTALLIZED_KHARU"))

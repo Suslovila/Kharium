@@ -1,5 +1,7 @@
 package com.suslovila.client
 
+import com.suslovila.client.particles.FXAntiNode
+import com.suslovila.client.particles.ParticleRenderDispatcher
 import com.suslovila.client.particles.antiNodeBolt.AntiNodeBolt
 import com.suslovila.client.render.ClientEventHandler
 import com.suslovila.client.render.block.BlockEssentiaReservoirVoidRenderer
@@ -53,9 +55,8 @@ class ClientProxy : CommonProxy(), IGuiHandler {
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeControllerBase::class.java, TileAntiNodeControllerBaseRenderer())
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeWatcher::class.java, TileAntiNodeWatcherRenderer())
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeStabilizer::class.java, TileAntiNodeStabilizerRenderer)
-
-
         RenderingRegistry.registerBlockHandler(BlockEssentiaReservoirVoidRenderer())
+
 
     }
 

@@ -10,20 +10,23 @@
  * File Created @ [Jul 2, 2014, 12:12:45 AM (GMT)]
  */
 package com.suslovila.client.particles;
+import com.mojang.realmsclient.util.Pair;
 
+import kotlin.reflect.KClass;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.profiler.Profiler;
 
+import net.minecraft.util.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayDeque;
 
 public final class ParticleRenderDispatcher {
 
-	public static int wispFxCount = 0;
-	public static int depthIgnoringWispFxCount = 0;
-	public static int sparkleFxCount = 0;
-	public static int fakeSparkleFxCount = 0;
-	public static int lightningCount = 0;
 
 	// Called from LightningHandler.onRenderWorldLast since that was
 	// already registered. /shrug
@@ -39,8 +42,8 @@ public final class ParticleRenderDispatcher {
 		GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
 		GL11.glDisable(GL11.GL_LIGHTING);
 
-		profiler.startSection("black_particle");
-		FXAntiNode.dispatchQueuedRenders(tessellator);
+		profiler.startSection("particles");
+		dispatchQueuedRenders(tessellator, FXAntiNode.queuedRenders, FXAntiNode.queuedDepthIgnoringRenders, FXAntiNode.FXTexture);
 		profiler.endSection();
 
 		GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
@@ -49,4 +52,30 @@ public final class ParticleRenderDispatcher {
 		GL11.glPopAttrib();
 	}
 
+
+	public static void dispatchQueuedRenders(Tessellator tessellator, ArrayDeque<FXSusBase> queuedRenders, ArrayDeque<FXSusBase> queuedDepthIgnoringRenders, ResourceLocation texture) {
+
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
+		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+
+		if (!queuedRenders.isEmpty()) {
+
+			tessellator.startDrawingQuads();
+			for (FXSusBase wisp : queuedRenders)
+				wisp.renderQueued(tessellator);
+			tessellator.draw();
+		}
+
+		if (!queuedDepthIgnoringRenders.isEmpty()) {
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			tessellator.startDrawingQuads();
+			for (FXSusBase wisp : queuedDepthIgnoringRenders)
+				wisp.renderQueued(tessellator);
+			tessellator.draw();
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+		}
+
+		queuedRenders.clear();
+		queuedDepthIgnoringRenders.clear();
+	}
 }

@@ -3,7 +3,7 @@ package com.suslovila.api.utils;
 
 
 public class SusVec3 {
-   //JUST COPIED FROM 1.18 VERSION BECAUSE I FIND VECTORS ON IT MORE COMFORTABLE AND USEFUL
+   //JUST COPIED FROM 1.18 VERSION BECAUSE I FIND VECTORS ON IT MORE COMFORTABLE
    public static final SusVec3 ZERO = new SusVec3(0.0D, 0.0D, 0.0D);
    public final double x;
    public final double y;

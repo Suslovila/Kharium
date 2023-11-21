@@ -17,7 +17,7 @@ open class TileRotatable : TileThaumcraft() {
         nbttagcompound.setByte("face", facing.ordinal.toByte())
     }
 
-    //some copied fun from thaumcraft for comfort rotation
+    //copied fun from thaumcraft for comfort rotation
     fun rotateFromOrientation() {
         when(facing.ordinal) {
 
