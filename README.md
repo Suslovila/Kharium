@@ -10,4 +10,4 @@ What does mod contain:
 
 some videos with spoilers are posted here: https://www.youtube.com/watch?v=9O8p2kJtyoo
 
-Discord Server - https://discord.gg/Ez73uu47
+Discord Server - https://discord.gg/MjHEbucQX7
