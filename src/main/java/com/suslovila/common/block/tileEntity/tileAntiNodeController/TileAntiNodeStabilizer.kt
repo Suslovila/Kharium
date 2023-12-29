@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side
 import cpw.mods.fml.relauncher.SideOnly
 import io.netty.util.internal.ConcurrentSet
 import net.minecraft.util.AxisAlignedBB
+import net.minecraftforge.common.util.ForgeDirection
 
 
 class TileAntiNodeStabilizer : TileRotatable() {
@@ -19,6 +20,7 @@ class TileAntiNodeStabilizer : TileRotatable() {
 
     override fun updateEntity() {
         super.updateEntity()
+        facing = ForgeDirection.NORTH
         if(worldObj.isRemote)tiles.add(SusVec3(xCoord, yCoord, zCoord))
     }
 }

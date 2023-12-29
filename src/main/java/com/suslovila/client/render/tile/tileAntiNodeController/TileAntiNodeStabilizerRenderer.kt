@@ -3,14 +3,16 @@ package com.suslovila.client.render.tile.tileAntiNodeController
 import com.suslovila.ExampleMod
 import com.suslovila.api.SusTileRenderer
 import com.suslovila.api.TileRotatable
-import com.suslovila.api.utils.SUSUtils
-import com.suslovila.api.utils.SusVec3
-import com.suslovila.api.utils.getCordSystemFromVec3
+import com.suslovila.api.utils.GraphicHelper
+import com.suslovila.api.utils.SusUtils
+import com.suslovila.api.utils.SusUtils.humilitasColor
+import com.suslovila.client.particles.FXSusSmokeSpiral
 import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer
 import com.suslovila.mixinUtils.IFxScaleProvider
 import cpw.mods.fml.relauncher.Side
 import cpw.mods.fml.relauncher.SideOnly
 import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.tileentity.TileEntity
@@ -19,96 +21,184 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
+import net.minecraftforge.common.util.ForgeDirection
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL11.*
 import thaumcraft.client.fx.ParticleEngine
 import thaumcraft.client.fx.particles.FXEssentiaTrail
-import thaumcraft.client.fx.particles.FXSmokeSpiral
 import thaumcraft.client.lib.UtilsFX
 import thaumcraft.common.config.Config
 import java.awt.Color
 
 @SideOnly(Side.CLIENT)
 object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>() {
-    var glassModel : IModelCustom;
-    var coreModel : IModelCustom;
+    var glassModel: IModelCustom;
+    var coreModel: IModelCustom;
 
-        val glassTexture =  ResourceLocation(ExampleMod.MOD_ID, "textures/blocks/stabilizerGlasses.png")
-        val coreTexture =  ResourceLocation(ExampleMod.MOD_ID, "textures/blocks/stabilizerCore.png");
-    init{
-        glassModel = AdvancedModelLoader.loadModel(ResourceLocation(ExampleMod.MOD_ID, "models/blocks/stabilizerGlasses.obj"))
-        coreModel = AdvancedModelLoader.loadModel( ResourceLocation(ExampleMod.MOD_ID, "models/blocks/stabilizerCore.obj"))
+    val glassTexture = ResourceLocation(ExampleMod.MOD_ID, "textures/blocks/stabilizerGlasses.png")
+    val coreTexture = ResourceLocation(ExampleMod.MOD_ID, "textures/blocks/stabilizerCore.png");
+
+    init {
+        glassModel =
+            AdvancedModelLoader.loadModel(ResourceLocation(ExampleMod.MOD_ID, "models/blocks/stabilizerGlasses.obj"))
+        coreModel =
+            AdvancedModelLoader.loadModel(ResourceLocation(ExampleMod.MOD_ID, "models/blocks/stabilizerCore2.obj"))
 
     }
 
     override fun renderTileEntityAt(tile: TileEntity?, x: Double, y: Double, z: Double, ticks: Float) {
         tile?.worldObj ?: return
+        val time = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + ticks
+
         glPushMatrix()
-
-        glTranslated(x + 0.5,y + 0.5,z + 0.5)
-
+        glTranslated(x + 0.5, y + 0.5, z + 0.5)
+        glPushMatrix()
+        (tile as TileRotatable).rotateFromOrientation()
+        renderCore()
+        renderMagicCircles(time)
+        glPopMatrix()
+        renderPlasmaWaves(tile.xCoord + 0.5, tile.yCoord + 0.5, tile.zCoord + 0.5, ticks, tile)
         renderSpinningEssence(tile as TileAntiNodeStabilizer)
 
-        //if(SUSUtils.random.nextInt(5) == 4) renderTranslatingEssence(tile)
-        //renderCore()
-
         glPopMatrix()
-
-        renderPlasmaWaves(tile.xCoord + 0.5, tile.yCoord + 0.5, tile.zCoord + 0.5, ticks, tile)
-
         UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
-
     }
-    //the reason why I do not implement "render" is drowFloatyLine method, which translates the Coord system from player to the beginning of "vis line"
+
+    //the reason why I do not implement "render" is drawFloatyLine method, which translates the Coord system from player to the beginning of "vis line"
     //but in RenderTileEntityAt in SusTileRender I already translate matrix - so it causes awful bugs.
     override fun render(tile: TileAntiNodeStabilizer, partialTicks: Float) {
         TODO("Not yet implemented")
     }
 
+    private fun renderMagicCircles(time : Float){
+        glPushMatrix()
+        glEnable(GL_ALPHA_TEST)
+        glDisable(GL_CULL_FACE)
+        glAlphaFunc(GL_GREATER, 0.003921569f)
+        glEnable(3042)
+        glDisable(GL_LIGHTING)
+        val co = Color(humilitasColor)
+        glColor4f(
+            co.red / 255f,
+            co.green / 255f,
+            co.blue / 255f,
+            0.8f)
+        val j = 15728880
+        val k = j % 65536
+        val l = j / 65536
+        //values got by testing
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k.toFloat() / 1.0f, l.toFloat() / 1.0f)
 
-    fun renderGlasses(){
-         glPushMatrix()
+        glTranslatef(0.0f, -0.63f, 0f)
+        glRotatef(180f, 1f, 0f, 0f)
+        glPushMatrix()
+        glRotatef((time * 4) % 360, 0f, 1f, 0f)
+        val tessellator = Tessellator.instance
+        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/blocks/circle2.png")
+        tessellator.setBrightness(15728880)
+        tessellator.startDrawingQuads()
+        tessellator.addVertexWithUV(-2.0, 0.0, 2.0, 0.0, 0.0)
+        tessellator.addVertexWithUV(2.0, 0.0, 2.0, 1.0, 0.0)
+        tessellator.addVertexWithUV(2.0, 0.0, -2.0, 1.0, 1.0)
+        tessellator.addVertexWithUV(-2.0, 0.0, -2.0, 0.0, 1.0)
 
-         glScaled(0.5, 0.5, 0.5)
-         UtilsFX.bindTexture(glassTexture)
-         glDepthMask(false)
-         glDisable(GL_CULL_FACE)
-         glDisable(GL_ALPHA_TEST)
-         glEnable(GL_BLEND)
-         glDisable(GL_LIGHTING)
+        tessellator.draw()
+        glPopMatrix()
+        glPushMatrix()
+        glTranslated(0.0, 0.01, 0.0)
+        glRotatef(-(time * 4 % 360), 0f, 1f, 0f)
+        //xglScaled(0.6, 0.6, 0.6)
+        GraphicHelper.drawGuideArrows()
 
-         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-         glColor4f(1f, 1f, 1f, 1f)
-         glScaled(0.996, 0.996, 0.996)
-         glassModel.renderAll()
+        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/blocks/circle3.png")
+        tessellator.setBrightness(15728880)
+        tessellator.startDrawingQuads()
+        tessellator.addVertexWithUV(-1.0, 0.0, 1.0, 0.0, 0.0)
+        tessellator.addVertexWithUV(1.0, 0.0, 1.0, 1.0, 0.0)
+        tessellator.addVertexWithUV(1.0, 0.0, -1.0, 1.0, 1.0)
+        tessellator.addVertexWithUV(-1.0, 0.0, -1.0, 0.0, 1.0)
+        tessellator.draw()
 
-         glEnable(GL_CULL_FACE)
-         glEnable(GL_ALPHA_TEST)
-         glDisable(GL_BLEND)
-         glEnable(GL_LIGHTING)
-         glDepthMask(true)
 
-         glPopMatrix()
+        glPopMatrix()
+        glPushMatrix()
+        glTranslated(0.0, 0.02, 0.0)
+        glScaled(0.5, 0.5, 0.5)
+
+        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/blocks/innerRune.png")
+        tessellator.setBrightness(15728880)
+        tessellator.startDrawingQuads()
+        tessellator.addVertexWithUV(-1.0, 0.0, 1.0, 0.0, 0.0)
+        tessellator.addVertexWithUV(1.0, 0.0, 1.0, 1.0, 0.0)
+        tessellator.addVertexWithUV(1.0, 0.0, -1.0, 1.0, 1.0)
+        tessellator.addVertexWithUV(-1.0, 0.0, -1.0, 0.0, 1.0)
+        tessellator.draw()
+        glPopMatrix()
+
+        glDisable(3042)
+        glAlphaFunc(516, 0.1f)
+        glPopMatrix()
     }
-     fun renderCore(){
-         glPushMatrix()
+    fun renderGlasses() {
+        glPushMatrix()
 
-         glScaled(0.5, 0.5, 0.5)
-         UtilsFX.bindTexture(coreTexture)
+        glScaled(0.5, 0.5, 0.5)
+        UtilsFX.bindTexture(glassTexture)
+        glDepthMask(false)
+        glDisable(GL_CULL_FACE)
+        glDisable(GL_ALPHA_TEST)
+        glEnable(GL_BLEND)
+        glDisable(GL_LIGHTING)
 
-         glColor4f(1f, 1f, 1f, 1f)
-             coreModel.renderAll()
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        glColor4f(1f, 1f, 1f, 1f)
+        glScaled(0.996, 0.996, 0.996)
+        glassModel.renderAll()
 
-         glPopMatrix()
-     }
-    private fun renderTranslatingEssence(tile : TileAntiNodeStabilizer) {
-        fun spawnEssence(worldObj: World?, x: Double, y: Double, z: Double, x2: Double, y2: Double, z2: Double, count: Int, color: Int, scale: Float){
+        glEnable(GL_CULL_FACE)
+        glEnable(GL_ALPHA_TEST)
+        glDisable(GL_BLEND)
+        glEnable(GL_LIGHTING)
+        glDepthMask(true)
+
+        glPopMatrix()
+    }
+
+    fun renderCore() {
+        glPushMatrix()
+
+        glScaled(0.5, 0.5, 0.5)
+        UtilsFX.bindTexture(coreTexture)
+
+        glColor4f(1f, 1f, 1f, 1f)
+        coreModel.renderAll()
+        renderGlowingElements()
+
+        glPopMatrix()
+    }
+
+    private fun renderTranslatingEssence(tile: TileAntiNodeStabilizer) {
+        fun spawnEssence(
+            worldObj: World?,
+            x: Double,
+            y: Double,
+            z: Double,
+            x2: Double,
+            y2: Double,
+            z2: Double,
+            count: Int,
+            color: Int,
+            scale: Float
+        ) {
             val noRandomMovingParticle = object : FXEssentiaTrail(worldObj, x, y, z, x2, y2, z2, count, color, scale) {
 
 
-                override fun setGravity(value: Float) {this.particleGravity = 0f}
+                override fun setGravity(value: Float) {
+                    this.particleGravity = 0f
+                }
 
-                override fun onUpdate() { prevPosX = posX
+                override fun onUpdate() {
+                    prevPosX = posX
                     this.particleMaxAge = 2
                     prevPosY = posY
                     prevPosZ = posZ
@@ -116,88 +206,69 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
                 }
 
             }
-
             ParticleEngine.instance.addEffect(worldObj, noRandomMovingParticle)
         }
 
-        for(x in -1 until  2 step 2) {
-            spawnEssence(tile.worldObj, tile.xCoord + 0.5 + 0.3, tile.yCoord + 0.5, tile.zCoord + 0.5, tile.xCoord + 0.5 + x * 0.5, tile.yCoord + 0.5,
-                tile.zCoord + 0.5, 1, SUSUtils.humilitasColor, 0.4f)
+        for (x in -1 until 2 step 2) {
+            spawnEssence(
+                tile.worldObj,
+                tile.xCoord + 0.5 + 0.3,
+                tile.yCoord + 0.5,
+                tile.zCoord + 0.5,
+                tile.xCoord + 0.5 + x * 0.5,
+                tile.yCoord + 0.5,
+                tile.zCoord + 0.5,
+                1,
+                SusUtils.humilitasColor,
+                0.4f
+            )
         }
-        for(z in -1 until  2 step 2) {
-            spawnEssence(tile.worldObj, tile.xCoord + 0.5, tile.yCoord + 0.5, tile.zCoord + 0.5 + 0.3, tile.xCoord + 0.5, tile.yCoord + 0.5,
-                tile.zCoord + 0.5 + z * 0.5, 1, SUSUtils.humilitasColor, 0.4f)
+        for (z in -1 until 2 step 2) {
+            spawnEssence(
+                tile.worldObj,
+                tile.xCoord + 0.5,
+                tile.yCoord + 0.5,
+                tile.zCoord + 0.5 + 0.3,
+                tile.xCoord + 0.5,
+                tile.yCoord + 0.5,
+                tile.zCoord + 0.5 + z * 0.5,
+                1,
+                SusUtils.humilitasColor,
+                0.4f
+            )
         }
-
     }
 
+    private fun renderGlowingElements(){
+        glPushMatrix()
+        glAlphaFunc(516, 0.003921569f)
+        glEnable(3042)
+        glDisable(GL_LIGHTING)
 
-
-        private fun renderSpinningEssence(tile : TileAntiNodeStabilizer){
-
-//        val fx1 = object : FXSmokeSpiral(tile.worldObj, tile.xCoord.toDouble()+0.5, tile.yCoord.toDouble() + 0.75, tile.zCoord.toDouble()+0.5, 0.25F, SUSUtils.random.nextInt(360), (tile.yCoord)){
-//            val startPosition = SusVec3(tile.xCoord.toDouble()+0.5, tile.yCoord.toDouble() + 0.75, tile.zCoord.toDouble()+0.5)
-//            val radius = 1;
-//            val minY = (tile.yCoord)
-//            private val FXTexture = ResourceLocation(ExampleMod.MOD_ID, "textures/particles/antinodefx.png")
-//
-//            val start = SUSUtils.random.nextInt(360)
-//            override fun onUpdate() {
-//                super.onUpdate()
-//
-//            }
-//            override fun renderParticle(
-//                tessellator: Tessellator, partialTick: Float, x: Float, y: Float, z: Float, u: Float, v: Float) {
-//
-//                tessellator.startDrawingQuads()
-//                Minecraft.getMinecraft().renderEngine.bindTexture(FXTexture)
-//                GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.66F * this.particleAlpha);
-//
-//                val system = getCordSystemFromVec3(SUSUtils.BasicDirection.NORTH.vec3)
-//                var r1 = this.start + 720.0F * ((this.particleAge + partialTick) / this.particleMaxAge);
-//                var r2 = 90.0F - 180.0F * ((this.particleAge + partialTick) / this.particleMaxAge);
-//                var mX = -MathHelper.sin(r1 / 180.0f * 3.1415927f) * MathHelper.cos(r2 / 180.0f * 3.1415927f)
-//                var mZ = MathHelper.cos(r1 / 180.0f * 3.1415927f) * MathHelper.cos(r2 / 180.0f * 3.1415927f)
-//                var mY = -MathHelper.sin(r2 / 180.0f * 3.1415927f)
-//
-//                val resultVec3 = system.get(0).scale(mX.toDouble()).add(system.get(1).scale(mY.toDouble()).add(system.get(2).scale(mZ.toDouble())))
-//                var particle = (1.0F + this.particleAge / this.particleMaxAge * 4.0F);
-//
-//
-//                mX = (resultVec3.x * this.radius).toFloat()
-//                mY = (resultVec3.y * this.radius).toFloat()
-//                mZ = (resultVec3.z * this.radius).toFloat()
-//
-//                var var8 = (particle % 16) / 16.0;
-//                var var9 = var8 + 0.0624375;
-//                var var10 = (particle / 16) / 16.0;
-//                var var11 = var10 + 0.0624375;
-//                var var12 = 0.15 * this.particleScale;
-//                var var13 = (this.posX + mX - interpPosX);
-//                var var14 = (Math.max(this.posY + mY.toDouble(), (this.minY + 0.1)) - interpPosY);
-//                var var15 = (this.posZ + mZ - interpPosZ);
-//                var var16 = 1.0;
-//                tessellator.setBrightness(this.getBrightnessForRender(partialTick));
-//                tessellator.setColorRGBA_F((this.particleRed * var16).toFloat(), (this.particleGreen * var16).toFloat(), (this.particleBlue * var16).toFloat(), 0.66F * this.particleAlpha);
-//                tessellator.addVertexWithUV((var13 - x * var12 - u * var12), (var14 - y * var12), (var15 - z * var12 - v * var12), var9, var11);
-//                tessellator.addVertexWithUV((var13 - x * var12 + u * var12), (var14 + y * var12), (var15 - z * var12 + v * var12), var9, var10);
-//                tessellator.addVertexWithUV((var13 + x * var12 + u * var12), (var14 + y * var12), (var15 + z * var12 + v * var12), var8, var10);
-//                tessellator.addVertexWithUV((var13 + x * var12 - u * var12), (var14 - y * var12), (var15 + z * var12 - v * var12), var8, var11);
-//                tessellator.draw()
-//            }
-//        }
-//            val fx1 = com.suslovila.client.particles.FXEssentiaTrail(tile.worldObj, tile.xCoord.toDouble()+0.5, tile.yCoord.toDouble() + 0.75, tile.zCoord.toDouble()+0.5, 0.25F, SUSUtils.random.nextInt(360), (tile.yCoord));
-//            glPushMatrix()
-//            glRotatef(90f,1f,0f,0f)
-//       //val fx = FXSmokeSpiral(tile.worldObj, tile.xCoord.toDouble()+0.5, tile.yCoord.toDouble() + 0.75, tile.zCoord.toDouble()+0.5, 0.25F, SUSUtils.random.nextInt(360), (tile.yCoord))
-//        (fx1 as? IFxScaleProvider)?.setScale(0.3f) ?: throw Exception("can't cast to Mixin Interface")
-//        val c = Color(SUSUtils.humilitasColor)
-//        fx1.setRBGColorF(c.red.toFloat() / 255.0f, c.green.toFloat() / 255.0f, c.blue.toFloat() / 255.0f)
-//        ParticleEngine.instance.addEffect(tile.worldObj, fx1)
-//            glPopMatrix()
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/blocks/stabilizerCoreOver.png")
+        val j = 15728880
+        val k = j % 65536
+        val l = j / 65536
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k.toFloat() / 1.0f, l.toFloat() / 1.0f)
+        val co = Color(humilitasColor)
+        glColor4f(
+            co.red / 255f,
+            co.green / 255f,
+            co.blue / 255f,
+            1f)
+        coreModel.renderAll()
+        glDisable(3042)
+        glAlphaFunc(516, 0.1f)
+        glPopMatrix()
     }
-
-
+    private fun renderSpinningEssence(tile: TileAntiNodeStabilizer) {
+        val deltaPos = tile.getFacingVector().normalize().scale(-0.23)
+        val fx1 = FXSusSmokeSpiral(tile.worldObj, tile.xCoord.toDouble() + 0.5 + deltaPos.x, tile.yCoord.toDouble() + 0.5 + deltaPos.y, tile.zCoord.toDouble() + 0.5 + deltaPos.z, 0.2F, SusUtils.random.nextInt(360), (tile.yCoord), tile.getFacingVector(), ResourceLocation("textures/misc/p_large.png"))
+        //val fx = FXSmokeSpiral(tile.worldObj, tile.xCoord.toDouble()+0.5, tile.yCoord.toDouble() + 0.75, tile.zCoord.toDouble()+0.5, 0.25F, SUSUtils.random.nextInt(360), (tile.yCoord))
+        (fx1 as? IFxScaleProvider)?.setScale(0.3f) ?: throw Exception("can't cast to Mixin Interface")
+        ParticleEngine.instance.addEffect(tile.worldObj, fx1)
+    }
 
 
     //to protect your mentality, I really do not recommend to try to understand what is going here, all numbers are just f*cking picked up randomly
@@ -205,57 +276,54 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
     //just with help of universe I got the required result
 
     //welcome to SH*T-CODE ZONE. ONLY SH*T-CODE INSIDE MY PROJECTS!
-     fun renderPlasmaWaves(xCenter: Double, yCenter: Double, zCenter: Double, partialTicks: Float, tile : TileRotatable){
-         glPushMatrix()
+    fun renderPlasmaWaves(xCenter: Double, yCenter: Double, zCenter: Double, partialTicks: Float, tile: TileRotatable) {
+        glPushMatrix()
 
+        val ticks = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + partialTicks
+        when(tile.facing){
+            ForgeDirection.DOWN -> {}
+            ForgeDirection.UP -> { glRotatef(180f,1f,0f,0f) }
+            ForgeDirection.NORTH -> { glRotatef(90f, 1f, 0f, 0f) }
+            ForgeDirection.SOUTH -> {glRotatef(-90f, 1f, 0f, 0f)}
+            ForgeDirection.WEST -> {glRotatef(-90f, 0f, 0f, 1f)}
+            ForgeDirection.EAST -> {glRotatef(90f, 0f, 0f, 1f)}
+            else -> {}
+        }
 
-         val ticks = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + partialTicks
-         for(x in -1 until  2 step 2) {
-             glPushMatrix()
-             drawFloatyLine(
-                 xCenter + x * 0.7, yCenter + 1.15, zCenter, xCenter + 2 * x, yCenter - 0.4, zCenter,
-                 partialTicks, SUSUtils.humilitasColor, "textures/misc/wispy.png", 0.05f,
-                 Math.min(ticks, 10.0f) / 10.0f, 0.3F, 1F, 2.4F, 1.7F, tile::rotateFromOrientation)
-             glPopMatrix()
-         }
-             for(z in -1 until  2 step 2){
-                 glPushMatrix()
-                    drawFloatyLine(xCenter, yCenter + 1.15, zCenter + z * 0.7, xCenter, yCenter - 0.4, zCenter + 2 * z,
-                        partialTicks, SUSUtils.humilitasColor,"textures/misc/wispy.png", 0.05f,
-                        Math.min(ticks, 10.0f) / 10.0f, 0.3f, 1.7F, 2.4F, 1F, tile::rotateFromOrientation)
-                 glPopMatrix()
+        GraphicHelper.drawGuideArrows()
+        for(i in 1..4){
+            glPushMatrix()
+            glRotatef(90f * i, 0f ,1f, 0f)
+            drawFloatyLine(xCenter, humilitasColor, "textures/misc/wispy.png", 0.1f,
+                Math.min(ticks, 10.0f) / 10.0f, 0.3F, 1F, 2F, 1F, ticks)
+            glPopMatrix()
+        }
 
-                }
-
-         glPopMatrix()
+        glPopMatrix()
     }
-
     fun drawFloatyLine(
-        x: Double, y: Double, z: Double, x2: Double, y2: Double, z2: Double, partialTicks: Float, color: Int,
-        texture: String?, speed: Float, distance: Float, width: Float, xScale : Float, yScale : Float, zScale : Float, rotationMethod : () -> Unit = {}) {
+        factor: Double, color: Int,
+        texture: String?, speed: Float, distance: Float, width: Float, xScale: Float, yScale: Float, zScale: Float, ticks: Float
+    ) {
 
-        val player = Minecraft.getMinecraft().renderViewEntity
-        val iPX = player.prevPosX + (player.posX - player.prevPosX) * partialTicks.toDouble()
-        val iPY = player.prevPosY + (player.posY - player.prevPosY) * partialTicks.toDouble()
-        val iPZ = player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks.toDouble()
-        glTranslated(x2 - iPX, y2 - iPY, z2 - iPZ)
-        val time = (System.nanoTime() / 30000000L)
+        glTranslated(2.0, -0.4, 0.0)
+        GraphicHelper.drawGuideArrows()
+        val time = ticks
         val co = Color(color)
         val r = co.red / 255.0f
-        val g = co.green/ 255.0f
+        val g = co.green / 255.0f
         val b = co.blue / 255.0f
         glDepthMask(false)
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE)
 
-        //test rotation just to understand what's going on
-        //TODO: remove
-        rotationMethod()
 
         val tessellator = Tessellator.instance
-        val dc1x = x - x2
-        val dc1y = y - y2
-        val dc1z = z - z2
+        var dc1x = -1.35
+        var dc1y = 1.5
+        var dc1z = 0.0
+
+
         UtilsFX.bindTexture(texture)
         glDisable(2884)
         tessellator.startDrawing(5)
@@ -269,20 +337,23 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
         val x0 = 1.0f
         var i = 0
         while (i <= length * distance) {
-            val y = i / length
-            val z = 1.0f - Math.abs(i - length / 2.0f) / (length / 2.0f)
-            var dx = dc1x + (MathHelper.sin(((z % 16.0 + (dist * (1.0f - y) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 4.0).toFloat()) * 0.5f * z)
-            var dy = dc1y + (MathHelper.sin(((x % 16.0 + (dist * (1.0f - y) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 3.0).toFloat()) * 0.5f * z)
-            var dz = dc1z + (MathHelper.sin(((y % 16.0 + (dist * (1.0f - y) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 2.0).toFloat()) * 0.5f * z)
-            tessellator.setColorRGBA_F(r, g, b, z)
-            val x3 = (1.0f - y) * dist - time * speed
+            val f2 = i / length
+            val f3 = 1.0f - Math.abs(i - length / 2.0f) / (length / 2.0f)
+            var dx =
+                dc1x + (MathHelper.sin(((f3 % 16.0 + (dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 4.0).toFloat()) * 0.2f * f3)
+            var dy =
+                dc1y + (MathHelper.sin(((factor % 16.0 + (dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 3.0).toFloat()) * 0.2f * f3)
+            var dz =
+                dc1z + (MathHelper.sin(((f2 % 16.0 + (dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 2.0).toFloat()) * 0.2f * f3)
+            tessellator.setColorRGBA_F(r, g, b, f3)
+            val x3 = (1.0f - f2) * dist - time * speed
 
             dx /= xScale
             dy /= yScale
             dz /= zScale
 
-            tessellator.addVertexWithUV(dx * y, dy * y - width, dz * y, x3.toDouble(), x0.toDouble())
-            tessellator.addVertexWithUV(dx * y, dy * y + width, dz * y, x3.toDouble(), f9.toDouble())
+            tessellator.addVertexWithUV(dx * f2, dy * f2 - width, dz * f2, x3.toDouble(), x0.toDouble())
+            tessellator.addVertexWithUV(dx * f2, dy * f2 + width, dz * f2, x3.toDouble(), f9.toDouble())
             ++i
         }
         tessellator.draw()
@@ -290,20 +361,23 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
         tessellator.startDrawing(5)
         var var84 = 0
         while (var84 <= length * distance) {
-            val y = var84.toFloat() / length
-            val z = 1.0f - Math.abs(var84 - length / 2.0f) / (length / 2.0f)
-            var dx = dc1x + (MathHelper.sin(((z % 16.0 + (dist * (1.0f - y) * Config.golemLinkQuality/ 2.0f) - (time % 32767.0f / 5.0f)) / 4.0).toFloat()) * 0.5f * z)
-            var dy = dc1y + (MathHelper.sin(((x % 16.0 + (dist * (1.0f - y) * Config.golemLinkQuality / 2.0f)- (time % 32767.0f / 5.0f)) / 3.0).toFloat()) * 0.5f * z)
-            var dz = dc1z + (MathHelper.sin(((y % 16.0 + (dist * (1.0f - y) * Config.golemLinkQuality/ 2.0f) - (time % 32767.0f / 5.0f)) / 2.0).toFloat()) * 0.5f * z)
-            tessellator.setColorRGBA_F(r, g, b, z)
-            val x3 = (1.0f - y) * dist - time * speed
+            val f2 = var84.toFloat() / length
+            val f3 = 1.0f - Math.abs(var84 - length / 2.0f) / (length / 2.0f)
+            var dx =
+                dc1x + (MathHelper.sin(((f3 % 16.0 + (dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 4.0).toFloat()) * 0.2f * f3)
+            var dy =
+                dc1y + (MathHelper.sin(((factor % 16.0 + (dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 3.0).toFloat()) * 0.2f * f3)
+            var dz =
+                dc1z + (MathHelper.sin(((f2 % 16.0 + (dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 2.0).toFloat()) * 0.2f * f3)
+            tessellator.setColorRGBA_F(r, g, b, f3)
+            val x3 = (1.0f - f2) * dist - time * speed
 
             dx /= xScale
             dy /= yScale
             dz /= zScale
 
-            tessellator.addVertexWithUV(dx * y - width, dy * y, dz * y, x3.toDouble(), x0.toDouble())
-            tessellator.addVertexWithUV(dx * y + width, dy * y, dz * y, x3.toDouble(), f9.toDouble())
+            tessellator.addVertexWithUV(dx * f2 - width, dy * f2, dz * f2, x3.toDouble(), x0.toDouble())
+            tessellator.addVertexWithUV(dx * f2 + width, dy * f2, dz * f2, x3.toDouble(), f9.toDouble())
             ++var84
         }
         tessellator.draw()
@@ -311,6 +385,5 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
         glDisable(GL_BLEND)
         glDepthMask(true)
     }
-
 
 }

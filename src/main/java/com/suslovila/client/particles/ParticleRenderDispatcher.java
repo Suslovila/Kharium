@@ -12,6 +12,7 @@
 package com.suslovila.client.particles;
 import com.mojang.realmsclient.util.Pair;
 
+import com.suslovila.ExampleMod;
 import kotlin.reflect.KClass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -25,6 +26,8 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayDeque;
 
+import static org.lwjgl.opengl.GL11.*;
+
 public final class ParticleRenderDispatcher {
 
 
@@ -33,23 +36,22 @@ public final class ParticleRenderDispatcher {
 	public static void dispatch() {
 		Tessellator tessellator = Tessellator.instance;
 
-		Profiler profiler = Minecraft.getMinecraft().mcProfiler;
-
-		GL11.glPushAttrib(GL11.GL_LIGHTING);
+		GL11.glPushMatrix();
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDepthMask(false);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+		GL11.glEnable(GL_BLEND);
 		GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
-		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		profiler.startSection("particles");
+		dispatchQueuedRenders(tessellator, FXSusSmokeSpiral.queuedRenders, FXSusSmokeSpiral.queuedDepthIgnoringRenders, new ResourceLocation(ExampleMod.MOD_ID, "textures/misc/p_large.png"));
+		GL11.glDepthMask(true);
+
 		dispatchQueuedRenders(tessellator, FXAntiNode.queuedRenders, FXAntiNode.queuedDepthIgnoringRenders, FXAntiNode.FXTexture);
-		profiler.endSection();
+
 
 		GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glDepthMask(true);
-		GL11.glPopAttrib();
+		GL11.glDisable(GL_BLEND);
+		GL11.glPopMatrix();
 	}
 
 

@@ -3,6 +3,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.suslovila.mixinUtils.IMixinNbtTagProvider
 import net.minecraft.block.Block
+import net.minecraft.entity.monster.EntityZombie
 import net.minecraft.init.Blocks
 import net.minecraft.nbt.*
 import net.minecraft.tileentity.TileEntity
@@ -42,7 +43,6 @@ object SchemaUtils {
 				val i = x + loc.x
 				val j = y + loc.y
 				val k = z + loc.z
-				
 				fun check(): Boolean {
 					if (world.getBlock(i, j, k) != Block.getBlockFromName(ele.block) || world.getBlockMetadata(i, j, k) != loc.meta) return false
 					

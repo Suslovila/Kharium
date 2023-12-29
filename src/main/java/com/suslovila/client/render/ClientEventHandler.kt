@@ -1,12 +1,12 @@
 package com.suslovila.client.render
 
 import com.suslovila.ExampleMod
+import com.suslovila.api.TileRotatable
 import com.suslovila.client.particles.ParticleRenderDispatcher
 import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeControllerBaseRenderer
 import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeStabilizerRenderer
 import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase
 import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer
-import cpw.mods.fml.common.eventhandler.EventPriority
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import cpw.mods.fml.relauncher.Side
 import cpw.mods.fml.relauncher.SideOnly
@@ -19,12 +19,13 @@ import thaumcraft.client.lib.UtilsFX
 @SideOnly(Side.CLIENT)
 class ClientEventHandler {
 
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
     fun onRenderWorldLast(event: RenderWorldLastEvent) {
-        //handleStabilizer(event)
 
         handleParticles()
+        handleStabilizer(event)
+
 
         //handleField(event)
 
@@ -43,13 +44,9 @@ class ClientEventHandler {
                 val posY = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks
                 val posZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks
                 glTranslated(tile.xCoord - posX + 0.5, tile.yCoord - posY+ 0.5, tile.zCoord - posZ+ 0.5)
-
-
-
+                tile.rotateFromOrientation()
                 TileAntiNodeStabilizerRenderer.renderGlasses()
-
                 glPopMatrix()
-
 
             } else TileAntiNodeStabilizer.tiles.remove(pos)
         }
@@ -59,7 +56,7 @@ class ClientEventHandler {
     }
     private fun handleParticles() {
         val profiler = Minecraft.getMinecraft().mcProfiler
-        profiler.startSection("botania-particles")
+        profiler.startSection("particles")
         ParticleRenderDispatcher.dispatch()
         profiler.endSection()
     }

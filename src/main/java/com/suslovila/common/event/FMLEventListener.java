@@ -2,7 +2,7 @@ package com.suslovila.common.event;
 import com.suslovila.common.item.ItemCrystallizedAntiMatter;
 import com.suslovila.common.item.ModItems;
 import com.suslovila.research.ACAspect;
-import com.suslovila.api.utils.SUSUtils;
+import com.suslovila.api.utils.SusUtils;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import net.minecraft.entity.item.EntityItem;
@@ -49,9 +49,9 @@ public class FMLEventListener {
     @SubscribeEvent
     public void onPlayerPickedUpCrystallizedKharu(PlayerEvent.ItemPickupEvent event) {
         if (event.pickedUp.getEntityItem().getItem() == ModItems.crystallizedKharu) {
-            SUSUtils.INSTANCE.getOrCreateTag(event.pickedUp.getEntityItem()).removeTag(ItemCrystallizedAntiMatter.Companion.getGlobalOwnerName());
+            SusUtils.INSTANCE.getOrCreateTag(event.pickedUp.getEntityItem()).removeTag(ItemCrystallizedAntiMatter.Companion.getGlobalOwnerName());
             if (!ResearchManager.isResearchComplete(event.player.getCommandSenderName(), "CRYSTALLIZED_KHARU"))
-                SUSUtils.INSTANCE.completeNormalResearch("CRYSTALLIZED_KHARU", event.player, event.player.worldObj);
+                SusUtils.INSTANCE.completeNormalResearch("CRYSTALLIZED_KHARU", event.player, event.player.worldObj);
         }
     }
 }

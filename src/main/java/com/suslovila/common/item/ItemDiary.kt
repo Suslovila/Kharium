@@ -1,7 +1,7 @@
 package com.suslovila.common.item
 
 import com.suslovila.ExampleMod
-import com.suslovila.api.utils.SUSUtils.completeNormalResearch
+import com.suslovila.api.utils.SusUtils.completeNormalResearch
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack

@@ -1,28 +1,24 @@
 package com.suslovila.api.utils
 
-import com.suslovila.client.particles.FXAntiNode
-import net.minecraft.client.Minecraft
-import net.minecraft.client.particle.EntityFX
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.MathHelper
-import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
-import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL11.glTranslated
 import thaumcraft.api.ThaumcraftApiHelper
 import thaumcraft.api.aspects.AspectList
-import thaumcraft.client.lib.UtilsFX.getBrightnessForRender
 import thaumcraft.common.Thaumcraft
 import thaumcraft.common.lib.network.PacketHandler
 import thaumcraft.common.lib.network.playerdata.PacketResearchComplete
+import java.awt.Color
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
+import kotlin.Pair
 
-object SUSUtils {
+object SusUtils {
     //some static fields and functions to make life easier ;)
 
     var random = Random()
@@ -82,66 +78,83 @@ object SUSUtils {
         DOWN(SusVec3(0, -1, 0))
 
     }
-//    fun renderBasicFX(tessellator : Tessellator, partialTick : Int, texture : ResourceLocation, particle : EntityFX) {
-//        GL11.glPushMatrix()
-//        with(particle) {
-//            GL11.glColor4f(1.0f, 1.0f, 1.0f, 1f)
-//            Minecraft.getMinecraft().renderEngine.bindTexture(texture)
-//            GL11.glEnable(3042)
-//            GL11.glBlendFunc(770, 771)
-//            GL11.glColor4f(1.0f, 1.0f, 1.0f, 1f)
-//            GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569f)
-//            GL11.glAlphaFunc(GL11.GL_GREATER, 0.6f - (this.particleAge.toFloat() + partialTick - 1.0f) * 0.25f * 0.5f)
-//
-//            val f10: Float = 0.1f * this.particleScale
-//            val f11: Float =
-//                (this.prevPosX + (this.posX - this.prevPosX) * partialTick.toDouble() - EntityFX.interpPosX).toFloat()
-//            val f12: Float =
-//                (this.prevPosY + (this.posY - this.prevPosY) * partialTick.toDouble() - EntityFX.interpPosY).toFloat()
-//            val f13: Float =
-//                (this.prevPosZ + (this.posZ - this.prevPosZ) * partialTick.toDouble() - EntityFX.interpPosZ).toFloat()
-//
-//            tessellator.setBrightness(getBrightnessForRender(partialTick))
-//
-//            tessellator.addVertexWithUV(
-//                (f11 - x * f10 - u * f10).toDouble(),
-//                (f12 - y * f10).toDouble(),
-//                (f13 - z * f10 - v * f10).toDouble(),
-//                0.0,
-//                0.0
-//            )
-//            tessellator.addVertexWithUV(
-//                (f11 - x * f10 + u * f10).toDouble(),
-//                (f12 + y * f10).toDouble(),
-//                (f13 - z * f10 + v * f10).toDouble(),
-//                0.0,
-//                1.0
-//            )
-//            tessellator.addVertexWithUV(
-//                (f11 + x * f10 + u * f10).toDouble(),
-//                (f12 + y * f10).toDouble(),
-//                (f13 + z * f10 + v * f10).toDouble(),
-//                1.0,
-//                1.0
-//            )
-//            tessellator.addVertexWithUV(
-//                (f11 + x * f10 - u * f10).toDouble(),
-//                (f12 - y * f10).toDouble(),
-//                (f13 + z * f10 - v * f10).toDouble(),
-//                1.0,
-//                0.0
-//            )
-//
-//            GL11.glDisable(GL11.GL_BLEND)
-//            GL11.glAlphaFunc(GL11.GL_GREATER, 0.1f)
-//            GL11.glPopMatrix()
-//        }
-//    }
+
+@JvmStatic
+fun getCordSystemFromVec3(vec3: SusVec3) : ArrayList<SusVec3> {
+    val orthogonal = getOrthogonalVec3(vec3)
+    return arrayListOf(vec3.cross(orthogonal).normalize(), vec3.normalize(), orthogonal.normalize())
 }
+
+    fun <T> ArrayList<T>.setAndGet(pos : Int, element : T) : ArrayList<T> {
+        this[pos] = element
+        return this
+    }
+    fun <T> ArrayList<T>.addAndGet(element : T) : ArrayList<T> {
+        this.add(element)
+        return this
+    }
+    @JvmStatic
+    fun getOrthogonalVec3(vec3 : SusVec3) : SusVec3 {
+        val orthogonal : SusVec3
+        val vec3Cords = vec3.cordsAsList
+        //Int - the "pos" bounded to x,y,z
+        //Double - the value
+        val vec3CordsWithIndexes : ArrayList<Pair<Int, Double>>  = arrayListOf()
+        for(i in vec3Cords.indices){
+            vec3CordsWithIndexes.add(Pair(i, vec3Cords[i]))
+        }
+        val notNullVec3Cords = vec3CordsWithIndexes.filter { it.second != 0.0 }
+        when(notNullVec3Cords.size) {
+            3 -> orthogonal = SusVec3(-vec3.z, 0.0, vec3.x)
+            2 -> {
+                with(notNullVec3Cords) {
+                    //swaps the 2 cords of vec3 and makes one of them opposite. The last 3rd cord stays zero. Now vec3 DOT orthogonal = 0 ---> there is angle 90 degrees between them
+                    orthogonal = SusVec3.getVectorFromArrayList(arrayListOf(0.0,0.0,0.0).setAndGet(this[1].first, this[0].second).setAndGet(this[0].first, -this[1].second))
+                }
+            }
+            // if only 1 cord is non-zero - we just put it to another's one place (x becomes y, y becomes z, z becomes x), and the other cords stay zero
+            1 -> orthogonal = SusVec3.getVectorFromArrayList(arrayListOf(0.0,0.0,0.0).setAndGet((notNullVec3Cords[0].first + 1) % 3, notNullVec3Cords[0].second))
+
+            else -> orthogonal = SusVec3(0.0,0.0,0.0)
+        }
+        return orthogonal
+    }
+
+
+    fun bindColor(tessellator: Tessellator, color : Int, alpha : Float, fadeFactor : Float) {
+        val co = Color(color)
+        val r = co.red / 255.0f
+        val g = co.green/ 255.0f
+        val b = co.blue / 255.0f
+        tessellator.setColorRGBA_F(
+            r * fadeFactor,
+            g * fadeFactor,
+            b * fadeFactor,
+            alpha
+        )
+    }
+    fun rotateZ(pos : SusVec3, angle : Double) : SusVec3 {
+        val radAngle = angle / 180 * Math.PI
+        with(pos){
+            return SusVec3(x * cos(radAngle) + y * sin(radAngle), y * cos(radAngle) - x * sin(radAngle), z)
+        }
+    }
+    fun rotateX(pos : SusVec3, angle : Double) : SusVec3 {
+        val radAngle = angle / 180 * Math.PI
+        with(pos){
+            return SusVec3(x, y * cos(radAngle) - z * sin(radAngle), z * cos(radAngle) + y * sin(radAngle))
+        }
+    }
+    fun rotateY(pos : SusVec3, angle : Double) : SusVec3 {
+        val radAngle = angle / 180 * Math.PI
+        with(pos){
+            return SusVec3(x * cos(radAngle) + z * sin(radAngle), y, z * cos(radAngle) - x * sin(radAngle))
+        }
+    }
+}
+
+//basic functions, take angle in radians
 fun sin(value : Double) = MathHelper.sin(value.toFloat())
 fun cos(value: Double) = MathHelper.cos(value.toFloat())
-fun getCordSystemFromVec3(vec3: SusVec3) : ArrayList<SusVec3> {
 
-    val perpendikular = SusVec3(vec3.z, 0.0, vec3.x);
-    return arrayListOf(vec3, vec3.cross(perpendikular), perpendikular)
-}
+

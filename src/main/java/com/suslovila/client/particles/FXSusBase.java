@@ -33,12 +33,15 @@ public abstract class FXSusBase extends EntityFX
     float partialTick = 0;
     float x,  y,  z,  u,  v = 0;
     boolean depthTest;
+    int renderTick;
+    boolean doKillIfCantSee;
     private final ResourceLocation FXTexture;
 
 
-    public FXSusBase(World world, double x, double y, double z, double mX, double mY, double mZ, int lifeTime, float particleSize, boolean depthTest, ResourceLocation texture)
+    public FXSusBase(World world, double x, double y, double z, double mX, double mY, double mZ, int lifeTime, float particleSize, boolean depthTest, ResourceLocation texture, boolean doKillIfCantSee)
     {
         super(world, x, y, z, mX, mY, mZ);
+        this.doKillIfCantSee = doKillIfCantSee;
         this.motionX = mX;
         this.motionY = mY;
         this.motionZ = mZ;
@@ -59,6 +62,7 @@ public abstract class FXSusBase extends EntityFX
 
     public final void renderQueued(Tessellator tessellator) {
         glPushMatrix();
+        renderTick++;
         injectRender(tessellator);
         glPopMatrix();
     }
@@ -72,16 +76,19 @@ public abstract class FXSusBase extends EntityFX
     this.z = z;
     this.u = u;
     this.v = v;
-    ICamera camera = new Frustrum();
-    EntityLivingBase entitylivingbase = Minecraft.getMinecraft().renderViewEntity;
-    double d0 = entitylivingbase.lastTickPosX + (entitylivingbase.posX - entitylivingbase.lastTickPosX) * (double) partialTick;
-    double d1 = entitylivingbase.lastTickPosY + (entitylivingbase.posY - entitylivingbase.lastTickPosY) * (double) partialTick;
-    double d2 = entitylivingbase.lastTickPosZ + (entitylivingbase.posZ - entitylivingbase.lastTickPosZ) * (double) partialTick;
-    camera.setPosition(d0, d1, d2);
-    if (!camera.isBoundingBoxInFrustum(boundingBox)) {
 
-        this.kill();
+    if(doKillIfCantSee) {
+        ICamera camera = new Frustrum();
+        EntityLivingBase entitylivingbase = Minecraft.getMinecraft().renderViewEntity;
+        double d0 = entitylivingbase.lastTickPosX + (entitylivingbase.posX - entitylivingbase.lastTickPosX) * (double) partialTick;
+        double d1 = entitylivingbase.lastTickPosY + (entitylivingbase.posY - entitylivingbase.lastTickPosY) * (double) partialTick;
+        double d2 = entitylivingbase.lastTickPosZ + (entitylivingbase.posZ - entitylivingbase.lastTickPosZ) * (double) partialTick;
+        camera.setPosition(d0, d1, d2);
+        if (!camera.isBoundingBoxInFrustum(boundingBox)) {
+            this.kill();
+        }
     }
+
         if (depthTest) getQueuedRenderers().add(this);
         else getQueuedDepthIgnoringRenders().add(this);
 
@@ -91,12 +98,11 @@ public abstract class FXSusBase extends EntityFX
     public void onUpdate() {
         super.onUpdate();
     }
-    private void injectRender(Tessellator tessellator){
+    protected void injectRender(Tessellator tessellator){
         GL11.glEnable(3042);
         GL11.glBlendFunc(770, 771);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1);
         glAlphaFunc(GL_GREATER, 0.003921569F);
-        glAlphaFunc(GL_GREATER, 0.6F - ((float)this.particleAge + partialTick - 1.0F) * 0.25F * 0.5F);
 
         float f10 = 0.1F * this.particleScale;
         float f11 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTick - interpPosX);
@@ -105,10 +111,10 @@ public abstract class FXSusBase extends EntityFX
 
         tessellator.setBrightness(getBrightnessForRender(partialTick));
 
-        tessellator.addVertexWithUV(f11 - x * f10 - u * f10, f12 - y * f10, (double)(f13 - z * f10 - v * f10), 0, 0);
-        tessellator.addVertexWithUV(f11 - x * f10 + u * f10, f12 + y * f10, (double)(f13 - z * f10 + v * f10), 0, 1);
-        tessellator.addVertexWithUV(f11 + x * f10 + u * f10, f12 + y * f10, (double)(f13 + z * f10 + v * f10), 1, 1);
-        tessellator.addVertexWithUV(f11 + x * f10 - u * f10, (double)(f12 - y * f10), (double)(f13 + z * f10 - v * f10), 1, 0);
+        tessellator.addVertexWithUV(f11 - x * f10 - u * f10, f12 - y * f10, (f13 - z * f10 - v * f10), 0, 0);
+        tessellator.addVertexWithUV(f11 - x * f10 + u * f10, f12 + y * f10, (f13 - z * f10 + v * f10), 0, 1);
+        tessellator.addVertexWithUV(f11 + x * f10 + u * f10, f12 + y * f10, (f13 + z * f10 + v * f10), 1, 1);
+        tessellator.addVertexWithUV(f11 + x * f10 - u * f10, f12 - y * f10, (f13 + z * f10 - v * f10), 1, 0);
 
         glDisable(GL_BLEND);
         glAlphaFunc(GL_GREATER, 0.1F);

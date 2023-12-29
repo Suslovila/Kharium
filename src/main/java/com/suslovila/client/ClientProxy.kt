@@ -52,8 +52,8 @@ class ClientProxy : CommonProxy(), IGuiHandler {
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNode::class.java, TileAntiNodeRenderer())
         ClientRegistry.bindTileEntitySpecialRenderer(TileEssentiaReservoirVoid::class.java, TileEssentiaReservoirVoidRenderer())
-        ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeControllerBase::class.java, TileAntiNodeControllerBaseRenderer())
-        ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeWatcher::class.java, TileAntiNodeWatcherRenderer())
+        ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeControllerBase::class.java, TileAntiNodeControllerBaseRenderer)
+        ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeWatcher::class.java, TileAntiNodeWatcherRenderer)
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeStabilizer::class.java, TileAntiNodeStabilizerRenderer)
         RenderingRegistry.registerBlockHandler(BlockEssentiaReservoirVoidRenderer())
 

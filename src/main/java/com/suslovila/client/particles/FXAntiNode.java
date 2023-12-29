@@ -33,7 +33,7 @@ public class FXAntiNode extends FXSusBase
 
     public FXAntiNode(World world, double x, double y, double z, double mX, double mY, double mZ, int lifeTime, float particleSize, boolean depthTest)
     {
-        super(world, x, y, z, mX, mY, mZ, lifeTime, particleSize, depthTest,FXTexture);
+        super(world, x, y, z, mX, mY, mZ, lifeTime, particleSize, depthTest,FXTexture, true);
     }
     public void onUpdate() {
         super.onUpdate();

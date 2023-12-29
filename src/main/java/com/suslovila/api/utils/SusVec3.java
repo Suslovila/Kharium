@@ -1,6 +1,12 @@
 package com.suslovila.api.utils;
 
 
+import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public class SusVec3 {
    //JUST COPIED FROM 1.18 VERSION BECAUSE I FIND VECTORS ON IT MORE COMFORTABLE
@@ -245,4 +251,22 @@ public class SusVec3 {
    public final double z() {
       return this.z;
    }
+
+   public List<Double> getCordsAsList() {
+      return  new ArrayList<>(Arrays.asList(this.x, this.y, this.z));
+
+   }
+   public static SusVec3 getVectorFromArrayList(ArrayList<Double> arrayList) throws Exception {
+      if(arrayList.size() != 3) throw new Exception("Can not create Vector from array because length is not 3");
+      return new SusVec3(arrayList.get(0), arrayList.get(1), arrayList.get(2));
+   }
+   public static SusVec3 getVec3FromForgeDirection(ForgeDirection direction) {
+      return new SusVec3(direction.offsetX, direction.offsetY, direction.offsetZ);
+   }
+   public static double angleBetweenVec3(SusVec3 vec1, SusVec3 vec2){
+      return Math.acos(vec1.dot(vec2)/vec1.length()/vec2.length());
+   }
+//   public  SusVec3 rotateAroundVec3(SusVec3 vec3){
+//
+//   }
 }

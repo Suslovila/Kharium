@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.suslovila.api.utils.SUSUtils.antiNodeAppearanceTime;
+import static com.suslovila.api.utils.SusUtils.antiNodeAppearanceTime;
 import static org.lwjgl.opengl.GL11.*;
 
 public class TileAntiNodeRenderer extends TileNodeRenderer {

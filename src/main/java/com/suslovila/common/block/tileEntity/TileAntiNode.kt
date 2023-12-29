@@ -38,7 +38,6 @@ class TileAntiNode : TileThaumcraft(), IKharuSupplier {
         nbttagcompound.setInteger("timer", tickExisted)
         nbttagcompound.setInteger("actualEnergy", actualEnergy)
         nbttagcompound.setInteger("maxEnergy", maxEnergy)
-
     }
 
 

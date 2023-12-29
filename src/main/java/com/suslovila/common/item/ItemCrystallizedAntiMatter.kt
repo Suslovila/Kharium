@@ -4,7 +4,7 @@ import com.suslovila.Config
 import com.suslovila.ExampleMod
 import com.suslovila.mixinUtils.MixinStaticMethods.isNodeBeingTransformed
 import com.suslovila.mixinUtils.MixinStaticMethods.startNodeTransformation
-import com.suslovila.api.utils.SUSUtils.getOrCreateTag
+import com.suslovila.api.utils.SusUtils.getOrCreateTag
 import com.suslovila.api.utils.SchemaUtils
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
@@ -38,7 +38,7 @@ class ItemCrystallizedAntiMatter : Item() {
         stack?.getOrCreateTag()?.removeTag(globalOwnerName) ?: println("why is itemStack null?")
     }
     override fun onItemUse(stack : ItemStack, player: EntityPlayer, world : World, x: Int, y: Int, z: Int, side : Int, p_77648_8_: Float, p_77648_9_: Float, p_77648_10_: Float): Boolean {
-        SchemaUtils.generate(world, x,y,z, "${ExampleMod.MOD_ID}/schematics/lab")
+        //SchemaUtils.generate(world, x,y,z, "${ExampleMod.MOD_ID}/schematics/lab")
         val tile = world.getTileEntity(x,y,z) as? TileNode ?: return false
         if(tile.nodeType == NodeType.HUNGRY && !isNodeBeingTransformed(tile)) {
             startNodeTransformation(tile, stack)

@@ -3,8 +3,8 @@ package com.suslovila.client.render.tile.tileAntiNodeController
 import com.suslovila.ExampleMod;
 import com.suslovila.api.SusTileRenderer
 import com.suslovila.common.block.tileEntity.TileAntiNodeWatcher;
-import com.suslovila.api.utils.SUSUtils
-import com.suslovila.api.utils.SUSUtils.random
+import com.suslovila.api.utils.SusUtils
+import com.suslovila.api.utils.SusUtils.random
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -21,17 +21,16 @@ import thaumcraft.codechicken.lib.math.MathHelper
 import thaumcraft.common.config.ConfigBlocks;
 import kotlin.math.abs
 
-class TileAntiNodeWatcherRenderer : SusTileRenderer<TileAntiNodeWatcher>() {
+object TileAntiNodeWatcherRenderer : SusTileRenderer<TileAntiNodeWatcher>() {
     private val mechanicalEyeModel : IModelCustom
 
     private val eyeModel : IModelCustom
     lateinit var  baseModel : IModelCustom
     //private val lenses = listOf<Lens>(Lens(0.5), Lens(0.5), Lens(0.5))
 
-    companion object{
         val eyeTexture =  ResourceLocation(ExampleMod.MOD_ID, "textures/blocks/watcher_eye.png");
           val baseTexture =  ResourceLocation(ExampleMod.MOD_ID, "textures/blocks/watcher_base.png");
-    }
+
     init{
         //baseModel = AdvancedModelLoader.loadModel(ResourceLocation(ExampleMod.MOD_ID, "models/blocks/watcher_base.obj"));
         eyeModel = AdvancedModelLoader.loadModel(ResourceLocation(ExampleMod.MOD_ID, "models/blocks/watcher_eye.obj"));
@@ -53,7 +52,7 @@ class TileAntiNodeWatcherRenderer : SusTileRenderer<TileAntiNodeWatcher>() {
               with(lens) {
                   if (turningSide == 0) {
                       if (random.nextInt(120) == 50) {
-                          turningSide = SUSUtils.randomSign()
+                          turningSide = SusUtils.randomSign()
                           speedDelta = abs(defaultSpeedDelta)
                           spinningSpeed = 0.0
                           //if(random.nextInt(100) == 50) lens.spinningSpeed = nextDouble(1.0, 2.0)

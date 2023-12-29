@@ -10,13 +10,12 @@ import net.minecraftforge.client.model.IModelCustom
 import org.lwjgl.opengl.GL11
 import thaumcraft.client.lib.UtilsFX
 
-class TileAntiNodeControllerBaseRenderer : SusTileRenderer<TileAntiNodeControllerBase>() {
+object TileAntiNodeControllerBaseRenderer : SusTileRenderer<TileAntiNodeControllerBase>() {
     //JUST A TEST CLASS FOR WORKING WITH CIRCLES
 
-    companion object {
         val MODEL = ResourceLocation(ExampleMod.MOD_ID, "models/shieldSphere.obj")
         val model: IModelCustom = AdvancedModelLoader.loadModel(MODEL)
-    }
+
     init {
     }
 

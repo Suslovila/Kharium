@@ -4,7 +4,7 @@ import com.suslovila.common.item.ItemCrystallizedAntiMatter;
 import com.suslovila.common.block.ModBlocks;
 import com.suslovila.common.block.tileEntity.TileAntiNode;
 import com.suslovila.mixinUtils.IMixinTileNodeProvider;
-import com.suslovila.api.utils.SUSUtils;
+import com.suslovila.api.utils.SusUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.suslovila.mixinUtils.MixinStaticMethods.startNodeTransformation;
-import static com.suslovila.api.utils.SUSUtils.*;
+import static com.suslovila.api.utils.SusUtils.*;
 
 @Mixin(value = TileNode.class)
 public abstract class MixinTileNode extends TileThaumcraft implements IMixinTileNodeProvider {
@@ -78,7 +78,7 @@ public AspectList getAspectsAsList(){
                     if (aspects.length != 0) {
                         Aspect aspect = aspects[INSTANCE.getRandom().nextInt(aspects.length)];
                         if (this.getAspectsAsList().getAmount(aspect) != 0)
-                            this.takeFromContainer(aspects[SUSUtils.INSTANCE.getRandom().nextInt(aspects.length)], 1);
+                            this.takeFromContainer(aspects[SusUtils.INSTANCE.getRandom().nextInt(aspects.length)], 1);
                         else this.getAspectsAsList().remove(aspect);
                     }
                 }
@@ -86,7 +86,7 @@ public AspectList getAspectsAsList(){
                 if (transformationTimer >= getRequiredTimeForTransformation()) {
                     if(Thaumcraft.proxy.getCompletedResearch().get(getOwnerName()).contains("CRYSTALLIZED_KHARU")) {
                         EntityPlayer player = worldObj.getPlayerEntityByName(getOwnerName());
-                        SUSUtils.INSTANCE.completeNormalResearch("ANTI_NODE", player, worldObj);
+                        SusUtils.INSTANCE.completeNormalResearch("ANTI_NODE", player, worldObj);
                     }
                     //handling anti-node initialization
                     this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.ANTI_NODE);
