@@ -1,23 +1,22 @@
 package com.suslovila.client
 
-import com.suslovila.client.particles.FXAntiNode
-import com.suslovila.client.particles.ParticleRenderDispatcher
+
 import com.suslovila.client.particles.antiNodeBolt.AntiNodeBolt
 import com.suslovila.client.render.ClientEventHandler
 import com.suslovila.client.render.block.BlockEssentiaReservoirVoidRenderer
 import com.suslovila.client.render.item.ItemAntiNodeRenderer
 import com.suslovila.client.render.tile.TileAntiNodeRenderer
 import com.suslovila.client.render.tile.TileEssentiaReservoirVoidRenderer
-import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeControllerBaseRenderer
 import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeStabilizerRenderer
 import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeWatcherRenderer
+import com.suslovila.client.render.tile.tileAntiNodeController.TileKharuExtractorRenderer
 import com.suslovila.common.CommonProxy
 import com.suslovila.common.block.ModBlocks
 import com.suslovila.common.block.tileEntity.TileAntiNode
 import com.suslovila.common.block.tileEntity.TileAntiNodeWatcher
 import com.suslovila.common.block.tileEntity.TileEssentiaReservoirVoid
-import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase
 import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer
+import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileKharuExtractor
 import com.suslovila.common.item.ItemCrystallizedAntiMatterRenderer
 import com.suslovila.common.item.ModItems
 import cpw.mods.fml.client.registry.ClientRegistry
@@ -51,12 +50,12 @@ class ClientProxy : CommonProxy(), IGuiHandler {
         setupItemRenderers()
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNode::class.java, TileAntiNodeRenderer())
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEssentiaReservoirVoid::class.java, TileEssentiaReservoirVoidRenderer())
-        ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeControllerBase::class.java, TileAntiNodeControllerBaseRenderer)
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEssentiaReservoirVoid::class.java, TileEssentiaReservoirVoidRenderer)
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeWatcher::class.java, TileAntiNodeWatcherRenderer)
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeStabilizer::class.java, TileAntiNodeStabilizerRenderer)
         RenderingRegistry.registerBlockHandler(BlockEssentiaReservoirVoidRenderer())
 
+        ClientRegistry.bindTileEntitySpecialRenderer(TileKharuExtractor::class.java, TileKharuExtractorRenderer)
 
     }
 

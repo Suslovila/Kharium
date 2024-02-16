@@ -1,12 +1,12 @@
 package com.suslovila.client.render
 
-import com.suslovila.ExampleMod
-import com.suslovila.api.TileRotatable
+
 import com.suslovila.client.particles.ParticleRenderDispatcher
-import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeControllerBaseRenderer
 import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeStabilizerRenderer
-import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase
 import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer
+import com.suslovila.utils.RotatableHandler
+import com.suslovila.utils.SusGraphicHelper
+import com.suslovila.utils.SusVec3
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import cpw.mods.fml.relauncher.Side
 import cpw.mods.fml.relauncher.SideOnly
@@ -26,11 +26,7 @@ class ClientEventHandler {
         handleParticles()
         handleStabilizer(event)
 
-
-        //handleField(event)
-
     }
-
 
     private fun handleStabilizer(event: RenderWorldLastEvent) {
         for (pos in TileAntiNodeStabilizer.tiles) {
@@ -40,11 +36,13 @@ class ClientEventHandler {
 
                 glPushMatrix()
 
-                val posX = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks
-                val posY = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks
-                val posZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks
-                glTranslated(tile.xCoord - posX + 0.5, tile.yCoord - posY+ 0.5, tile.zCoord - posZ+ 0.5)
-                tile.rotateFromOrientation()
+                SusGraphicHelper.translateFromPlayerTo(SusVec3(
+                    tile.xCoord + 0.5,
+                    tile.yCoord + 0.5,
+                    tile.zCoord+ 0.5),
+                    event.partialTicks)
+
+                RotatableHandler.rotateFromOrientation(tile.facing)
                 TileAntiNodeStabilizerRenderer.renderGlasses()
                 glPopMatrix()
 
@@ -61,42 +59,5 @@ class ClientEventHandler {
         profiler.endSection()
     }
 
-    private fun handleField(event: RenderWorldLastEvent) {
 
-        UtilsFX.bindTexture(ExampleMod.MOD_ID, "testWaste/shieldSphere.png")
-        for (pos in TileAntiNodeControllerBase.tiles) {
-            if (Minecraft.getMinecraft().theWorld.getTileEntity(pos.x.toInt(), pos.y.toInt(), pos.z.toInt()) is TileAntiNodeControllerBase) {
-                val tile = Minecraft.getMinecraft().theWorld.getTileEntity(pos.x.toInt(), pos.y.toInt(), pos.z.toInt()) as TileAntiNodeControllerBase
-                val player = Minecraft.getMinecraft().thePlayer
-
-                glPushMatrix()
-                val posX = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks
-                val posY = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks
-                val posZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks
-                glTranslated(tile.xCoord - posX, tile.yCoord - posY, tile.zCoord - posZ)
-
-                glDepthMask(false)
-                glDisable(GL_CULL_FACE)
-                glDisable(GL_ALPHA_TEST)
-                glEnable(GL_BLEND)
-                glDisable(GL_LIGHTING)
-
-                glColor4f(0f, 0f, 1f, 1f)
-                TileAntiNodeControllerBaseRenderer.model.renderAll()
-
-
-
-                glEnable(GL_CULL_FACE)
-                glEnable(GL_ALPHA_TEST)
-                glDisable(GL_BLEND)
-                glEnable(GL_LIGHTING)
-                glDepthMask(true)
-                glPopMatrix()
-
-            }
-        }
-        UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
-        glColor4f(1f, 1f, 1f, 1f)
-
-    }
 }

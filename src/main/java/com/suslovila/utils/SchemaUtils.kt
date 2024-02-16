@@ -1,9 +1,8 @@
-package com.suslovila.api.utils
+package com.suslovila.utils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.suslovila.mixinUtils.IMixinNbtTagProvider
 import net.minecraft.block.Block
-import net.minecraft.entity.monster.EntityZombie
 import net.minecraft.init.Blocks
 import net.minecraft.nbt.*
 import net.minecraft.tileentity.TileEntity

@@ -3,28 +3,19 @@ package com.suslovila.client.particles;
 import com.suslovila.ExampleMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.particle.EntityFX;
 
-import static org.lwjgl.opengl.GL11.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.culling.Frustrum;
-import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayDeque;
-import java.util.Queue;
 
 @SideOnly(Side.CLIENT)
-public class FXAntiNode extends FXSusBase
+public class FXAntiNode extends FXBase
 {
-    public static final ArrayDeque<FXSusBase> queuedDepthIgnoringRenders = new ArrayDeque<>();
+    public static final ArrayDeque<FXBase> queuedDepthIgnoringRenders = new ArrayDeque<>();
 
 
-    public static final ArrayDeque<FXSusBase> queuedRenders = new ArrayDeque<>();
+    public static final ArrayDeque<FXBase> queuedRenders = new ArrayDeque<>();
 
 
     public static final ResourceLocation FXTexture = new ResourceLocation(ExampleMod.MOD_ID, "textures/particles/antinodefx.png");
@@ -42,12 +33,12 @@ public class FXAntiNode extends FXSusBase
     }
 
     @Override
-    public ArrayDeque<FXSusBase> getQueuedDepthIgnoringRenders() {
+    public ArrayDeque<FXBase> getQueuedDepthIgnoringRenders() {
         return queuedDepthIgnoringRenders;
     }
 
     @Override
-    public ArrayDeque<FXSusBase> getQueuedRenderers() {
+    public ArrayDeque<FXBase> getQueuedRenderers() {
         return queuedRenders;
     }
 

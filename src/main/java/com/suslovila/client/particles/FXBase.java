@@ -1,7 +1,5 @@
 package com.suslovila.client.particles;
 
-import com.mojang.realmsclient.util.Pair;
-import com.suslovila.ExampleMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -15,8 +13,6 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.Queue;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -27,7 +23,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 //do not forget to register your particle in ParticleRenderDispatcher!!!!
 @SideOnly(Side.CLIENT)
-public abstract class FXSusBase extends EntityFX
+public abstract class FXBase extends EntityFX
 {
     float maxParticleScale;
     float partialTick = 0;
@@ -38,7 +34,7 @@ public abstract class FXSusBase extends EntityFX
     private final ResourceLocation FXTexture;
 
 
-    public FXSusBase(World world, double x, double y, double z, double mX, double mY, double mZ, int lifeTime, float particleSize, boolean depthTest, ResourceLocation texture, boolean doKillIfCantSee)
+    public FXBase(World world, double x, double y, double z, double mX, double mY, double mZ, int lifeTime, float particleSize, boolean depthTest, ResourceLocation texture, boolean doKillIfCantSee)
     {
         super(world, x, y, z, mX, mY, mZ);
         this.doKillIfCantSee = doKillIfCantSee;
@@ -47,13 +43,13 @@ public abstract class FXSusBase extends EntityFX
         this.motionZ = mZ;
         this.particleScale= particleSize;
         this.maxParticleScale = particleSize;
-        //System.out.println(particleScale);
-        //this.particleAlpha = 0.5F;
         this.particleMaxAge = lifeTime;
         this.noClip = true;
         this.particleGravity = 0;
+
         //ATTENTION!!!! WE MUST DO THIS IN ORDER TO PREVENT GRAPHIC BUGS SUCH AS TELEPORTING PARTICLES!!!!!!
         this.onUpdate();
+
         this.depthTest = depthTest;
         FXTexture = texture;
 
@@ -119,8 +115,8 @@ public abstract class FXSusBase extends EntityFX
         glDisable(GL_BLEND);
         glAlphaFunc(GL_GREATER, 0.1F);
     }
-    public abstract ArrayDeque<FXSusBase> getQueuedDepthIgnoringRenders();
-    public abstract ArrayDeque<FXSusBase> getQueuedRenderers();
+    public abstract ArrayDeque<FXBase> getQueuedDepthIgnoringRenders();
+    public abstract ArrayDeque<FXBase> getQueuedRenderers();
 
 
 }

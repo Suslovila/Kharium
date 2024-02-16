@@ -1,10 +1,11 @@
 package com.suslovila.mixin;
 
+import com.suslovila.utils.ThaumcraftIntegrator;
 import com.suslovila.common.item.ItemCrystallizedAntiMatter;
 import com.suslovila.common.block.ModBlocks;
 import com.suslovila.common.block.tileEntity.TileAntiNode;
 import com.suslovila.mixinUtils.IMixinTileNodeProvider;
-import com.suslovila.api.utils.SusUtils;
+import com.suslovila.utils.SusUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.suslovila.mixinUtils.MixinStaticMethods.startNodeTransformation;
-import static com.suslovila.api.utils.SusUtils.*;
+import static com.suslovila.utils.SusUtils.*;
 
 @Mixin(value = TileNode.class)
 public abstract class MixinTileNode extends TileThaumcraft implements IMixinTileNodeProvider {
@@ -86,7 +87,7 @@ public AspectList getAspectsAsList(){
                 if (transformationTimer >= getRequiredTimeForTransformation()) {
                     if(Thaumcraft.proxy.getCompletedResearch().get(getOwnerName()).contains("CRYSTALLIZED_KHARU")) {
                         EntityPlayer player = worldObj.getPlayerEntityByName(getOwnerName());
-                        SusUtils.INSTANCE.completeNormalResearch("ANTI_NODE", player, worldObj);
+                        ThaumcraftIntegrator.INSTANCE.completeNormalResearch("ANTI_NODE", player, worldObj);
                     }
                     //handling anti-node initialization
                     this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.ANTI_NODE);

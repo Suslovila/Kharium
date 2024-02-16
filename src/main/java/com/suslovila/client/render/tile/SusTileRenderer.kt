@@ -1,4 +1,4 @@
-package com.suslovila.api
+package com.suslovila.client.render.tile
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.tileentity.TileEntity
@@ -12,7 +12,7 @@ abstract class SusTileRenderer<T : TileEntity> : TileEntitySpecialRenderer() {
         tile?.worldObj ?: return
         glPushMatrix()
         glTranslated(x + 0.5,y + 0.5,z + 0.5)
-         tile as? T ?: throw Exception("can't cast to Renderer's bound TileEntity class for some reason :/")
+        tile as? T ?: throw Exception("can't cast to Renderer's bound TileEntity class: not an instance")
         render(tile, ticks)
         glPopMatrix()
     }

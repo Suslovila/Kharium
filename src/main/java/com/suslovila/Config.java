@@ -11,7 +11,7 @@ public class Config {
     public static boolean consumeEldritchDiaryAfterUse;
     public static String modPrefix = "§8[&bI&8] §8[§4Малышка§8] §8Gerda§f: §f";
 
-
+//examples
     public static void registerServerConfig(File modCfg) {
         Configuration cfg = new Configuration(modCfg);
         try {

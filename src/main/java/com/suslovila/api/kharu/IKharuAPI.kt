@@ -26,13 +26,12 @@ interface IKharuSupplier  : IKharuManipulator {
 
 interface IKharuTransport : IKharuManipulator {
 
-//basically, you can write whatever you f*cking want
     /*
     The main idea of kharu transport is similar to thaumcraft's essentia transport - one essentia transport takes
     kharu from another - all logic is individual for each kharu transport
 
 */
-    //Mostly kharu tranports are tileEntities, but not always
+    //Mostly kharu-tranports are tileEntities, but not always
     fun getSuction()
     fun setSuction()
 }

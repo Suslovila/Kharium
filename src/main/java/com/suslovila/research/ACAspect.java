@@ -1,7 +1,8 @@
 package com.suslovila.research;
 
 import com.suslovila.ExampleMod;
-import com.suslovila.api.utils.SusUtils;
+import com.suslovila.utils.SusUtils;
+import com.suslovila.utils.ThaumcraftIntegrator;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -28,7 +29,7 @@ public class ACAspect
        addAspectsToItem(new ItemStack(ConfigItems.itemEldritchObject, 1, 3), new AspectList().add(HUMILITAS, 16));
     }
     private static void addAspectsToItem(ItemStack itemStack, AspectList aspectsToAdd){
-        AspectList list = SusUtils.INSTANCE.getAspectList(itemStack);
+        AspectList list = ThaumcraftIntegrator.INSTANCE.getAspectList(itemStack);
         list.add(aspectsToAdd);
         ThaumcraftApi.registerObjectTag(itemStack, list);
     }

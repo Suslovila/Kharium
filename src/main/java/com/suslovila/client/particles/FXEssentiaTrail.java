@@ -1,6 +1,6 @@
 package com.suslovila.client.particles;
 
-import com.suslovila.api.utils.SusVec3;
+import com.suslovila.utils.SusVec3;
 import cpw.mods.fml.client.FMLClientHandler;
 import java.awt.Color;
 import net.minecraft.client.particle.EntityFX;

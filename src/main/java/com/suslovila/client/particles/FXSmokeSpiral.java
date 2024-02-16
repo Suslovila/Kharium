@@ -1,28 +1,24 @@
 package com.suslovila.client.particles;
 
-import com.suslovila.api.utils.SusUtils;
-import com.suslovila.api.utils.SusVec3;
+import com.suslovila.utils.SusGraphicHelper;
+import com.suslovila.utils.SusUtils;
+import com.suslovila.utils.SusVec3;
  import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
-import thaumcraft.common.Thaumcraft;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_GREATER;
-
-public class FXSusSmokeSpiral extends FXSusBase {
+public class FXSmokeSpiral extends FXBase {
    private float radius;
-   private int start;
+   private final int start;
    private final ArrayList<SusVec3> system;
 
-   public static final ArrayDeque<FXSusBase> queuedDepthIgnoringRenders = new ArrayDeque<>();
-   public static final ArrayDeque<FXSusBase> queuedRenders = new ArrayDeque<>();
-   public FXSusSmokeSpiral(World world, double d, double d1, double d2, float radius, int start, int miny, SusVec3 direction, ResourceLocation resourceLocation) {
+   public static final ArrayDeque<FXBase> queuedDepthIgnoringRenders = new ArrayDeque<>();
+   public static final ArrayDeque<FXBase> queuedRenders = new ArrayDeque<>();
+   public FXSmokeSpiral(World world, double d, double d1, double d2, float radius, int start, int miny, SusVec3 direction, ResourceLocation resourceLocation) {
       super(world, d, d1, d2, 0.0D, 0.0D, 0.0D, 20, 0.5f, true, resourceLocation, false);
       this.particleGravity = -0.01F;
       this.motionX = this.motionY = this.motionZ = 0.0D;
@@ -61,7 +57,7 @@ public class FXSusSmokeSpiral extends FXSusBase {
       float zRendered = f13 + (float) resultVec3.z * radius;
 
       tessellator.setBrightness(getBrightnessForRender(partialTick));
-      SusUtils.INSTANCE.bindColor(tessellator, SusUtils.humilitasColor, 0.4f, 1f);
+      SusGraphicHelper.INSTANCE.bindColor(tessellator, SusUtils.humilitasColor, 0.4f, 1f);
       tessellator.addVertexWithUV(xRendered - x * f10 - u * f10, yRendered - y * f10, (zRendered - z * f10 - v * f10), 0, 0);
       tessellator.addVertexWithUV(xRendered - x * f10 + u * f10, yRendered + y * f10, (zRendered - z * f10 + v * f10), 0, 1);
       tessellator.addVertexWithUV(xRendered + x * f10 + u * f10, yRendered + y * f10, (zRendered + z * f10 + v * f10), 1, 1);
@@ -77,12 +73,12 @@ public class FXSusSmokeSpiral extends FXSusBase {
 
    }
    @Override
-   public ArrayDeque<FXSusBase> getQueuedDepthIgnoringRenders() {
+   public ArrayDeque<FXBase> getQueuedDepthIgnoringRenders() {
       return queuedDepthIgnoringRenders;
    }
 
    @Override
-   public ArrayDeque<FXSusBase> getQueuedRenderers() {
+   public ArrayDeque<FXBase> getQueuedRenderers() {
       return queuedRenders;
    }
 

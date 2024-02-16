@@ -4,7 +4,7 @@ package com.suslovila.client.render.tile;
 import com.suslovila.client.particles.FXAntiNode;
 import com.suslovila.common.block.tileEntity.TileAntiNode;
 import com.suslovila.ExampleMod;
-import com.suslovila.api.utils.SusVec3;
+import com.suslovila.utils.SusVec3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
@@ -19,16 +19,13 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.suslovila.api.utils.SusUtils.antiNodeAppearanceTime;
+import static com.suslovila.utils.SusUtils.antiNodeAppearanceTime;
 import static org.lwjgl.opengl.GL11.*;
 
 public class TileAntiNodeRenderer extends TileNodeRenderer {
     Random random = new Random();
-
-
-
+    
     public static final ResourceLocation nodetex = new ResourceLocation(ExampleMod.MOD_ID, "textures/antinode/antinodetexture.png");
-
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
@@ -78,7 +75,6 @@ public class TileAntiNodeRenderer extends TileNodeRenderer {
                 scale = MathHelper.sin((float)viewer.ticksExisted / (14.0F - (float)count)) * bscale + bscale * 2.0F;
                 scale = 0.2F + scale * ((float)(j == 0 ? 25:50)/ 50.0F);
                 scale = scale * size;
-                //angle = (float)(time % (long)(5000 + 500 * count)) / (5000.0F + (float)(500 * count)) * rad;
                 UtilsFX.renderFacingStrip((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, 0, scale*(j == 1 ? 0.65f : 0.7f) * sizeOfNode, alpha, 1, 0, 0, partialTicks, (j == 0 ? 4210752:5685248));
                 GL11.glDisable(GL_BLEND);
                 GL11.glPopMatrix();

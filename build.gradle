@@ -31,8 +31,7 @@ targetCompatibility = sourceCompatibility = JavaVersion.VERSION_1_8
 
 minecraft {
 	version = "1.7.10-10.13.4.1614-1.7.10"
-
-	runDir = "eclipse"
+	mappings = "stable_12"
 }
 
 // Активация поддержки юникода, чтобы не было кракозябр
@@ -145,5 +144,12 @@ compileKotlin {
 task AAAAAA {
 	doLast{
 		println 'SomeThing happens'
+	}
+}
+
+
+jar {
+	manifest {
+		attributes 'FMLAT': 'kharium_at.cfg'
 	}
 }

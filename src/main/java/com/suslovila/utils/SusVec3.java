@@ -1,7 +1,8 @@
-package com.suslovila.api.utils;
+package com.suslovila.utils;
 
 
 import net.minecraftforge.common.util.ForgeDirection;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,10 +11,10 @@ import java.util.List;
 
 public class SusVec3 {
    //JUST COPIED FROM 1.18 VERSION BECAUSE I FIND VECTORS ON IT MORE COMFORTABLE
+   public double x;
+   public double y;
+   public double z;
    public static final SusVec3 ZERO = new SusVec3(0.0D, 0.0D, 0.0D);
-   public final double x;
-   public final double y;
-   public final double z;
 
    public static SusVec3 fromRGB24(int p_82502_) {
       double d0 = (double)(p_82502_ >> 16 & 255) / 255.0D;
@@ -21,22 +22,11 @@ public class SusVec3 {
       double d2 = (double)(p_82502_ & 255) / 255.0D;
       return new SusVec3(d0, d1, d2);
    }
-
-//   public static Vec3 atCenterOf(Vec3 p_82513_) {
-//      return new Vec3((double)p_82513_.getX() + 0.5D, (double)p_82513_.getY() + 0.5D, (double)p_82513_.getZ() + 0.5D);
-//   }
-//
-//   public static Vec3 atLowerCornerOf(Vec3i p_82529_) {
-//      return new Vec3((double)p_82529_.getX(), (double)p_82529_.getY(), (double)p_82529_.getZ());
-//   }
-//
-//   public static Vec3 atBottomCenterOf(Vec3i p_82540_) {
-//      return new Vec3((double)p_82540_.getX() + 0.5D, (double)p_82540_.getY(), (double)p_82540_.getZ() + 0.5D);
-//   }
-//
-//   public static Vec3 upFromBottomCenterOf(Vec3i p_82515_, double p_82516_) {
-//      return new Vec3((double)p_82515_.getX() + 0.5D, (double)p_82515_.getY() + p_82516_, (double)p_82515_.getZ() + 0.5D);
-//   }
+   public SusVec3(Number x, Number y, Number z) {
+      this.x = x.doubleValue();
+      this.y = y.doubleValue();
+      this.z = z.doubleValue();
+   }
 
    public SusVec3(double p_82484_, double p_82485_, double p_82486_) {
       this.x = p_82484_;
@@ -53,9 +43,6 @@ public class SusVec3 {
       this.y = p_82485_;
       this.z = p_82486_;
    }
-//   public Vec3(Vector3f p_82488_) {
-//      this((double)p_82488_.x(), (double)p_82488_.y(), (double)p_82488_.z());
-//   }
 
    public SusVec3 vectorTo(SusVec3 p_82506_) {
       return new SusVec3(p_82506_.x - this.x, p_82506_.y - this.y, p_82506_.z - this.z);
@@ -81,7 +68,9 @@ public class SusVec3 {
    public SusVec3 subtract(double p_82493_, double p_82494_, double p_82495_) {
       return this.add(-p_82493_, -p_82494_, -p_82495_);
    }
-
+   public SusVec3 subtract(int p_82493_, int p_82494_, int p_82495_) {
+      return this.add(-p_82493_, -p_82494_, -p_82495_);
+   }
    public SusVec3 add(SusVec3 p_82550_) {
       return this.add(p_82550_.x, p_82550_.y, p_82550_.z);
    }
@@ -90,9 +79,7 @@ public class SusVec3 {
       return new SusVec3(this.x + p_82521_, this.y + p_82522_, this.z + p_82523_);
    }
 
-//   public boolean closerThan(Position p_82510_, double p_82511_) {
-//      return this.distanceToSqr(p_82510_.x(), p_82510_.y(), p_82510_.z()) < p_82511_ * p_82511_;
-//   }
+
 
    public double distanceTo(SusVec3 p_82555_) {
       double d0 = p_82555_.x - this.x;
@@ -210,9 +197,6 @@ public class SusVec3 {
       return new SusVec3(d0, d1, d2);
    }
 
-//   public static Vec3 directionFromRotation(Vec2 p_82504_) {
-//      return directionFromRotation(p_82504_.x, p_82504_.y);
-//   }
 
    public static SusVec3 directionFromRotation(float p_82499_, float p_82500_) {
       double f = Math.cos(-p_82500_ * ((float)Math.PI / 180F) - (float)Math.PI);
@@ -222,23 +206,6 @@ public class SusVec3 {
       return new SusVec3((double)(f1 * f2), (double)f3, (double)(f * f2));
    }
 
-//   public Vec3 align(EnumSet<Direction.Axis> p_82518_) {
-//      double d0 = p_82518_.contains(Direction.Axis.X) ? (double)Mth.floor(this.x) : this.x;
-//      double d1 = p_82518_.contains(Direction.Axis.Y) ? (double)Mth.floor(this.y) : this.y;
-//      double d2 = p_82518_.contains(Direction.Axis.Z) ? (double)Mth.floor(this.z) : this.z;
-//      return new Vec3(d0, d1, d2);
-//   }
-
-//   public double get(Direction.Axis p_82508_) {
-//      return p_82508_.choose(this.x, this.y, this.z);
-//   }
-//
-//   public Vec3 with(Direction.Axis p_193104_, double p_193105_) {
-//      double d0 = p_193104_ == Direction.Axis.X ? p_193105_ : this.x;
-//      double d1 = p_193104_ == Direction.Axis.Y ? p_193105_ : this.y;
-//      double d2 = p_193104_ == Direction.Axis.Z ? p_193105_ : this.z;
-//      return new Vec3(d0, d1, d2);
-//   }
 
    public final double x() {
       return this.x;
@@ -266,7 +233,26 @@ public class SusVec3 {
    public static double angleBetweenVec3(SusVec3 vec1, SusVec3 vec2){
       return Math.acos(vec1.dot(vec2)/vec1.length()/vec2.length());
    }
-//   public  SusVec3 rotateAroundVec3(SusVec3 vec3){
-//
-//   }
+
+   public static<T extends Number> SusVec3 fromCollection(Collection<T> collection) throws Exception {
+      if(collection.size() != 3) throw new Exception("collection size should be 3");
+      Number[] array = new Number[3];
+      collection.toArray(array);
+      return new SusVec3(array[0], array[1], array[2]);
+   }
+
+   @NotNull
+   public Integer component1() {
+      return (int)x;
+   }
+   @NotNull
+   public Integer component2() {
+      return (int)y;
+   }
+   @NotNull
+   public Integer component3() {
+      return (int)z;
+   }
+
+
 }

@@ -17,7 +17,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 @Mod(name = ExampleMod.NAME, modid = ExampleMod.MOD_ID, version = ExampleMod.VERSION, dependencies = "required-after:Thaumcraft")
 public class ExampleMod {
-//TODO: сделать нормальный блин обработчик партиклов, либо же забить на все это
 	public static final String NAME = "anticraft";
 	public static final String MOD_ID = "examplemod";
 	public static final String VERSION = "1.0";

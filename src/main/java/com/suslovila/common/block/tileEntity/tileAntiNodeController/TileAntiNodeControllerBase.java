@@ -1,6 +1,6 @@
 package com.suslovila.common.block.tileEntity.tileAntiNodeController;
 
-import com.suslovila.api.utils.SusVec3;
+import com.suslovila.utils.SusVec3;
 import net.minecraft.tileentity.TileEntity;
 
 import java.util.ArrayList;

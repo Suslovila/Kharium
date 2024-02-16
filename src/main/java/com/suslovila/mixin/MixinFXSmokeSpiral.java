@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import thaumcraft.client.fx.particles.FXSmokeSpiral;
 
-import static com.suslovila.api.utils.SusUtilsKt.cos;
-import static com.suslovila.api.utils.SusUtilsKt.sin;
+import static com.suslovila.utils.SusUtilsKt.cos;
+import static com.suslovila.utils.SusUtilsKt.sin;
 
 @Mixin(value = FXSmokeSpiral.class)
 public class MixinFXSmokeSpiral extends EntityFX {

@@ -30,7 +30,6 @@ public class BlockEssentiaReservoirVoid extends BlockEssentiaReservoir {
         setBlockName("blockEssentiaReservoirVoid");
         this.setStepSound(Block.soundTypeMetal);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        //this.setCreativeTab(Thaumcraft.tabTC);
 
     }
 
