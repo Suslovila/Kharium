@@ -59,7 +59,7 @@ public class FXEssentiaTrail extends EntityFX {
             this.particleMaxAge = 0;
          }
       } catch (Exception var30) {
-         ;
+         System.out.println("error creating particle");
       }
 
    }

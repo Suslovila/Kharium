@@ -7,8 +7,7 @@
   "mixins": [
     "MixinTileNode",
     "MixinTileNodeRenderer",
-    "MixinEntityFX",
-    "MixinFXSmokeSpiral"
+    "MixinEntityFX"
   ],
   "client": [],
   "server": []

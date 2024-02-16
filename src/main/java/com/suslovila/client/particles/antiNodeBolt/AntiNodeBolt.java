@@ -68,7 +68,7 @@ public class AntiNodeBolt extends EntityFX {
 
     private void setupFromMain() {
         this.particleAge = this.main.particleMaxAge;
-        this.setPosition((double)this.main.start.x, (double)this.main.start.y, (double)this.main.start.z);
+        this.setPosition((double) this.main.start.x, (double) this.main.start.y, (double) this.main.start.z);
         this.setVelocity(0.0D, 0.0D, 0.0D);
     }
 
@@ -100,7 +100,7 @@ public class AntiNodeBolt extends EntityFX {
 
     public void onUpdate() {
         this.main.onUpdate();
-        if(this.main.particleAge >= this.main.particleMaxAge) {
+        if (this.main.particleAge >= this.main.particleMaxAge) {
             this.setDead();
         }
 
@@ -108,58 +108,58 @@ public class AntiNodeBolt extends EntityFX {
 
     private static WRVector3 getRelativeViewVector(WRVector3 pos) {
         EntityPlayer renderentity = FMLClientHandler.instance().getClient().thePlayer;
-        return new WRVector3((double)((float)renderentity.posX - pos.x), (double)((float)renderentity.posY - pos.y), (double)((float)renderentity.posZ - pos.z));
+        return new WRVector3((double) ((float) renderentity.posX - pos.x), (double) ((float) renderentity.posY - pos.y), (double) ((float) renderentity.posZ - pos.z));
     }
 
     private void renderBolt(Tessellator tessellator, float partialframe, float cosyaw, float cospitch, float sinyaw, float cossinpitch, int pass, float mainalpha) {
-        WRVector3 playervec = new WRVector3((double)(sinyaw * -cospitch), (double)(-cossinpitch / cosyaw), (double)(cosyaw * cospitch));
-        float boltage = this.main.particleAge >= 0?(float)this.main.particleAge / (float)this.main.particleMaxAge:0.0F;
-        if(pass == 0) {
+        WRVector3 playervec = new WRVector3((double) (sinyaw * -cospitch), (double) (-cossinpitch / cosyaw), (double) (cosyaw * cospitch));
+        float boltage = this.main.particleAge >= 0 ? (float) this.main.particleAge / (float) this.main.particleMaxAge : 0.0F;
+        if (pass == 0) {
             mainalpha = (1.0F - boltage) * 0.4F;
         } else {
             mainalpha = 1.0F - boltage * 0.5F;
         }
 
-        int renderlength = (int)(((float)this.main.particleAge + partialframe + (float)((int)(this.main.length * 3.0F))) / (float)((int)(this.main.length * 3.0F)) * (float)this.main.numsegments0);
+        int renderlength = (int) (((float) this.main.particleAge + partialframe + (float) ((int) (this.main.length * 3.0F))) / (float) ((int) (this.main.length * 3.0F)) * (float) this.main.numsegments0);
 
-        for(FXLightningBoltCommon.Segment rendersegment : this.main.segments) {
-            if(rendersegment.segmentno <= renderlength) {
+        for (FXLightningBoltCommon.Segment rendersegment : this.main.segments) {
+            if (rendersegment.segmentno <= renderlength) {
                 float width = this.width * (getRelativeViewVector(rendersegment.startpoint.point).length() / 5.0F + 1.0F) * (1.0F + rendersegment.light) * 0.5F;
                 WRVector3 diff1 = WRVector3.crossProduct(playervec, rendersegment.prevdiff).scale(width / rendersegment.sinprev);
                 WRVector3 diff2 = WRVector3.crossProduct(playervec, rendersegment.nextdiff).scale(width / rendersegment.sinnext);
                 WRVector3 startvec = rendersegment.startpoint.point;
                 WRVector3 endvec = rendersegment.endpoint.point;
-                float rx1 = (float)((double)startvec.x - interpPosX);
-                float ry1 = (float)((double)startvec.y - interpPosY);
-                float rz1 = (float)((double)startvec.z - interpPosZ);
-                float rx2 = (float)((double)endvec.x - interpPosX);
-                float ry2 = (float)((double)endvec.y - interpPosY);
-                float rz2 = (float)((double)endvec.z - interpPosZ);
+                float rx1 = (float) ((double) startvec.x - interpPosX);
+                float ry1 = (float) ((double) startvec.y - interpPosY);
+                float rz1 = (float) ((double) startvec.z - interpPosZ);
+                float rx2 = (float) ((double) endvec.x - interpPosX);
+                float ry2 = (float) ((double) endvec.y - interpPosY);
+                float rz2 = (float) ((double) endvec.z - interpPosZ);
                 tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, mainalpha * rendersegment.light);
-                tessellator.addVertexWithUV((double)(rx2 - diff2.x), (double)(ry2 - diff2.y), (double)(rz2 - diff2.z), 0.5D, 0.0D);
-                tessellator.addVertexWithUV((double)(rx1 - diff1.x), (double)(ry1 - diff1.y), (double)(rz1 - diff1.z), 0.5D, 0.0D);
-                tessellator.addVertexWithUV((double)(rx1 + diff1.x), (double)(ry1 + diff1.y), (double)(rz1 + diff1.z), 0.5D, 1.0D);
-                tessellator.addVertexWithUV((double)(rx2 + diff2.x), (double)(ry2 + diff2.y), (double)(rz2 + diff2.z), 0.5D, 1.0D);
-                if(rendersegment.next == null) {
+                tessellator.addVertexWithUV((double) (rx2 - diff2.x), (double) (ry2 - diff2.y), (double) (rz2 - diff2.z), 0.5D, 0.0D);
+                tessellator.addVertexWithUV((double) (rx1 - diff1.x), (double) (ry1 - diff1.y), (double) (rz1 - diff1.z), 0.5D, 0.0D);
+                tessellator.addVertexWithUV((double) (rx1 + diff1.x), (double) (ry1 + diff1.y), (double) (rz1 + diff1.z), 0.5D, 1.0D);
+                tessellator.addVertexWithUV((double) (rx2 + diff2.x), (double) (ry2 + diff2.y), (double) (rz2 + diff2.z), 0.5D, 1.0D);
+                if (rendersegment.next == null) {
                     WRVector3 roundend = rendersegment.endpoint.point.copy().add(rendersegment.diff.copy().normalize().scale(width));
-                    float rx3 = (float)((double)roundend.x - interpPosX);
-                    float ry3 = (float)((double)roundend.y - interpPosY);
-                    float rz3 = (float)((double)roundend.z - interpPosZ);
-                    tessellator.addVertexWithUV((double)(rx3 - diff2.x), (double)(ry3 - diff2.y), (double)(rz3 - diff2.z), 0.0D, 0.0D);
-                    tessellator.addVertexWithUV((double)(rx2 - diff2.x), (double)(ry2 - diff2.y), (double)(rz2 - diff2.z), 0.5D, 0.0D);
-                    tessellator.addVertexWithUV((double)(rx2 + diff2.x), (double)(ry2 + diff2.y), (double)(rz2 + diff2.z), 0.5D, 1.0D);
-                    tessellator.addVertexWithUV((double)(rx3 + diff2.x), (double)(ry3 + diff2.y), (double)(rz3 + diff2.z), 0.0D, 1.0D);
+                    float rx3 = (float) ((double) roundend.x - interpPosX);
+                    float ry3 = (float) ((double) roundend.y - interpPosY);
+                    float rz3 = (float) ((double) roundend.z - interpPosZ);
+                    tessellator.addVertexWithUV((double) (rx3 - diff2.x), (double) (ry3 - diff2.y), (double) (rz3 - diff2.z), 0.0D, 0.0D);
+                    tessellator.addVertexWithUV((double) (rx2 - diff2.x), (double) (ry2 - diff2.y), (double) (rz2 - diff2.z), 0.5D, 0.0D);
+                    tessellator.addVertexWithUV((double) (rx2 + diff2.x), (double) (ry2 + diff2.y), (double) (rz2 + diff2.z), 0.5D, 1.0D);
+                    tessellator.addVertexWithUV((double) (rx3 + diff2.x), (double) (ry3 + diff2.y), (double) (rz3 + diff2.z), 0.0D, 1.0D);
                 }
 
-                if(rendersegment.prev == null) {
+                if (rendersegment.prev == null) {
                     WRVector3 roundend = rendersegment.startpoint.point.copy().sub(rendersegment.diff.copy().normalize().scale(width));
-                    float rx3 = (float)((double)roundend.x - interpPosX);
-                    float ry3 = (float)((double)roundend.y - interpPosY);
-                    float rz3 = (float)((double)roundend.z - interpPosZ);
-                    tessellator.addVertexWithUV((double)(rx1 - diff1.x), (double)(ry1 - diff1.y), (double)(rz1 - diff1.z), 0.5D, 0.0D);
-                    tessellator.addVertexWithUV((double)(rx3 - diff1.x), (double)(ry3 - diff1.y), (double)(rz3 - diff1.z), 0.0D, 0.0D);
-                    tessellator.addVertexWithUV((double)(rx3 + diff1.x), (double)(ry3 + diff1.y), (double)(rz3 + diff1.z), 0.0D, 1.0D);
-                    tessellator.addVertexWithUV((double)(rx1 + diff1.x), (double)(ry1 + diff1.y), (double)(rz1 + diff1.z), 0.5D, 1.0D);
+                    float rx3 = (float) ((double) roundend.x - interpPosX);
+                    float ry3 = (float) ((double) roundend.y - interpPosY);
+                    float rz3 = (float) ((double) roundend.z - interpPosZ);
+                    tessellator.addVertexWithUV((double) (rx1 - diff1.x), (double) (ry1 - diff1.y), (double) (rz1 - diff1.z), 0.5D, 0.0D);
+                    tessellator.addVertexWithUV((double) (rx3 - diff1.x), (double) (ry3 - diff1.y), (double) (rz3 - diff1.z), 0.0D, 0.0D);
+                    tessellator.addVertexWithUV((double) (rx3 + diff1.x), (double) (ry3 + diff1.y), (double) (rz3 + diff1.z), 0.0D, 1.0D);
+                    tessellator.addVertexWithUV((double) (rx1 + diff1.x), (double) (ry1 + diff1.y), (double) (rz1 + diff1.z), 0.5D, 1.0D);
                 }
             }
         }
@@ -169,18 +169,18 @@ public class AntiNodeBolt extends EntityFX {
     public void renderParticle(Tessellator tessellator, float partialframe, float cosyaw, float cospitch, float sinyaw, float sinsinpitch, float cossinpitch) {
         EntityPlayer renderentity = FMLClientHandler.instance().getClient().thePlayer;
         int visibleDistance = 100;
-        if(!FMLClientHandler.instance().getClient().gameSettings.fancyGraphics) {
+        if (!FMLClientHandler.instance().getClient().gameSettings.fancyGraphics) {
             visibleDistance = 50;
         }
 
-        if(((EntityPlayer)renderentity).getDistance(this.posX, this.posY, this.posZ) <= (double)visibleDistance) {
+        if (((EntityPlayer) renderentity).getDistance(this.posX, this.posY, this.posZ) <= (double) visibleDistance) {
             tessellator.draw();
             GL11.glPushMatrix();
             GL11.glDepthMask(false);
             GL11.glEnable(3042);
             this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
             float ma = 1.0F;
-            switch(this.type) {
+            switch (this.type) {
                 case 0:
                     this.particleRed = 1F;
                     this.particleGreen = 0F;
@@ -230,7 +230,7 @@ public class AntiNodeBolt extends EntityFX {
             tessellator.setBrightness(15728880);
             this.renderBolt(tessellator, partialframe, cosyaw, cospitch, sinyaw, cossinpitch, 0, ma);
             tessellator.draw();
-            switch(this.type) {
+            switch (this.type) {
                 case 0:
                     this.particleRed = 1.0F;
                     this.particleGreen = 0.0F;

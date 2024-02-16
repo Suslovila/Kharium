@@ -1,6 +1,6 @@
 package com.suslovila.client.render.item;
 
-import com.suslovila.client.render.tile.TileAntiNodeRenderer;
+import com.suslovila.client.render.tile.tileAntiNodeController.TileAntiNodeRenderer;
 import com.suslovila.common.block.ModBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,7 +15,6 @@ import thaumcraft.api.nodes.INode;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.tile.ItemNodeRenderer;
-import thaumcraft.client.renderers.tile.TileNodeRenderer;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileNode;
 
@@ -81,7 +80,7 @@ public class ItemAntiNodeRenderer extends ItemNodeRenderer {
             GL11.glPushMatrix();
             float rad = 6.2831855F;
             GL11.glColor4f(1.0F, 1.0F, 1.0F, alpha);
-            UtilsFX.bindTexture(TileAntiNodeRenderer.nodetex);
+            UtilsFX.bindTexture(TileAntiNodeRenderer.INSTANCE.getAntiNodeTexture());
             int frames = 32;
             int i = (int)((nt / 40000000L + 1L) % (long)frames);
             int count = 0;

@@ -21,11 +21,11 @@ import net.minecraftforge.common.MinecraftForge
 open class CommonProxy {
     open fun preInit(event : FMLPreInitializationEvent) {
 		Config.registerServerConfig(event.suggestedConfigurationFile)
-        FMLCommonHandler.instance().bus().register(FMLEventListener())
-        MinecraftForge.EVENT_BUS.register(FMLEventListener())
+        FMLCommonHandler.instance().bus().register(FMLEventListener)
+        MinecraftForge.EVENT_BUS.register(FMLEventListener)
         FMLCommonHandler.instance().bus().register(PrimordialExplosionHandler)
         MinecraftForge.EVENT_BUS.register(PrimordialExplosionHandler)
-        MinecraftForge.EVENT_BUS.register(MixinListener())
+        MinecraftForge.EVENT_BUS.register(MixinListener)
         ModBlocks.register()
         ModItems.register()
         ACAspect.initAspects()

@@ -5,10 +5,10 @@ sealed interface IKharuManipulator
 
 interface IKharuContainer : IKharuSupplier, IKharuConsumer {
     fun getStoredKharuAmount(): Int
-    fun getCapacity() : Int
+    fun getCapacity(): Int
 }
 
-interface IKharuConsumer  : IKharuManipulator {
+interface IKharuConsumer : IKharuManipulator {
     //this methods return successfully put Kharu
     fun putToItself(amount: Int): Int
 
@@ -17,11 +17,10 @@ interface IKharuConsumer  : IKharuManipulator {
     fun setSuction()
 }
 
-interface IKharuSupplier  : IKharuManipulator {
+interface IKharuSupplier : IKharuManipulator {
     //this methods return successfully taken Kharu
     fun takeFromItself(amount: Int): Int
 }
-
 
 
 interface IKharuTransport : IKharuManipulator {

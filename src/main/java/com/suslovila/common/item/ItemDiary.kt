@@ -13,19 +13,19 @@ import thaumcraft.common.lib.research.ResearchManager
 
 class ItemDiary : Item() {
     init {
-        unlocalizedName = "diary";
-        setTextureName(ExampleMod.MOD_ID + ":diary");
-        setMaxStackSize(1);
+        unlocalizedName = "diary"
+        setTextureName(ExampleMod.MOD_ID + ":diary")
+        setMaxStackSize(1)
         creativeTab = ExampleMod.tab
 
     }
-    override fun onItemRightClick(stack : ItemStack, world : World, player : EntityPlayer) : ItemStack {
+
+    override fun onItemRightClick(stack: ItemStack, world: World, player: EntityPlayer): ItemStack {
         if (!world.isRemote && !ResearchManager.isResearchComplete(player.commandSenderName, "DIARY")) {
-            if(Thaumcraft.proxy.playerKnowledge.getWarpTotal(player.commandSenderName) >= 100) {
+            if (Thaumcraft.proxy.playerKnowledge.getWarpTotal(player.commandSenderName) >= 100) {
                 ThaumcraftIntegrator.completeNormalResearch("DIARY", player, world)
                 --stack.stackSize
-            }
-            else player.addChatMessage(ChatComponentText("§5§o" + StatCollector.translateToLocal("diary.text")))
+            } else player.addChatMessage(ChatComponentText("§5§o" + StatCollector.translateToLocal("diary.text")))
 
         }
         return stack

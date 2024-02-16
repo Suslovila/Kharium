@@ -40,7 +40,7 @@ public class PacketPrimordialExplosions implements IMessage {
               new SusVec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble()), // pos
                     buffer.readDouble(), // radius
                     buffer.readInt(), //time
-                    new ArrayList<>() // empty list, client does not need to destroy blocks
+                    new LinkedList<>() // empty list, client does not need to destroy blocks
             );
             explosions.add(explosion);
         }

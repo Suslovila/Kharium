@@ -31,7 +31,6 @@ public class FXSmokeSpiral extends FXBase {
       this.start = start;
       system = SusUtils.getCordSystemFromVec3(direction);
       onUpdate();
-
    }
 
 
@@ -66,7 +65,6 @@ public class FXSmokeSpiral extends FXBase {
    }
 
    public void onUpdate() {
-      //this.setAlphaF((float)(this.particleMaxAge - this.particleAge) / (float)this.particleMaxAge);
       if(this.particleAge++ >= this.particleMaxAge) {
          this.setDead();
       }

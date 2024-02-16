@@ -32,10 +32,8 @@ class ClientEventHandler {
         for (pos in TileAntiNodeStabilizer.tiles) {
             if (Minecraft.getMinecraft().theWorld.getTileEntity(pos.x.toInt(), pos.y.toInt(), pos.z.toInt()) is TileAntiNodeStabilizer) {
                 val tile = Minecraft.getMinecraft().theWorld.getTileEntity(pos.x.toInt(), pos.y.toInt(), pos.z.toInt()) as TileAntiNodeStabilizer
-                val player = Minecraft.getMinecraft().thePlayer
 
                 glPushMatrix()
-
                 SusGraphicHelper.translateFromPlayerTo(SusVec3(
                     tile.xCoord + 0.5,
                     tile.yCoord + 0.5,

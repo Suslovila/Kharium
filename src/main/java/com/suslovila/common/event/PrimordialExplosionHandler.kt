@@ -34,7 +34,7 @@ object PrimordialExplosionHandler {
     @SubscribeEvent
     fun primordialExplosionsTick(event: WorldTickEvent) {
         if (event.phase != TickEvent.Phase.START && !event.world.isRemote) {
-            val toRemove =  ArrayList<Explosion>()
+            val toRemove = ArrayList<Explosion>()
             event.world.customData.explosions.forEach { expl ->
                 expl.timer++
                 val actualRadius = expl.timer * SusUtils.explosionSpreadSpeed
@@ -44,12 +44,11 @@ object PrimordialExplosionHandler {
                 var blockAmountDestroyed = 0
                 while (expl.remainingBlocksToDestroy.isNotEmpty() && blockAmountDestroyed <= SusUtils.blockAmountDestroyedPerTick) {
                     val iterablePos = expl.remainingBlocksToDestroy[0]
-                    if(iterablePos.distanceTo(expl.pos) <= actualRadius){
+                    if (iterablePos.distanceTo(expl.pos) <= actualRadius) {
                         event.world.setBlockToAir(iterablePos.x.toInt(), iterablePos.y.toInt(), iterablePos.z.toInt())
                         blockAmountDestroyed++
                         expl.remainingBlocksToDestroy.removeAt(0)
-                    }
-                    else break
+                    } else break
                 }
             }
             event.world.customData.explosions.removeAll(toRemove.toSet())
@@ -93,22 +92,22 @@ object PrimordialExplosionHandler {
 }
 
 
-private fun destroyBlocks(world: World, center : SusVec3, radius : Double) {
-        val radiusInt = radius.toInt()
-        val (x, y, z) = center
-        for(x0 in (-radiusInt)..radiusInt){
-            for(y0 in (-radiusInt)..radiusInt){
-                for(z0 in (-radiusInt)..radiusInt){
-                    val distance = sqrt((x0 * x0 + y0 * y0 + z0 * z0).toDouble())
-                    if(distance <= radius){
-                        val xD = x + x0
-                        val yD = y + y0
-                        val zD = z + z0
-                        world.setBlockToAir(xD, yD, zD)
-                    }
+private fun destroyBlocks(world: World, center: SusVec3, radius: Double) {
+    val radiusInt = radius.toInt()
+    val (x, y, z) = center
+    for (x0 in (-radiusInt)..radiusInt) {
+        for (y0 in (-radiusInt)..radiusInt) {
+            for (z0 in (-radiusInt)..radiusInt) {
+                val distance = sqrt((x0 * x0 + y0 * y0 + z0 * z0).toDouble())
+                if (distance <= radius) {
+                    val xD = x + x0
+                    val yD = y + y0
+                    val zD = z + z0
+                    world.setBlockToAir(xD, yD, zD)
                 }
             }
         }
     }
+}
 
 

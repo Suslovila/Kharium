@@ -36,5 +36,5 @@ object RotatableHandler {
         }
     }
 
-    fun getFacingVector(facing: ForgeDirection) = SusVec3.getVec3FromForgeDirection(facing)
+    fun getFacingVector(facing: ForgeDirection): SusVec3 = SusVec3.getVec3FromForgeDirection(facing)
 }

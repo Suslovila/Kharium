@@ -22,15 +22,11 @@ public class BlockEssentiaReservoirVoidItem extends BlockEssentiaReservoirItem {
 
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
         boolean placed = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
-        if(placed) {
-            try {
-                TileEssentiaReservoirVoid ts = (TileEssentiaReservoirVoid)world.getTileEntity(x, y, z);
-                ts.facing = ForgeDirection.getOrientation(side).getOpposite();
-                ts.markDirty();
-                world.markBlockForUpdate(x, y, z);
-            } catch (Exception var14) {
-                ;
-            }
+        if (placed) {
+            TileEssentiaReservoirVoid ts = (TileEssentiaReservoirVoid) world.getTileEntity(x, y, z);
+            ts.facing = ForgeDirection.getOrientation(side).getOpposite();
+            ts.markDirty();
+            world.markBlockForUpdate(x, y, z);
         }
 
         return placed;

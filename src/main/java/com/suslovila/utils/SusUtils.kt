@@ -56,8 +56,9 @@ fun getCordSystemFromVec3(vec3: SusVec3) : ArrayList<SusVec3> {
 
             else -> orthogonal = SusVec3(0.0,0.0,0.0)
         }
-        return orthogonal
+        return orthogonal.normalize()
     }
+
     fun getSphereShapeCords(center : SusVec3, radius : Double) : ArrayList<SusVec3> {
         val radiusInt = radius.toInt()
         val roundedCenter = SusVec3(center.x.toInt(), center.y.toInt(), center.z.toInt())

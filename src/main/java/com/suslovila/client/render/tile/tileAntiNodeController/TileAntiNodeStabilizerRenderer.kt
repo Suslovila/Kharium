@@ -15,16 +15,12 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.texture.TextureMap
-import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.MathHelper
 import net.minecraft.util.ResourceLocation
-import net.minecraft.world.World
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
-import net.minecraftforge.common.util.ForgeDirection
 import org.lwjgl.opengl.GL11.*
 import thaumcraft.client.fx.ParticleEngine
-import thaumcraft.client.fx.particles.FXEssentiaTrail
 import thaumcraft.client.lib.UtilsFX
 import thaumcraft.common.config.Config
 import java.awt.Color
@@ -45,24 +41,6 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
 
     }
 
-//    override fun renderTileEntityAt(tile: TileEntity?, x: Double, y: Double, z: Double, ticks: Float) {
-//        tile?.worldObj ?: return
-//        val time = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + ticks
-//
-//        glPushMatrix()
-//        glTranslated(x + 0.5, y + 0.5, z + 0.5)
-//        glPushMatrix()
-//        (tile as TileRotatable).rotateFromOrientation()
-//        renderCore()
-//        renderMagicCircles(time)
-//        glPopMatrix()
-//        renderPlasmaWaves(tile.xCoord + 0.5, tile.yCoord + 0.5, tile.zCoord + 0.5, ticks, tile)
-//        renderSpinningEssence(tile as TileAntiNodeStabilizer)
-//
-//        glPopMatrix()
-//        UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
-//    }
-
     override fun render(tile: TileAntiNodeStabilizer, partialTicks: Float) {
         tile.worldObj ?: return
         val time = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + partialTicks
@@ -72,7 +50,8 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
         renderCore()
         renderMagicCircles(time)
         glPopMatrix()
-        renderPlasmaWaves(tile.xCoord + 0.5, tile.yCoord + 0.5, tile.zCoord + 0.5, partialTicks, tile)
+
+        renderPlasmaWaves(partialTicks, tile)
         renderSpinningEssence(tile)
 
         UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
@@ -116,7 +95,6 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
         glPushMatrix()
         glTranslated(0.0, 0.01, 0.0)
         glRotatef(-(time * 4 % 360), 0f, 1f, 0f)
-        //xglScaled(0.6, 0.6, 0.6)
         SusGraphicHelper.drawGuideArrows()
 
         UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/blocks/circle3.png")
@@ -232,116 +210,31 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
     }
 
 
-    fun renderPlasmaWaves(xCenter: Double, yCenter: Double, zCenter: Double, partialTicks: Float, tile: TileAntiNodeStabilizer) {
+    private fun renderPlasmaWaves(partialTicks: Float, tile: TileAntiNodeStabilizer) {
         glPushMatrix()
-
-        val ticks = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + partialTicks
+        val time = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + partialTicks
         RotatableHandler.rotateFromOrientation(tile.facing)
-
         for (i in 1..4) {
             glPushMatrix()
             glRotatef(90f * i, 0f, 1f, 0f)
-            drawFloatyLine(
-                xCenter, humilitasColor, "textures/misc/wispy.png", 0.1f,
-                Math.min(ticks, 10.0f) / 10.0f, 0.3F, 1F, 2F, 1F, ticks
+            glTranslated(2.0, -0.4, 0.0)
+            SusGraphicHelper.drawFloatyLine(
+                xFrom = -1.35,
+                yFrom = 1.5,
+                zFrom = 0.0,
+                color = humilitasColor,
+                ResourceLocation("thaumcraft", "textures/misc/wispy.png"),
+                speed = 0.1f,
+                Math.min(time, 10.0f) / 10.0f,
+                width = 0.3F,
+                xScale = 1F,
+                yScale = 2F,
+                zScale = 1F,
+                time = time
             )
             glPopMatrix()
         }
-
         glPopMatrix()
-    }
-
-    //drows line from specified position to zero of cord system
-    fun drawFloatyLine(
-        factor: Double,
-        color: Int,
-        texture: String?,
-        speed: Float,
-        distance: Float,
-        width: Float,
-        xScale: Float,
-        yScale: Float,
-        zScale: Float,
-        ticks: Float
-    ) {
-
-        glTranslated(2.0, -0.4, 0.0)
-        val time = ticks
-        val co = Color(color)
-        val r = co.red / 255.0f
-        val g = co.green / 255.0f
-        val b = co.blue / 255.0f
-        glDepthMask(false)
-        glEnable(GL_BLEND)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
-
-
-        val tessellator = Tessellator.instance
-        var dc1x = -1.35
-        var dc1y = 1.5
-        var dc1z = 0.0
-
-
-        UtilsFX.bindTexture(texture)
-        glDisable(2884)
-        tessellator.startDrawing(5)
-
-        tessellator.setBrightness(15728880)
-
-        val dist = MathHelper.sqrt_double(dc1x * dc1x + dc1y * dc1y + dc1z * dc1z)
-        val blocks = Math.round(dist)
-        val length = blocks * (Config.golemLinkQuality / 2.0f)
-        val f9 = 0.0f
-        val x0 = 1.0f
-        var i = 0
-        while (i <= length * distance) {
-            val f2 = i / length
-            val f3 = 1.0f - Math.abs(i - length / 2.0f) / (length / 2.0f)
-            var dx =
-                dc1x + (MathHelper.sin(((f3 % 16.0 + (dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 4.0).toFloat()) * 0.2f * f3)
-            var dy =
-                dc1y + (MathHelper.sin(((factor % 16.0 + (dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 3.0).toFloat()) * 0.2f * f3)
-            var dz =
-                dc1z + (MathHelper.sin(((f2 % 16.0 + (dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 2.0).toFloat()) * 0.2f * f3)
-            tessellator.setColorRGBA_F(r, g, b, f3)
-            val x3 = (1.0f - f2) * dist - time * speed
-
-            dx /= xScale
-            dy /= yScale
-            dz /= zScale
-
-            tessellator.addVertexWithUV(dx * f2, dy * f2 - width, dz * f2, x3.toDouble(), x0.toDouble())
-            tessellator.addVertexWithUV(dx * f2, dy * f2 + width, dz * f2, x3.toDouble(), f9.toDouble())
-            ++i
-        }
-        tessellator.draw()
-
-        tessellator.startDrawing(5)
-        var var84 = 0
-        while (var84 <= length * distance) {
-            val f2 = var84.toFloat() / length
-            val f3 = 1.0f - Math.abs(var84 - length / 2.0f) / (length / 2.0f)
-            var dx =
-                dc1x + (MathHelper.sin(((f3 % 16.0 + (dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 4.0).toFloat()) * 0.2f * f3)
-            var dy =
-                dc1y + (MathHelper.sin(((factor % 16.0 + (dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 3.0).toFloat()) * 0.2f * f3)
-            var dz =
-                dc1z + (MathHelper.sin(((f2 % 16.0 + (dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 2.0).toFloat()) * 0.2f * f3)
-            tessellator.setColorRGBA_F(r, g, b, f3)
-            val x3 = (1.0f - f2) * dist - time * speed
-
-            dx /= xScale
-            dy /= yScale
-            dz /= zScale
-
-            tessellator.addVertexWithUV(dx * f2 - width, dy * f2, dz * f2, x3.toDouble(), x0.toDouble())
-            tessellator.addVertexWithUV(dx * f2 + width, dy * f2, dz * f2, x3.toDouble(), f9.toDouble())
-            ++var84
-        }
-        tessellator.draw()
-        glEnable(GL_CULL_FACE)
-        glDisable(GL_BLEND)
-        glDepthMask(true)
     }
 
 }

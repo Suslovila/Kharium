@@ -13,6 +13,7 @@ public class BlockAntiNodeControllerBase extends BlockContainer {
         super(Material.iron);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
+
     public boolean isOpaqueCube() {
         return false;
     }
@@ -20,6 +21,7 @@ public class BlockAntiNodeControllerBase extends BlockContainer {
     public boolean renderAsNormalBlock() {
         return false;
     }
+
     @Override
     public int getRenderType() {
         return -1;
@@ -29,9 +31,13 @@ public class BlockAntiNodeControllerBase extends BlockContainer {
     public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
         return new TileAntiNodeControllerBase();
     }
+
     public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
         return false;
     }
-    public int getRenderBlockPass() {return 1;}
+
+    public int getRenderBlockPass() {
+        return 1;
+    }
 
 }

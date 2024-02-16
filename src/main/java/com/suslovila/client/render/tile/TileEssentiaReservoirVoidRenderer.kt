@@ -17,6 +17,7 @@ import thaumcraft.common.config.ConfigBlocks
 import thaumcraft.common.tiles.TileEssentiaReservoir
 
 object TileEssentiaReservoirVoidRenderer: SusTileRenderer<TileEssentiaReservoirVoid>() {
+
     private var model: IModelCustom
     val RELAY = ResourceLocation("thaumcraft", "textures/models/reservoir.obj")
     val reservoirTexture = ResourceLocation("thaumcraft", "textures/models/reservoir.png")
@@ -42,7 +43,7 @@ object TileEssentiaReservoirVoidRenderer: SusTileRenderer<TileEssentiaReservoirV
         UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
     }
 
-    fun renderObsidian() {
+    private fun renderObsidian() {
         if (this.field_147501_a.field_147553_e != null) {
             GL11.glPushMatrix()
             GL11.glTranslatef(-0.5f, -1.5f, 0.65f)
@@ -72,7 +73,7 @@ object TileEssentiaReservoirVoidRenderer: SusTileRenderer<TileEssentiaReservoirV
         }
     }
 
-    fun renderLiquid(tile: TileEssentiaReservoir) {
+    private fun renderLiquid(tile: TileEssentiaReservoir) {
         if (field_147501_a.field_147553_e != null && tile.displayAspect != null && tile.essentia.visSize() != 0) {
             GL11.glPushMatrix()
             GL11.glEnable(3042)
