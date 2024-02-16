@@ -1,6 +1,6 @@
 package com.suslovila.common.item
 
-import com.suslovila.ExampleMod
+import com.suslovila.Kharium
 import com.suslovila.utils.ThaumcraftIntegrator
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
@@ -14,9 +14,9 @@ import thaumcraft.common.lib.research.ResearchManager
 class ItemDiary : Item() {
     init {
         unlocalizedName = "diary"
-        setTextureName(ExampleMod.MOD_ID + ":diary")
+        setTextureName(Kharium.MOD_ID + ":diary")
         setMaxStackSize(1)
-        creativeTab = ExampleMod.tab
+        creativeTab = Kharium.tab
 
     }
 

@@ -1,6 +1,6 @@
 package com.suslovila.client.particles;
 
-import com.suslovila.ExampleMod;
+import com.suslovila.Kharium;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -17,7 +17,7 @@ public class FXKharu extends FXBase {
     public static final ArrayDeque<FXBase> queuedRenders = new ArrayDeque<>();
 
 
-    public static final ResourceLocation FXTexture = new ResourceLocation(ExampleMod.MOD_ID, "textures/particles/antinodefx.png");
+    public static final ResourceLocation FXTexture = new ResourceLocation(Kharium.MOD_ID, "textures/particles/antinodefx.png");
 
 
     public FXKharu(World world, double x, double y, double z, double mX, double mY, double mZ, int lifeTime, float particleSize, boolean depthTest) {

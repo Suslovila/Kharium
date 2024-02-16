@@ -1,6 +1,6 @@
 package com.suslovila.common.worldSavedData
 
-import com.suslovila.ExampleMod
+import com.suslovila.Kharium
 import com.suslovila.utils.SusNBTHelper
 import com.suslovila.utils.SusVec3
 import com.suslovila.common.sync.PacketHandler
@@ -22,7 +22,7 @@ class CustomWorldData(datakey: String) : WorldSavedData(datakey) {
         val World.customData: CustomWorldData
             get() {
                 val dimensionId = provider.dimensionId
-                val name = "${ExampleMod.MOD_ID}_$dimensionId"
+                val name = "${Kharium.MOD_ID}_$dimensionId"
                 var data = perWorldStorage.loadData(CustomWorldData::class.java, name) as? CustomWorldData
                 if (data == null) {
                     data = CustomWorldData(name)

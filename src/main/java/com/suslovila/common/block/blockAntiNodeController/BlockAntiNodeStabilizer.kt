@@ -1,12 +1,10 @@
 package com.suslovila.common.block.blockAntiNodeController
 
-import com.suslovila.ExampleMod
-import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase
+import com.suslovila.Kharium
 import com.suslovila.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer
 import cpw.mods.fml.common.registry.GameRegistry
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.material.Material
-import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.common.util.ForgeDirection
@@ -15,7 +13,7 @@ class BlockAntiNodeStabilizer(name: String) : BlockContainer(Material.iron) {
     init {
         this.setHardness(3.0F)
         this.setResistance(10.0F)
-        this.setCreativeTab(ExampleMod.tab)
+        this.setCreativeTab(Kharium.tab)
         GameRegistry.registerBlock(this, name)
 
     }

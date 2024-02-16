@@ -1,6 +1,6 @@
 package com.suslovila.client.particles
 
-import com.suslovila.ExampleMod
+import com.suslovila.Kharium
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.util.ResourceLocation
@@ -25,7 +25,7 @@ object ParticleRenderDispatcher {
             tessellator,
             FXSmokeSpiral.queuedRenders,
             FXSmokeSpiral.queuedDepthIgnoringRenders,
-            ResourceLocation(ExampleMod.MOD_ID, "textures/misc/p_large.png")
+            ResourceLocation(Kharium.MOD_ID, "textures/misc/p_large.png")
         )
 
         GL11.glDepthMask(true)

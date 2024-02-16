@@ -1,6 +1,6 @@
 package com.suslovila.client.render.tile.tileAntiNodeController
 
-import com.suslovila.ExampleMod
+import com.suslovila.Kharium
 import com.suslovila.client.render.tile.SusTileRenderer
 import com.suslovila.utils.SusGraphicHelper
 import com.suslovila.utils.SusUtils
@@ -15,14 +15,12 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.texture.TextureMap
-import net.minecraft.util.MathHelper
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
 import org.lwjgl.opengl.GL11.*
 import thaumcraft.client.fx.ParticleEngine
 import thaumcraft.client.lib.UtilsFX
-import thaumcraft.common.config.Config
 import java.awt.Color
 
 @SideOnly(Side.CLIENT)
@@ -30,14 +28,14 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
     var glassModel: IModelCustom;
     var coreModel: IModelCustom;
     val runesOverStabilizer = "textures/blocks/stabilizerCoreOver.png"
-    val glassTexture = ResourceLocation(ExampleMod.MOD_ID, "textures/blocks/stabilizerGlasses.png")
-    val coreTexture = ResourceLocation(ExampleMod.MOD_ID, "textures/blocks/stabilizerCore.png")
+    val glassTexture = ResourceLocation(Kharium.MOD_ID, "textures/blocks/stabilizerGlasses.png")
+    val coreTexture = ResourceLocation(Kharium.MOD_ID, "textures/blocks/stabilizerCore.png")
 
     init {
         glassModel =
-            AdvancedModelLoader.loadModel(ResourceLocation(ExampleMod.MOD_ID, "models/blocks/stabilizerGlasses.obj"))
+            AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/blocks/stabilizerGlasses.obj"))
         coreModel =
-            AdvancedModelLoader.loadModel(ResourceLocation(ExampleMod.MOD_ID, "models/blocks/stabilizerCore2.obj"))
+            AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/blocks/stabilizerCore2.obj"))
 
     }
 
@@ -82,7 +80,7 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
         glPushMatrix()
         glRotatef((time * 4) % 360, 0f, 1f, 0f)
         val tessellator = Tessellator.instance
-        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/blocks/circle2.png")
+        UtilsFX.bindTexture(Kharium.MOD_ID, "textures/blocks/circle2.png")
         tessellator.setBrightness(15728880)
         tessellator.startDrawingQuads()
         tessellator.addVertexWithUV(-2.0, 0.0, 2.0, 0.0, 0.0)
@@ -97,7 +95,7 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
         glRotatef(-(time * 4 % 360), 0f, 1f, 0f)
         SusGraphicHelper.drawGuideArrows()
 
-        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/blocks/circle3.png")
+        UtilsFX.bindTexture(Kharium.MOD_ID, "textures/blocks/circle3.png")
         tessellator.setBrightness(15728880)
         tessellator.startDrawingQuads()
         tessellator.addVertexWithUV(-1.0, 0.0, 1.0, 0.0, 0.0)
@@ -111,7 +109,7 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
         glTranslated(0.0, 0.02, 0.0)
         glScaled(0.5, 0.5, 0.5)
 
-        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/blocks/innerRune.png")
+        UtilsFX.bindTexture(Kharium.MOD_ID, "textures/blocks/innerRune.png")
         tessellator.setBrightness(15728880)
         tessellator.startDrawingQuads()
         tessellator.addVertexWithUV(-1.0, 0.0, 1.0, 0.0, 0.0)
@@ -174,7 +172,7 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
         glDisable(GL_LIGHTING)
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE)
-        UtilsFX.bindTexture(ExampleMod.MOD_ID, runesOverStabilizer)
+        UtilsFX.bindTexture(Kharium.MOD_ID, runesOverStabilizer)
         val j = 15728880
         val k = j % 65536
         val l = j / 65536

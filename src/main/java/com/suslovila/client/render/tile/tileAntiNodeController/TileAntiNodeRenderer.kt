@@ -1,6 +1,6 @@
 package com.suslovila.client.render.tile.tileAntiNodeController
 
-import com.suslovila.ExampleMod
+import com.suslovila.Kharium
 import com.suslovila.client.particles.FXKharu
 import com.suslovila.client.render.tile.SusTileRenderer
 import com.suslovila.common.block.tileEntity.KharuTail
@@ -69,7 +69,7 @@ object TileAntiNodeRenderer : SusTileRenderer<TileAntiNode>() {
             if (!Minecraft.getMinecraft().isGamePaused) {
                 if (random.nextInt(9) == 6) {
                     val lightningLength = 2f
-                    ExampleMod.proxy.nodeAntiBolt(
+                    Kharium.proxy.nodeAntiBolt(
                         viewer.worldObj,
                         x = antiNode.xCoord + 0.5f,
                         y = antiNode.yCoord + 0.5f,
@@ -243,6 +243,6 @@ object TileAntiNodeRenderer : SusTileRenderer<TileAntiNode>() {
     }
 
 
-    val antiNodeTexture = ResourceLocation(ExampleMod.MOD_ID, "textures/antinode/antinodetexture.png")
+    val antiNodeTexture = ResourceLocation(Kharium.MOD_ID, "textures/antinode/antinodetexture.png")
 
 }

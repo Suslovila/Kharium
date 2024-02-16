@@ -1,6 +1,6 @@
 package com.suslovila.client.render.tile.tileAntiNodeController
 
-import com.suslovila.ExampleMod;
+import com.suslovila.Kharium;
 import com.suslovila.client.render.tile.SusTileRenderer
 import com.suslovila.utils.SusMathHelper
 import com.suslovila.common.block.tileEntity.TileAntiNodeWatcher;
@@ -20,7 +20,7 @@ object TileAntiNodeWatcherRenderer : SusTileRenderer<TileAntiNodeWatcher>() {
     private val watcher: IModelCustom
 
     init {
-        watcher = AdvancedModelLoader.loadModel(ResourceLocation(ExampleMod.MOD_ID, "models/blocks/watcher.obj"));
+        watcher = AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/blocks/watcher.obj"));
     }
 
     override fun render(tile: TileAntiNodeWatcher, partialTicks: Float) {
@@ -31,7 +31,7 @@ object TileAntiNodeWatcherRenderer : SusTileRenderer<TileAntiNodeWatcher>() {
         var playermp = Minecraft.getMinecraft().thePlayer
         glPushMatrix()
 
-        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/blocks/scanner2.png");
+        UtilsFX.bindTexture(Kharium.MOD_ID, "textures/blocks/scanner2.png");
         //starting rotation
         glRotated(90.0, 1.0, 0.0, 0.0)
         glScaled(0.7, 0.7, 0.7)
@@ -74,7 +74,7 @@ object TileAntiNodeWatcherRenderer : SusTileRenderer<TileAntiNodeWatcher>() {
                 glPopMatrix()
 
                 glTranslated(0.0, width / 2, 0.0)
-                UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/blocks/scanner2.png");
+                UtilsFX.bindTexture(Kharium.MOD_ID, "textures/blocks/scanner2.png");
 
             }
         }

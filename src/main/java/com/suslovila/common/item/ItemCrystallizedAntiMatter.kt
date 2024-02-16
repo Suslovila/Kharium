@@ -1,7 +1,7 @@
 package com.suslovila.common.item
 
 import com.suslovila.Config
-import com.suslovila.ExampleMod
+import com.suslovila.Kharium
 import com.suslovila.mixinUtils.MixinStaticMethods.isNodeBeingTransformed
 import com.suslovila.mixinUtils.MixinStaticMethods.startNodeTransformation
 import com.suslovila.utils.SusNBTHelper.getOrCreateTag
@@ -11,14 +11,8 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
-import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
-import net.minecraftforge.client.IItemRenderer
-import net.minecraftforge.client.model.AdvancedModelLoader.loadModel
-import net.minecraftforge.client.model.IModelCustom
-import org.lwjgl.opengl.GL11.*
 import thaumcraft.api.nodes.NodeType
-import thaumcraft.client.lib.UtilsFX
 import thaumcraft.common.tiles.TileNode
 
 
@@ -29,9 +23,9 @@ class ItemCrystallizedAntiMatter : Item() {
 
     init {
         unlocalizedName = "anti_matter";
-        setTextureName(ExampleMod.MOD_ID + ":anti_matter");
+        setTextureName(Kharium.MOD_ID + ":anti_matter");
         setMaxStackSize(64);
-        creativeTab = ExampleMod.tab
+        creativeTab = Kharium.tab
 
     }
 

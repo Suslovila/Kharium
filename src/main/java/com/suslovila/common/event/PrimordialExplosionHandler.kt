@@ -1,6 +1,6 @@
 package com.suslovila.common.event
 
-import com.suslovila.ExampleMod
+import com.suslovila.Kharium
 import com.suslovila.common.worldSavedData.CustomWorldData.Companion.customData
 import com.suslovila.common.worldSavedData.Explosion
 import com.suslovila.utils.SusGraphicHelper
@@ -20,7 +20,6 @@ import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
 import org.lwjgl.opengl.GL11.*
 import thaumcraft.client.lib.UtilsFX
-import java.util.Queue
 import kotlin.math.sqrt
 
 object PrimordialExplosionHandler {
@@ -28,7 +27,7 @@ object PrimordialExplosionHandler {
     @SideOnly(Side.CLIENT)
     val clientExplosions = ArrayList<Explosion>()
 
-    val MODEL = ResourceLocation(ExampleMod.MOD_ID, "models/shieldSphere.obj")
+    val MODEL = ResourceLocation(Kharium.MOD_ID, "models/shieldSphere.obj")
     val model: IModelCustom = AdvancedModelLoader.loadModel(MODEL)
 
     @SubscribeEvent
@@ -64,7 +63,7 @@ object PrimordialExplosionHandler {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun explosionRenderer(event: RenderWorldLastEvent) {
         Minecraft.getMinecraft().thePlayer ?: return
-        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/antinode/controller/field.png");
+        UtilsFX.bindTexture(Kharium.MOD_ID, "textures/antinode/controller/field.png");
         clientExplosions.forEach {
             val clientTime = it.timer + event.partialTicks
             val actualRadius = (clientTime * SusUtils.explosionSpreadSpeed).coerceAtMost(it.radius)

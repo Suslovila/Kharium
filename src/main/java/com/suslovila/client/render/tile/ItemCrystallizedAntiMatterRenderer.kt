@@ -1,6 +1,6 @@
 package com.suslovila.client.render.tile
 
-import com.suslovila.ExampleMod
+import com.suslovila.Kharium
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.IItemRenderer
@@ -13,7 +13,7 @@ object ItemCrystallizedAntiMatterRenderer : IItemRenderer {
     val model: IModelCustom
 
     init {
-        model = AdvancedModelLoader.loadModel(ResourceLocation(ExampleMod.MOD_ID, "models/items/anti_matter.obj"));
+        model = AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/items/anti_matter.obj"));
     }
 
     override fun handleRenderType(item: ItemStack?, type: IItemRenderer.ItemRenderType?) = true
@@ -26,7 +26,7 @@ object ItemCrystallizedAntiMatterRenderer : IItemRenderer {
 
     override fun renderItem(type: IItemRenderer.ItemRenderType, item: ItemStack?, vararg data: Any?) {
         GL11.glPushMatrix()
-        UtilsFX.bindTexture(ExampleMod.MOD_ID, "textures/items/anti_matter.png")
+        UtilsFX.bindTexture(Kharium.MOD_ID, "textures/items/anti_matter.png")
         if (type == IItemRenderer.ItemRenderType.EQUIPPED || type == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) {
             GL11.glTranslatef(0.5f, 0.5f, 0.5f)
 

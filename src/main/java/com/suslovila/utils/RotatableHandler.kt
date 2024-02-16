@@ -1,12 +1,12 @@
 package com.suslovila.utils
 
-import com.suslovila.ExampleMod
+import com.suslovila.Kharium
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.common.util.ForgeDirection
 import org.lwjgl.opengl.GL11
 
 object RotatableHandler {
-    val TAG_FACING = ExampleMod.MOD_ID + "_facing"
+    val TAG_FACING = Kharium.MOD_ID + "_facing"
     fun readRotation(tag: NBTTagCompound): ForgeDirection =
         ForgeDirection.getOrientation(tag.getByte(TAG_FACING).toInt())
 

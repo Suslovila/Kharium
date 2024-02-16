@@ -12,11 +12,9 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
-@Mod(name = ExampleMod.NAME, modid = ExampleMod.MOD_ID, version = ExampleMod.VERSION, dependencies = "required-after:Thaumcraft")
-public class ExampleMod {
+@Mod(name = Kharium.NAME, modid = Kharium.MOD_ID, version = Kharium.VERSION, dependencies = "required-after:Thaumcraft")
+public class Kharium {
     public static final String NAME = "anticraft";
     public static final String MOD_ID = "examplemod";
     public static final String VERSION = "1.0";
@@ -29,7 +27,7 @@ public class ExampleMod {
     };
 
     @Mod.Instance(MOD_ID)
-    public static ExampleMod instance;
+    public static Kharium instance;
 
     @SidedProxy(clientSide = "com.suslovila.client.ClientProxy", serverSide = "com.suslovila.common.CommonProxy")
     public static CommonProxy proxy;

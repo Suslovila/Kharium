@@ -1,6 +1,6 @@
 package com.suslovila.research
 
-import com.suslovila.ExampleMod
+import com.suslovila.Kharium
 import com.suslovila.common.block.ModBlocks
 import com.suslovila.common.item.ModItems
 import net.minecraft.init.Blocks
@@ -36,8 +36,8 @@ object AntiCraftResearchRegistry {
 
         ResearchCategories.registerCategory(
             "ANTICRAFT",
-            ResourceLocation(ExampleMod.MOD_ID, "textures/misc/antinode.png"),
-            ResourceLocation(ExampleMod.MOD_ID, "textures/misc/backTexture.png")
+            ResourceLocation(Kharium.MOD_ID, "textures/misc/antinode.png"),
+            ResourceLocation(Kharium.MOD_ID, "textures/misc/backTexture.png")
         )
 
         AntiCraftResearchItem(
@@ -74,7 +74,7 @@ object AntiCraftResearchRegistry {
             4,
             5,
             0,
-            ResourceLocation(ExampleMod.MOD_ID, "textures/misc/antinode.png")
+            ResourceLocation(Kharium.MOD_ID, "textures/misc/antinode.png")
         ).setPages(ResearchPage("1"), ResearchPage("2")).setVirtual().registerResearchItem()
 
         AntiCraftResearchItem(
@@ -84,7 +84,7 @@ object AntiCraftResearchRegistry {
             4,
             7,
             0,
-            ResourceLocation(ExampleMod.MOD_ID, "textures/misc/antinode.png")
+            ResourceLocation(Kharium.MOD_ID, "textures/misc/antinode.png")
         ).setPages(ResearchPage("1"), ResearchPage("2")).setStub().setHidden().setRound().setSpecial()
             .setParents("CRYSTALLIZED_KHARU").registerResearchItem()
 

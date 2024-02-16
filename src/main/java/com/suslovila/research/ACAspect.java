@@ -1,6 +1,6 @@
 package com.suslovila.research;
 
-import com.suslovila.ExampleMod;
+import com.suslovila.Kharium;
 import com.suslovila.utils.SusUtils;
 import com.suslovila.utils.ThaumcraftIntegrator;
 import net.minecraft.init.Items;
@@ -17,7 +17,7 @@ public class ACAspect {
 
 
     public static void initAspects() {
-        HUMILITAS = new Aspect("Humilitas", SusUtils.humilitasColor, new Aspect[]{Aspect.TRAP, Aspect.VOID}, new ResourceLocation(ExampleMod.MOD_ID, "textures/aspects/humilitas.png"), 1) {
+        HUMILITAS = new Aspect("Humilitas", SusUtils.humilitasColor, new Aspect[]{Aspect.TRAP, Aspect.VOID}, new ResourceLocation(Kharium.MOD_ID, "textures/aspects/humilitas.png"), 1) {
         };
     }
 

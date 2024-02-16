@@ -1,6 +1,5 @@
 package com.suslovila.common.block;
 
-import com.suslovila.ExampleMod;
 import com.suslovila.common.block.blockAntiNodeController.BlockAntiNodeControllerBase;
 import com.suslovila.common.block.blockAntiNodeController.BlockAntiNodeStabilizer;
 import com.suslovila.common.block.container.BlockAntiNode;
@@ -19,7 +18,7 @@ import com.suslovila.common.item.BlockEssentiaReservoirVoidItem;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import static com.suslovila.ExampleMod.MOD_ID;
+import static com.suslovila.Kharium.MOD_ID;
 
 public class ModBlocks {
     public static int EssentiaReservoirVoidRI = -1;
