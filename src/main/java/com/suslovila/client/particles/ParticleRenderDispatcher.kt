@@ -31,10 +31,11 @@ object ParticleRenderDispatcher {
         GL11.glDepthMask(true)
 
         //rendering black particles
-        dispatchQueuedRenders(tessellator,
-            FXAntiNode.queuedRenders,
-            FXAntiNode.queuedDepthIgnoringRenders,
-            FXAntiNode.FXTexture
+        dispatchQueuedRenders(
+            tessellator,
+            FXKharu.queuedRenders,
+            FXKharu.queuedDepthIgnoringRenders,
+            FXKharu.FXTexture
         )
 
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1f)

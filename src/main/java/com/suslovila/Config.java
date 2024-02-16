@@ -11,7 +11,7 @@ public class Config {
     public static boolean consumeEldritchDiaryAfterUse;
     public static String modPrefix = "§8[&bI&8] §8[§4Малышка§8] §8Gerda§f: §f";
 
-//examples
+    //examples
     public static void registerServerConfig(File modCfg) {
         Configuration cfg = new Configuration(modCfg);
         try {
@@ -22,27 +22,27 @@ public class Config {
                     "Включить ограничения для PvPLite мира");
 
             pvpLiteEnabled = cfg.getBoolean(
-				"EnablePvPLite",
-	            "PvPLite",
-	            false,
-	            "Включить ограничения для PvPLite мира");
+                    "EnablePvPLite",
+                    "PvPLite",
+                    false,
+                    "Включить ограничения для PvPLite мира");
 
             arenaWorldId = cfg.getInt(
-				"PvPLiteWorldID",
-	            "PvPLite",
-	            666,
-	            0,
-	            Integer.MAX_VALUE,
-	            "ID PvPLite Мира"
+                    "PvPLiteWorldID",
+                    "PvPLite",
+                    666,
+                    0,
+                    Integer.MAX_VALUE,
+                    "ID PvPLite Мира"
             );
 
             modPrefix = cfg.getString(
-				"ModPrefix",
-	            "core", modPrefix,
-	            "Префикс системных сообщений мода"
+                    "ModPrefix",
+                    "core", modPrefix,
+                    "Префикс системных сообщений мода"
             );
         } catch (Exception var8) {
-	        System.out.println("пизда рулям (конфигу)");
+            System.out.println("пизда рулям (конфигу)");
         } finally {
             cfg.save();
         }

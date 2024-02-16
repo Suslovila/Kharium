@@ -20,19 +20,24 @@ import thaumcraft.common.tiles.TileNode;
 
 public class ItemAntiNodeRenderer extends ItemNodeRenderer {
     AspectList aspects = (new AspectList()).add(Aspect.AIR, 40).add(Aspect.FIRE, 40).add(Aspect.EARTH, 40).add(Aspect.WATER, 40);
+
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return item != null && item.getItem() == Item.getItemFromBlock(ModBlocks.ANTI_NODE);
     }
-@Override
+
+    @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
         return helper != ItemRendererHelper.EQUIPPED_BLOCK;
     }
+
+    //TAKEN FROM THAUMCRAFT
+    //TODO: REWRITE
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        if(type == ItemRenderType.ENTITY) {
+        if (type == ItemRenderType.ENTITY) {
             GL11.glTranslatef(-0.5F, -0.25F, -0.5F);
-        } else if(type == ItemRenderType.EQUIPPED && data[1] instanceof EntityPlayer) {
+        } else if (type == ItemRenderType.EQUIPPED && data[1] instanceof EntityPlayer) {
             GL11.glTranslatef(0.0F, 0.0F, -0.5F);
         }
 
@@ -54,11 +59,11 @@ public class ItemAntiNodeRenderer extends ItemNodeRenderer {
     }
 
     public static void renderItemNode(INode node) {
-        if(node.getAspects().size() > 0) {
+        if (node.getAspects().size() > 0) {
             EntityLivingBase viewer = Minecraft.getMinecraft().renderViewEntity;
             float alpha = 0.5F;
-            if(node.getNodeModifier() != null) {
-                switch(node.getNodeModifier()) {
+            if (node.getNodeModifier() != null) {
+                switch (node.getNodeModifier()) {
                     case BRIGHT:
                         alpha *= 1.5F;
                         break;
@@ -66,7 +71,7 @@ public class ItemAntiNodeRenderer extends ItemNodeRenderer {
                         alpha *= 0.66F;
                         break;
                     case FADING:
-                        alpha *= MathHelper.sin((float)viewer.ticksExisted / 3.0F) * 0.25F + 0.33F;
+                        alpha *= MathHelper.sin((float) viewer.ticksExisted / 3.0F) * 0.25F + 0.33F;
                 }
             }
 
@@ -82,38 +87,38 @@ public class ItemAntiNodeRenderer extends ItemNodeRenderer {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, alpha);
             UtilsFX.bindTexture(TileAntiNodeRenderer.INSTANCE.getAntiNodeTexture());
             int frames = 32;
-            int i = (int)((nt / 40000000L + 1L) % (long)frames);
+            int i = (int) ((nt / 40000000L + 1L) % (long) frames);
             int count = 0;
             float scale = 0.0F;
             float average = 0.0F;
 
-            for(Aspect aspect : node.getAspects().getAspects()) {
-                if(aspect.getBlend() == 771) {
-                    alpha = (float)((double)alpha * 1.5D);
+            for (Aspect aspect : node.getAspects().getAspects()) {
+                if (aspect.getBlend() == 771) {
+                    alpha = (float) ((double) alpha * 1.5D);
                 }
 
-                average += (float)node.getAspects().getAmount(aspect);
+                average += (float) node.getAspects().getAmount(aspect);
                 GL11.glPushMatrix();
                 GL11.glEnable(3042);
                 GL11.glBlendFunc(770, aspect.getBlend());
-                scale = MathHelper.sin((float)viewer.ticksExisted / (14.0F - (float)count)) * bscale + bscale * 2.0F;
-                scale = 0.2F + scale * ((float)node.getAspects().getAmount(aspect) / 50.0F);
-                UtilsFX.renderAnimatedQuadStrip(scale, alpha / (float)node.getAspects().size(), frames, 0, i, 0.0F, aspect.getColor());
+                scale = MathHelper.sin((float) viewer.ticksExisted / (14.0F - (float) count)) * bscale + bscale * 2.0F;
+                scale = 0.2F + scale * ((float) node.getAspects().getAmount(aspect) / 50.0F);
+                UtilsFX.renderAnimatedQuadStrip(scale, alpha / (float) node.getAspects().size(), frames, 0, i, 0.0F, aspect.getColor());
                 GL11.glDisable(3042);
                 GL11.glPopMatrix();
                 ++count;
-                if(aspect.getBlend() == 771) {
-                    alpha = (float)((double)alpha / 1.5D);
+                if (aspect.getBlend() == 771) {
+                    alpha = (float) ((double) alpha / 1.5D);
                 }
             }
 
-            average = average / (float)node.getAspects().size();
+            average = average / (float) node.getAspects().size();
             GL11.glPushMatrix();
             GL11.glEnable(3042);
-            i = (int)((nt / 40000000L + 1L) % (long)frames);
+            i = (int) ((nt / 40000000L + 1L) % (long) frames);
             scale = 0.1F + average / 150.0F;
             int strip = 1;
-            switch(node.getNodeType()) {
+            switch (node.getNodeType()) {
                 case NORMAL:
                     GL11.glBlendFunc(770, 1);
                     break;

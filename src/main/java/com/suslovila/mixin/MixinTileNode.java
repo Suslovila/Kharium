@@ -2,8 +2,7 @@ package com.suslovila.mixin;
 
 import com.suslovila.utils.ThaumcraftIntegrator;
 import com.suslovila.common.item.ItemCrystallizedAntiMatter;
-import com.suslovila.common.block.ModBlocks;
-import com.suslovila.common.block.tileEntity.TileAntiNode;
+
 import com.suslovila.mixinUtils.IMixinTileNodeProvider;
 import com.suslovila.utils.SusUtils;
 import net.minecraft.entity.Entity;
@@ -26,7 +25,7 @@ import thaumcraft.common.tiles.TileNode;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.suslovila.mixinUtils.MixinStaticMethods.startNodeTransformation;
+import static com.suslovila.mixinUtils.MixinStaticMethods.*;
 import static com.suslovila.utils.SusUtils.*;
 
 @Mixin(value = TileNode.class)
@@ -34,6 +33,7 @@ public abstract class MixinTileNode extends TileThaumcraft implements IMixinTile
 
     @Shadow(remap = false)
     public abstract AspectList getAspects();
+
     @Shadow(remap = false)
     public abstract boolean takeFromContainer(Aspect aspect, int amount);
 
@@ -44,33 +44,53 @@ public abstract class MixinTileNode extends TileThaumcraft implements IMixinTile
 
     private String ownerName = "";
 
-    public String getOwnerName(){return ownerName;}
-    public void setOwnerName(String name){ownerName = name;}
-    public int getTransformationTimer(){return transformationTimer;}
-    public void addTime(int n){
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String name) {
+        ownerName = name;
+    }
+
+    public int getTransformationTimer() {
+        return transformationTimer;
+    }
+
+    public void addTime(int n) {
         transformationTimer += n;
         markDirty();
     }
-    public int getRequiredTimeForTransformation(){return isNodeBeingTransformed() ? transformationAspectSize / aspectReducePerTick : -1;}
-public AspectList getAspectsAsList(){
+
+    public int getRequiredTimeForTransformation() {
+        return isNodeBeingTransformed() ? transformationAspectSize / aspectReducePerTick : -1;
+    }
+
+    public AspectList getAspectsAsList() {
         return getAspects();
-}
-    public int getTransformationAspectSize(){return transformationAspectSize;}
-    public void setTransformationAspectSize(int n){transformationAspectSize = n;}
+    }
+
+    public int getTransformationAspectSize() {
+        return transformationAspectSize;
+    }
+
+    public void setTransformationAspectSize(int n) {
+        transformationAspectSize = n;
+    }
 
 //USE OBFUSCATION FUNCTION NAME OR THINGS ARE NOT GOING TO WORK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     @Inject(remap = false, method = "handleHungryNodeFirst", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
     public void hungryNodeTransformationInvoker(boolean change, CallbackInfoReturnable<Boolean> cir, List list, Iterator iterator, Object entity) {
         Entity ent = (Entity) entity;
-        if(!ent.isEntityAlive() && ent instanceof EntityItem && ((EntityItem)ent).getEntityItem().getItem() instanceof ItemCrystallizedAntiMatter && !worldObj.isRemote && !isNodeBeingTransformed()) startNodeTransformation((TileNode)(Object)this, ((EntityItem) ent).getEntityItem());
+        if (!ent.isEntityAlive() && ent instanceof EntityItem && ((EntityItem) ent).getEntityItem().getItem() instanceof ItemCrystallizedAntiMatter && !worldObj.isRemote && !isNodeBeingTransformed())
+            startNodeTransformation((TileNode) (Object) this, ((EntityItem) ent).getEntityItem());
     }
 
     @Inject(remap = true, method = "updateEntity", at = @At(value = "TAIL"))
     public void addTimer(CallbackInfo ci) {
         //ticking transformation
-        if(!worldObj.isRemote) {
-            if(isNodeBeingTransformed()) addTime(1);
+        if (!worldObj.isRemote) {
+            if (isNodeBeingTransformed()) addTime(1);
 
             //removing aspects from node
             if (isNodeBeingTransformed()) {
@@ -78,23 +98,19 @@ public AspectList getAspectsAsList(){
                     Aspect[] aspects = getAspectsAsList().getAspects();
                     if (aspects.length != 0) {
                         Aspect aspect = aspects[INSTANCE.getRandom().nextInt(aspects.length)];
-                        if (this.getAspectsAsList().getAmount(aspect) != 0)
+                        if (this.getAspectsAsList().getAmount(aspect) != 0) {
                             this.takeFromContainer(aspects[SusUtils.INSTANCE.getRandom().nextInt(aspects.length)], 1);
-                        else this.getAspectsAsList().remove(aspect);
+                        } else this.getAspectsAsList().remove(aspect);
                     }
                 }
 
                 if (transformationTimer >= getRequiredTimeForTransformation()) {
-                    if(Thaumcraft.proxy.getCompletedResearch().get(getOwnerName()).contains("CRYSTALLIZED_KHARU")) {
+                    if (Thaumcraft.proxy.getCompletedResearch().get(getOwnerName()).contains("CRYSTALLIZED_KHARU")) {
                         EntityPlayer player = worldObj.getPlayerEntityByName(getOwnerName());
                         ThaumcraftIntegrator.INSTANCE.completeNormalResearch("ANTI_NODE", player, worldObj);
                     }
                     //handling anti-node initialization
-                    this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.ANTI_NODE);
-                    TileAntiNode antiNode = (TileAntiNode) worldObj.getTileEntity(xCoord, yCoord, zCoord);
-                    antiNode.setMaxEnergy(transformationAspectSize);
-
-
+                    createAntiNode(worldObj, xCoord, yCoord, zCoord, transformationAspectSize);
                 }
             }
         }
@@ -108,6 +124,7 @@ public AspectList getAspectsAsList(){
         nbttagcompound.setString(ItemCrystallizedAntiMatter.Companion.getGlobalOwnerName(), getOwnerName());
 
     }
+
     @Inject(remap = false, method = "readCustomNBT", at = @At(value = "TAIL"))
     public void readFromNBT(NBTTagCompound nbttagcompound, CallbackInfo ci) {
         transformationTimer = nbttagcompound.getInteger("transformationTimer");
@@ -115,7 +132,10 @@ public AspectList getAspectsAsList(){
         ownerName = nbttagcompound.getString(ItemCrystallizedAntiMatter.Companion.getGlobalOwnerName());
 
     }
-    public boolean isNodeBeingTransformed(){return transformationTimer != -1;}
+
+    public boolean isNodeBeingTransformed() {
+        return transformationTimer != -1;
+    }
 
     public void markDirty() {
         super.worldObj.markBlockForUpdate(super.xCoord, super.yCoord, super.zCoord);

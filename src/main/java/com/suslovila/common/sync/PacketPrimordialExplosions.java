@@ -15,6 +15,7 @@ import java.util.LinkedList;
 
 public class PacketPrimordialExplosions implements IMessage {
     private LinkedList<Explosion> explosions = new LinkedList<>();
+
     public PacketPrimordialExplosions() {
     }
 
@@ -24,7 +25,7 @@ public class PacketPrimordialExplosions implements IMessage {
 
     public void toBytes(ByteBuf buffer) {
         buffer.writeInt(explosions.size());
-        for(Explosion explosion: explosions) {
+        for (Explosion explosion : explosions) {
             buffer.writeDouble(explosion.getPos().x);
             buffer.writeDouble(explosion.getPos().y);
             buffer.writeDouble(explosion.getPos().z);
@@ -35,9 +36,9 @@ public class PacketPrimordialExplosions implements IMessage {
 
     public void fromBytes(ByteBuf buffer) {
         int length = buffer.readInt();
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             Explosion explosion = new Explosion(
-              new SusVec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble()), // pos
+                    new SusVec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble()), // pos
                     buffer.readDouble(), // radius
                     buffer.readInt(), //time
                     new LinkedList<>() // empty list, client does not need to destroy blocks
@@ -46,7 +47,7 @@ public class PacketPrimordialExplosions implements IMessage {
         }
     }
 
-    public static class Handler implements  IMessageHandler<PacketPrimordialExplosions, IMessage> {
+    public static class Handler implements IMessageHandler<PacketPrimordialExplosions, IMessage> {
         @Override
         public IMessage onMessage(PacketPrimordialExplosions packet, MessageContext ctx) {
             ArrayList<Explosion> onClient = PrimordialExplosionHandler.INSTANCE.getClientExplosions();

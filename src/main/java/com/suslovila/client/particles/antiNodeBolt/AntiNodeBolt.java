@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.client.fx.WRVector3;
 import thaumcraft.client.lib.UtilsFX;
 
+//TAKEN FROM THAUMCRAFT
 public class AntiNodeBolt extends EntityFX {
     //COPIED FROM THAUMCRAFT - NEEDED TO BE OPTIMISIZED A BIT
     private int type = 0;

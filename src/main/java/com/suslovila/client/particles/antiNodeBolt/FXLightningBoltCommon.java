@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import thaumcraft.client.fx.WRVector3;
 
+//TAKEN FROM THAUMCRAFT
 public class FXLightningBoltCommon {
     ArrayList<Segment> segments;
     WRVector3 start;

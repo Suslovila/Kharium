@@ -37,6 +37,7 @@ class TileAntiNodeStabilizer : TileThaumcraft() {
         super.writeCustomNBT(nbttagcompound)
         RotatableHandler.writeRotation(nbttagcompound, facing)
     }
+
     override fun getRenderBoundingBox(): AxisAlignedBB = INFINITE_EXTENT_AABB
 
 }

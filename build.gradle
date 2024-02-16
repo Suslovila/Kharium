@@ -34,7 +34,6 @@ minecraft {
 	mappings = "stable_12"
 }
 
-// Активация поддержки юникода, чтобы не было кракозябр
 tasks.withType(JavaCompile).configureEach {
 }
 
@@ -138,12 +137,6 @@ compileKotlin {
 		jvmTarget = "1.8"
 		freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
 
-	}
-}
-
-task AAAAAA {
-	doLast{
-		println 'SomeThing happens'
 	}
 }
 

@@ -10,10 +10,11 @@ public class TileAntiNodeControllerBase extends TileEntity {
     public int timer = 0;
     SusVec3 pos;
     public static ConcurrentSet<SusVec3> tiles = new ConcurrentSet<>();
+
     public void updateEntity() {
         timer += 1;
         pos = new SusVec3(xCoord, yCoord, zCoord);
-        if(worldObj.isRemote) {
+        if (worldObj.isRemote) {
             tiles.add(pos);
         }
         super.worldObj.markBlockForUpdate(super.xCoord, super.yCoord, super.zCoord);

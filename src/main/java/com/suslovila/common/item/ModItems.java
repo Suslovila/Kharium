@@ -8,8 +8,8 @@ public class ModItems {
     public static Item diary = new ItemDiary();
     public static Item crystallizedKharu = new ItemCrystallizedAntiMatter();
 
-    public static void register(){
-       GameRegistry.registerItem(crystallizedKharu, "crystallized_anti_matter");
+    public static void register() {
+        GameRegistry.registerItem(crystallizedKharu, "crystallized_anti_matter");
         GameRegistry.registerItem(diary, "diary");
     }
 }

@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import java.util.ArrayDeque;
 
 @SideOnly(Side.CLIENT)
-public class FXAntiNode extends FXBase {
+public class FXKharu extends FXBase {
     public static final ArrayDeque<FXBase> queuedDepthIgnoringRenders = new ArrayDeque<>();
 
 
@@ -20,7 +20,7 @@ public class FXAntiNode extends FXBase {
     public static final ResourceLocation FXTexture = new ResourceLocation(ExampleMod.MOD_ID, "textures/particles/antinodefx.png");
 
 
-    public FXAntiNode(World world, double x, double y, double z, double mX, double mY, double mZ, int lifeTime, float particleSize, boolean depthTest) {
+    public FXKharu(World world, double x, double y, double z, double mX, double mY, double mZ, int lifeTime, float particleSize, boolean depthTest) {
         super(world, x, y, z, mX, mY, mZ, lifeTime, particleSize, depthTest, FXTexture, true);
     }
 

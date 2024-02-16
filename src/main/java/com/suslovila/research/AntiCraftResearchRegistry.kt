@@ -22,25 +22,71 @@ object AntiCraftResearchRegistry {
     //ItemStacks
     var essentiaReservoirVoid = ItemStack(ModBlocks.BlockEssentiaReservoirVoid, 1, 0)
     fun integrateInfusion() {
-        recipes["IessentiaReservoirVoid"] = ThaumcraftApi.addInfusionCraftingRecipe("EssentiaReservoirVoid", essentiaReservoirVoid, 0,
-                AspectList().add(Aspect.FIRE, 8).add(Aspect.VOID, 8).add(Aspect.DARKNESS, 8),
-                ItemStack(ConfigBlocks.blockEssentiaReservoir), arrayOf(ItemStack(Blocks.obsidian), ItemStack(Items.lava_bucket)))
+        recipes["IessentiaReservoirVoid"] = ThaumcraftApi.addInfusionCraftingRecipe(
+            "EssentiaReservoirVoid",
+            essentiaReservoirVoid,
+            0,
+            AspectList().add(Aspect.FIRE, 8).add(Aspect.VOID, 8).add(Aspect.DARKNESS, 8),
+            ItemStack(ConfigBlocks.blockEssentiaReservoir),
+            arrayOf(ItemStack(Blocks.obsidian), ItemStack(Items.lava_bucket))
+        )
     }
 
     fun integrateResearch() {
 
-        ResearchCategories.registerCategory("ANTICRAFT", ResourceLocation(ExampleMod.MOD_ID, "textures/misc/antinode.png"), ResourceLocation(ExampleMod.MOD_ID, "textures/misc/backTexture.png"))
+        ResearchCategories.registerCategory(
+            "ANTICRAFT",
+            ResourceLocation(ExampleMod.MOD_ID, "textures/misc/antinode.png"),
+            ResourceLocation(ExampleMod.MOD_ID, "textures/misc/backTexture.png")
+        )
 
-        AntiCraftResearchItem("ESSENTIARESERVOIRVOID", "ANTICRAFT", AspectList().add(Aspect.VOID, 8).add(Aspect.WATER, 4).add(Aspect.MAGIC, 6), 0, 0, 1,
-            ItemStack(ModBlocks.BlockEssentiaReservoirVoid)).setPages(ResearchPage("1"), ResearchPage(recipes["IessentiaReservoirVoid"])).setParents("ESSENTIARESERVOIR").registerResearchItem()
+        AntiCraftResearchItem(
+            "ESSENTIARESERVOIRVOID",
+            "ANTICRAFT",
+            AspectList().add(Aspect.VOID, 8).add(Aspect.WATER, 4).add(Aspect.MAGIC, 6),
+            0,
+            0,
+            1,
+            ItemStack(ModBlocks.BlockEssentiaReservoirVoid)
+        ).setPages(ResearchPage("1"), ResearchPage(recipes["IessentiaReservoirVoid"])).setParents("ESSENTIARESERVOIR")
+            .registerResearchItem()
 
-        AntiCraftResearchItem("DIARY", "ANTICRAFT", AspectList(), 0, 4, 0, ItemStack(ModItems.diary)).setPages(ResearchPage("1"), ResearchPage("2")).setStub().setHidden().setRound().setSpecial().registerResearchItem()
+        AntiCraftResearchItem("DIARY", "ANTICRAFT", AspectList(), 0, 4, 0, ItemStack(ModItems.diary)).setPages(
+            ResearchPage("1"),
+            ResearchPage("2")
+        ).setStub().setHidden().setRound().setSpecial().registerResearchItem()
 
-        AntiCraftResearchItem("CRYSTALLIZED_KHARU", "ANTICRAFT", AspectList(), 0, 7, 0, ItemStack(ModItems.crystallizedKharu)).setPages(ResearchPage("1"), ResearchPage("2")).setStub().setHidden().setRound().setSpecial().registerResearchItem()
+        AntiCraftResearchItem(
+            "CRYSTALLIZED_KHARU",
+            "ANTICRAFT",
+            AspectList(),
+            0,
+            7,
+            0,
+            ItemStack(ModItems.crystallizedKharu)
+        ).setPages(ResearchPage("1"), ResearchPage("2")).setStub().setHidden().setRound().setSpecial()
+            .registerResearchItem()
 
-        AntiCraftResearchItem("ANTI_NODE_HIDDEN", "ANTICRAFT", AspectList(), 4, 5, 0, ResourceLocation(ExampleMod.MOD_ID, "textures/misc/antinode.png")).setPages(ResearchPage("1"), ResearchPage("2")).setVirtual().registerResearchItem()
+        AntiCraftResearchItem(
+            "ANTI_NODE_HIDDEN",
+            "ANTICRAFT",
+            AspectList(),
+            4,
+            5,
+            0,
+            ResourceLocation(ExampleMod.MOD_ID, "textures/misc/antinode.png")
+        ).setPages(ResearchPage("1"), ResearchPage("2")).setVirtual().registerResearchItem()
 
-        AntiCraftResearchItem("ANTI_NODE", "ANTICRAFT", AspectList(), 4, 7, 0, ResourceLocation(ExampleMod.MOD_ID, "textures/misc/antinode.png")).setPages(ResearchPage("1"), ResearchPage("2")).setStub().setHidden().setRound().setSpecial().setParents("CRYSTALLIZED_KHARU").registerResearchItem()
+        AntiCraftResearchItem(
+            "ANTI_NODE",
+            "ANTICRAFT",
+            AspectList(),
+            4,
+            7,
+            0,
+            ResourceLocation(ExampleMod.MOD_ID, "textures/misc/antinode.png")
+        ).setPages(ResearchPage("1"), ResearchPage("2")).setStub().setHidden().setRound().setSpecial()
+            .setParents("CRYSTALLIZED_KHARU").registerResearchItem()
 
 
         ThaumcraftApi.addWarpToResearch("DIARY", 10)

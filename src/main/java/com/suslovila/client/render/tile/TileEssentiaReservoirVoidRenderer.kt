@@ -16,11 +16,12 @@ import thaumcraft.common.blocks.BlockJar
 import thaumcraft.common.config.ConfigBlocks
 import thaumcraft.common.tiles.TileEssentiaReservoir
 
-object TileEssentiaReservoirVoidRenderer: SusTileRenderer<TileEssentiaReservoirVoid>() {
+object TileEssentiaReservoirVoidRenderer : SusTileRenderer<TileEssentiaReservoirVoid>() {
 
     private var model: IModelCustom
     val RELAY = ResourceLocation("thaumcraft", "textures/models/reservoir.obj")
     val reservoirTexture = ResourceLocation("thaumcraft", "textures/models/reservoir.png")
+
     init {
         model = AdvancedModelLoader.loadModel(RELAY)
     }
@@ -36,7 +37,7 @@ object TileEssentiaReservoirVoidRenderer: SusTileRenderer<TileEssentiaReservoirV
         GL11.glPopMatrix()
 
         GL11.glPushMatrix()
-        GL11.glTranslated(0.0,  -0.5, 0.0)
+        GL11.glTranslated(0.0, -0.5, 0.0)
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
         this.renderLiquid(tile)
         GL11.glPopMatrix()

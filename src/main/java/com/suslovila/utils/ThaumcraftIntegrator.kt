@@ -18,6 +18,7 @@ object ThaumcraftIntegrator {
         world.playSoundAtEntity(player, "thaumcraft:learn", 0.75f, 1.0f)
 
     }
+
     fun completeResearchSilently(researchName: String?, player: EntityPlayer?) =
         Thaumcraft.proxy.getResearchManager().completeResearch(player, researchName)
 

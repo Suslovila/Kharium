@@ -19,11 +19,11 @@ import static com.suslovila.common.block.ModBlocks.EssentiaReservoirVoidRI;
 public class BlockEssentiaReservoirVoidRenderer extends BlockRenderer implements ISimpleBlockRenderingHandler {
 
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-       block.setBlockBounds(W2, W2, W2, W14, W14, W14);
-       renderer.setRenderBoundsFromBlock(block);
-            drawFaces(renderer, block, ((BlockEssentiaReservoirVoid) block).icon, true);
-            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-            TileEntityRendererDispatcher.instance.renderTileEntityAt(new TileEssentiaReservoirVoid(), 0.0D, 0.0D, 0.0D, 0.0F);
+        block.setBlockBounds(W2, W2, W2, W14, W14, W14);
+        renderer.setRenderBoundsFromBlock(block);
+        drawFaces(renderer, block, ((BlockEssentiaReservoirVoid) block).icon, true);
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        TileEntityRendererDispatcher.instance.renderTileEntityAt(new TileEssentiaReservoirVoid(), 0.0D, 0.0D, 0.0D, 0.0F);
 
     }
 

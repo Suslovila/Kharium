@@ -35,9 +35,9 @@ public class ModBlocks {
 
     public static void register() {
 
-        GameRegistry.registerBlock(BlockEssentiaReservoirVoid, BlockEssentiaReservoirVoidItem.class,"EssentiaReservoirVoid");
-        GameRegistry.registerBlock(ANTI_NODE,"AntiNode");
-        GameRegistry.registerBlock(BLOCK_ANTI_NODE_CONTROLLER,"BlockAntiNodeControllerBase");
+        GameRegistry.registerBlock(BlockEssentiaReservoirVoid, BlockEssentiaReservoirVoidItem.class, "EssentiaReservoirVoid");
+        GameRegistry.registerBlock(ANTI_NODE, "AntiNode");
+        GameRegistry.registerBlock(BLOCK_ANTI_NODE_CONTROLLER, "BlockAntiNodeControllerBase");
         GameRegistry.registerBlock(ANTI_NODE_WATCHER, "BlockAntiNodeWatcher");
         GameRegistry.registerBlock(KHARU_EXTRACTOR, "BlockKharuExtractor");
 
@@ -54,9 +54,8 @@ public class ModBlocks {
 
     }
 
-    public static void registerRender(){
+    public static void registerRender() {
         EssentiaReservoirVoidRI = RenderingRegistry.getNextAvailableRenderId();
-
 
 
     }

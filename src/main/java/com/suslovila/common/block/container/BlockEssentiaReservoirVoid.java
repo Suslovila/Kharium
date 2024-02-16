@@ -67,7 +67,7 @@ public class BlockEssentiaReservoirVoid extends BlockEssentiaReservoir {
     }
 
     public TileEntity createTileEntity(World world, int metadata) {
-        return (TileEntity)(metadata == 0?new TileEssentiaReservoirVoid():super.createTileEntity(world, metadata));
+        return (TileEntity) (metadata == 0 ? new TileEssentiaReservoirVoid() : super.createTileEntity(world, metadata));
     }
 
     public TileEntity createNewTileEntity(World var1, int md) {
@@ -80,9 +80,9 @@ public class BlockEssentiaReservoirVoid extends BlockEssentiaReservoir {
 
     public int getComparatorInputOverride(World world, int x, int y, int z, int rs) {
         TileEntity te = world.getTileEntity(x, y, z);
-        if(te != null && te instanceof TileEssentiaReservoirVoid) {
-            float r = (float)((TileEssentiaReservoirVoid)te).essentia.visSize() / (float)((TileEssentiaReservoirVoid)te).maxAmount;
-            return MathHelper.floor_float(r * 14.0F) + (((TileEssentiaReservoirVoid)te).essentia.visSize() > 0?1:0);
+        if (te != null && te instanceof TileEssentiaReservoirVoid) {
+            float r = (float) ((TileEssentiaReservoirVoid) te).essentia.visSize() / (float) ((TileEssentiaReservoirVoid) te).maxAmount;
+            return MathHelper.floor_float(r * 14.0F) + (((TileEssentiaReservoirVoid) te).essentia.visSize() > 0 ? 1 : 0);
         } else {
             return 0;
         }
@@ -90,24 +90,24 @@ public class BlockEssentiaReservoirVoid extends BlockEssentiaReservoir {
 
     public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
         TileEntity te = world.getTileEntity(x, y, z);
-        if(te != null && te instanceof TileEssentiaReservoirVoid) {
-            int sz = ((TileEssentiaReservoirVoid)te).essentia.visSize() / 16;
+        if (te != null && te instanceof TileEssentiaReservoirVoid) {
+            int sz = ((TileEssentiaReservoirVoid) te).essentia.visSize() / 16;
             int q = 0;
-            if(sz > 0) {
-                world.createExplosion((Entity)null, (double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, 1.0F, false);
+            if (sz > 0) {
+                world.createExplosion((Entity) null, (double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, 1.0F, false);
 
-                for(int a = 0; a < 50; ++a) {
+                for (int a = 0; a < 50; ++a) {
                     int xx = x + world.rand.nextInt(5) - world.rand.nextInt(5);
                     int yy = y + world.rand.nextInt(5) - world.rand.nextInt(5);
                     int zz = z + world.rand.nextInt(5) - world.rand.nextInt(5);
-                    if(world.isAirBlock(xx, yy, zz)) {
-                        if(yy < y) {
+                    if (world.isAirBlock(xx, yy, zz)) {
+                        if (yy < y) {
                             world.setBlock(xx, yy, zz, ConfigBlocks.blockFluxGoo, 8, 3);
                         } else {
                             world.setBlock(xx, yy, zz, ConfigBlocks.blockFluxGas, 8, 3);
                         }
 
-                        if(q++ >= sz) {
+                        if (q++ >= sz) {
                             break;
                         }
                     }

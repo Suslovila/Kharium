@@ -23,14 +23,15 @@ import thaumcraft.common.tiles.TileNode
 
 
 class ItemCrystallizedAntiMatter : Item() {
-        companion object {
-            val globalOwnerName = "ownerName"
-        }
+    companion object {
+        val globalOwnerName = "ownerName"
+    }
+
     init {
-            unlocalizedName = "anti_matter";
-            setTextureName(ExampleMod.MOD_ID + ":anti_matter");
-            setMaxStackSize(64);
-            creativeTab = ExampleMod.tab
+        unlocalizedName = "anti_matter";
+        setTextureName(ExampleMod.MOD_ID + ":anti_matter");
+        setMaxStackSize(64);
+        creativeTab = ExampleMod.tab
 
     }
 
@@ -38,18 +39,29 @@ class ItemCrystallizedAntiMatter : Item() {
         super.onUpdate(stack, world, entity, p_77663_4_, p_77663_5_)
         stack?.getOrCreateTag()?.removeTag(globalOwnerName) ?: println("why is itemStack null?")
     }
-    override fun onItemUse(stack : ItemStack, player: EntityPlayer, world : World, x: Int, y: Int, z: Int, side : Int, p_77648_8_: Float, p_77648_9_: Float, p_77648_10_: Float): Boolean {
+
+    override fun onItemUse(
+        stack: ItemStack,
+        player: EntityPlayer,
+        world: World,
+        x: Int,
+        y: Int,
+        z: Int,
+        side: Int,
+        p_77648_8_: Float,
+        p_77648_9_: Float,
+        p_77648_10_: Float
+    ): Boolean {
         //test feature
-        if(!world.isRemote) PrimordialExplosionHandler.castPrimordialExplosion(world, SusVec3(x,y,z), 40.0)
+        if (!world.isRemote) PrimordialExplosionHandler.castPrimordialExplosion(world, SusVec3(x, y, z), 40.0)
 
 
-        val tile = world.getTileEntity(x,y,z) as? TileNode ?: return false
-        if(tile.nodeType == NodeType.HUNGRY && !isNodeBeingTransformed(tile)) {
+        val tile = world.getTileEntity(x, y, z) as? TileNode ?: return false
+        if (tile.nodeType == NodeType.HUNGRY && !isNodeBeingTransformed(tile)) {
             startNodeTransformation(tile, stack)
-            if(Config.consumeEldritchDiaryAfterUse) --stack.stackSize
+            if (Config.consumeEldritchDiaryAfterUse) --stack.stackSize
             return true
-        }
-        else return false
+        } else return false
     }
 
     override fun onDroppedByPlayer(stack: ItemStack, player: EntityPlayer): Boolean {

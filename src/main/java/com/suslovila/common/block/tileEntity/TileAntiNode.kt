@@ -56,7 +56,7 @@ class KharuTail(
     val radiusChangePerFrame: Double,
     var timer: Int = 0,
     val aimVec3: SusVec3
-){
+) {
     val actualRadius
         get() = Math.min(timer * radiusChangePerFrame, maxRadius)
 }

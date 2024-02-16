@@ -19,8 +19,8 @@ import net.minecraftforge.common.MinecraftForge
 
 
 open class CommonProxy {
-    open fun preInit(event : FMLPreInitializationEvent) {
-		Config.registerServerConfig(event.suggestedConfigurationFile)
+    open fun preInit(event: FMLPreInitializationEvent) {
+        Config.registerServerConfig(event.suggestedConfigurationFile)
         FMLCommonHandler.instance().bus().register(FMLEventListener)
         MinecraftForge.EVENT_BUS.register(FMLEventListener)
         FMLCommonHandler.instance().bus().register(PrimordialExplosionHandler)
@@ -32,16 +32,16 @@ open class CommonProxy {
         PacketHandler.init()
     }
 
-    open fun nodeAntiBolt(worldObj : World, x: Float, y : Float, z : Float, x2 : Float, y2 : Float, z2 : Float) {
+    open fun nodeAntiBolt(worldObj: World, x: Float, y: Float, z: Float, x2: Float, y2: Float, z2: Float) {
 
     }
 
-    open fun init(event : FMLInitializationEvent) {
+    open fun init(event: FMLInitializationEvent) {
 
     }
 
 
-    open fun postInit(event : FMLPostInitializationEvent) {
+    open fun postInit(event: FMLPostInitializationEvent) {
         ACAspect.initItemsAspects()
         AntiCraftResearchRegistry.integrateInfusion()
         AntiCraftResearchRegistry.integrateResearch()

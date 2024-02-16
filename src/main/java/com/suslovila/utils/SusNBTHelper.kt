@@ -29,6 +29,7 @@ object SusNBTHelper {
         if (!hasTagCompound()) tagCompound = NBTTagCompound()
         return tagCompound
     }
+
     inline fun NBTTagList.forEach(block: (NBTTagCompound) -> Unit) {
         for (i in 0 until tagCount()) {
             val tag = getCompoundTagAt(i)

@@ -17,46 +17,44 @@ import net.minecraft.nbt.NBTTagCompound;
 
 @Mod(name = ExampleMod.NAME, modid = ExampleMod.MOD_ID, version = ExampleMod.VERSION, dependencies = "required-after:Thaumcraft")
 public class ExampleMod {
-	public static final String NAME = "anticraft";
-	public static final String MOD_ID = "examplemod";
-	public static final String VERSION = "1.0";
+    public static final String NAME = "anticraft";
+    public static final String MOD_ID = "examplemod";
+    public static final String VERSION = "1.0";
 
-	public static final CreativeTabs tab = new CreativeTabs(NAME) {
+    public static final CreativeTabs tab = new CreativeTabs(NAME) {
         @Override
         public Item getTabIconItem() {
             return Item.getItemFromBlock(Blocks.water);
         }
     };
 
-	@Mod.Instance(MOD_ID)
-	public static ExampleMod instance;
+    @Mod.Instance(MOD_ID)
+    public static ExampleMod instance;
 
-	@SidedProxy(clientSide = "com.suslovila.client.ClientProxy", serverSide = "com.suslovila.common.CommonProxy")
-	public static CommonProxy proxy;
-
-
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{
-		proxy.preInit(event);
-
-	}
-
-	@EventHandler
-	public void init(FMLInitializationEvent event)
-	{
-		proxy.init(event);
-		proxy.registerRenderers();
-
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, new ClientProxy());
+    @SidedProxy(clientSide = "com.suslovila.client.ClientProxy", serverSide = "com.suslovila.common.CommonProxy")
+    public static CommonProxy proxy;
 
 
-	}
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event)
-	{
-		proxy.postInit(event);
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        proxy.preInit(event);
 
-	}
+    }
+
+    @EventHandler
+    public void init(FMLInitializationEvent event) {
+        proxy.init(event);
+        proxy.registerRenderers();
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new ClientProxy());
+
+
+    }
+
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        proxy.postInit(event);
+
+    }
 
 }
