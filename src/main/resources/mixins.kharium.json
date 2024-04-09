@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8.3",
+  "compatibilityLevel": "JAVA_8",
+  "package": "com.suslovila.kharium.mixin",
+  "refmap": "mixins.kharium.refmap.json",
+  "mixins": [
+    "MixinTileNode",
+    "MixinTileNodeRenderer",
+    "MixinEntityFX"
+  ],
+  "client": [],
+  "server": []
+}
