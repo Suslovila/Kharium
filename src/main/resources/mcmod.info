@@ -1,14 +1,14 @@
 [
   {
-    "modid": "examplemod",
-    "name": "Example Mod",
-    "description": "Example placeholder mod.",
+    "modid": "kharium",
+    "name": "K'harium",
+    "description": "A thaumcraft addon which gives you ability to manipulate antimatter",
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "",
     "updateUrl": "",
-    "authorList": ["ExampleDude"],
-    "credits": "The Forge and FML guys, for making this example",
+    "authorList": ["Suslovila (dev), Just_Cursed(inspirator)"],
+    "credits": "Thanks to guys from mcModding site for help!",
     "logoFile": "",
     "screenshots": [],
     "dependencies": []

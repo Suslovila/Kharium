@@ -1,4 +1,4 @@
-package com.suslovila.kharium.client.render.tile
+package com.suslovila.kharium.client.render.item
 
 import com.suslovila.kharium.Kharium
 import net.minecraft.item.ItemStack

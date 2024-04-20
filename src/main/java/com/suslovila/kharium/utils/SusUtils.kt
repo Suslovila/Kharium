@@ -1,6 +1,7 @@
 package com.suslovila.kharium.utils
 
 import net.minecraft.util.MathHelper
+import java.awt.Color
 import java.util.*
 import kotlin.Pair
 import kotlin.collections.ArrayList
@@ -12,6 +13,7 @@ object SusUtils {
     const val aspectReducePerTick = 3
     const val antiNodeAppearanceTime = 120
     const val humilitasColor = 16727457
+    val humilitasColorObj = Color(humilitasColor)
     //blocks per tick (for radius)
     const val explosionSpreadSpeed : Double = 1.0
     const val blockAmountDestroyedPerTick = 100000

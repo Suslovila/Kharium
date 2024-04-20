@@ -76,16 +76,21 @@ object SusGraphicHelper {
         xScale: Float,
         yScale: Float,
         zScale: Float,
-        time: Float
+        time: Float,
+        isTranslucent : Boolean
     ) {
         val co = Color(color)
         val r = co.red / 255.0f
         val g = co.green / 255.0f
         val b = co.blue / 255.0f
-        glDepthMask(false)
-        glEnable(GL_BLEND)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
-
+        if(isTranslucent) {
+            glDepthMask(false)
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+        }
+        else{
+            glDisable(GL_BLEND)
+        }
         val tessellator = Tessellator.instance
 
         UtilsFX.bindTexture(texture)
@@ -140,9 +145,11 @@ object SusGraphicHelper {
             ++var84
         }
         tessellator.draw()
-        glEnable(GL_CULL_FACE)
-        glDisable(GL_BLEND)
-        glDepthMask(true)
+        if(isTranslucent) {
+            glEnable(GL_CULL_FACE)
+            glDisable(GL_BLEND)
+            glDepthMask(true)
+        }
     }
 
 }

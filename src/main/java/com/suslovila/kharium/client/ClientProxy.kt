@@ -5,19 +5,20 @@ import com.suslovila.kharium.client.particles.antiNodeBolt.AntiNodeBolt
 import com.suslovila.kharium.client.render.ClientEventHandler
 import com.suslovila.kharium.client.render.block.BlockEssentiaReservoirVoidRenderer
 import com.suslovila.kharium.client.render.item.ItemAntiNodeRenderer
-import com.suslovila.kharium.client.render.tile.ItemCrystallizedAntiMatterRenderer
+import com.suslovila.kharium.client.render.item.ItemCrystallizedAntiMatterRenderer
 import com.suslovila.kharium.client.render.tile.TileEssentiaReservoirVoidRenderer
+import com.suslovila.kharium.client.render.tile.TileKharuSnareRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.TileAntiNodeRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.TileAntiNodeStabilizerRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.TileAntiNodeWatcherRenderer
-import com.suslovila.kharium.client.render.tile.tileAntiNodeController.TileKharuExtractorRenderer
 import com.suslovila.kharium.common.CommonProxy
 import com.suslovila.kharium.common.block.ModBlocks
 import com.suslovila.kharium.common.block.tileEntity.TileAntiNode
 import com.suslovila.kharium.common.block.tileEntity.TileAntiNodeWatcher
 import com.suslovila.kharium.common.block.tileEntity.TileEssentiaReservoirVoid
+import com.suslovila.kharium.common.block.tileEntity.TileKharuSnare
 import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer
-import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileKharuExtractor
+import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileKharuReactor
 import com.suslovila.kharium.common.item.ModItems
 import cpw.mods.fml.client.registry.ClientRegistry
 import cpw.mods.fml.client.registry.RenderingRegistry
@@ -53,9 +54,11 @@ class ClientProxy : CommonProxy(), IGuiHandler {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEssentiaReservoirVoid::class.java, TileEssentiaReservoirVoidRenderer)
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeWatcher::class.java, TileAntiNodeWatcherRenderer)
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeStabilizer::class.java, TileAntiNodeStabilizerRenderer)
+        ClientRegistry.bindTileEntitySpecialRenderer(TileKharuReactor::class.java, TileAntiNodeStabilizerRenderer)
         RenderingRegistry.registerBlockHandler(BlockEssentiaReservoirVoidRenderer())
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileKharuExtractor::class.java, TileKharuExtractorRenderer)
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileKharuReactor::class.java, TileKharuReactorRenderer)
+        ClientRegistry.bindTileEntitySpecialRenderer(TileKharuSnare::class.java, TileKharuSnareRenderer)
 
     }
 
@@ -64,7 +67,7 @@ class ClientProxy : CommonProxy(), IGuiHandler {
     }
 
     override fun registerRenderers() {
-        MinecraftForge.EVENT_BUS.register(ClientEventHandler())
+        MinecraftForge.EVENT_BUS.register(ClientEventHandler)
         MinecraftForgeClient.registerItemRenderer(ModItems.crystallizedKharu, ItemCrystallizedAntiMatterRenderer)
     }
 

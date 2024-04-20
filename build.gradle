@@ -72,7 +72,7 @@ jar {
 				"Implementation-Title"    : project.name,
 				"Implementation-Version"  : project.version,
 				"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-				"MixinConfigs": "mixins.examplemod.json",
+				"MixinConfigs": "mixins.kharium.json",
 				"FMLCorePluginContainsFMLMod": "true",  // Не забываем указать эти два флага,
 				"ForceLoadAsMod": "true",               // чтобы Forge нормально загрузил и мод, и миксины
 				"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
@@ -101,8 +101,8 @@ processResources
 
 
 ext {
-	mixinSrg = new File(project.buildDir, 'mixins/mixin.examplemod.srg')
-	mixinRefMapName = "mixins.examplemod.refmap.json"
+	mixinSrg = new File(project.buildDir, 'mixins/mixin.kharium.srg')
+	mixinRefMapName = "mixins.kharium.refmap.json"
 	mixinRefMap = new File(project.buildDir, "mixins/" + mixinRefMapName)
 }
 

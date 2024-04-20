@@ -1,4 +1,4 @@
-itemGroup.examplemod=ExampleMod
+itemGroup.kharium=K'harium
 
 #item.ring.name=Кольцо
 #item.paint_can.name=Банка краски
@@ -16,3 +16,4 @@ tc.aspect.Himilitas=restraint, captivity, control
 
 tile.blockEssentiaReservoirVoid.name=Void Essentia Reservoir
 diary.text=You can't understand what is written here. Maybe, you are not ready?
+tile.BlockShadowmetal.name=Block of Shadowmetal

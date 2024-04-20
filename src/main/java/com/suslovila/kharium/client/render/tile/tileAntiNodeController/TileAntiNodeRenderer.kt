@@ -49,20 +49,20 @@ object TileAntiNodeRenderer : SusTileRenderer<TileAntiNode>() {
                 )
             )
             if (antiNode.tickExisted > antiNodeAppearanceTime / 2) {
-                spawnKharuParticles(
-                    antiNode,
-                    viewer.worldObj,
-                    maxTailsAmount = 5,
-                    minTailSpeed = 2,
-                    maxTailSpeed = 3,
-                    deleteAndAddTailChanceFactor = 3,
-                    minRadius = 1.28,
-                    maxRadius = 1.33,
-                    radiusChangeMinSpeed = 0.003,
-                    radiusChangeMaxSpeed = 0.005,
-                    particleLifeTime = 13,
-                    particleSize = 0.8f
-                )
+//                spawnKharuParticles(
+//                    antiNode,
+//                    viewer.worldObj,
+//                    maxTailsAmount = 5,
+//                    minTailSpeed = 2,
+//                    maxTailSpeed = 3,
+//                    deleteAndAddTailChanceFactor = 3,
+//                    minRadius = 1.28,
+//                    maxRadius = 1.33,
+//                    radiusChangeMinSpeed = 0.003,
+//                    radiusChangeMaxSpeed = 0.005,
+//                    particleLifeTime = 13,
+//                    particleSize = 0.8f
+//                )
             }
 
             //handling anti-node bolt
