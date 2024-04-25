@@ -45,7 +45,7 @@ object TileEssentiaReservoirVoidRenderer : SusTileRenderer<TileEssentiaReservoir
     }
 
     private fun renderObsidian() {
-        if (this.field_147501_a.field_147553_e != null) {
+        if (this.field_147501_a.renderEngine != null) {
             GL11.glPushMatrix()
             GL11.glTranslatef(-0.5f, -1.5f, 0.65f)
             val renderBlocks = RenderBlocks()
@@ -62,7 +62,7 @@ object TileEssentiaReservoirVoidRenderer : SusTileRenderer<TileEssentiaReservoir
             tesselator.setColorRGBA_F(1f, 1f, 1f, 1f)
             tesselator.setBrightness(200)
             val icon = Blocks.obsidian.getIcon(1, 0)
-            this.field_147501_a.field_147553_e.bindTexture(TextureMap.locationBlocksTexture)
+            this.field_147501_a.renderEngine.bindTexture(TextureMap.locationBlocksTexture)
             renderBlocks.renderFaceYNeg(ConfigBlocks.blockEssentiaReservoir, 0.0, 1.0, 0.0, icon)
             renderBlocks.renderFaceYPos(ConfigBlocks.blockEssentiaReservoir, 0.0, 1.0, 0.0, icon)
             renderBlocks.renderFaceZNeg(ConfigBlocks.blockEssentiaReservoir, 0.0, 1.0, 0.0, icon)
@@ -75,11 +75,11 @@ object TileEssentiaReservoirVoidRenderer : SusTileRenderer<TileEssentiaReservoir
     }
 
     private fun renderLiquid(tile: TileEssentiaReservoir) {
-        if (field_147501_a.field_147553_e != null && tile.displayAspect != null && tile.essentia.visSize() != 0) {
+        if (field_147501_a.renderEngine != null && tile.displayAspect != null && tile.essentia.visSize() != 0) {
             GL11.glPushMatrix()
             GL11.glEnable(3042)
             GL11.glBlendFunc(770, 771)
-            val world = tile.worldObj
+            val world = tile.world
             val renderBlocks = RenderBlocks()
             GL11.glDisable(2896)
             val level = tile.essentia.visSize().toFloat() / tile.maxAmount.toFloat()
@@ -97,7 +97,7 @@ object TileEssentiaReservoirVoidRenderer : SusTileRenderer<TileEssentiaReservoir
             val bright = 200
             t.setBrightness(200)
             val icon = (ConfigBlocks.blockJar as BlockJar).iconLiquid
-            field_147501_a.field_147553_e.bindTexture(TextureMap.locationBlocksTexture)
+            field_147501_a.renderEngine.bindTexture(TextureMap.locationBlocksTexture)
             renderBlocks.renderFaceYNeg(ConfigBlocks.blockEssentiaReservoir, 0.0, 0.5, 0.0, icon)
             renderBlocks.renderFaceYPos(ConfigBlocks.blockEssentiaReservoir, 0.0, 0.5, 0.0, icon)
             renderBlocks.renderFaceZNeg(ConfigBlocks.blockEssentiaReservoir, 0.0, 0.5, 0.0, icon)

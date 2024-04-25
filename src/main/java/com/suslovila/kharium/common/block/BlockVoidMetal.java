@@ -15,8 +15,8 @@ public class BlockVoidMetal
         super(Material.iron);
         setHardness(5.0F);
         setCreativeTab(Kharium.tab);
-        setBlockTextureName(Kharium.MOD_ID + ":blockVoidMetal");
-        setBlockName("blockVoidMetal");
+        textureName = (Kharium.MOD_ID + ":blockVoidMetal");
+        setUnlocalizedName("blockVoidMetal");
         setStepSound(soundTypeMetal);
     }
 

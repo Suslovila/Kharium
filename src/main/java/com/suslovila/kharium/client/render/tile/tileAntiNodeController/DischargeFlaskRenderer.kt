@@ -1,14 +1,11 @@
 package com.suslovila.kharium.client.render.tile.tileAntiNodeController
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.common.block.tileEntity.TileKharuSnare
-import com.suslovila.kharium.utils.RotatableHandler
+import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import com.suslovila.kharium.utils.SusGraphicHelper
 import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.SusVec3
-import com.suslovila.sus_multi_blocked.utils.Position
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.client.model.AdvancedModelLoader
@@ -16,7 +13,6 @@ import net.minecraftforge.client.model.IModelCustom
 import net.minecraftforge.common.util.ForgeDirection
 import org.lwjgl.opengl.GL11
 import thaumcraft.client.lib.UtilsFX
-import kotlin.random.Random
 
 object DischargeFlaskRenderer {
     var flaskModel: IModelCustom
@@ -69,16 +65,18 @@ object DischargeFlaskRenderer {
             GL11.glTranslated(0.0, 1.5 * tile.preparationPercent, 0.0)
             GL11.glScaled(0.5, 0.5, 0.5)
             GL11.glDepthMask(false)
-            GL11.glDisable(GL11.GL_CULL_FACE)
+            GL11.glEnable(GL11.GL_CULL_FACE)
             GL11.glDisable(GL11.GL_ALPHA_TEST)
             GL11.glEnable(GL11.GL_BLEND)
             GL11.glDisable(GL11.GL_LIGHTING)
 
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
             GL11.glColor4f(1f, 1f, 1f, 1f)
+            GL11.glCullFace(GL11.GL_FRONT)
+            flaskModel.renderPart("glass_Cube.003")
+            GL11.glCullFace(GL11.GL_BACK)
             flaskModel.renderPart("glass_Cube.003")
 
-            GL11.glEnable(GL11.GL_CULL_FACE)
             GL11.glEnable(GL11.GL_ALPHA_TEST)
             GL11.glDisable(GL11.GL_BLEND)
             GL11.glEnable(GL11.GL_LIGHTING)
@@ -97,7 +95,7 @@ object DischargeFlaskRenderer {
                     for (z in offsets) {
 
                         Kharium.proxy.nodeAntiBolt(
-                            tile.worldObj,
+                            tile.world,
                             x = tile.xCoord + 0.5f + 2.3f * x,
                             y = tile.yCoord + 0.5f,
                             z = tile.zCoord + 0.5f + 2.3f * z,

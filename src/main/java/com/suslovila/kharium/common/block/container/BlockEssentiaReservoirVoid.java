@@ -27,7 +27,7 @@ public class BlockEssentiaReservoirVoid extends BlockEssentiaReservoir {
         //super(Material.iron);
         this.setHardness(2.0F);
         this.setResistance(17.0F);
-        setBlockName("blockEssentiaReservoirVoid");
+        setUnlocalizedName("blockEssentiaReservoirVoid");
         this.setStepSound(Block.soundTypeMetal);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 

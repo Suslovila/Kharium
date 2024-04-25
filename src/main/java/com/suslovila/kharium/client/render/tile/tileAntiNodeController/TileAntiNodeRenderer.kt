@@ -9,7 +9,7 @@ import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.SusUtils.antiNodeAppearanceTime
 import com.suslovila.kharium.utils.SusUtils.random
 import com.suslovila.kharium.utils.SusVec3
-import com.suslovila.kharium.utils.WorldHelper.getPos
+import com.suslovila.kharium.utils.getPosDouble
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.tileentity.TileEntity
@@ -199,7 +199,7 @@ object TileAntiNodeRenderer : SusTileRenderer<TileAntiNode>() {
             if (random.nextInt(50) == 37 && antiNode.kharuTails.size < maxTailsAmount) {
                 antiNode.kharuTails.add(
                     KharuTail(
-                        homePos = antiNode.getPos().add(0.5, 0.5, 0.5),
+                        homePos = antiNode.getPosDouble().add(0.5, 0.5, 0.5),
                         tailSpeed = nextInt(minTailSpeed, maxTailSpeed),
                         maxRadius = nextDouble(minRadius, maxRadius),
                         radiusChangePerFrame = nextDouble(radiusChangeMinSpeed, radiusChangeMaxSpeed),

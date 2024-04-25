@@ -12,7 +12,7 @@ import thaumcraft.common.tiles.TileEssentiaReservoir;
 public class BlockEssentiaReservoirVoidItem extends BlockEssentiaReservoirItem {
     public BlockEssentiaReservoirVoidItem(Block par1) {
         super(par1);
-        this.setMaxDamage(0);
+        this.setMaxDurability(0);
         this.setHasSubtypes(true);
     }
 

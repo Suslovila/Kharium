@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ public class FXSmokeSpiral extends FXBase {
 
         tessellator.setBrightness(getBrightnessForRender(partialTick));
         SusGraphicHelper.INSTANCE.bindColor(tessellator, SusUtils.humilitasColor, 0.4f, 1f);
+        GL11.glDisable(GL11.GL_LIGHTING);
         tessellator.addVertexWithUV(xRendered - x * f10 - u * f10, yRendered - y * f10, (zRendered - z * f10 - v * f10), 0, 0);
         tessellator.addVertexWithUV(xRendered - x * f10 + u * f10, yRendered + y * f10, (zRendered - z * f10 + v * f10), 0, 1);
         tessellator.addVertexWithUV(xRendered + x * f10 + u * f10, yRendered + y * f10, (zRendered + z * f10 + v * f10), 1, 1);

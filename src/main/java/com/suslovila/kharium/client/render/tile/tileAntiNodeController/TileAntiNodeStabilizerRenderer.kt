@@ -40,7 +40,7 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
     }
 
     override fun render(tile: TileAntiNodeStabilizer, partialTicks: Float) {
-        tile.worldObj ?: return
+        tile.world ?: return
         val time = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + partialTicks
 
         glPushMatrix()
@@ -75,8 +75,9 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
         val k = j % 65536
         val l = j / 65536
         //values got by testing
+        SusGraphicHelper.pushLight()
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k.toFloat() / 1.0f, l.toFloat() / 1.0f)
-
+        SusGraphicHelper.popLight()
         glTranslatef(0.0f, -0.63f, 0f)
         glRotatef(180f, 1f, 0f, 0f)
         glPushMatrix()
@@ -178,7 +179,9 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
         val j = 15728880
         val k = j % 65536
         val l = j / 65536
+        SusGraphicHelper.pushLight()
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k.toFloat() / 1.0f, l.toFloat() / 1.0f)
+        SusGraphicHelper.popLight()
         val co = Color(humilitasColor)
         glColor4f(
             co.red / 255f,
@@ -195,7 +198,7 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
     private fun renderSpinningEssence(tile: TileAntiNodeStabilizer) {
         val deltaPos = RotatableHandler.getFacingVector(tile.facing).normalize().scale(-0.23)
         val fx1 = FXSmokeSpiral(
-            tile.worldObj,
+            tile.world,
             tile.xCoord.toDouble() + 0.5 + deltaPos.x,
             tile.yCoord.toDouble() + 0.5 + deltaPos.y,
             tile.zCoord.toDouble() + 0.5 + deltaPos.z,
@@ -206,7 +209,7 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
             ResourceLocation("textures/misc/p_large.png")
         )
         (fx1 as? IFxScaleProvider)?.setScale(0.3f) ?: throw Exception("can't cast to Mixin Interface")
-        ParticleEngine.instance.addEffect(tile.worldObj, fx1)
+        ParticleEngine.instance.addEffect(tile.world, fx1)
     }
 
 

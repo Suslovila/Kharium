@@ -1,15 +1,29 @@
 package com.suslovila.kharium.utils
 
+import com.suslovila.kharium.Kharium
 import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.util.MathHelper
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.model.AdvancedModelLoader
+import net.minecraftforge.client.model.IModelCustom
 import org.lwjgl.opengl.GL11.*
 import thaumcraft.client.lib.UtilsFX
 import thaumcraft.common.config.Config
 import java.awt.Color
 
 object SusGraphicHelper {
+    var cubeModel: IModelCustom
+
+    var savedLightY: Float = 0.0f
+    var savedLightX: Float = 0.0f
+
+    init {
+        cubeModel =
+            AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/cube.obj"))
+    }
+
     enum class BasicDirection(val vec3: SusVec3) {
         NORTH(SusVec3(0, 0, -1)),
         SOUTH(SusVec3(0, 0, 1)),
@@ -18,6 +32,7 @@ object SusGraphicHelper {
         UP(SusVec3(0, 1, 0)),
         DOWN(SusVec3(0, -1, 0))
     }
+
     @JvmStatic
     fun drawGuideArrows() {
         with(Tessellator.instance) {
@@ -46,15 +61,16 @@ object SusGraphicHelper {
             glEnable(GL_TEXTURE_2D)
         }
     }
-    fun bindColor(tessellator: Tessellator, color : Int, alpha : Float, fadeFactor : Float) {
+
+    fun bindColor(tessellator: Tessellator, color: Int, alpha: Float, fadeFactor: Float) {
         val co = Color(color)
         val r = co.red / 255.0f
-        val g = co.green/ 255.0f
+        val g = co.green / 255.0f
         val b = co.blue / 255.0f
         tessellator.setColorRGBA_F(r * fadeFactor, g * fadeFactor, b * fadeFactor, alpha)
     }
 
-    fun translateFromPlayerTo(pos : SusVec3, partialTicks : Float){
+    fun translateFromPlayerTo(pos: SusVec3, partialTicks: Float) {
         val player = Minecraft.getMinecraft().thePlayer
         val destX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks
         val destY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks
@@ -77,18 +93,17 @@ object SusGraphicHelper {
         yScale: Float,
         zScale: Float,
         time: Float,
-        isTranslucent : Boolean
+        isTranslucent: Boolean
     ) {
         val co = Color(color)
         val r = co.red / 255.0f
         val g = co.green / 255.0f
         val b = co.blue / 255.0f
-        if(isTranslucent) {
+        if (isTranslucent) {
             glDepthMask(false)
             glEnable(GL_BLEND)
             glBlendFunc(GL_SRC_ALPHA, GL_ONE)
-        }
-        else{
+        } else {
             glDisable(GL_BLEND)
         }
         val tessellator = Tessellator.instance
@@ -109,9 +124,12 @@ object SusGraphicHelper {
         while (i <= length * distance) {
             val f2 = i / length
             val f3 = 1.0f - Math.abs(i - length / 2.0f) / (length / 2.0f)
-            var dx = xFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 4.0).toFloat()) * 0.2f * f3)
-            var dy = yFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 3.0).toFloat()) * 0.2f * f3)
-            var dz = zFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 2.0).toFloat()) * 0.2f * f3)
+            var dx =
+                xFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 4.0).toFloat()) * 0.2f * f3)
+            var dy =
+                yFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 3.0).toFloat()) * 0.2f * f3)
+            var dz =
+                zFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 2.0).toFloat()) * 0.2f * f3)
             tessellator.setColorRGBA_F(r, g, b, f3)
             val x3 = (1.0f - f2) * dist - time * speed
 
@@ -130,9 +148,12 @@ object SusGraphicHelper {
         while (var84 <= length * distance) {
             val f2 = var84.toFloat() / length
             val f3 = 1.0f - Math.abs(var84 - length / 2.0f) / (length / 2.0f)
-            var dx = xFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 4.0).toFloat()) * 0.2f * f3)
-            var dy = yFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 3.0).toFloat()) * 0.2f * f3)
-            var dz = zFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 2.0).toFloat()) * 0.2f * f3)
+            var dx =
+                xFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 4.0).toFloat()) * 0.2f * f3)
+            var dy =
+                yFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 3.0).toFloat()) * 0.2f * f3)
+            var dz =
+                zFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 2.0).toFloat()) * 0.2f * f3)
             tessellator.setColorRGBA_F(r, g, b, f3)
             val x3 = (1.0f - f2) * dist - time * speed
 
@@ -145,11 +166,18 @@ object SusGraphicHelper {
             ++var84
         }
         tessellator.draw()
-        if(isTranslucent) {
+        if (isTranslucent) {
             glEnable(GL_CULL_FACE)
             glDisable(GL_BLEND)
             glDepthMask(true)
         }
     }
 
+    fun pushLight() {
+        savedLightX = OpenGlHelper.lastBrightnessX
+        savedLightY = OpenGlHelper.lastBrightnessY
+    }
+    fun popLight() {
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, savedLightX, savedLightY)
+    }
 }

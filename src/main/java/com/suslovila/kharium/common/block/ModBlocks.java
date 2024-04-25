@@ -2,21 +2,20 @@ package com.suslovila.kharium.common.block;
 
 import com.suslovila.kharium.common.block.blockAntiNodeController.BlockAntiNodeControllerBase;
 import com.suslovila.kharium.common.block.blockAntiNodeController.BlockAntiNodeStabilizer;
-import com.suslovila.kharium.common.block.blockAntiNodeController.BlockKharuSnare;
 import com.suslovila.kharium.common.block.container.BlockAntiNode;
 import com.suslovila.kharium.common.block.container.BlockAntiNodeWatcher;
 import com.suslovila.kharium.common.block.container.BlockEssentiaReservoirVoid;
 import com.suslovila.kharium.common.block.container.BlockKharuExtractor;
 import com.suslovila.kharium.common.block.multiblocks.BlockSynthesizer;
 import com.suslovila.kharium.common.block.multiblocks.tile.TileSynthesizer;
-import com.suslovila.kharium.common.block.tileEntity.TileAntiNode;
-import com.suslovila.kharium.common.block.tileEntity.TileAntiNodeWatcher;
-import com.suslovila.kharium.common.block.tileEntity.TileEssentiaReservoirVoid;
-import com.suslovila.kharium.common.block.tileEntity.TileKharuSnare;
+import com.suslovila.kharium.common.block.tileEntity.*;
 import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase;
 import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer;
 import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileKharuExtractor;
 import com.suslovila.kharium.common.item.BlockEssentiaReservoirVoidItem;
+import com.suslovila.kharium.common.multiStructure.kharuSnare.BlockKharuSnare;
+import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare;
+import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnareFilling;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -33,6 +32,7 @@ public class ModBlocks {
     public static BlockAntiNodeControllerBase BLOCK_ANTI_NODE_CONTROLLER = new BlockAntiNodeControllerBase();
     public static final BlockEssentiaReservoirVoid BlockEssentiaReservoirVoid = (new BlockEssentiaReservoirVoid());
     public static BlockKharuExtractor KHARU_EXTRACTOR = new BlockKharuExtractor();
+    public static BlockRestrainedGlass glass = new BlockRestrainedGlass(MOD_ID + "_restrained_glass");
 
     public static BlockKharuSnare KHARU_SNARE = new BlockKharuSnare("block_snare");
 
@@ -57,6 +57,8 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TileKharuSnare.class, MOD_ID + "TileKharuSnare");
 
         GameRegistry.registerTileEntity(TileKharuExtractor.class, MOD_ID + "TileKharuExtractor");
+        GameRegistry.registerTileEntity(TileRestrainedGlass.class, MOD_ID + "TileRestrainedGlass");
+        GameRegistry.registerTileEntity(TileKharuSnareFilling.class, MOD_ID + "TileKharuSnareFilling");
 
 
     }

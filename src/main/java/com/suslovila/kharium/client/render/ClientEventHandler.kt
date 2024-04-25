@@ -9,6 +9,7 @@ import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.Tile
 import com.suslovila.kharium.utils.RotatableHandler
 import com.suslovila.kharium.utils.SusGraphicHelper
 import com.suslovila.kharium.utils.SusVec3
+import cpw.mods.fml.common.eventhandler.EventPriority
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import cpw.mods.fml.relauncher.Side
 import cpw.mods.fml.relauncher.SideOnly
@@ -24,52 +25,72 @@ import java.util.ArrayDeque
 import java.util.Queue
 import java.util.concurrent.ConcurrentLinkedQueue
 
-@SideOnly(Side.CLIENT)
 object ClientEventHandler {
 
     val postRenders = ConcurrentLinkedQueue<PostRendered>()
 
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    fun onRenderWorldLast(event: RenderWorldLastEvent) {
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    fun onRenderWorldLastLowest(event: RenderWorldLastEvent) {
 
-        handleParticles()
-        handleStabilizer(event)
+//        dispatchQueuedRenders(event)
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    fun onRenderWorldLastLow(event: RenderWorldLastEvent) {
+
+
+    }
+
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    fun onRenderWorldLastNormal(event: RenderWorldLastEvent) {
         dispatchQueuedRenders(event)
+
+
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    fun onRenderWorldLastHigh(event: RenderWorldLastEvent) {
+
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    fun onRenderWorldLastHighest(event: RenderWorldLastEvent) {
+        handleParticles()
+
     }
 
     private fun handleStabilizer(event: RenderWorldLastEvent) {
-        for (pos in TileAntiNodeStabilizer.tiles) {
-            if (Minecraft.getMinecraft().theWorld.getTileEntity(
-                    pos.x.toInt(),
-                    pos.y.toInt(),
-                    pos.z.toInt()
-                ) is TileAntiNodeStabilizer
-            ) {
-                val tile = Minecraft.getMinecraft().theWorld.getTileEntity(
-                    pos.x.toInt(),
-                    pos.y.toInt(),
-                    pos.z.toInt()
-                ) as TileAntiNodeStabilizer
-
-                glPushMatrix()
-                SusGraphicHelper.translateFromPlayerTo(
-                    SusVec3(
-                        tile.xCoord + 0.5,
-                        tile.yCoord + 0.5,
-                        tile.zCoord + 0.5
-                    ),
-                    event.partialTicks
-                )
-
-                RotatableHandler.rotateFromOrientation(tile.facing)
-                TileAntiNodeStabilizerRenderer.renderGlasses()
-                glPopMatrix()
-
-            } else TileAntiNodeStabilizer.tiles.remove(pos)
-        }
-
-        UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
+//        for (pos in TileAntiNodeStabilizer.tiles) {
+//            if (Minecraft.getMinecraft().theWorld.getTileEntity(
+//                    pos.x.toInt(),
+//                    pos.y.toInt(),
+//                    pos.z.toInt()
+//                ) is TileAntiNodeStabilizer
+//            ) {
+//                val tile = Minecraft.getMinecraft().theWorld.getTileEntity(
+//                    pos.x.toInt(),
+//                    pos.y.toInt(),
+//                    pos.z.toInt()
+//                ) as TileAntiNodeStabilizer
+//
+//                glPushMatrix()
+//                SusGraphicHelper.translateFromPlayerTo(
+//                    SusVec3(
+//                        tile.xCoord + 0.5,
+//                        tile.yCoord + 0.5,
+//                        tile.zCoord + 0.5
+//                    ),
+//                    event.partialTicks
+//                )
+//
+//                RotatableHandler.rotateFromOrientation(tile.facing)
+//                TileAntiNodeStabilizerRenderer.renderGlasses()
+//                glPopMatrix()
+//
+//            } else TileAntiNodeStabilizer.tiles.remove(pos)
+//        }
+//
+//        UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
 
     }
 

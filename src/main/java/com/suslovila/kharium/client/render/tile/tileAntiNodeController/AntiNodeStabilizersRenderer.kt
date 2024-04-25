@@ -1,19 +1,15 @@
 package com.suslovila.kharium.client.render.tile.tileAntiNodeController
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.utils.SusGraphicHelper
-import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.SusUtils.humilitasColor
 import com.suslovila.kharium.client.particles.FXSmokeSpiral
 import com.suslovila.kharium.client.render.tile.TileKharuSnareRenderer
-import com.suslovila.kharium.common.block.tileEntity.TileKharuSnare
+import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import com.suslovila.kharium.mixinUtils.IFxScaleProvider
-import com.suslovila.kharium.utils.RotatableHandler
-import com.suslovila.kharium.utils.SusVec3
+import com.suslovila.kharium.utils.*
 import com.suslovila.sus_multi_blocked.utils.Position
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.OpenGlHelper
-import net.minecraft.client.renderer.RenderGlobal
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.util.ResourceLocation
@@ -56,11 +52,11 @@ object AntiNodeStabilizersRenderer {
             glTranslated(0.0, 5.5, 0.0)
             glScaled(7.0 / 5.0, 1.5, 7.0 / 5.0)
             renderCore()
-            glDepthMask(false)
-            renderMagicCircles(tile, time)
-            glDepthMask(true)
+//            glDepthMask(false)
+//            renderMagicCircles(tile, time)
+//            glDepthMask(true)
             renderPlasmaWaves(partialTicks, facing)
-            renderSpinningEssence(Position(tile.xCoord, tile.yCoord, tile.zCoord), tile.worldObj, facing)
+            renderSpinningEssence(Position(tile.xCoord, tile.yCoord, tile.zCoord), tile.world, facing)
 
             glPopMatrix()
             UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
@@ -71,8 +67,9 @@ object AntiNodeStabilizersRenderer {
         glPushMatrix()
         glDisable(GL_ALPHA_TEST)
         glDisable(GL_CULL_FACE)
-        glAlphaFunc(GL_GREATER, 0.003921569f)
+        glAlphaFunc(GL_GREATER, 0.0f)
         glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
         glDisable(GL_LIGHTING)
         val co = Color(humilitasColor)
         glColor4f(
@@ -85,8 +82,9 @@ object AntiNodeStabilizersRenderer {
         val k = j % 65536
         val l = j / 65536
         //values got by testing
+        SusGraphicHelper.pushLight()
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k.toFloat() / 1.0f, l.toFloat() / 1.0f)
-
+        SusGraphicHelper.popLight()
         glTranslatef(0.0f, -0.63f, 0f)
         glRotatef(180f, 1f, 0f, 0f)
         glPushMatrix()
@@ -191,6 +189,7 @@ object AntiNodeStabilizersRenderer {
         val j = 15728880
         val k = j % 65536
         val l = j / 65536
+        SusGraphicHelper.pushLight()
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k.toFloat() / 1.0f, l.toFloat() / 1.0f)
         val co = Color(humilitasColor)
         glColor4f(
@@ -203,6 +202,8 @@ object AntiNodeStabilizersRenderer {
         glDisable(GL_BLEND)
         glAlphaFunc(516, 0.1f)
         glPopMatrix()
+        SusGraphicHelper.popLight()
+
     }
 
     private fun renderSpinningEssence(pos: Position, world: World, facing: ForgeDirection) {
@@ -251,15 +252,20 @@ object AntiNodeStabilizersRenderer {
         glPopMatrix()
     }
 
-    fun postRender(pos: SusVec3, event: RenderWorldLastEvent) {
+    fun postRender(tile : TileKharuSnare, event: RenderWorldLastEvent) {
         glPushMatrix()
-        SusGraphicHelper.translateFromPlayerTo(pos, event.partialTicks)
+        SusGraphicHelper.translateFromPlayerTo(tile.getPosDouble().add(SusVec3(0.5, 0.5, 0.5)), event.partialTicks)
+        val time = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + event.partialTicks
+
         for (facing in availableFacings) {
             glPushMatrix()
             glTranslated(0.0, -5.0 + TileKharuSnareRenderer.correctionOffset - 1, 0.0)
             RotatableHandler.rotateFromOrientation(facing)
             glTranslated(0.0, 5.5, 0.0)
             glScaled(7.0 / 5.0, 1.5, 7.0 / 5.0)
+            glDepthMask(false)
+            renderMagicCircles(tile, time)
+            glDepthMask(true)
             renderGlasses()
             glPopMatrix()
         }

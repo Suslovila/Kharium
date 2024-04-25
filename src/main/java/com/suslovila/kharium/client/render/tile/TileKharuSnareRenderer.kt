@@ -1,38 +1,22 @@
 package com.suslovila.kharium.client.render.tile
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.api.client.PostRendered
-import com.suslovila.kharium.client.render.tile.SusTileRenderer
 import com.suslovila.kharium.utils.SusGraphicHelper
-import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.SusUtils.humilitasColor
-import com.suslovila.kharium.client.particles.FXSmokeSpiral
 import com.suslovila.kharium.client.render.ClientEventHandler
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.AntiNodeStabilizersRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.DischargeFlaskRenderer
-import com.suslovila.kharium.common.block.tileEntity.TileKharuSnare
-import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer
-import com.suslovila.kharium.mixinUtils.IFxScaleProvider
-import com.suslovila.kharium.utils.RotatableHandler
+import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import com.suslovila.kharium.utils.SusUtils.humilitasColorObj
 import com.suslovila.kharium.utils.SusVec3
-import com.suslovila.sus_multi_blocked.utils.Position
-import cpw.mods.fml.relauncher.Side
-import cpw.mods.fml.relauncher.SideOnly
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.OpenGlHelper
-import net.minecraft.client.renderer.RenderGlobal
-import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.texture.TextureMap
-import net.minecraft.nbt.JsonToNBT
 import net.minecraft.util.ResourceLocation
-import net.minecraft.world.World
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
-import net.minecraftforge.common.util.ForgeDirection
 import org.lwjgl.opengl.GL11.*
-import thaumcraft.client.fx.ParticleEngine
 import thaumcraft.client.lib.UtilsFX
 import java.awt.Color
 
@@ -136,7 +120,9 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
         val j = 15728880
         val k = j % 65536
         val l = j / 65536
+        SusGraphicHelper.pushLight()
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k.toFloat() / 1.0f, l.toFloat() / 1.0f)
+        SusGraphicHelper.popLight()
         val co = Color(humilitasColor)
         glColor4f(
             co.red / 255f,

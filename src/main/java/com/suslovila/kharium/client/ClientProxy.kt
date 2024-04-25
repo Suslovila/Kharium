@@ -6,6 +6,7 @@ import com.suslovila.kharium.client.render.ClientEventHandler
 import com.suslovila.kharium.client.render.block.BlockEssentiaReservoirVoidRenderer
 import com.suslovila.kharium.client.render.item.ItemAntiNodeRenderer
 import com.suslovila.kharium.client.render.item.ItemCrystallizedAntiMatterRenderer
+import com.suslovila.kharium.client.render.tile.RestrainGlassRenderer
 import com.suslovila.kharium.client.render.tile.TileEssentiaReservoirVoidRenderer
 import com.suslovila.kharium.client.render.tile.TileKharuSnareRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.TileAntiNodeRenderer
@@ -13,13 +14,11 @@ import com.suslovila.kharium.client.render.tile.tileAntiNodeController.TileAntiN
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.TileAntiNodeWatcherRenderer
 import com.suslovila.kharium.common.CommonProxy
 import com.suslovila.kharium.common.block.ModBlocks
-import com.suslovila.kharium.common.block.tileEntity.TileAntiNode
-import com.suslovila.kharium.common.block.tileEntity.TileAntiNodeWatcher
-import com.suslovila.kharium.common.block.tileEntity.TileEssentiaReservoirVoid
-import com.suslovila.kharium.common.block.tileEntity.TileKharuSnare
+import com.suslovila.kharium.common.block.tileEntity.*
 import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer
 import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileKharuReactor
 import com.suslovila.kharium.common.item.ModItems
+import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import cpw.mods.fml.client.registry.ClientRegistry
 import cpw.mods.fml.client.registry.RenderingRegistry
 import cpw.mods.fml.common.event.FMLInitializationEvent
@@ -59,6 +58,7 @@ class ClientProxy : CommonProxy(), IGuiHandler {
 
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileKharuReactor::class.java, TileKharuReactorRenderer)
         ClientRegistry.bindTileEntitySpecialRenderer(TileKharuSnare::class.java, TileKharuSnareRenderer)
+        ClientRegistry.bindTileEntitySpecialRenderer(TileRestrainedGlass::class.java, RestrainGlassRenderer)
 
     }
 

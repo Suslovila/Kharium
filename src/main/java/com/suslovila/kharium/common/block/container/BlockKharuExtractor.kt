@@ -13,6 +13,6 @@ class BlockKharuExtractor : BlockContainer(Material.iron){
     }
 
     override fun createNewTileEntity(world: World?, p_149915_2_: Int): TileEntity? {
-        return null;
+        return null
     }
 }

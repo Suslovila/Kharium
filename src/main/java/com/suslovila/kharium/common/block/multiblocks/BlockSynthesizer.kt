@@ -12,9 +12,9 @@ class BlockSynthesizer(name: String) : BlockContainer(Material.iron) {
     init {
         this.setHardness(3.0F)
         this.setResistance(10.0F)
-        this.setBlockName(name)
+        this.unlocalizedName = name
         this.setCreativeTab(tab)
-        this.setBlockTextureName("$MOD_ID:synthesizer")
+        this.textureName = "$MOD_ID:synthesizer"
 
         GameRegistry.registerBlock(this, name)
     }
