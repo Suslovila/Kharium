@@ -31,8 +31,6 @@ object ClientEventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun onRenderWorldLastLowest(event: RenderWorldLastEvent) {
-
-//        dispatchQueuedRenders(event)
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
@@ -59,41 +57,6 @@ object ClientEventHandler {
 
     }
 
-    private fun handleStabilizer(event: RenderWorldLastEvent) {
-//        for (pos in TileAntiNodeStabilizer.tiles) {
-//            if (Minecraft.getMinecraft().theWorld.getTileEntity(
-//                    pos.x.toInt(),
-//                    pos.y.toInt(),
-//                    pos.z.toInt()
-//                ) is TileAntiNodeStabilizer
-//            ) {
-//                val tile = Minecraft.getMinecraft().theWorld.getTileEntity(
-//                    pos.x.toInt(),
-//                    pos.y.toInt(),
-//                    pos.z.toInt()
-//                ) as TileAntiNodeStabilizer
-//
-//                glPushMatrix()
-//                SusGraphicHelper.translateFromPlayerTo(
-//                    SusVec3(
-//                        tile.xCoord + 0.5,
-//                        tile.yCoord + 0.5,
-//                        tile.zCoord + 0.5
-//                    ),
-//                    event.partialTicks
-//                )
-//
-//                RotatableHandler.rotateFromOrientation(tile.facing)
-//                TileAntiNodeStabilizerRenderer.renderGlasses()
-//                glPopMatrix()
-//
-//            } else TileAntiNodeStabilizer.tiles.remove(pos)
-//        }
-//
-//        UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
-
-    }
-
     private fun handleParticles() {
         val profiler = Minecraft.getMinecraft().mcProfiler
         profiler.startSection("particles")
@@ -105,9 +68,10 @@ object ClientEventHandler {
         event: RenderWorldLastEvent
     ) {
         glColor4f(1.0f, 1.0f, 1.0f, 1f)
-        if (!postRenders.isEmpty()) {
+        if (postRenders.isNotEmpty()) {
             for (postRendered in postRenders) postRendered.postRender(event)
+            postRenders.clear()
+
         }
-        postRenders.clear()
     }
 }

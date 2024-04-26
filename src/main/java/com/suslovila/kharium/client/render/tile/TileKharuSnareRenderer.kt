@@ -9,6 +9,7 @@ import com.suslovila.kharium.client.render.tile.tileAntiNodeController.Discharge
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import com.suslovila.kharium.utils.SusUtils.humilitasColorObj
 import com.suslovila.kharium.utils.SusVec3
+import com.suslovila.kharium.utils.getPosDouble
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.client.renderer.texture.TextureMap
@@ -42,8 +43,8 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
         glPushMatrix()
         glTranslated(0.0, correctionOffset, 0.0)
         renderCore()
-        if (tile.isActive) {
-            renderTranslatingKharu(time)
+        if (tile.isPrepared) {
+            renderTranslatingKharu(tile, partialTicks, time)
         }
         glPopMatrix()
         AntiNodeStabilizersRenderer.render(tile, partialTicks)
@@ -51,7 +52,7 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
         UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
     }
 
-    private fun renderTranslatingKharu(time: Float) {
+    private fun renderTranslatingKharu(tile: TileKharuSnare, partialTicks: Float, time: Float) {
         glDisable(GL_LIGHTING)
         glTranslated(0.0, -1.0 + correctionOffset, 0.0)
         for (i in 0..4) {
@@ -73,7 +74,8 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
                 yScale = 2F,
                 zScale = 1F,
                 time = time,
-                false
+                false,
+                tile.getClientPreparationPercent(partialTicks)
             )
             SusGraphicHelper.drawFloatyLine(
                 -3.0 / scaleFactor,
@@ -88,7 +90,8 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
                 yScale = 2F,
                 zScale = 1F,
                 time = time + 2,
-                false
+                false,
+                tile.getClientPreparationPercent(partialTicks)
             )
             glPopMatrix()
         }
@@ -136,10 +139,10 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
         glPopMatrix()
     }
 
-    fun postRender(pos: SusVec3, event: RenderWorldLastEvent) {
+    fun postRender(tile: TileKharuSnare, event: RenderWorldLastEvent) {
         glPushMatrix()
         SusGraphicHelper.translateFromPlayerTo(
-            pos.add(SusVec3(0, antiNodeOffset + correctionOffset - 1, 0)),
+            tile.getPosDouble().add(SusVec3(0.5, antiNodeOffset + correctionOffset - 1 + 0.5, 0.5)),
             event.partialTicks
         )
         glEnable(GL_BLEND)
@@ -149,7 +152,12 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE)
         glDisable(GL_CULL_FACE)
         UtilsFX.bindTexture(Kharium.MOD_ID, "textures/whiteBlank.png")
-        glColor4d(humilitasColorObj.red / 255.0, humilitasColorObj.green / 255.0, humilitasColorObj.blue / 255.0, 0.07)
+        glColor4d(
+            humilitasColorObj.red / 255.0,
+            humilitasColorObj.green / 255.0,
+            humilitasColorObj.blue / 255.0,
+            0.07 * tile.getClientPreparationPercent(event.partialTicks)
+        )
         val scaleFactor = 4.0
         glScaled(scaleFactor, scaleFactor, scaleFactor)
         fieldModel.renderAll()

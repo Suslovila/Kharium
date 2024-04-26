@@ -4,6 +4,7 @@ import com.suslovila.kharium.client.ClientProxy;
 import com.suslovila.kharium.common.CommonProxy;
 import com.suslovila.kharium.common.crafting.RecipeRegistry;
 import com.suslovila.kharium.common.ore_dicitonary.OreDictionaryRegistry;
+import com.suslovila.sus_multi_blocked.utils.NbtKeyNameHelper;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -20,6 +21,8 @@ public class Kharium {
     public static final String NAME = "kharium";
     public static final String MOD_ID = "kharium";
     public static final String VERSION = "1.0";
+
+    public static final NbtKeyNameHelper prefixAppender = new NbtKeyNameHelper(MOD_ID);
 
     public static final CreativeTabs tab = new CreativeTabs(NAME) {
         @Override

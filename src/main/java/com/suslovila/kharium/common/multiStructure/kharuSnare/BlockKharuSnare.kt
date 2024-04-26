@@ -33,4 +33,6 @@ class BlockKharuSnare(name: String
     override fun isSideSolid(world: IBlockAccess?, x: Int, y: Int, z: Int, side: ForgeDirection?) = false
 
     override fun getRenderBlockPass() = 1
+
+
 }

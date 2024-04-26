@@ -1,5 +1,6 @@
 package com.suslovila.kharium.common.block.tileEntity
 
+import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.kharu.IKharuSupplier
 import com.suslovila.kharium.utils.SusVec3
 import cpw.mods.fml.relauncher.Side
@@ -10,30 +11,27 @@ import thaumcraft.api.TileThaumcraft
 
 class TileAntiNode : TileThaumcraft(), IKharuSupplier {
     companion object {
-        const val TAG_TIMER = "timer"
-        const val TAG_ACTUAL_ENERGY = "actualEnergy"
-        const val MAX_ENERGY = "maxEnergy"
+        val TAG_ACTUAL_ENERGY = Kharium.prefixAppender.doAndGet("actualEnergy")
+        val MAX_ENERGY = Kharium.prefixAppender.doAndGet("maxEnergy")
+        val STABILISATION = Kharium.prefixAppender.doAndGet("stabilization")
     }
 
 
-    @SideOnly(Side.CLIENT)
     var kharuTails = ConcurrentSet<KharuTail>()
-    var tickExisted = 0
     var maxEnergy = 0
     var actualEnergy = 0
         set(value) {
             field = Math.min(value, maxEnergy)
         }
+//    var stabilisation
 
     override fun readCustomNBT(nbttagcompound: NBTTagCompound) {
-        tickExisted = nbttagcompound.getInteger(TAG_TIMER)
         actualEnergy = nbttagcompound.getInteger(TAG_ACTUAL_ENERGY)
         maxEnergy = nbttagcompound.getInteger(MAX_ENERGY)
     }
 
 
     override fun writeCustomNBT(nbttagcompound: NBTTagCompound) {
-        nbttagcompound.setInteger(TAG_TIMER, tickExisted)
         nbttagcompound.setInteger(TAG_ACTUAL_ENERGY, actualEnergy)
         nbttagcompound.setInteger(MAX_ENERGY, maxEnergy)
     }
@@ -41,7 +39,6 @@ class TileAntiNode : TileThaumcraft(), IKharuSupplier {
 
     override fun updateEntity() {
         super.updateEntity()
-        tickExisted = (tickExisted + 1) % Int.MAX_VALUE
     }
 
     override fun takeFromItself(amount: Int): Int {

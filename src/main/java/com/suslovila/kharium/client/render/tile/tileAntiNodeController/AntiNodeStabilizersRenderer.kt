@@ -51,19 +51,19 @@ object AntiNodeStabilizersRenderer {
             RotatableHandler.rotateFromOrientation(facing)
             glTranslated(0.0, 5.5, 0.0)
             glScaled(7.0 / 5.0, 1.5, 7.0 / 5.0)
-            renderCore()
+            renderCore(tile, partialTicks)
 //            glDepthMask(false)
 //            renderMagicCircles(tile, time)
 //            glDepthMask(true)
-            renderPlasmaWaves(partialTicks, facing)
-            renderSpinningEssence(Position(tile.xCoord, tile.yCoord, tile.zCoord), tile.world, facing)
+            renderPlasmaWaves(tile, partialTicks)
+            if(tile.enabled) renderSpinningEssence(Position(tile.xCoord, tile.yCoord, tile.zCoord), tile.world, facing)
 
             glPopMatrix()
             UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
         }
     }
 
-    private fun renderMagicCircles(tile: TileKharuSnare, time: Float) {
+    private fun renderMagicCircles(tile: TileKharuSnare, partialTicks: Float) {
         glPushMatrix()
         glDisable(GL_ALPHA_TEST)
         glDisable(GL_CULL_FACE)
@@ -88,8 +88,8 @@ object AntiNodeStabilizersRenderer {
         glTranslatef(0.0f, -0.63f, 0f)
         glRotatef(180f, 1f, 0f, 0f)
         glPushMatrix()
-        glRotatef((time * 4) % 360, 0f, 1f, 0f)
-        val scaleFactor = tile.preparationPercent
+        glRotatef((SusGraphicHelper.getRenderGlobalTime(partialTicks) * 4) % 360, 0f, 1f, 0f)
+        val scaleFactor = tile.getClientPreparationPercent(partialTicks)
         glScaled(scaleFactor, scaleFactor, scaleFactor)
         val tessellator = Tessellator.instance
         UtilsFX.bindTexture(Kharium.MOD_ID, "textures/blocks/circle2.png")
@@ -104,7 +104,7 @@ object AntiNodeStabilizersRenderer {
         glPopMatrix()
         glPushMatrix()
         glTranslated(0.0, 0.01, 0.0)
-        glRotatef(-(time * 4 % 360), 0f, 1f, 0f)
+        glRotatef(-(SusGraphicHelper.getRenderGlobalTime(partialTicks) * 4 % 360), 0f, 1f, 0f)
         glScaled(scaleFactor, scaleFactor, scaleFactor)
 
         UtilsFX.bindTexture(Kharium.MOD_ID, "textures/blocks/circle3.png")
@@ -164,7 +164,7 @@ object AntiNodeStabilizersRenderer {
         glPopMatrix()
     }
 
-    fun renderCore() {
+    fun renderCore(tile: TileKharuSnare, partialTicks: Float) {
         glPushMatrix()
 
         glScaled(0.5, 0.5, 0.5)
@@ -172,13 +172,13 @@ object AntiNodeStabilizersRenderer {
 
         glColor4f(1f, 1f, 1f, 1f)
         coreModel.renderAll()
-        renderGlowingElements()
+            renderGlowingElements(tile, partialTicks)
 
         glPopMatrix()
     }
 
 
-    private fun renderGlowingElements() {
+    private fun renderGlowingElements(tile: TileKharuSnare, partialTicks: Float) {
         glPushMatrix()
         glAlphaFunc(516, 0.003921569f)
         glEnable(3042)
@@ -196,7 +196,7 @@ object AntiNodeStabilizersRenderer {
             co.red / 255f,
             co.green / 255f,
             co.blue / 255f,
-            1f
+            (1f * tile.getClientPreparationPercent(partialTicks)).toFloat()
         )
         coreModel.renderAll()
         glDisable(GL_BLEND)
@@ -225,7 +225,7 @@ object AntiNodeStabilizersRenderer {
     }
 
 
-    private fun renderPlasmaWaves(partialTicks: Float, facing: ForgeDirection) {
+    private fun renderPlasmaWaves(tile: TileKharuSnare, partialTicks: Float) {
         glPushMatrix()
         val time = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + partialTicks
         for (i in 1..4) {
@@ -245,17 +245,17 @@ object AntiNodeStabilizersRenderer {
                 yScale = 2F,
                 zScale = 1F,
                 time = time,
-                true
+                true,
+                tile.getClientPreparationPercent(partialTicks)
             )
             glPopMatrix()
         }
         glPopMatrix()
     }
 
-    fun postRender(tile : TileKharuSnare, event: RenderWorldLastEvent) {
+    fun postRender(tile: TileKharuSnare, event: RenderWorldLastEvent) {
         glPushMatrix()
         SusGraphicHelper.translateFromPlayerTo(tile.getPosDouble().add(SusVec3(0.5, 0.5, 0.5)), event.partialTicks)
-        val time = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + event.partialTicks
 
         for (facing in availableFacings) {
             glPushMatrix()
@@ -264,7 +264,7 @@ object AntiNodeStabilizersRenderer {
             glTranslated(0.0, 5.5, 0.0)
             glScaled(7.0 / 5.0, 1.5, 7.0 / 5.0)
             glDepthMask(false)
-            renderMagicCircles(tile, time)
+            renderMagicCircles(tile, event.partialTicks)
             glDepthMask(true)
             renderGlasses()
             glPopMatrix()

@@ -93,7 +93,8 @@ object SusGraphicHelper {
         yScale: Float,
         zScale: Float,
         time: Float,
-        isTranslucent: Boolean
+        isTranslucent: Boolean,
+        alpha: Double
     ) {
         val co = Color(color)
         val r = co.red / 255.0f
@@ -130,7 +131,7 @@ object SusGraphicHelper {
                 yFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 3.0).toFloat()) * 0.2f * f3)
             var dz =
                 zFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 2.0).toFloat()) * 0.2f * f3)
-            tessellator.setColorRGBA_F(r, g, b, f3)
+            tessellator.setColorRGBA_F(r, g, b, (f3 * alpha).toFloat())
             val x3 = (1.0f - f2) * dist - time * speed
 
             dx /= xScale
@@ -154,7 +155,7 @@ object SusGraphicHelper {
                 yFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 3.0).toFloat()) * 0.2f * f3)
             var dz =
                 zFrom + (MathHelper.sin((((dist * (1.0f - f2) * Config.golemLinkQuality / 2.0f) - (time % 32767.0f / 5.0f)) / 2.0).toFloat()) * 0.2f * f3)
-            tessellator.setColorRGBA_F(r, g, b, f3)
+            tessellator.setColorRGBA_F(r, g, b, (f3 * alpha).toFloat())
             val x3 = (1.0f - f2) * dist - time * speed
 
             dx /= xScale
@@ -180,4 +181,6 @@ object SusGraphicHelper {
     fun popLight() {
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, savedLightX, savedLightY)
     }
+
+    fun getRenderGlobalTime(partialTicks: Float) =  Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + partialTicks
 }

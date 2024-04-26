@@ -5,6 +5,7 @@ import com.suslovila.kharium.client.particles.FXKharu
 import com.suslovila.kharium.client.render.tile.SusTileRenderer
 import com.suslovila.kharium.common.block.tileEntity.KharuTail
 import com.suslovila.kharium.common.block.tileEntity.TileAntiNode
+import com.suslovila.kharium.utils.SusGraphicHelper
 import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.SusUtils.antiNodeAppearanceTime
 import com.suslovila.kharium.utils.SusUtils.random
@@ -45,10 +46,10 @@ object TileAntiNodeRenderer : SusTileRenderer<TileAntiNode>() {
                 antiNode.zCoord,
                 partialTicks,
                 sizeOfNode = 0.5f * Math.min(
-                    antiNode.tickExisted.toFloat() / 120, 1f
+                    SusGraphicHelper.getRenderGlobalTime(partialTicks) / 120, 1f
                 )
             )
-            if (antiNode.tickExisted > antiNodeAppearanceTime / 2) {
+            if (SusGraphicHelper.getRenderGlobalTime(partialTicks) > antiNodeAppearanceTime / 2) {
 //                spawnKharuParticles(
 //                    antiNode,
 //                    viewer.worldObj,

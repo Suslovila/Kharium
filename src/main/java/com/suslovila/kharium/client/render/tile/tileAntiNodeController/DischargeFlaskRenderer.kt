@@ -36,12 +36,12 @@ object DischargeFlaskRenderer {
             GL11.glRotated((45 + i * 90).toDouble(), 0.0, 1.0, 0.0)
             GL11.glTranslated(2.7, 0.0, 0.0)
             GL11.glRotated(-45.0, 0.0, 0.0, 1.0)
-            GL11.glTranslated(0.0, 1.5 * tile.preparationPercent, 0.0)
+            GL11.glTranslated(0.0, 0.3 + 1.1 * tile.getClientPreparationPercent(partialTicks), 0.0)
             GL11.glScaled(0.5, 0.5, 0.5)
             flaskModel.renderOnly("bottom_Cube.004")
             GL11.glPopMatrix()
         }
-        if(tile.isActive) renderDischarges(tile)
+        if(tile.isPrepared) renderDischarges(tile)
         GL11.glPopMatrix()
 
 
@@ -62,7 +62,7 @@ object DischargeFlaskRenderer {
             GL11.glRotated((45 + i * 90).toDouble(), 0.0, 1.0, 0.0)
             GL11.glTranslated(2.7, 0.0, 0.0)
             GL11.glRotated(-45.0, 0.0, 0.0, 1.0)
-            GL11.glTranslated(0.0, 1.5 * tile.preparationPercent, 0.0)
+            GL11.glTranslated(0.0, 0.3 + 1.1 * tile.getClientPreparationPercent(event.partialTicks), 0.0)
             GL11.glScaled(0.5, 0.5, 0.5)
             GL11.glDepthMask(false)
             GL11.glEnable(GL11.GL_CULL_FACE)

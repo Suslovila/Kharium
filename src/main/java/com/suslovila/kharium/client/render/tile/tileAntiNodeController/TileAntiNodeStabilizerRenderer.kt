@@ -214,31 +214,32 @@ object TileAntiNodeStabilizerRenderer : SusTileRenderer<TileAntiNodeStabilizer>(
 
 
     private fun renderPlasmaWaves(partialTicks: Float, tile: TileAntiNodeStabilizer) {
-        glPushMatrix()
-        val time = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + partialTicks
-        RotatableHandler.rotateFromOrientation(tile.facing)
-        for (i in 1..4) {
-            glPushMatrix()
-            glRotatef(90f * i, 0f, 1f, 0f)
-            glTranslated(2.0, -0.4, 0.0)
-            SusGraphicHelper.drawFloatyLine(
-                xFrom = -1.35,
-                yFrom = 1.5,
-                zFrom = 0.0,
-                color = humilitasColor,
-                ResourceLocation("thaumcraft", "textures/misc/wispy.png"),
-                speed = 0.1f,
-                Math.min(time, 10.0f) / 10.0f,
-                width = 0.3F,
-                xScale = 1F,
-                yScale = 2F,
-                zScale = 1F,
-                time = time,
-                true
-            )
-            glPopMatrix()
-        }
-        glPopMatrix()
+//        glPushMatrix()
+//        val time = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + partialTicks
+//        RotatableHandler.rotateFromOrientation(tile.facing)
+//        for (i in 1..4) {
+//            glPushMatrix()
+//            glRotatef(90f * i, 0f, 1f, 0f)
+//            glTranslated(2.0, -0.4, 0.0)
+//            SusGraphicHelper.drawFloatyLine(
+//                xFrom = -1.35,
+//                yFrom = 1.5,
+//                zFrom = 0.0,
+//                color = humilitasColor,
+//                ResourceLocation("thaumcraft", "textures/misc/wispy.png"),
+//                speed = 0.1f,
+//                Math.min(time, 10.0f) / 10.0f,
+//                width = 0.3F,
+//                xScale = 1F,
+//                yScale = 2F,
+//                zScale = 1F,
+//                time = time,
+//                true,
+//
+//            )
+//            glPopMatrix()
+//        }
+//        glPopMatrix()
     }
 
 }
