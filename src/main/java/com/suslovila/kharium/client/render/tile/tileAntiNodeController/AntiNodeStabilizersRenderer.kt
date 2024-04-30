@@ -52,11 +52,8 @@ object AntiNodeStabilizersRenderer {
             glTranslated(0.0, 5.5, 0.0)
             glScaled(7.0 / 5.0, 1.5, 7.0 / 5.0)
             renderCore(tile, partialTicks)
-//            glDepthMask(false)
-//            renderMagicCircles(tile, time)
-//            glDepthMask(true)
             renderPlasmaWaves(tile, partialTicks)
-            if(tile.enabled) renderSpinningEssence(Position(tile.xCoord, tile.yCoord, tile.zCoord), tile.world, facing)
+            if (tile.enabled) renderSpinningEssence(Position(tile.xCoord, tile.yCoord, tile.zCoord), tile.world, facing)
 
             glPopMatrix()
             UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
@@ -172,7 +169,7 @@ object AntiNodeStabilizersRenderer {
 
         glColor4f(1f, 1f, 1f, 1f)
         coreModel.renderAll()
-            renderGlowingElements(tile, partialTicks)
+        renderGlowingElements(tile, partialTicks)
 
         glPopMatrix()
     }
@@ -232,22 +229,24 @@ object AntiNodeStabilizersRenderer {
             glPushMatrix()
             glRotatef(90f * i, 0f, 1f, 0f)
             glTranslated(2.0, -0.4, 0.0)
+            SusGraphicHelper.drawGuideArrows()
             SusGraphicHelper.drawFloatyLine(
-                xFrom = -1.35,
-                yFrom = 1.5,
+                xFrom = -1.5,
+                yFrom = 0.7,
                 zFrom = 0.0,
                 color = humilitasColor,
                 ResourceLocation("thaumcraft", "textures/misc/wispy.png"),
                 speed = 0.1f,
                 Math.min(time, 10.0f) / 10.0f,
                 width = 0.3F,
-                xScale = 1F,
-                yScale = 2F,
-                zScale = 1F,
                 time = time,
                 true,
                 tile.getClientPreparationPercent(partialTicks)
-            )
+
+            ) {
+                glEnable(GL_BLEND)
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+            }
             glPopMatrix()
         }
         glPopMatrix()

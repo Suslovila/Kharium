@@ -4,8 +4,6 @@ package com.suslovila.kharium.client.render
 import com.suslovila.kharium.api.client.PostRendered
 import com.suslovila.kharium.client.particles.FXBase
 import com.suslovila.kharium.client.particles.ParticleRenderDispatcher
-import com.suslovila.kharium.client.render.tile.tileAntiNodeController.TileAntiNodeStabilizerRenderer
-import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer
 import com.suslovila.kharium.utils.RotatableHandler
 import com.suslovila.kharium.utils.SusGraphicHelper
 import com.suslovila.kharium.utils.SusVec3

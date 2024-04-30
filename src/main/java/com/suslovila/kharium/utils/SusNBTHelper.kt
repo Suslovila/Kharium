@@ -36,4 +36,20 @@ object SusNBTHelper {
             block(tag)
         }
     }
+
+    fun Int.writeTo(rootNbt : NBTTagCompound, key : String) {
+        rootNbt.setInteger(key, this)
+    }
+    fun Double.writeTo(rootNbt : NBTTagCompound, key : String) {
+        rootNbt.setDouble(key, this)
+    }
+    fun String.writeTo(rootNbt : NBTTagCompound, key : String) {
+        rootNbt.setString(key, this)
+    }
+    fun Float.writeTo(rootNbt : NBTTagCompound, key : String) {
+        rootNbt.setFloat(key, this)
+    }
+    fun Boolean.writeTo(rootNbt : NBTTagCompound, key : String) {
+        rootNbt.setBoolean(key, this)
+    }
 }

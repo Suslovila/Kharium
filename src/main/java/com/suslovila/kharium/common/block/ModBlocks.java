@@ -1,7 +1,7 @@
 package com.suslovila.kharium.common.block;
 
+import com.suslovila.kharium.Kharium;
 import com.suslovila.kharium.common.block.blockAntiNodeController.BlockAntiNodeControllerBase;
-import com.suslovila.kharium.common.block.blockAntiNodeController.BlockAntiNodeStabilizer;
 import com.suslovila.kharium.common.block.container.BlockAntiNode;
 import com.suslovila.kharium.common.block.container.BlockAntiNodeWatcher;
 import com.suslovila.kharium.common.block.container.BlockEssentiaReservoirVoid;
@@ -9,8 +9,8 @@ import com.suslovila.kharium.common.block.container.BlockKharuExtractor;
 import com.suslovila.kharium.common.block.multiblocks.BlockSynthesizer;
 import com.suslovila.kharium.common.block.multiblocks.tile.TileSynthesizer;
 import com.suslovila.kharium.common.block.tileEntity.*;
+import com.suslovila.kharium.common.block.tileEntity.rune.TileStabiliserRune;
 import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase;
-import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer;
 import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileKharuExtractor;
 import com.suslovila.kharium.common.item.BlockEssentiaReservoirVoidItem;
 import com.suslovila.kharium.common.multiStructure.kharuSnare.BlockKharuSnare;
@@ -28,7 +28,6 @@ public class ModBlocks {
     public static BlockAntiNode ANTI_NODE = new BlockAntiNode();
     public static BlockAntiNodeWatcher ANTI_NODE_WATCHER = new BlockAntiNodeWatcher();
     public static BlockSynthesizer synthesizer = new BlockSynthesizer("synthesizer");
-    public static BlockAntiNodeStabilizer stabilizer = new BlockAntiNodeStabilizer("stabilizer");
     public static BlockAntiNodeControllerBase BLOCK_ANTI_NODE_CONTROLLER = new BlockAntiNodeControllerBase();
     public static final BlockEssentiaReservoirVoid BlockEssentiaReservoirVoid = (new BlockEssentiaReservoirVoid());
     public static BlockKharuExtractor KHARU_EXTRACTOR = new BlockKharuExtractor();
@@ -37,6 +36,8 @@ public class ModBlocks {
     public static BlockKharuSnare KHARU_SNARE = new BlockKharuSnare("block_snare");
 
     public static Block blockVoidMetal = new BlockVoidMetal();
+
+    public static BlockRune rune = new BlockRune(MOD_ID + "_block_rune");
 
     public static void register() {
 
@@ -53,13 +54,13 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TileAntiNodeControllerBase.class, MOD_ID + "TileControllerBase");
         GameRegistry.registerTileEntity(TileAntiNodeWatcher.class, MOD_ID + "TileAntiNodeWatcher");
         GameRegistry.registerTileEntity(TileSynthesizer.class, MOD_ID + "TileSynthesizer");
-        GameRegistry.registerTileEntity(TileAntiNodeStabilizer.class, MOD_ID + "TileAntiNodeStabilizer");
         GameRegistry.registerTileEntity(TileKharuSnare.class, MOD_ID + "TileKharuSnare");
 
         GameRegistry.registerTileEntity(TileKharuExtractor.class, MOD_ID + "TileKharuExtractor");
         GameRegistry.registerTileEntity(TileRestrainedGlass.class, MOD_ID + "TileRestrainedGlass");
         GameRegistry.registerTileEntity(TileKharuSnareFilling.class, MOD_ID + "TileKharuSnareFilling");
 
+        GameRegistry.registerTileEntity(TileStabiliserRune.class, MOD_ID + "TileRuneStabilisation");
 
     }
 

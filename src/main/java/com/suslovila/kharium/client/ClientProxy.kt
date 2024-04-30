@@ -9,13 +9,13 @@ import com.suslovila.kharium.client.render.item.ItemCrystallizedAntiMatterRender
 import com.suslovila.kharium.client.render.tile.RestrainGlassRenderer
 import com.suslovila.kharium.client.render.tile.TileEssentiaReservoirVoidRenderer
 import com.suslovila.kharium.client.render.tile.TileKharuSnareRenderer
+import com.suslovila.kharium.client.render.tile.rune.TileRuneRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.TileAntiNodeRenderer
-import com.suslovila.kharium.client.render.tile.tileAntiNodeController.TileAntiNodeStabilizerRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.TileAntiNodeWatcherRenderer
 import com.suslovila.kharium.common.CommonProxy
 import com.suslovila.kharium.common.block.ModBlocks
 import com.suslovila.kharium.common.block.tileEntity.*
-import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileAntiNodeStabilizer
+import com.suslovila.kharium.common.block.tileEntity.rune.TileStabiliserRune
 import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileKharuReactor
 import com.suslovila.kharium.common.item.ModItems
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
@@ -52,13 +52,12 @@ class ClientProxy : CommonProxy(), IGuiHandler {
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNode::class.java, TileAntiNodeRenderer)
         ClientRegistry.bindTileEntitySpecialRenderer(TileEssentiaReservoirVoid::class.java, TileEssentiaReservoirVoidRenderer)
         ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeWatcher::class.java, TileAntiNodeWatcherRenderer)
-        ClientRegistry.bindTileEntitySpecialRenderer(TileAntiNodeStabilizer::class.java, TileAntiNodeStabilizerRenderer)
-        ClientRegistry.bindTileEntitySpecialRenderer(TileKharuReactor::class.java, TileAntiNodeStabilizerRenderer)
         RenderingRegistry.registerBlockHandler(BlockEssentiaReservoirVoidRenderer())
 
 //        ClientRegistry.bindTileEntitySpecialRenderer(TileKharuReactor::class.java, TileKharuReactorRenderer)
         ClientRegistry.bindTileEntitySpecialRenderer(TileKharuSnare::class.java, TileKharuSnareRenderer)
         ClientRegistry.bindTileEntitySpecialRenderer(TileRestrainedGlass::class.java, RestrainGlassRenderer)
+        ClientRegistry.bindTileEntitySpecialRenderer(TileStabiliserRune::class.java, TileRuneRenderer)
 
     }
 
