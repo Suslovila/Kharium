@@ -9,7 +9,6 @@ import com.suslovila.kharium.common.block.tileEntity.rune.TileRune
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import com.suslovila.kharium.utils.*
 import com.suslovila.kharium.utils.SusUtils.humilitasColorObj
-import com.suslovila.kharium.utils.SusUtils.random
 import com.suslovila.sus_multi_blocked.utils.Position
 import com.suslovila.sus_multi_blocked.utils.getTile
 import net.minecraft.client.Minecraft
@@ -78,7 +77,7 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
             glScaled(scaleFactor, scaleFactor, scaleFactor)
             SusGraphicHelper.drawFloatyLine(
                 -3.0 / scaleFactor,
-                -6.3 / scaleFactor,
+                -3.4 / scaleFactor,
                 0.0,
                 1,
                 ResourceLocation(Kharium.MOD_ID, "textures/misc/bubble.png"),
@@ -91,7 +90,7 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
             ) { glDisable(GL_BLEND) }
             SusGraphicHelper.drawFloatyLine(
                 -3.0 / scaleFactor,
-                -6.3 / scaleFactor,
+                -3.4 / scaleFactor,
                 0.0,
                 Color.red.rgb,
                 ResourceLocation(Kharium.MOD_ID, "textures/misc/bubble.png"),
@@ -187,7 +186,7 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
         }
     }
 
-    fun renderLayer(tile: TileKharuSnare, layerPos: Position, layerIndex: Int, layerAmount: Int, partialTicks: Float) {
+    fun renderLayer(snare: TileKharuSnare, layerPos: Position, layerIndex: Int, layerAmount: Int, partialTicks: Float) {
         UtilsFX.bindTexture(SusGraphicHelper.whiteBlank)
         val facings = arrayListOf(
             ForgeDirection.SOUTH,
@@ -198,158 +197,9 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
         for (xOffset in -layerIndex..layerIndex) {
             for (zOffset in -layerIndex..layerIndex) {
                 val pos = layerPos + Position(xOffset, 0, zOffset)
-                val foundTile = tile.world.getTile(layerPos + Position(xOffset, 0, zOffset)) ?: return
-                if (foundTile !is TileRune) return
-                glPushMatrix()
-                val destination = pos.toSusVec3().add(0.5, 0.5, 0.5)
-                SusGraphicHelper.translateFromPlayerTo(destination, partialTicks)
-                val isCorner = abs(xOffset) == layerIndex && abs(zOffset) == layerIndex
-                val isBorder = abs(xOffset) == layerIndex || abs(zOffset) == layerIndex
-                val firstLayerCenter = zOffset == 0 && xOffset == 0
-                if (firstLayerCenter) {
-                    SusGraphicHelper.cubeModel.renderAll()
-                    glPopMatrix()
-                    continue
-                }
-                if (!isBorder && !isCorner) {
-                    SusGraphicHelper.cubeModel.renderAll()
-                    glPopMatrix()
-                    continue
-                }
-                val time = SusGraphicHelper.getRenderGlobalTime(partialTicks)
-
-                val facing = facings.minBy { forgeDirection ->
-                    SusVec3.angleBetweenVec3(
-                        // this is shit code a bit, but maybe the most easy variant to correctly rotate the corner elements
-                        SusVec3(xOffset, 0, zOffset).yRot(if (isCorner) 20f else 0f),
-                        SusVec3(forgeDirection.offsetX, forgeDirection.offsetY, forgeDirection.offsetZ)
-                    )
-                }
-                rotateFromOrientation(facing)
-
-
-                if (isCorner) {
-
-                    glTranslated(-0.5, 0.0, 0.5)
-//                    UtilsFX.bindTexture(foundTile.cornerActiveCoreTexture)
-//                    SusGraphicHelper.drawGuideArrows()
-
-                    glPushMatrix()
-                    glScaled(0.5, 0.5, 0.5)
-                    glColor4d(1.0, 0.0, 0.0, 1.0)
-                    glDisable(GL_LIGHTING)
-                    glDisable(GL_BLEND)
-                    glDisable(GL_ALPHA_TEST)
-                    UtilsFX.bindTexture(SusGraphicHelper.whiteBlank)
-                    foundTile.cornerModel.renderOnly("plane_Cube.001")
-                    glPopMatrix()
-
-                    if (tile.enabled) {
-                        var scaleMovementFactor = 1.0f
-                        val longlivity = 60
-                        val period = 200
-                        val angleDelta = Math.PI * (layerIndex + 1) / layerAmount
-
-                        scaleMovementFactor = 1 + cos(time / 10 + Math.PI * (layerIndex) / layerAmount) * 0.2f
-
-                        val delta = 0.7f * abs(scaleMovementFactor)
-                        glTranslatef(delta, delta, -delta)
-                        glPushMatrix()
-                        val correction = 0.25
-                        glTranslated(correction, -0.1, -correction)
-                        SusGraphicHelper.drawFloatyLine(
-                            -delta.toDouble() - correction,
-                            -delta.toDouble() + correction + 0.01,
-                            delta.toDouble() - correction + 0.4,
-                            humilitasColor,
-                            wavesTexture,
-                            speed = 0.05f,
-                            Math.min(time + 2, 10.0f) / 10.0f,
-                            width = 1F,
-                            time = time,
-                            true,
-                            1.0
-                        ) {
-                            glEnable(GL_BLEND)
-                            glBlendFunc(GL_SRC_ALPHA, GL_ONE)
-                        }
-//                        SusGraphicHelper.drawGuideArrows()
-
-                        glPopMatrix()
-                        val rotationSwigling = 1.5
-                        val translateSwigling = 0.005
-//                        glRotated(random.nextGaussian() * rotationSwigling, 1.0, 0.0, 0.0)
-//                        glRotated(random.nextGaussian() * rotationSwigling, 0.0, 0.0, 1.0)
-//                        glRotated(random.nextGaussian() * rotationSwigling, 0.0, 1.0, 0.0)
-//                        glTranslated(random.nextGaussian() * translateSwigling, 0.0, 0.0)
-//                        glTranslated(0.0, random.nextGaussian() * translateSwigling, 0.0)
-//                        glTranslated(0.0, 0.0, random.nextGaussian() * translateSwigling)
-                    }
-                    glScaled(0.5, 0.5, 0.5)
-                    UtilsFX.bindTexture(SusGraphicHelper.whiteBlank)
-                    foundTile.cornerModel.renderOnly("plane_Cube.002")
-                    SusGraphicHelper.pushLight()
-                    SusGraphicHelper.setMaxBrightness()
-//                    UtilsFX.bindTexture(foundTile.cornerActiveGlowingTexture)
-//                    foundTile.cornerModel.renderOnly("plane_Cube.002")
-                    SusGraphicHelper.popLight()
-                } else {
-//                    UtilsFX.bindTexture(foundTile.cornerActiveCoreTexture)
-
-
-//                    val offset = calculateOffsetForStraightLayerElement(layerIndex, )
-                    glPushMatrix()
-                    glScaled(0.5, 0.5, 0.5)
-                    glColor4d(0.0, 0.0, 1.0, 1.0)
-                    glDisable(GL_LIGHTING)
-                    glDisable(GL_BLEND)
-                    glDisable(GL_ALPHA_TEST)
-                    UtilsFX.bindTexture(SusGraphicHelper.whiteBlank)
-                    foundTile.straightModel.renderPart("plane_Cube")
-                    glPopMatrix()
-                    glColor4d(1.0, 0.0, 0.0, 1.0)
-
-                    if (tile.enabled) {
-                        val scaleMovementFactor = 1 + cos(time / 10 + Math.PI * (layerIndex) / layerAmount) * 0.2f
-
-                        val delta = 0.7f * scaleMovementFactor
-                        glTranslatef(0.0f, delta, -delta)
-//                        SusGraphicHelper.drawGuideArrows()
-                        glPushMatrix()
-                        val correction = 0.3
-                        glTranslated(0.0, -correction, correction)
-                        SusGraphicHelper.drawFloatyLine(
-                            0.0,
-                            -delta.toDouble() + correction + 0.01,
-                            delta.toDouble() - correction + 0.4,
-                            humilitasColor,
-                            wavesTexture,
-                            speed = 0.1f,
-                            Math.min(time + 2, 10.0f) / 10.0f,
-                            width = 1F,
-                            time = time,
-                            true,
-                            1.0
-                        ) {
-                            glEnable(GL_BLEND)
-                            glBlendFunc(GL_SRC_ALPHA, GL_ONE)
-                        }
-                        glPopMatrix()
-                        val rotationSwigling = 1.5
-                        val translateSwigling = 0.005
-//                        glRotated(random.nextGaussian() * rotationSwigling, 1.0, 0.0, 0.0)
-//                        glRotated(random.nextGaussian() * rotationSwigling, 0.0, 0.0, 1.0)
-//                        glRotated(random.nextGaussian() * rotationSwigling, 0.0, 1.0, 0.0)
-//                        glTranslated(random.nextGaussian() * translateSwigling, 0.0, 0.0)
-//                        glTranslated(0.0, random.nextGaussian() * translateSwigling, 0.0)
-//                        glTranslated(0.0, 0.0, random.nextGaussian() * translateSwigling)
-                    }
-                    glScaled(0.5, 0.5, 0.5)
-                    UtilsFX.bindTexture(SusGraphicHelper.whiteBlank)
-                    foundTile.straightModel.renderOnly("core_Cube.001")
-                }
-                glPopMatrix()
-
+                val rune = snare.world.getTile(pos) ?: return
+                if (rune !is TileRune) return
+                rune.renderAsLayerPart(snare, partialTicks, xOffset, zOffset, layerIndex, layerAmount)
             }
 
         }
