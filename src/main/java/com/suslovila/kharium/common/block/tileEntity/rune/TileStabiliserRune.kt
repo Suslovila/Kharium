@@ -16,7 +16,7 @@ class TileStabiliserRune(
     val requiredAspects = AspectList().add(ACAspect.HUMILITAS, 1)
     override val waveColor : Int = ACAspect.HUMILITAS.color
     override val disabled: ResourceLocation =
-        ResourceLocation(Kharium.MOD_ID, "textures/blocks/runes/stabilisation/disabled.png")
+        ResourceLocation(Kharium.MOD_ID, "textures/blocks/runes/stabilisation/cub_core.png")
 
     override val cubeCoreTexture: ResourceLocation = ResourceLocation(Kharium.MOD_ID, "textures/blocks/runes/stabilisation/cube_core.png")
     override val cubeGlowingTexture: ResourceLocation = ResourceLocation(Kharium.MOD_ID, "textures/blocks/runes/stabilisation/cube_glowing.png")

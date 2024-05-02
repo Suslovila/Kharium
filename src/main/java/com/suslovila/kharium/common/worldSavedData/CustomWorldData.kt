@@ -10,7 +10,6 @@ import com.suslovila.kharium.utils.SusUtils
 import net.minecraft.nbt.*
 import net.minecraft.world.*
 import java.util.*
-import kotlin.collections.HashMap
 
 
 class CustomWorldData(datakey: String) : WorldSavedData(datakey) {
@@ -34,7 +33,7 @@ class CustomWorldData(datakey: String) : WorldSavedData(datakey) {
     }
 
     val explosions: LinkedList<Explosion> = LinkedList()
-    val kharuStats: HashMap<Pair<Int, Int>, Int> = HashMap()
+    val kharuStats = arrayListOf<KharuHotbed>()
 
     override fun readFromNBT(tag: NBTTagCompound?) {
         val explosionList = tag?.getTagList(TAG_EXPLOSION_DATA, SusNBTHelper.TAG_COMPOUND) ?: return
@@ -64,16 +63,16 @@ class CustomWorldData(datakey: String) : WorldSavedData(datakey) {
         }
         val kharuInfo = tag.getTagList(TAG_KHARU_DATA, SusNBTHelper.TAG_COMPOUND) ?: return
         kharuStats.clear()
-        kharuInfo.forEach { chunkTag ->
-            with(chunkTag) {
-                val chunkPos = Pair(getInteger("x"), getInteger("z"))
-                kharuStats[chunkPos] = getInteger("amount")
+        kharuInfo.forEach { hotbedTag ->
+            with(hotbedTag) {
+                val zone = Pair
+                kharuStats[zone] = getInteger("amount")
             }
         }
     }
 
-    override fun writeToNBT(baseTag: NBTTagCompound?) {
-        baseTag ?: return
+    override fun writeToNBT(rootTag: NBTTagCompound?) {
+        rootTag ?: return
         var explosionTaglist = NBTTagList()
         explosions.forEach { explosion ->
             val explosionTag = NBTTagCompound()
@@ -94,7 +93,7 @@ class CustomWorldData(datakey: String) : WorldSavedData(datakey) {
             explosionTag.setTag("blocks", listBlocks)
             explosionTaglist.appendTag(explosionTag)
         }
-        baseTag.setTag(TAG_EXPLOSION_DATA, explosionTaglist)
+        rootTag.setTag(TAG_EXPLOSION_DATA, explosionTaglist)
 
         explosionTaglist = NBTTagList()
         kharuStats.forEach { (pos, amount) ->
@@ -104,7 +103,7 @@ class CustomWorldData(datakey: String) : WorldSavedData(datakey) {
             newTag.setInteger("amount", amount)
             explosionTaglist.appendTag(newTag)
         }
-        baseTag.setTag(TAG_KHARU_DATA, explosionTaglist)
+        rootTag.setTag(TAG_KHARU_DATA, explosionTaglist)
     }
 
     fun addExplosion(world: World, pos: SusVec3, radius: Double) {

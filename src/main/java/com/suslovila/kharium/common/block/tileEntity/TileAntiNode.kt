@@ -3,6 +3,7 @@ package com.suslovila.kharium.common.block.tileEntity
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.kharu.IKharuSupplier
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
+import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.SusVec3
 import com.suslovila.kharium.utils.getPosition
 import com.suslovila.sus_multi_blocked.utils.Position
@@ -10,6 +11,7 @@ import com.suslovila.sus_multi_blocked.utils.getTile
 import io.netty.util.internal.ConcurrentSet
 import net.minecraft.nbt.NBTTagCompound
 import thaumcraft.api.TileThaumcraft
+import kotlin.math.abs
 
 class TileAntiNode : TileThaumcraft(), IKharuSupplier {
     companion object {
@@ -19,10 +21,13 @@ class TileAntiNode : TileThaumcraft(), IKharuSupplier {
         val CONTAINMENT_NBT = Kharium.prefixAppender.doAndGet("stabilization")
         val INSTABILITY_NBT = Kharium.prefixAppender.doAndGet("instability")
         val CONTAINMENT_DECREMENT_NBT = Kharium.prefixAppender.doAndGet("instability")
-
-
+        val tracker = object : TimeTracker() {
+            override val maxValue: Int = 20
+        }
     }
 
+
+    val ownCheckTime = tracker.getNext()
 
     var kharuTails = ConcurrentSet<KharuTail>()
     var maxEnergy = 0
@@ -57,6 +62,7 @@ class TileAntiNode : TileThaumcraft(), IKharuSupplier {
         get() {
             return (this.world?.getTile(this.getPosition() + Position(0, 8, 0)) as? TileKharuSnare)
         }
+
     override fun writeCustomNBT(rootNbt: NBTTagCompound) {
         rootNbt.setInteger(TAG_ACTUAL_ENERGY_NBT, actualEnergy)
         rootNbt.setInteger(MAX_ENERGY_NBT, maxEnergy)
@@ -79,15 +85,14 @@ class TileAntiNode : TileThaumcraft(), IKharuSupplier {
 
     override fun updateEntity() {
         super.updateEntity()
-        if(world.isRemote) return
-        stabilisation -= instabilityDecrement
-        containmentFactor -= containmentDecrement
-        if(isStabilised){
+        if (world.isRemote) return
+        if (isStabilised && ((world.worldTime + ownCheckTime) % tracker.maxValue) == 0L) {
             snare!!.affectAntiNode(this)
+            stabilisation -= instabilityDecrement
+            containmentFactor -= containmentDecrement
+            markForSaveAndSync()
         }
 
-
-        markForSaveAndSync()
     }
 
     override fun takeFromItself(amount: Int): Int {
@@ -119,4 +124,10 @@ class KharuTail(
 ) {
     val actualRadius
         get() = (timer * radiusChangePerFrame).coerceAtMost(maxRadius)
+}
+
+abstract class TimeTracker {
+    abstract val maxValue: Int
+    private var time = 0
+    fun getNext() = (++time) % maxValue
 }

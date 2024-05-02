@@ -32,17 +32,18 @@ object AntiCraftResearchRegistry {
         )
     }
 
+    val khariumCategory = "kharium"
     fun integrateResearch() {
 
         ResearchCategories.registerCategory(
-            "ANTICRAFT",
+            khariumCategory,
             ResourceLocation(Kharium.MOD_ID, "textures/misc/antinode.png"),
             ResourceLocation(Kharium.MOD_ID, "textures/misc/backTexture.png")
         )
 
         AntiCraftResearchItem(
             "ESSENTIARESERVOIRVOID",
-            "ANTICRAFT",
+            khariumCategory,
             AspectList().add(Aspect.VOID, 8).add(Aspect.WATER, 4).add(Aspect.MAGIC, 6),
             0,
             0,
@@ -58,7 +59,7 @@ object AntiCraftResearchRegistry {
 
         AntiCraftResearchItem(
             "CRYSTALLIZED_KHARU",
-            "ANTICRAFT",
+            khariumCategory,
             AspectList(),
             0,
             7,
@@ -69,7 +70,7 @@ object AntiCraftResearchRegistry {
 
         AntiCraftResearchItem(
             "ANTI_NODE_HIDDEN",
-            "ANTICRAFT",
+            khariumCategory,
             AspectList(),
             4,
             5,
@@ -79,7 +80,7 @@ object AntiCraftResearchRegistry {
 
         AntiCraftResearchItem(
             "ANTI_NODE",
-            "ANTICRAFT",
+            khariumCategory,
             AspectList(),
             4,
             7,
@@ -88,9 +89,19 @@ object AntiCraftResearchRegistry {
         ).setPages(ResearchPage("1"), ResearchPage("2")).setStub().setHidden().setRound().setSpecial()
             .setParents("CRYSTALLIZED_KHARU").registerResearchItem()
 
-
-        ThaumcraftApi.addWarpToResearch("DIARY", 10)
-        ThaumcraftApi.addWarpToResearch("CRYSTALLIZED_KHARU", 20)
+//        AntiCraftResearchItem(
+//            "ANTI_NODE",
+//            khariumCategory,
+//            AspectList(),
+//            4,
+//            7,
+//            0,
+//            ResourceLocation(Kharium.MOD_ID, "textures/misc/antinode.png")
+//        ).setPages(ResearchPage("1"), ResearchPage("2")).setStub().setHidden().setRound().setSpecial()
+//            .setParents("CRYSTALLIZED_KHARU").registerResearchItem()
+//
+//        ThaumcraftApi.addWarpToResearch("DIARY", 10)
+//        ThaumcraftApi.addWarpToResearch("CRYSTALLIZED_KHARU", 20)
     }
 
 }

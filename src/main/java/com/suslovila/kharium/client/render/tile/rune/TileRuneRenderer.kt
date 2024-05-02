@@ -10,7 +10,8 @@ import thaumcraft.client.lib.UtilsFX
 object TileRuneRenderer : SusTileRenderer<TileRune>() {
     override fun render(tile: TileRune, partialTicks: Float) {
         if (tile.snare == null || !tile.isOwnLevelFinalised) {
-            UtilsFX.bindTexture(tile.disabled)
+            UtilsFX.bindTexture(tile.cubeCoreTexture)
+            SusGraphicHelper.setStandartColors()
             SusGraphicHelper.cubeModel.renderAll()
             UtilsFX.bindTexture(TextureMap.locationBlocksTexture)
         }

@@ -1,9 +1,9 @@
 package com.suslovila.kharium.common.block
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.common.block.tileEntity.TileRestrainedGlass
 import com.suslovila.kharium.common.block.tileEntity.rune.TileRune
 import com.suslovila.kharium.common.block.tileEntity.rune.TileStabiliserRune
+import com.suslovila.sus_multi_blocked.api.multiblock.block.ITileMultiStructureElement
 import cpw.mods.fml.common.registry.GameRegistry
 import net.minecraft.block.Block
 import net.minecraft.block.BlockContainer
@@ -23,7 +23,13 @@ class BlockRune(name : String) : BlockContainer(Material.iron) {
         GameRegistry.registerBlock(this, name)
 
     }
+    override fun onNeighborBlockChange(world: World?, x: Int, y: Int, z: Int, neighborBlock: Block?) {
+        if (world == null) return
+        val foundTile = world.getTileEntity(x, y, z)
+        if (foundTile is TileRune) {
 
+        }
+    }
     override fun createNewTileEntity(world: World?, meta: Int) = runes[meta].invoke()
     override fun isOpaqueCube() = false
 

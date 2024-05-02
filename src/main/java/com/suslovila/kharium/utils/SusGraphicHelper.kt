@@ -69,7 +69,13 @@ object SusGraphicHelper {
         val b = co.blue / 255.0f
         tessellator.setColorRGBA_F(r * fadeFactor, g * fadeFactor, b * fadeFactor, alpha)
     }
-
+    fun bindColor(color: Int, alpha: Float, fadeFactor: Float) {
+        val co = Color(color)
+        val r = co.red / 255.0f
+        val g = co.green / 255.0f
+        val b = co.blue / 255.0f
+        glColor4f(r * fadeFactor, g * fadeFactor, b * fadeFactor, alpha)
+    }
     fun translateFromPlayerTo(pos: SusVec3, partialTicks: Float) {
         val player = Minecraft.getMinecraft().thePlayer
         val destX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks
@@ -179,5 +185,9 @@ object SusGraphicHelper {
         val l = j / 65536
         //values got by testing
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k.toFloat() / 1.0f, l.toFloat() / 1.0f)
+    }
+
+    fun setStandartColors() {
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
     }
 }

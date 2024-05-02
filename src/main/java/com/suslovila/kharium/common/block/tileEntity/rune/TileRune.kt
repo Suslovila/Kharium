@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection
 import org.lwjgl.opengl.GL11.*
 import thaumcraft.client.lib.UtilsFX
 import kotlin.math.abs
+import kotlin.math.sqrt
 
 abstract class TileRune : TileKharium() {
     abstract val disabled: ResourceLocation
@@ -115,10 +116,13 @@ abstract class TileRune : TileKharium() {
         val isBorder = abs(xOffset) == layerIndex || abs(zOffset) == layerIndex
         val firstLayerCenter = zOffset == 0 && xOffset == 0
         if (firstLayerCenter) {
+            SusGraphicHelper.setStandartColors()
             UtilsFX.bindTexture(this.cubeCoreTexture)
             SusGraphicHelper.cubeModel.renderAll()
             if (enabled) {
+                SusGraphicHelper.setStandartColors()
                 UtilsFX.bindTexture(this.cubeGlowingTexture)
+                SusGraphicHelper.bindColor(waveColor, 1.0f, 1.0f)
                 glowingPreparations()
                 SusGraphicHelper.cubeModel.renderAll()
                 SusGraphicHelper.popLight()
@@ -127,10 +131,12 @@ abstract class TileRune : TileKharium() {
             return
         }
         if (!isBorder && !isCorner) {
+            SusGraphicHelper.setStandartColors()
             UtilsFX.bindTexture(this.cubeCoreTexture)
             SusGraphicHelper.cubeModel.renderAll()
             if (enabled) {
                 UtilsFX.bindTexture(this.cubeGlowingTexture)
+                SusGraphicHelper.bindColor(waveColor, 1.0f, 1.0f)
                 glowingPreparations()
                 SusGraphicHelper.cubeModel.renderAll()
                 SusGraphicHelper.popLight()
@@ -154,124 +160,91 @@ abstract class TileRune : TileKharium() {
 
             glTranslated(-0.5, 0.0, 0.5)
 
-            renderRuneCore()
+            // render core
+            glPushMatrix()
+            glColor4d(1.0, 1.0, 1.0, 1.0)
+            disableAllGlowing()
+            UtilsFX.bindTexture(this.cornerCoreTexture)
+            cornerModel.renderOnly("core")
+            glPopMatrix()
 
+            var scaleMovementFactor = 1.0f
             if (snare.enabled) {
-                var scaleMovementFactor = 1 + cos(time / 10 + Math.PI * (layerIndex) / layerAmount) * 0.2f
-                val delta = 0.7f * abs(scaleMovementFactor)
+                scaleMovementFactor = cos(time / 10 + Math.PI * (layerIndex) / layerAmount) * 0.2f
+                val delta = 0.7f * abs(scaleMovementFactor + 1)
                 glTranslatef(delta, delta, -delta)
-                glPushMatrix()
-//                val correction = 0.25
-//                glTranslated(correction, -0.1, -correction)
-//                SusGraphicHelper.drawFloatyLine(
-//                    -delta.toDouble() - correction,
-//                    -delta.toDouble() + correction + 0.01,
-//                    delta.toDouble() - correction + 0.4,
-//                    waveColor,
-//                    TileKharuSnareRenderer.wavesTexture,
-//                    speed = 0.05f,
-//                    Math.min(time + 2, 10.0f) / 10.0f,
-//                    width = 1F,
-//                    time = time,
-//                    true,
-//                    1.0
-//                ) {
-//                    glEnable(GL_BLEND)
-//                    glBlendFunc(GL_SRC_ALPHA, GL_ONE)
-//                }
 
-                glPopMatrix()
-
-                glPushMatrix()
-                glScaled(0.5, 0.5, 0.5)
-                glowingPreparations()
-                glColor4d(1.0, 1.0, 1.0, 1.0)
-                UtilsFX.bindTexture(this.cornerGlowingTexture)
-                cornerModel.renderOnly("plane_Cube.002")
-                SusGraphicHelper.popLight()
-                glPopMatrix()
             }
             glColor4d(1.0, 1.0, 1.0, 1.0)
             UtilsFX.bindTexture(this.cornerCoreTexture)
-            glScaled(0.5, 0.5, 0.5)
             disableAllGlowing()
-            cornerModel.renderOnly("plane_Cube.002")
-        } else {
-            glPushMatrix()
-            glScaled(0.5, 0.5, 0.5)
-            glColor4d(1.0, 1.0, 1.0, 1.0)
-            UtilsFX.bindTexture(SusGraphicHelper.whiteBlank)
-            disableAllGlowing()
-            straightModel.renderPart("plane_Cube")
-            glPopMatrix()
-            glColor4d(1.0, 0.0, 0.0, 1.0)
+            cornerModel.renderOnly("floating")
 
             if (snare.enabled) {
-                val scaleMovementFactor = 1 + cos(time / 10 + Math.PI * (layerIndex) / layerAmount) * 0.2f
+                glPushMatrix()
+                glowingPreparations()
+                SusGraphicHelper.bindColor(this.waveColor, abs(sqrt((scaleMovementFactor * 5.0f + 1) / 2)), 1.0f)
+                glScalef(1.02f, 1.02f, 1.02f)
+                UtilsFX.bindTexture(this.cornerGlowingTexture)
+                cornerModel.renderOnly("floating")
+                SusGraphicHelper.popLight()
+                glPopMatrix()
+            }
 
-                val delta = 0.7f * scaleMovementFactor
+
+        } else {
+            // render core
+            glPushMatrix()
+            glColor4d(1.0, 1.0, 1.0, 1.0)
+            UtilsFX.bindTexture(straightCoreTexture)
+            disableAllGlowing()
+            straightModel.renderPart("core")
+            glPopMatrix()
+            glColor4d(1.0, 0.0, 0.0, 1.0)
+            var scaleMovementFactor = 1.0f
+            if (snare.enabled) {
+                scaleMovementFactor = cos(time / 10 + Math.PI * (layerIndex) / layerAmount) * 0.2f
+
+                val delta = 0.7f * (scaleMovementFactor + 1)
                 var additionalDelta = 0f
                 if (layerIndex > 1) {
                     if (abs(xOffset) == layerIndex) {
-                        additionalDelta = 0.7f / (layerIndex - 1) * zOffset * (if (xOffset < 0) -1 else 1)
+                        additionalDelta = 0.7f / (layerIndex) * zOffset * (if (xOffset < 0) -1 else 1)
                         glTranslatef(additionalDelta, 0f, 0f)
                     }
                     if (abs(zOffset) == layerIndex) {
-                        additionalDelta = 0.7f / (layerIndex - 1) * xOffset * (if (zOffset < 0) 1 else -1)
+                        additionalDelta = 0.7f / (layerIndex) * xOffset * (if (zOffset < 0) 1 else -1)
                         glTranslatef(additionalDelta, 0f, 0f)
                     }
                 }
                 glTranslatef(0.0f, delta, -delta)
-//                glPushMatrix()
-//                val correction = 0.3
-//                glTranslated(0.0, -correction, correction)
-//                SusGraphicHelper.drawFloatyLine(
-//                    -additionalDelta.toDouble(),
-//                    -delta.toDouble() + correction + 0.01,
-//                    delta.toDouble() - correction + 0.4,
-//                    waveColor,
-//                    TileKharuSnareRenderer.wavesTexture,
-//                    speed = 0.1f,
-//                    Math.min(time + 2, 10.0f) / 10.0f,
-//                    width = 1F,
-//                    time = time,
-//                    true,
-//                    1.0
-//                ) {
-//                    glEnable(GL_BLEND)
-//                    glBlendFunc(GL_SRC_ALPHA, GL_ONE)
-//                }
-//                glPopMatrix()
+            }
+            glPushMatrix()
+            glowingPreparations()
+            glColor4d(1.0, 1.0, 1.0, 1.0)
+            UtilsFX.bindTexture(this.straightCoreTexture)
+            straightModel.renderOnly("floating")
+            glPopMatrix()
 
-
+            if (snare.enabled) {
                 glPushMatrix()
-                glScaled(0.5, 0.5, 0.5)
                 glowingPreparations()
-                glColor4d(1.0, 1.0, 1.0, 1.0)
+                SusGraphicHelper.bindColor(this.waveColor, abs(sqrt((scaleMovementFactor * 5.0f + 1) / 2)), 1.0f)
                 UtilsFX.bindTexture(this.straightGlowingTexture)
                 straightModel.renderOnly("floating")
                 SusGraphicHelper.popLight()
                 glPopMatrix()
             }
-            glPushMatrix()
-            glScaled(0.5, 0.5, 0.5)
-            glowingPreparations()
-            glColor4d(1.0, 1.0, 1.0, 1.0)
-            glScaled(0.5, 0.5, 0.5)
-            UtilsFX.bindTexture(this.straightCoreTexture)
-            straightModel.renderOnly("floating")
-            glPopMatrix()
         }
         glPopMatrix()
     }
 
     private fun renderRuneCore() {
         glPushMatrix()
-        glScaled(0.5, 0.5, 0.5)
         glColor4d(1.0, 1.0, 1.0, 1.0)
         disableAllGlowing()
         UtilsFX.bindTexture(this.cornerCoreTexture)
-        cornerModel.renderOnly("plane_Cube.001")
+        cornerModel.renderOnly("core")
         glPopMatrix()
     }
 

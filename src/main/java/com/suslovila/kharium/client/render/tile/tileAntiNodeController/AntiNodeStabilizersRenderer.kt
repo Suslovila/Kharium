@@ -178,7 +178,6 @@ object AntiNodeStabilizersRenderer {
     private fun renderGlowingElements(tile: TileKharuSnare, partialTicks: Float) {
         glPushMatrix()
         glAlphaFunc(516, 0.003921569f)
-        glEnable(3042)
         glDisable(GL_LIGHTING)
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE)
@@ -229,7 +228,7 @@ object AntiNodeStabilizersRenderer {
             glPushMatrix()
             glRotatef(90f * i, 0f, 1f, 0f)
             glTranslated(2.0, -0.4, 0.0)
-            SusGraphicHelper.drawGuideArrows()
+//            SusGraphicHelper.drawGuideArrows()
             SusGraphicHelper.drawFloatyLine(
                 xFrom = -1.5,
                 yFrom = 0.7,
