@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.HashMap;
 import java.util.Map;
 
-@Mixin(value = NBTTagCompound.class, remap = false)
+@Mixin(value = NBTTagCompound.class)
 public class MixinNbtTag implements IMixinNbtTagProvider {
     @Shadow
     private Map tagMap;

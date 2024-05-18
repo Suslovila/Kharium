@@ -6,6 +6,14 @@ import java.io.File;
 public class Config {
     public static boolean pvpLiteEnabled = false;
     public static int arenaWorldId;
+    public static int kharuDestroyingBorder;
+
+    public static int kharuItemDestructionBorder;
+
+    public static int maxRadiationPerTime;
+
+    public static int maxManaReduce;
+
 
     public static boolean consumeEldritchDiaryAfterUse;
     public static String modPrefix = "§8[&bI&8] §8[§4Малышка§8] §8Gerda§f: §f";
@@ -20,21 +28,39 @@ public class Config {
                     false,
                     "Включить ограничения для PvPLite мира");
 
-            pvpLiteEnabled = cfg.getBoolean(
-                    "EnablePvPLite",
-                    "PvPLite",
-                    false,
-                    "Включить ограничения для PvPLite мира");
-
-            arenaWorldId = cfg.getInt(
-                    "PvPLiteWorldID",
-                    "PvPLite",
-                    666,
-                    0,
+            kharuDestroyingBorder = cfg.getInt(
+                    "kharuDestroyingBorder",
+                    "General",
+                    10_000,
+                    1,
                     Integer.MAX_VALUE,
-                    "ID PvPLite Мира"
+                    "the amount of kharu in air needed to stop all magic blocks and start damaging entities"
+            );
+            maxRadiationPerTime = cfg.getInt(
+                    "radiation",
+                    "General",
+                    1,
+                    1,
+                    Integer.MAX_VALUE,
+                    "the amount of kharu in air needed to stop all magic blocks and start damaging entities"
+            );
+            kharuItemDestructionBorder = cfg.getInt(
+                    "item border",
+                    "General",
+                    2_000,
+                    1,
+                    Integer.MAX_VALUE,
+                    "the amount of kharu in air needed to stop all magic blocks and start damaging entities"
             );
 
+            maxManaReduce = cfg.getInt(
+                    "Max mana reduce per second",
+                    "General",
+                    200_000,
+                    1,
+                    5_000_000,
+                    "the amount of max amount of mana that is taken from items"
+            );
             modPrefix = cfg.getString(
                     "ModPrefix",
                     "core", modPrefix,

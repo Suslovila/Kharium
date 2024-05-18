@@ -49,21 +49,21 @@ object TileAntiNodeRenderer : SusTileRenderer<TileAntiNode>() {
                     SusGraphicHelper.getRenderGlobalTime(partialTicks) / 120, 1f
                 )
             )
-            if (SusGraphicHelper.getRenderGlobalTime(partialTicks) > antiNodeAppearanceTime / 2) {
-//                spawnKharuParticles(
-//                    antiNode,
-//                    viewer.worldObj,
-//                    maxTailsAmount = 5,
-//                    minTailSpeed = 2,
-//                    maxTailSpeed = 3,
-//                    deleteAndAddTailChanceFactor = 3,
-//                    minRadius = 1.28,
-//                    maxRadius = 1.33,
-//                    radiusChangeMinSpeed = 0.003,
-//                    radiusChangeMaxSpeed = 0.005,
-//                    particleLifeTime = 13,
-//                    particleSize = 0.8f
-//                )
+            if (SusGraphicHelper.getRenderGlobalTime(partialTicks) > antiNodeAppearanceTime / 2 && !antiNode.isStabilised) {
+                spawnKharuParticles(
+                    antiNode,
+                    viewer.worldObj,
+                    maxTailsAmount = 5,
+                    minTailSpeed = 2,
+                    maxTailSpeed = 3,
+                    deleteAndAddTailChanceFactor = 3,
+                    minRadius = 1.28,
+                    maxRadius = 1.33,
+                    radiusChangeMinSpeed = 0.003,
+                    radiusChangeMaxSpeed = 0.005,
+                    particleLifeTime = 13,
+                    particleSize = 0.8f
+                )
             }
 
             //handling anti-node bolt

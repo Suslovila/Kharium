@@ -114,7 +114,7 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
 
         glColor4f(1f, 1f, 1f, 1f)
         coreModel.renderAll()
-//        renderGlowingElements()
+        renderGlowingElements()
 
         glPopMatrix()
     }

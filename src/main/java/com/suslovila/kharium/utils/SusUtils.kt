@@ -82,5 +82,3 @@ fun getCordSystemFromVec3(vec3: SusVec3) : ArrayList<SusVec3> {
 //basic functions, take angle in radians
 fun sin(value : Double) = MathHelper.sin(value.toFloat())
 fun cos(value: Double) = MathHelper.cos(value.toFloat())
-
-

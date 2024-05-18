@@ -89,6 +89,16 @@ object AntiCraftResearchRegistry {
         ).setPages(ResearchPage("1"), ResearchPage("2")).setStub().setHidden().setRound().setSpecial()
             .setParents("CRYSTALLIZED_KHARU").registerResearchItem()
 
+        AntiCraftResearchItem(
+            "KHARU_SNARE",
+            khariumCategory,
+            AspectList().add(Aspect.ELDRITCH, 8).add(ACAspect.HUMILITAS, 4).add(Aspect.MAGIC, 6).add(Aspect.MECHANISM, 1).add(Aspect.ENERGY, 1).add(Aspect.TRAP, 1).add(Aspect.METAL, 1),
+            4,
+            12,
+            0,
+            ResourceLocation(Kharium.MOD_ID, "textures/aspects/humilitas.png")
+        ).setPages(ResearchPage("1"), ResearchPage("2")).setSpecial()
+            .setParents("ANTI_NODE").registerResearchItem()
 //        AntiCraftResearchItem(
 //            "ANTI_NODE",
 //            khariumCategory,

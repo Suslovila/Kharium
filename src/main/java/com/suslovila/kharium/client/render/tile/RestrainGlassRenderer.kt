@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.Tessellator
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import org.lwjgl.opengl.GL11.*
+import org.lwjgl.opengl.GL20
 import thaumcraft.client.lib.UtilsFX
 
 object RestrainGlassRenderer : SusTileRenderer<TileRestrainedGlass>() {

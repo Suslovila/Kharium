@@ -5,13 +5,20 @@ import com.suslovila.kharium.api.client.PostRendered
 import com.suslovila.kharium.client.render.tile.TileKharuSnareRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.AntiNodeStabilizersRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.DischargeFlaskRenderer
+import com.suslovila.kharium.common.block.container.SimpleInventory
 import com.suslovila.kharium.common.block.tileEntity.TileAntiNode
 import com.suslovila.kharium.common.block.tileEntity.rune.TileRune
+import com.suslovila.kharium.common.worldSavedData.CustomWorldData.Companion.customData
+import com.suslovila.kharium.common.worldSavedData.KharuHotbed
 import com.suslovila.kharium.research.ACAspect
 import com.suslovila.kharium.utils.getPosition
 import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
 import com.suslovila.sus_multi_blocked.utils.Position
 import com.suslovila.sus_multi_blocked.utils.getTile
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.inventory.IInventory
+import net.minecraft.inventory.ISidedInventory
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.AxisAlignedBB
 import net.minecraftforge.client.event.RenderWorldLastEvent
@@ -20,7 +27,8 @@ import thaumcraft.api.aspects.AspectList
 import thaumcraft.api.aspects.AspectSourceHelper
 import thaumcraft.common.lib.events.EssentiaHandler
 
-class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered {
+class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered, IInventory {
+    val inventory: IInventory = SimpleInventory(0,0, "inv", 64)
     override val packetId: Int = 0
     val maxLowerAmount = 10
     var timeCheck = 20
@@ -47,7 +55,7 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered {
         }
 
     fun getClientPreparationPercent(partialTicks: Float) =
-        if (activationTimer != 0) ((activationTimer + partialTicks * (if(enabled) 1 else -1)).toDouble() / activationTime.toDouble()).coerceIn(
+        if (activationTimer != 0) ((activationTimer + partialTicks * (if (enabled) 1 else -1)).toDouble() / activationTime.toDouble()).coerceIn(
             0.0,
             1.0
         ) else 0.0
@@ -62,6 +70,25 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered {
 
         tick = (tick + 1) % Int.MAX_VALUE
         if (tick % timeCheck == 0) {
+            if (tick % timeCheck == 0) {
+                world.customData.kharuHotbeds.clear()
+                world.customData.addKharuHotbed(
+                    KharuHotbed(
+                        AxisAlignedBB.getBoundingBox(
+                            (xCoord - 7 - 3).toDouble(),
+                            (yCoord - 7 - 3).toDouble(),
+                            (zCoord - 7 - 3).toDouble(),
+                            (xCoord - 7 + 3).toDouble(),
+                            (yCoord - 7 + 3).toDouble(),
+                            (zCoord - 7 + 3).toDouble()
+                        ),
+                        100_000
+                    ) ,
+                    world = world
+                )
+                world.customData.syncAllHotbeds(world)
+//                world.customData.addKharuHotbed(world)
+            }
             val hasAntiNode = world.getTile(this.getPosition() + Position(0, -8, 0)) is TileAntiNode
             if (!hasAntiNode) {
                 enabled = false
@@ -157,6 +184,68 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered {
         }
         return foundRunes
     }
+
+    override fun markDirty() {
+        inventory.markDirty()
+    }
+
+
+
+
+
+    override fun getSizeInventory() : Int = 0
+
+    override fun setInventorySlotContents(slot: kotlin.Int, stack: ItemStack?) {
+        inventory.setInventorySlotContents(slot, stack)
+    }
+
+    override fun getInventoryName(): kotlin.String? {
+        return ("tile.assemblyTableBlock.name")
+    }
+
+    override fun getStackInSlot(slot: kotlin.Int): ItemStack? {
+        return inventory.getStackInSlot(slot)
+    }
+
+    override fun decrStackSize(slot: kotlin.Int, amount: kotlin.Int): ItemStack? {
+        return inventory.decrStackSize(slot, amount)
+    }
+
+    override fun getStackInSlotOnClosing(slot: kotlin.Int): ItemStack? {
+        return inventory.getStackInSlotOnClosing(slot)
+    }
+
+
+    override fun getInventoryStackLimit(): kotlin.Int {
+        return inventory.inventoryStackLimit
+    }
+
+    override fun isUseableByPlayer(player: EntityPlayer): kotlin.Boolean {
+        return ((worldObj.getTileEntity(xCoord, yCoord, zCoord) === this) && !isInvalid() &&
+                (player.getDistanceSq(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5) <= 64))
+    }
+
+    override fun openChest() {}
+
+    override fun closeChest() {}
+
+    override fun isCustomInventoryName(): kotlin.Boolean {
+        return false
+    }
+
+    override fun isItemValidForSlot(slot: kotlin.Int, stack: ItemStack?): kotlin.Boolean {
+        return inventory.isItemValidForSlot(slot, stack)
+    }
+
+    open fun getInputSlotAmount(): Int = 0
+
+    open fun getOutputSlotsAmount(): kotlin.Int {
+        return getSizeInventory() - getInputSlotAmount()
+    }
+
+
+
+
 }
 
 fun Boolean.toInt(): Int = if (this) 1 else 0

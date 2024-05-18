@@ -4,13 +4,18 @@ import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter
 import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter.Companion.globalOwnerName
 import com.suslovila.kharium.common.item.ModItems
 import com.suslovila.kharium.common.multiStructure.kharuSnare.MultiStructureKharuSnare
+import com.suslovila.kharium.common.worldSavedData.CustomWorldData.Companion.customData
 import com.suslovila.kharium.research.ACAspect
+import com.suslovila.kharium.utils.SusMathHelper
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
+import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.ThaumcraftIntegrator.completeNormalResearch
 import com.suslovila.sus_multi_blocked.utils.Position
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemPickupEvent
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent
+import cpw.mods.fml.common.gameevent.TickEvent
+import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
@@ -24,13 +29,12 @@ import thaumcraft.common.Thaumcraft
 import thaumcraft.common.blocks.ItemJarNode
 import thaumcraft.common.config.ConfigItems
 import thaumcraft.common.entities.monster.boss.EntityEldritchWarden
-import thaumcraft.common.items.wands.ItemWandCasting
 import thaumcraft.common.lib.network.PacketHandler
 import thaumcraft.common.lib.network.playerdata.PacketSyncAspects
 import thaumcraft.common.lib.research.ResearchManager
 
 object FMLEventListener {
-//event class
+    //event class
     @SubscribeEvent
     fun giveAllAspects(event: PlayerLoggedInEvent) {
         if (!event.player.worldObj.isRemote) {
@@ -41,12 +45,10 @@ object FMLEventListener {
             ResearchManager.scheduleSave(player)
             PacketHandler.INSTANCE.sendTo(PacketSyncAspects(player), player as EntityPlayerMP)
             val nodeJar = ItemStack(ConfigItems.itemJarNode)
-            (nodeJar.item as ItemJarNode).setAspects(nodeJar,
-                AspectList().
-                add(Aspect.HUNGER, 100).
-                add(Aspect.WATER, 100).
-                add(Aspect.ELDRITCH, 100).
-                add(ACAspect.HUMILITAS, 100)
+            (nodeJar.item as ItemJarNode).setAspects(
+                nodeJar,
+                AspectList().add(Aspect.HUNGER, 100).add(Aspect.WATER, 100).add(Aspect.ELDRITCH, 100)
+                    .add(ACAspect.HUMILITAS, 100)
             )
             (nodeJar.item as ItemJarNode).setNodeAttributes(nodeJar, NodeType.HUNGRY, NodeModifier.BRIGHT, "")
             event.player.worldObj.spawnEntityInWorld(
@@ -74,7 +76,25 @@ object FMLEventListener {
     fun construct(event: PlayerInteractEvent) {
         with(event) {
             if (action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
-                MultiStructureKharuSnare.tryConstruct(world, Position(x,y,z), entityPlayer as? EntityPlayerMP)
+                MultiStructureKharuSnare.tryConstruct(world, Position(x, y, z), entityPlayer as? EntityPlayerMP)
+            }
+        }
+    }
+
+    @SubscribeEvent
+    fun expandKharuHotbeds(event: WorldTickEvent) {
+        if (event.side.isServer && event.phase == TickEvent.Phase.END) {
+            with(event) {
+                world.customData.kharuHotbeds.forEach {
+                    if (SusUtils.random.nextInt(200) == 1) {
+                        it.zone = it.zone.expand(
+                            SusMathHelper.nextDouble(-0.01, 0.01),
+                            SusMathHelper.nextDouble(-0.01, 0.01),
+                            SusMathHelper.nextDouble(-0.01, 0.01)
+                        )
+                    }
+                }
+                world.customData.markDirty()
             }
         }
     }

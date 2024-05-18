@@ -12,6 +12,8 @@ public class PacketHandler {
         int idx = 0;
 
         INSTANCE.registerMessage(PacketPrimordialExplosions.Handler.class, PacketPrimordialExplosions.class, idx++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketKharuHotbeds.Handler.class, PacketKharuHotbeds.class, idx++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketSyncSingleKharuHotbed.Handler.class, PacketSyncSingleKharuHotbed.class, idx++, Side.CLIENT);
 
     }
 }

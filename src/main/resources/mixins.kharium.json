@@ -5,9 +5,12 @@
   "package": "com.suslovila.kharium.mixin",
   "refmap": "mixins.kharium.refmap.json",
   "mixins": [
+    "MixinEntityFX",
+    "MixinItem",
+    "MixinMagicTile",
     "MixinTileNode",
     "MixinTileNodeRenderer",
-    "MixinEntityFX"
+    "MixinWand"
   ],
   "client": [],
   "server": []

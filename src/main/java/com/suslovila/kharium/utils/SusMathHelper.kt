@@ -25,4 +25,7 @@ object SusMathHelper {
 
     fun randomSign() = if (SusUtils.random.nextBoolean()) 1 else -1
 
+    fun tryWithPercentChance(chance : Int) : Boolean = SusUtils.random.nextInt(100) < chance
+    fun tryWithPercentChance(chance : Double) : Boolean = nextDouble(0.0, 1.0) < chance
+
 }

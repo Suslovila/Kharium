@@ -62,4 +62,13 @@ class ItemCrystallizedAntiMatter : Item() {
         stack.getOrCreateTag().setString(globalOwnerName, player.commandSenderName)
         return true
     }
+
+    override fun addInformation(
+        p_77624_1_: ItemStack?,
+        p_77624_2_: EntityPlayer?,
+        p_77624_3_: MutableList<Any?>?,
+        p_77624_4_: Boolean
+    ) {
+        super.addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_)
+    }
 }

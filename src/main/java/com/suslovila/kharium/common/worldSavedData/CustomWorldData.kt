@@ -4,10 +4,14 @@ import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.utils.SusNBTHelper
 import com.suslovila.kharium.utils.SusVec3
 import com.suslovila.kharium.common.sync.PacketHandler
+import com.suslovila.kharium.common.sync.PacketKharuHotbeds
 import com.suslovila.kharium.common.sync.PacketPrimordialExplosions
+import com.suslovila.kharium.common.sync.PacketSyncSingleKharuHotbed
 import com.suslovila.kharium.utils.SusNBTHelper.forEach
 import com.suslovila.kharium.utils.SusUtils
+import io.netty.buffer.ByteBuf
 import net.minecraft.nbt.*
+import net.minecraft.util.AxisAlignedBB
 import net.minecraft.world.*
 import java.util.*
 
@@ -33,7 +37,7 @@ class CustomWorldData(datakey: String) : WorldSavedData(datakey) {
     }
 
     val explosions: LinkedList<Explosion> = LinkedList()
-    val kharuStats = arrayListOf<KharuHotbed>()
+    val kharuHotbeds = arrayListOf<KharuHotbed>()
 
     override fun readFromNBT(tag: NBTTagCompound?) {
         val explosionList = tag?.getTagList(TAG_EXPLOSION_DATA, SusNBTHelper.TAG_COMPOUND) ?: return
@@ -62,12 +66,10 @@ class CustomWorldData(datakey: String) : WorldSavedData(datakey) {
             }
         }
         val kharuInfo = tag.getTagList(TAG_KHARU_DATA, SusNBTHelper.TAG_COMPOUND) ?: return
-        kharuStats.clear()
+        kharuHotbeds.clear()
         kharuInfo.forEach { hotbedTag ->
-            with(hotbedTag) {
-                val zone = Pair
-                kharuStats[zone] = getInteger("amount")
-            }
+            val hotbed = KharuHotbed.readFrom(hotbedTag) ?: return@forEach
+            kharuHotbeds.add(hotbed)
         }
     }
 
@@ -96,11 +98,9 @@ class CustomWorldData(datakey: String) : WorldSavedData(datakey) {
         rootTag.setTag(TAG_EXPLOSION_DATA, explosionTaglist)
 
         explosionTaglist = NBTTagList()
-        kharuStats.forEach { (pos, amount) ->
+        kharuHotbeds.forEach { hotbed ->
             val newTag = NBTTagCompound()
-            newTag.setInteger("x", pos.first)
-            newTag.setInteger("z", pos.second)
-            newTag.setInteger("amount", amount)
+            hotbed.writeTo(newTag)
             explosionTaglist.appendTag(newTag)
         }
         rootTag.setTag(TAG_KHARU_DATA, explosionTaglist)
@@ -117,23 +117,91 @@ class CustomWorldData(datakey: String) : WorldSavedData(datakey) {
         PacketHandler.INSTANCE.sendToDimension(PacketPrimordialExplosions(explosions), world.provider.dimensionId)
     }
 
-    fun addKharuToChunkByBlockPos(pos: SusVec3, amount: Int) {
-        val chunkPos = Pair(pos.x.toInt(), pos.z.toInt())
-        val prevAmount = kharuStats[chunkPos]
-        if (prevAmount != null) kharuStats[chunkPos] = (prevAmount + amount).coerceAtLeast(0)
-        else kharuStats[chunkPos] = amount
-        markDirty()
+    fun syncAllHotbeds(world: World) {
+        PacketHandler.INSTANCE.sendToDimension(PacketKharuHotbeds(kharuHotbeds), world.provider.dimensionId)
     }
 
-    fun setKharuToChunkByBlockPos(pos: SusVec3, amount: Int) {
-        kharuStats[Pair(pos.x.toInt(), pos.z.toInt())] = amount
+    fun syncAddHotbed(world: World, hotbed: KharuHotbed) {
+        PacketHandler.INSTANCE.sendToDimension(PacketSyncSingleKharuHotbed(hotbed, PacketSyncSingleKharuHotbed.SYNC_TYPE.ADD), world.provider.dimensionId)
+    }
+    fun syncRemoveHotbed(world: World, hotbed: KharuHotbed) {
+        PacketHandler.INSTANCE.sendToDimension(PacketSyncSingleKharuHotbed(hotbed, PacketSyncSingleKharuHotbed.SYNC_TYPE.REMOVE), world.provider.dimensionId)
+    }
+    fun addKharuHotbed(hotbed: KharuHotbed, world: World) {
+        kharuHotbeds.add(hotbed)
         markDirty()
+        syncAddHotbed(world, hotbed)
     }
 
-    fun getKharuLevelByBlockPos(pos: SusVec3) {
-        kharuStats[Pair(pos.x.toInt(), pos.z.toInt())] ?: 0
+    fun removeKharuHotbed(hotbed: KharuHotbed, world: World) {
+        kharuHotbeds.remove(hotbed)
         markDirty()
+        syncRemoveHotbed(world, hotbed)
     }
 }
 
 class Explosion(val pos: SusVec3, val radius: Double, var timer: Int, var remainingBlocksToDestroy: LinkedList<SusVec3>)
+
+
+object AxisWrapper {
+    fun AxisAlignedBB.writeTo(rootNbt: NBTTagCompound) {
+        val tag = NBTTagCompound()
+        tag.setDouble("minX", minX)
+        tag.setDouble("minY", minX)
+        tag.setDouble("minZ", minX)
+        tag.setDouble("maxX", maxX)
+        tag.setDouble("maxY", maxY)
+        tag.setDouble("maxZ", maxZ)
+
+        rootNbt.setTag(KharuInfluenceHandler.ZONE_NBT, tag)
+    }
+
+    fun AxisAlignedBB.writeTo(buf: ByteBuf) {
+        buf.writeDouble(minX)
+        buf.writeDouble(minY)
+        buf.writeDouble(minZ)
+        buf.writeDouble(maxX)
+        buf.writeDouble(maxY)
+        buf.writeDouble(maxZ)
+
+    }
+
+    fun readFrom(rootNbt: NBTTagCompound): AxisAlignedBB? {
+        val tag = rootNbt.getCompoundTag(KharuInfluenceHandler.ZONE_NBT) ?: return null
+        if (
+            !tag.hasKey("minX") ||
+            !tag.hasKey("minY") ||
+            !tag.hasKey("minZ") ||
+            !tag.hasKey("maxX") ||
+            !tag.hasKey("maxY") ||
+            !tag.hasKey("maxZ")
+        ) return null
+        return AxisAlignedBB.getBoundingBox(
+            tag.getDouble("minX"),
+            tag.getDouble("minY"),
+            tag.getDouble("minZ"),
+            tag.getDouble("maxX"),
+            tag.getDouble("maxY"),
+            tag.getDouble("maxZ")
+        )
+    }
+
+    fun readFrom(buf: ByteBuf): AxisAlignedBB {
+        val minX = buf.readDouble()
+        val minY = buf.readDouble()
+        val minZ = buf.readDouble()
+        val maxX = buf.readDouble()
+        val maxY = buf.readDouble()
+        val maxZ = buf.readDouble()
+        return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ)
+    }
+
+    val AxisAlignedBB.center: SusVec3
+        get() {
+            return SusVec3(
+                minX + (maxX - minX) / 2,
+                minY + (maxY - minY) / 2,
+                minZ + (maxZ - minZ) / 2
+            )
+        }
+}

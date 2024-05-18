@@ -1,5 +1,6 @@
 package com.suslovila.kharium.common.multiStructure.kharuSnare
 
+import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.common.block.ModBlocks
 import com.suslovila.sus_multi_blocked.api.multiblock.AdditionalData
 import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructure
@@ -22,7 +23,7 @@ import thaumcraft.common.items.wands.ItemWandCasting
 import java.nio.file.Paths
 
 object MultiStructureKharuSnare : MultiStructure<KharuSnareAdditionalData, KharuSnareElement>(
-    Paths.get(".").toAbsolutePath().toString() + "/sus_multi_blocked/kharu_snare.json",
+    "/assets/${Kharium.MOD_ID}/structures/kharu_snare.json",
     availableFacings = arrayListOf(
         ForgeDirection.UP
     ),

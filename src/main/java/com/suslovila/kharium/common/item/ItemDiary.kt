@@ -31,3 +31,4 @@ class ItemDiary : Item() {
         return stack
     }
 }
+
