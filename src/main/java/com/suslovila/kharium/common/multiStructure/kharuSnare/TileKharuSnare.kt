@@ -26,6 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection
 import thaumcraft.api.aspects.AspectList
 import thaumcraft.api.aspects.AspectSourceHelper
 import thaumcraft.common.lib.events.EssentiaHandler
+import kotlin.math.sqrt
 
 class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered, IInventory {
     val inventory: IInventory = SimpleInventory(0,0, "inv", 64)
@@ -222,7 +223,7 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered, IInve
 
     override fun isUseableByPlayer(player: EntityPlayer): kotlin.Boolean {
         return ((worldObj.getTileEntity(xCoord, yCoord, zCoord) === this) && !isInvalid() &&
-                (player.getDistanceSq(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5) <= 64))
+                (sqrt(player.getDistanceSq(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5)) <= 24))
     }
 
     override fun openChest() {}

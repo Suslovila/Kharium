@@ -1,6 +1,6 @@
 package com.suslovila.kharium.common.item
 
-import com.suslovila.kharium.Config
+import com.suslovila.kharium.utils.config.Config
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.mixinUtils.MixinStaticMethods.isNodeBeingTransformed
 import com.suslovila.kharium.mixinUtils.MixinStaticMethods.startNodeTransformation

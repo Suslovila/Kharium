@@ -1,6 +1,7 @@
 package com.suslovila.kharium.utils;
 
 
+import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,7 +41,11 @@ public class SusVec3 {
         this.y = p_82485_;
         this.z = p_82486_;
     }
-
+    public SusVec3(Vec3 vec3) {
+        this.x = vec3.xCoord;
+        this.y = vec3.yCoord;
+        this.z = vec3.zCoord;
+    }
     public SusVec3(int p_82484_, int p_82485_, int p_82486_) {
         this.x = p_82484_;
         this.y = p_82485_;

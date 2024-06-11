@@ -190,4 +190,15 @@ object SusGraphicHelper {
     fun setStandartColors() {
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
     }
+
+    fun setDefaultBlend() {
+        glDisable(GL_LIGHTING)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+    }
+
+    fun disableBlend() {
+        glEnable(GL_LIGHTING)
+        glDisable(GL_BLEND)
+    }
 }

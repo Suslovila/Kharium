@@ -5,6 +5,10 @@ import com.suslovila.kharium.client.gui.GuiHandler;
 import com.suslovila.kharium.common.CommonProxy;
 import com.suslovila.kharium.common.crafting.RecipeRegistry;
 import com.suslovila.kharium.common.ore_dicitonary.OreDictionaryRegistry;
+import com.suslovila.kharium.integration.hooks.BotaniaHook;
+import com.suslovila.kharium.integration.hooks.Hooks;
+import com.suslovila.kharium.integration.hooks.VanillaHook;
+import com.suslovila.kharium.integration.hooks.WitcheryHook;
 import com.suslovila.sus_multi_blocked.utils.NbtKeyNameHelper;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -70,6 +74,10 @@ public class Kharium {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+
+        Hooks.INSTANCE.register(WitcheryHook.INSTANCE);
+        Hooks.INSTANCE.register(VanillaHook.INSTANCE);
+        Hooks.INSTANCE.register(BotaniaHook.INSTANCE);
 
     }
 

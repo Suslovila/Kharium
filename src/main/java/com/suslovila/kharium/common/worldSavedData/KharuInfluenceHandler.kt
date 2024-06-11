@@ -1,14 +1,19 @@
 package com.suslovila.kharium.common.worldSavedData
 
-import com.suslovila.kharium.Config
+import com.emoniph.witchery.infusion.Infusion
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.common.worldSavedData.AxisWrapper.writeTo
 import com.suslovila.kharium.common.worldSavedData.CustomWorldData.Companion.customData
 import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler.AMOUNT_NBT
+import com.suslovila.kharium.integration.hooks.Hooks
 import com.suslovila.kharium.utils.*
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
+import com.suslovila.kharium.utils.config.Config
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import io.netty.buffer.ByteBuf
+import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.Items
 import net.minecraft.item.ItemPotion
@@ -58,29 +63,44 @@ object KharuInfluenceHandler {
     fun handlePlayerThaumcraftDirectInfluence(event: LivingEvent.LivingUpdateEvent) {
         with(event) {
             val world = event.entity.worldObj
-            val player = event.entity ?: return
-            if (world.isRemote || player !is EntityPlayerMP) return
+            if (world.isRemote || entity !is EntityLivingBase) return
 
             // handling radiation adding
-            if ((player.ticksExisted % 20) == 0) {
-                addKharuFromSpace(world, player)
-                vanillaItemKharuInfluence(player)
-                thaumcraftItemKharuInfluence(player)
-                if(Kharium.botaniaLoaded) botaniaItemKharuInfluence(player)
+            if ((entity.ticksExisted % 20) == 0) {
+                Hooks.hooks.forEach {it.tickKharuInfluence(entity as? EntityLivingBase)}
             }
         }
     }
 
     private fun addKharuFromSpace(world: World, player: EntityPlayerMP) {
         val hotbed = getKharuHotbed(world, player.getPosition()) ?: return
-
-        player.inventory.mainInventory.forEach { itemStack ->
-            itemStack ?: return@forEach
-            val tag = itemStack.getOrCreateTag()
-            val taken = Config.maxRadiationPerTime * (1 + (hotbed.amount / Config.kharuDestroyingBorder))
-            tag.setInteger(AMOUNT_NBT, itemStack.getKharuAmount() + taken)
+        player.addKharu(getKharuPerCheckWithReduce(world, hotbed))
+        run anchor@{
+            player.inventory.mainInventory.forEach { itemStack ->
+                itemStack ?: return@forEach
+                itemStack.addKharu(getKharuPerCheckWithReduce(world, hotbed))
+            }
         }
     }
+
+    fun getKharuPerCheckWithReduce(world: World, hotbed: KharuHotbed): Int {
+        var taken = hotbed.amountPerTime
+        if (taken > hotbed.amount) {
+            taken = hotbed.amount
+            world.customData.removeKharuHotbed(hotbed, world)
+        }
+        hotbed.amount -= taken
+
+        return taken
+    }
+
+    private fun influenceWitchery(world: World, player: EntityPlayerMP) {
+        val infusion = Infusion.Registry.instance().get(Infusion.getInfusionID(player))
+        if (infusion != Infusion.DEFUSED) {
+
+        }
+    }
+
 
     private fun vanillaItemKharuInfluence(player: EntityPlayerMP) {
         player.inventory.mainInventory.forEachIndexed { index, itemStack ->
@@ -137,7 +157,7 @@ object KharuInfluenceHandler {
             ) {
                 var toDecrease = (itemStack.getKharuLinearAmountPercent() * Config.maxManaReduce).toInt()
                 val manaPrevious = manaItem.getMana(itemStack)
-                if(toDecrease > manaPrevious) toDecrease = manaPrevious
+                if (toDecrease > manaPrevious) toDecrease = manaPrevious
                 manaItem.addMana(
                     itemStack,
                     -toDecrease
@@ -146,11 +166,27 @@ object KharuInfluenceHandler {
         }
     }
 
+
     fun ItemStack.getKharuAmount(): Int {
         val tag = getOrCreateTag()
         if (tag.hasKey(AMOUNT_NBT)) return tag.getInteger(AMOUNT_NBT)
         tag.setInteger(AMOUNT_NBT, 0)
         return 0
+    }
+
+    fun Entity.getKharuAmount(): Int {
+        val tag = entityData
+        if (tag.hasKey(AMOUNT_NBT)) return tag.getInteger(AMOUNT_NBT)
+        tag.setInteger(AMOUNT_NBT, 0)
+        return 0
+    }
+
+    fun Entity.addKharu(amount: Int) {
+        entityData.setInteger(AMOUNT_NBT, getKharuAmount() + amount)
+    }
+
+    fun ItemStack.addKharu(amount: Int) {
+        getOrCreateTag().setInteger(AMOUNT_NBT, getKharuAmount() + amount)
     }
 
     fun ItemStack.getKharuLinearAmountPercent(): Double {
@@ -159,7 +195,7 @@ object KharuInfluenceHandler {
         return percent.coerceAtMost(1.0)
     }
 
-    fun ItemStack.getKharuAmountPercentInfluence(degree : Double): Double {
+    fun ItemStack.getKharuAmountPercentInfluence(degree: Double): Double {
         val percent = getKharuAmount().toDouble() / Config.kharuItemDestructionBorder
         // in order to make non-linear influence we can use pow
         return percent.coerceAtMost(1.0).pow(degree)
@@ -169,6 +205,36 @@ object KharuInfluenceHandler {
         return getKharuLevel(world, this.getPosDouble())
             .toDouble() / Config.kharuDestroyingBorder
     }
+
+
+    private fun clearInfusion(player: EntityPlayer) {
+        if (!player.worldObj.isRemote) {
+            val nbt = Infusion.getNBT(player)
+            nbt.removeTag("witcheryInfusionCharges")
+            Infusion.syncPlayer(player.worldObj, player)
+        }
+    }
+
+    fun Infusion.consumeEnergy(world: World, player: EntityPlayer, cost: Int, playFailSound: Boolean): Boolean {
+        if (player.capabilities.isCreativeMode) {
+            return true
+        }
+        val charges = Infusion.getCurrentEnergy(player)
+        if (charges - cost < 0) {
+            world.playSoundAtEntity(
+                player as Entity,
+                "note.snare",
+                0.5f,
+                0.4f / (Math.random().toFloat() * 0.4f + 0.8f)
+            )
+            clearInfusion(player)
+            return false
+        }
+        Infusion.setCurrentEnergy(player, charges - cost)
+        return true
+    }
+
+
 }
 
 
@@ -185,6 +251,11 @@ class KharuHotbed(
         zone.writeTo(byteBuf)
         byteBuf.writeInt(amount)
     }
+
+    val amountPerTime: Int
+        get() {
+            return Config.maxRadiationPerTime * (1 + (amount / Config.kharuDestroyingBorder))
+        }
 
     companion object {
         fun readFrom(rootTag: NBTTagCompound): KharuHotbed? {
