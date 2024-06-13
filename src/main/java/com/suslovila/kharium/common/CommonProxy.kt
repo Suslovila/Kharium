@@ -1,7 +1,7 @@
 package com.suslovila.kharium.common
 
 
-import com.suslovila.kharium.Config
+import com.suslovila.kharium.utils.config.Config
 import com.suslovila.kharium.common.block.ModBlocks
 import com.suslovila.kharium.common.event.FMLEventListener
 import com.suslovila.kharium.common.event.KharuTickHandler
@@ -12,6 +12,7 @@ import com.suslovila.kharium.research.AntiCraftResearchRegistry
 import com.suslovila.kharium.common.event.PrimordialExplosionHandler
 import com.suslovila.kharium.common.sync.PacketHandler
 import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler
+import com.suslovila.kharium.utils.config.ConfigWitchery
 import cpw.mods.fml.common.FMLCommonHandler
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.event.FMLPostInitializationEvent
@@ -23,6 +24,8 @@ import net.minecraftforge.common.MinecraftForge
 open class CommonProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
         Config.registerServerConfig(event.suggestedConfigurationFile)
+        ConfigWitchery.registerServerConfig(event.suggestedConfigurationFile)
+
         FMLCommonHandler.instance().bus().register(FMLEventListener)
         MinecraftForge.EVENT_BUS.register(FMLEventListener)
 

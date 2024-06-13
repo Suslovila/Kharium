@@ -6,6 +6,7 @@ import com.suslovila.kharium.client.render.ClientEventHandler
 import com.suslovila.kharium.client.render.block.BlockEssentiaReservoirVoidRenderer
 import com.suslovila.kharium.client.render.item.ItemAntiNodeRenderer
 import com.suslovila.kharium.client.render.item.ItemCrystallizedAntiMatterRenderer
+import com.suslovila.kharium.client.render.item.ItemSpaceDividerRenderer
 import com.suslovila.kharium.client.render.tile.RestrainGlassRenderer
 import com.suslovila.kharium.client.render.tile.TileEssentiaReservoirVoidRenderer
 import com.suslovila.kharium.client.render.tile.TileKharuSnareRenderer
@@ -17,6 +18,7 @@ import com.suslovila.kharium.common.block.ModBlocks
 import com.suslovila.kharium.common.block.tileEntity.*
 import com.suslovila.kharium.common.block.tileEntity.rune.TileStabiliserRune
 import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileKharuReactor
+import com.suslovila.kharium.common.item.ItemSpaceDivider
 import com.suslovila.kharium.common.item.ModItems
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import cpw.mods.fml.client.registry.ClientRegistry
@@ -68,6 +70,8 @@ class ClientProxy : CommonProxy(), IGuiHandler {
     override fun registerRenderers() {
         MinecraftForge.EVENT_BUS.register(ClientEventHandler)
         MinecraftForgeClient.registerItemRenderer(ModItems.crystallizedKharu, ItemCrystallizedAntiMatterRenderer)
+        MinecraftForgeClient.registerItemRenderer(ItemSpaceDivider, ItemSpaceDividerRenderer)
+
     }
 
     private fun setupItemRenderers() {

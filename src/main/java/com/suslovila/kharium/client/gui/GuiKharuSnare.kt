@@ -30,8 +30,6 @@ class GuiKharuSnare(
         val k = (width - xSize) / 2
         val l = (height - ySize) / 2
         drawTexturedModalRect(k, l, 0, 0, xSize, ySize)
-//        val h: Int = snare.getEnergyScaled()
-//        drawTexturedModalRect(guiLeft + 86, guiTop + 36 + 70 - h, 176, 18, 4, h)
     }
 
     fun drawStack(mc: Minecraft, item: ItemStack?, x: Int, y: Int) {
@@ -49,7 +47,6 @@ class GuiKharuSnare(
     override fun initGui() {
         super.initGui()
         //важно: id кнопок напрямую связаны с логикой выбора шаблона
-
     }
 
     override fun actionPerformed(button: GuiButton) {

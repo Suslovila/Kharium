@@ -1,7 +1,7 @@
 [
   {
     "x": -6,
-    "y": -11,
+    "y": -10,
     "z": 0,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -9,7 +9,7 @@
   },
   {
     "x": -6,
-    "y": -10,
+    "y": -9,
     "z": -1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -17,7 +17,7 @@
   },
   {
     "x": -6,
-    "y": -10,
+    "y": -9,
     "z": 0,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -25,7 +25,7 @@
   },
   {
     "x": -6,
-    "y": -10,
+    "y": -9,
     "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -33,7 +33,7 @@
   },
   {
     "x": -6,
-    "y": -9,
+    "y": -8,
     "z": -2,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -41,7 +41,7 @@
   },
   {
     "x": -6,
-    "y": -9,
+    "y": -8,
     "z": -1,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -49,7 +49,7 @@
   },
   {
     "x": -6,
-    "y": -9,
+    "y": -8,
     "z": 0,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -57,7 +57,7 @@
   },
   {
     "x": -6,
-    "y": -9,
+    "y": -8,
     "z": 1,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -65,7 +65,7 @@
   },
   {
     "x": -6,
-    "y": -9,
+    "y": -8,
     "z": 2,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -73,24 +73,8 @@
   },
   {
     "x": -6,
-    "y": -8,
+    "y": -7,
     "z": -1,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -6,
-    "y": -8,
-    "z": 0,
-    "storedBlock": "Thaumcraft:blockCosmeticOpaque",
-    "meta": 2,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -6,
-    "y": -8,
-    "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
     "tileEntityByMeta": 0
@@ -104,11 +88,19 @@
     "tileEntityByMeta": 0
   },
   {
-    "x": -5,
-    "y": -12,
-    "z": 0,
+    "x": -6,
+    "y": -7,
+    "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": -6,
+    "y": -6,
+    "z": 0,
+    "storedBlock": "Thaumcraft:blockCosmeticOpaque",
+    "meta": 2,
     "tileEntityByMeta": 0
   },
   {
@@ -122,23 +114,7 @@
   {
     "x": -5,
     "y": -10,
-    "z": -1,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -5,
-    "y": -10,
     "z": 0,
-    "storedBlock": "Thaumcraft:blockMetalDevice",
-    "meta": 3,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -5,
-    "y": -10,
-    "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
     "tileEntityByMeta": 0
@@ -146,6 +122,30 @@
   {
     "x": -5,
     "y": -9,
+    "z": -1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": -5,
+    "y": -9,
+    "z": 0,
+    "storedBlock": "Thaumcraft:blockMetalDevice",
+    "meta": 3,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": -5,
+    "y": -9,
+    "z": 1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": -5,
+    "y": -8,
     "z": -3,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -153,7 +153,7 @@
   },
   {
     "x": -5,
-    "y": -9,
+    "y": -8,
     "z": -2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -161,7 +161,7 @@
   },
   {
     "x": -5,
-    "y": -9,
+    "y": -8,
     "z": -1,
     "storedBlock": "Thaumcraft:blockMetalDevice",
     "meta": 3,
@@ -169,7 +169,7 @@
   },
   {
     "x": -5,
-    "y": -9,
+    "y": -8,
     "z": 0,
     "storedBlock": "Thaumcraft:blockMetalDevice",
     "meta": 3,
@@ -177,7 +177,7 @@
   },
   {
     "x": -5,
-    "y": -9,
+    "y": -8,
     "z": 1,
     "storedBlock": "Thaumcraft:blockMetalDevice",
     "meta": 3,
@@ -185,7 +185,7 @@
   },
   {
     "x": -5,
-    "y": -9,
+    "y": -8,
     "z": 2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -193,7 +193,7 @@
   },
   {
     "x": -5,
-    "y": -9,
+    "y": -8,
     "z": 3,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -201,24 +201,8 @@
   },
   {
     "x": -5,
-    "y": -8,
+    "y": -7,
     "z": -1,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -5,
-    "y": -8,
-    "z": 0,
-    "storedBlock": "Thaumcraft:blockMetalDevice",
-    "meta": 3,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -5,
-    "y": -8,
-    "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
     "tileEntityByMeta": 0
@@ -227,6 +211,14 @@
     "x": -5,
     "y": -7,
     "z": 0,
+    "storedBlock": "Thaumcraft:blockMetalDevice",
+    "meta": 3,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": -5,
+    "y": -7,
+    "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
     "tileEntityByMeta": 0
@@ -240,8 +232,16 @@
     "tileEntityByMeta": 0
   },
   {
+    "x": -5,
+    "y": -5,
+    "z": 0,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
     "x": -3,
-    "y": -9,
+    "y": -8,
     "z": -5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -249,7 +249,7 @@
   },
   {
     "x": -3,
-    "y": -9,
+    "y": -8,
     "z": 5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -257,7 +257,7 @@
   },
   {
     "x": -2,
-    "y": -9,
+    "y": -8,
     "z": -6,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -265,7 +265,7 @@
   },
   {
     "x": -2,
-    "y": -9,
+    "y": -8,
     "z": -5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -273,7 +273,7 @@
   },
   {
     "x": -2,
-    "y": -9,
+    "y": -8,
     "z": 5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -281,26 +281,10 @@
   },
   {
     "x": -2,
-    "y": -9,
+    "y": -8,
     "z": 6,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -2,
-    "y": -5,
-    "z": -2,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -2,
-    "y": -5,
-    "z": 2,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
     "tileEntityByMeta": 0
   },
   {
@@ -346,30 +330,6 @@
   {
     "x": -2,
     "y": -2,
-    "z": -1,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -2,
-    "y": -2,
-    "z": 0,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -2,
-    "y": -2,
-    "z": 1,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -2,
-    "y": -2,
     "z": 2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -379,7 +339,7 @@
     "x": -2,
     "y": -1,
     "z": -2,
-    "storedBlock": "kharium:kharium_restrained_glass",
+    "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
     "tileEntityByMeta": 0
   },
@@ -411,7 +371,7 @@
     "x": -2,
     "y": -1,
     "z": 2,
-    "storedBlock": "kharium:kharium_restrained_glass",
+    "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
     "tileEntityByMeta": 0
   },
@@ -456,8 +416,48 @@
     "tileEntityByMeta": 0
   },
   {
+    "x": -2,
+    "y": 1,
+    "z": -2,
+    "storedBlock": "kharium:kharium_restrained_glass",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": -2,
+    "y": 1,
+    "z": -1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": -2,
+    "y": 1,
+    "z": 0,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": -2,
+    "y": 1,
+    "z": 1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": -2,
+    "y": 1,
+    "z": 2,
+    "storedBlock": "kharium:kharium_restrained_glass",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
     "x": -1,
-    "y": -10,
+    "y": -9,
     "z": -6,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -465,7 +465,7 @@
   },
   {
     "x": -1,
-    "y": -10,
+    "y": -9,
     "z": -5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -473,7 +473,7 @@
   },
   {
     "x": -1,
-    "y": -10,
+    "y": -9,
     "z": 5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -481,7 +481,7 @@
   },
   {
     "x": -1,
-    "y": -10,
+    "y": -9,
     "z": 6,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -489,7 +489,7 @@
   },
   {
     "x": -1,
-    "y": -9,
+    "y": -8,
     "z": -6,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -497,7 +497,7 @@
   },
   {
     "x": -1,
-    "y": -9,
+    "y": -8,
     "z": -5,
     "storedBlock": "Thaumcraft:blockMetalDevice",
     "meta": 3,
@@ -505,7 +505,7 @@
   },
   {
     "x": -1,
-    "y": -9,
+    "y": -8,
     "z": 5,
     "storedBlock": "Thaumcraft:blockMetalDevice",
     "meta": 3,
@@ -513,7 +513,7 @@
   },
   {
     "x": -1,
-    "y": -9,
+    "y": -8,
     "z": 6,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -521,7 +521,7 @@
   },
   {
     "x": -1,
-    "y": -8,
+    "y": -7,
     "z": -6,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -529,7 +529,7 @@
   },
   {
     "x": -1,
-    "y": -8,
+    "y": -7,
     "z": -5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -537,7 +537,7 @@
   },
   {
     "x": -1,
-    "y": -8,
+    "y": -7,
     "z": 5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -545,7 +545,7 @@
   },
   {
     "x": -1,
-    "y": -8,
+    "y": -7,
     "z": 6,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -553,7 +553,7 @@
   },
   {
     "x": -1,
-    "y": -2,
+    "y": -1,
     "z": -2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -561,46 +561,6 @@
   },
   {
     "x": -1,
-    "y": -2,
-    "z": -1,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -1,
-    "y": -2,
-    "z": 0,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -1,
-    "y": -2,
-    "z": 1,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -1,
-    "y": -2,
-    "z": 2,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -1,
-    "y": -1,
-    "z": -2,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": -1,
     "y": -1,
     "z": -1,
     "storedBlock": "kharium:blockVoidMetal",
@@ -672,8 +632,48 @@
     "tileEntityByMeta": 0
   },
   {
+    "x": -1,
+    "y": 1,
+    "z": -2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": -1,
+    "y": 1,
+    "z": -1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": -1,
+    "y": 1,
+    "z": 0,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": -1,
+    "y": 1,
+    "z": 1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": -1,
+    "y": 1,
+    "z": 2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
     "x": 0,
-    "y": -12,
+    "y": -11,
     "z": -5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -681,42 +681,10 @@
   },
   {
     "x": 0,
-    "y": -12,
-    "z": 5,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 0,
-    "y": -11,
-    "z": -6,
-    "storedBlock": "Thaumcraft:blockCosmeticOpaque",
-    "meta": 2,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 0,
-    "y": -11,
-    "z": -5,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 0,
     "y": -11,
     "z": 5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 0,
-    "y": -11,
-    "z": 6,
-    "storedBlock": "Thaumcraft:blockCosmeticOpaque",
-    "meta": 2,
     "tileEntityByMeta": 0
   },
   {
@@ -731,16 +699,16 @@
     "x": 0,
     "y": -10,
     "z": -5,
-    "storedBlock": "Thaumcraft:blockMetalDevice",
-    "meta": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
     "tileEntityByMeta": 0
   },
   {
     "x": 0,
     "y": -10,
     "z": 5,
-    "storedBlock": "Thaumcraft:blockMetalDevice",
-    "meta": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
     "tileEntityByMeta": 0
   },
   {
@@ -827,22 +795,30 @@
     "x": 0,
     "y": -7,
     "z": -5,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
+    "storedBlock": "Thaumcraft:blockMetalDevice",
+    "meta": 3,
     "tileEntityByMeta": 0
   },
   {
     "x": 0,
     "y": -7,
     "z": 5,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
+    "storedBlock": "Thaumcraft:blockMetalDevice",
+    "meta": 3,
     "tileEntityByMeta": 0
   },
   {
     "x": 0,
     "y": -7,
     "z": 6,
+    "storedBlock": "Thaumcraft:blockCosmeticOpaque",
+    "meta": 2,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 0,
+    "y": -6,
+    "z": -6,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
     "tileEntityByMeta": 0
@@ -865,7 +841,31 @@
   },
   {
     "x": 0,
-    "y": -2,
+    "y": -6,
+    "z": 6,
+    "storedBlock": "Thaumcraft:blockCosmeticOpaque",
+    "meta": 2,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 0,
+    "y": -5,
+    "z": -5,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 0,
+    "y": -5,
+    "z": 5,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 0,
+    "y": -1,
     "z": -2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -873,7 +873,7 @@
   },
   {
     "x": 0,
-    "y": -2,
+    "y": -1,
     "z": -1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -881,7 +881,7 @@
   },
   {
     "x": 0,
-    "y": -2,
+    "y": -1,
     "z": 0,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -889,7 +889,7 @@
   },
   {
     "x": 0,
-    "y": -2,
+    "y": -1,
     "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -897,7 +897,7 @@
   },
   {
     "x": 0,
-    "y": -2,
+    "y": -1,
     "z": 2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -905,7 +905,7 @@
   },
   {
     "x": 0,
-    "y": -1,
+    "y": 0,
     "z": -2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -913,7 +913,7 @@
   },
   {
     "x": 0,
-    "y": -1,
+    "y": 0,
     "z": -1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -921,7 +921,7 @@
   },
   {
     "x": 0,
-    "y": -1,
+    "y": 0,
     "z": 0,
     "storedBlock": "Thaumcraft:blockMetalDevice",
     "meta": 3,
@@ -929,7 +929,7 @@
   },
   {
     "x": 0,
-    "y": -1,
+    "y": 0,
     "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -937,7 +937,7 @@
   },
   {
     "x": 0,
-    "y": -1,
+    "y": 0,
     "z": 2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -945,7 +945,7 @@
   },
   {
     "x": 0,
-    "y": 0,
+    "y": 1,
     "z": -2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -953,7 +953,7 @@
   },
   {
     "x": 0,
-    "y": 0,
+    "y": 1,
     "z": -1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -961,7 +961,7 @@
   },
   {
     "x": 0,
-    "y": 0,
+    "y": 1,
     "z": 0,
     "storedBlock": "Thaumcraft:blockMetalDevice",
     "meta": 3,
@@ -969,7 +969,7 @@
   },
   {
     "x": 0,
-    "y": 0,
+    "y": 1,
     "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -977,7 +977,7 @@
   },
   {
     "x": 0,
-    "y": 0,
+    "y": 1,
     "z": 2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -985,7 +985,7 @@
   },
   {
     "x": 1,
-    "y": -10,
+    "y": -9,
     "z": -6,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -993,7 +993,7 @@
   },
   {
     "x": 1,
-    "y": -10,
+    "y": -9,
     "z": -5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1001,7 +1001,7 @@
   },
   {
     "x": 1,
-    "y": -10,
+    "y": -9,
     "z": 5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1009,7 +1009,7 @@
   },
   {
     "x": 1,
-    "y": -10,
+    "y": -9,
     "z": 6,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1017,7 +1017,7 @@
   },
   {
     "x": 1,
-    "y": -9,
+    "y": -8,
     "z": -6,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -1025,7 +1025,7 @@
   },
   {
     "x": 1,
-    "y": -9,
+    "y": -8,
     "z": -5,
     "storedBlock": "Thaumcraft:blockMetalDevice",
     "meta": 3,
@@ -1033,7 +1033,7 @@
   },
   {
     "x": 1,
-    "y": -9,
+    "y": -8,
     "z": 5,
     "storedBlock": "Thaumcraft:blockMetalDevice",
     "meta": 3,
@@ -1041,7 +1041,7 @@
   },
   {
     "x": 1,
-    "y": -9,
+    "y": -8,
     "z": 6,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -1049,7 +1049,7 @@
   },
   {
     "x": 1,
-    "y": -8,
+    "y": -7,
     "z": -6,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1057,7 +1057,7 @@
   },
   {
     "x": 1,
-    "y": -8,
+    "y": -7,
     "z": -5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1065,7 +1065,7 @@
   },
   {
     "x": 1,
-    "y": -8,
+    "y": -7,
     "z": 5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1073,7 +1073,7 @@
   },
   {
     "x": 1,
-    "y": -8,
+    "y": -7,
     "z": 6,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1081,46 +1081,6 @@
   },
   {
     "x": 1,
-    "y": -2,
-    "z": -2,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 1,
-    "y": -2,
-    "z": -1,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 1,
-    "y": -2,
-    "z": 0,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 1,
-    "y": -2,
-    "z": 1,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 1,
-    "y": -2,
-    "z": 2,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 1,
     "y": -1,
     "z": -2,
     "storedBlock": "kharium:blockVoidMetal",
@@ -1194,6 +1154,46 @@
   {
     "x": 1,
     "y": 0,
+    "z": 2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 1,
+    "y": 1,
+    "z": -2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 1,
+    "y": 1,
+    "z": -1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 1,
+    "y": 1,
+    "z": 0,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 1,
+    "y": 1,
+    "z": 1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 1,
+    "y": 1,
     "z": 2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1201,7 +1201,7 @@
   },
   {
     "x": 2,
-    "y": -9,
+    "y": -8,
     "z": -6,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -1209,7 +1209,7 @@
   },
   {
     "x": 2,
-    "y": -9,
+    "y": -8,
     "z": -5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1217,7 +1217,7 @@
   },
   {
     "x": 2,
-    "y": -9,
+    "y": -8,
     "z": 5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1225,26 +1225,10 @@
   },
   {
     "x": 2,
-    "y": -9,
+    "y": -8,
     "z": 6,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 2,
-    "y": -5,
-    "z": -2,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 2,
-    "y": -5,
-    "z": 2,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
     "tileEntityByMeta": 0
   },
   {
@@ -1290,30 +1274,6 @@
   {
     "x": 2,
     "y": -2,
-    "z": -1,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 2,
-    "y": -2,
-    "z": 0,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 2,
-    "y": -2,
-    "z": 1,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 2,
-    "y": -2,
     "z": 2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1323,7 +1283,7 @@
     "x": 2,
     "y": -1,
     "z": -2,
-    "storedBlock": "kharium:kharium_restrained_glass",
+    "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
     "tileEntityByMeta": 0
   },
@@ -1355,7 +1315,7 @@
     "x": 2,
     "y": -1,
     "z": 2,
-    "storedBlock": "kharium:kharium_restrained_glass",
+    "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
     "tileEntityByMeta": 0
   },
@@ -1394,6 +1354,46 @@
   {
     "x": 2,
     "y": 0,
+    "z": 2,
+    "storedBlock": "kharium:kharium_restrained_glass",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 2,
+    "y": 1,
+    "z": -2,
+    "storedBlock": "kharium:kharium_restrained_glass",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 2,
+    "y": 1,
+    "z": -1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 2,
+    "y": 1,
+    "z": 0,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 2,
+    "y": 1,
+    "z": 1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 2,
+    "y": 1,
     "z": 2,
     "storedBlock": "kharium:kharium_restrained_glass",
     "meta": 0,
@@ -1401,7 +1401,7 @@
   },
   {
     "x": 3,
-    "y": -9,
+    "y": -8,
     "z": -5,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1409,16 +1409,8 @@
   },
   {
     "x": 3,
-    "y": -9,
+    "y": -8,
     "z": 5,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 5,
-    "y": -12,
-    "z": 0,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
     "tileEntityByMeta": 0
@@ -1434,23 +1426,7 @@
   {
     "x": 5,
     "y": -10,
-    "z": -1,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 5,
-    "y": -10,
     "z": 0,
-    "storedBlock": "Thaumcraft:blockMetalDevice",
-    "meta": 3,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 5,
-    "y": -10,
-    "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
     "tileEntityByMeta": 0
@@ -1458,6 +1434,30 @@
   {
     "x": 5,
     "y": -9,
+    "z": -1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 5,
+    "y": -9,
+    "z": 0,
+    "storedBlock": "Thaumcraft:blockMetalDevice",
+    "meta": 3,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 5,
+    "y": -9,
+    "z": 1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 5,
+    "y": -8,
     "z": -3,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1465,7 +1465,7 @@
   },
   {
     "x": 5,
-    "y": -9,
+    "y": -8,
     "z": -2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1473,7 +1473,7 @@
   },
   {
     "x": 5,
-    "y": -9,
+    "y": -8,
     "z": -1,
     "storedBlock": "Thaumcraft:blockMetalDevice",
     "meta": 3,
@@ -1481,7 +1481,7 @@
   },
   {
     "x": 5,
-    "y": -9,
+    "y": -8,
     "z": 0,
     "storedBlock": "Thaumcraft:blockMetalDevice",
     "meta": 3,
@@ -1489,7 +1489,7 @@
   },
   {
     "x": 5,
-    "y": -9,
+    "y": -8,
     "z": 1,
     "storedBlock": "Thaumcraft:blockMetalDevice",
     "meta": 3,
@@ -1497,7 +1497,7 @@
   },
   {
     "x": 5,
-    "y": -9,
+    "y": -8,
     "z": 2,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1505,7 +1505,7 @@
   },
   {
     "x": 5,
-    "y": -9,
+    "y": -8,
     "z": 3,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1513,24 +1513,8 @@
   },
   {
     "x": 5,
-    "y": -8,
+    "y": -7,
     "z": -1,
-    "storedBlock": "kharium:blockVoidMetal",
-    "meta": 0,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 5,
-    "y": -8,
-    "z": 0,
-    "storedBlock": "Thaumcraft:blockMetalDevice",
-    "meta": 3,
-    "tileEntityByMeta": 0
-  },
-  {
-    "x": 5,
-    "y": -8,
-    "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
     "tileEntityByMeta": 0
@@ -1539,6 +1523,14 @@
     "x": 5,
     "y": -7,
     "z": 0,
+    "storedBlock": "Thaumcraft:blockMetalDevice",
+    "meta": 3,
+    "tileEntityByMeta": 0
+  },
+  {
+    "x": 5,
+    "y": -7,
+    "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
     "tileEntityByMeta": 0
@@ -1552,8 +1544,16 @@
     "tileEntityByMeta": 0
   },
   {
+    "x": 5,
+    "y": -5,
+    "z": 0,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0
+  },
+  {
     "x": 6,
-    "y": -11,
+    "y": -10,
     "z": 0,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -1561,7 +1561,7 @@
   },
   {
     "x": 6,
-    "y": -10,
+    "y": -9,
     "z": -1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1569,7 +1569,7 @@
   },
   {
     "x": 6,
-    "y": -10,
+    "y": -9,
     "z": 0,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -1577,7 +1577,7 @@
   },
   {
     "x": 6,
-    "y": -10,
+    "y": -9,
     "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1585,7 +1585,7 @@
   },
   {
     "x": 6,
-    "y": -9,
+    "y": -8,
     "z": -2,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -1593,7 +1593,7 @@
   },
   {
     "x": 6,
-    "y": -9,
+    "y": -8,
     "z": -1,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -1601,7 +1601,7 @@
   },
   {
     "x": 6,
-    "y": -9,
+    "y": -8,
     "z": 0,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -1609,7 +1609,7 @@
   },
   {
     "x": 6,
-    "y": -9,
+    "y": -8,
     "z": 1,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -1617,7 +1617,7 @@
   },
   {
     "x": 6,
-    "y": -9,
+    "y": -8,
     "z": 2,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -1625,7 +1625,7 @@
   },
   {
     "x": 6,
-    "y": -8,
+    "y": -7,
     "z": -1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1633,7 +1633,7 @@
   },
   {
     "x": 6,
-    "y": -8,
+    "y": -7,
     "z": 0,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
@@ -1641,7 +1641,7 @@
   },
   {
     "x": 6,
-    "y": -8,
+    "y": -7,
     "z": 1,
     "storedBlock": "kharium:blockVoidMetal",
     "meta": 0,
@@ -1649,7 +1649,7 @@
   },
   {
     "x": 6,
-    "y": -7,
+    "y": -6,
     "z": 0,
     "storedBlock": "Thaumcraft:blockCosmeticOpaque",
     "meta": 2,
