@@ -60,14 +60,18 @@ object KharuInfluenceHandler {
     }
 
     @SubscribeEvent
-    fun handlePlayerThaumcraftDirectInfluence(event: LivingEvent.LivingUpdateEvent) {
+    fun handleKharuInfluence(event: LivingEvent.LivingUpdateEvent) {
         with(event) {
-            val world = event.entity.worldObj
-            if (world.isRemote || entity !is EntityLivingBase) return
+            val possiblePlayer = event.entity
+            val world = possiblePlayer.worldObj
+            if (world.isRemote || possiblePlayer !is EntityLivingBase) return
 
             // handling radiation adding
-            if ((entity.ticksExisted % 20) == 0) {
-                Hooks.hooks.forEach {it.tickKharuInfluence(entity as? EntityLivingBase)}
+            if ((possiblePlayer.ticksExisted % 20) == 0) {
+                if (possiblePlayer is EntityPlayerMP) {
+                    addKharuFromSpace(world, possiblePlayer)
+                }
+                Hooks.hooks.forEach { it.tickKharuInfluence(possiblePlayer) }
             }
         }
     }
@@ -77,7 +81,7 @@ object KharuInfluenceHandler {
         player.addKharu(getKharuPerCheckWithReduce(world, hotbed))
         run anchor@{
             player.inventory.mainInventory.forEach { itemStack ->
-                itemStack ?: return@forEach
+                if (itemStack?.maxStackSize != 1) return@forEach
                 itemStack.addKharu(getKharuPerCheckWithReduce(world, hotbed))
             }
         }
@@ -90,94 +94,22 @@ object KharuInfluenceHandler {
             world.customData.removeKharuHotbed(hotbed, world)
         }
         hotbed.amount -= taken
+        world.customData.markDirty()
 
         return taken
     }
 
-    private fun influenceWitchery(world: World, player: EntityPlayerMP) {
-        val infusion = Infusion.Registry.instance().get(Infusion.getInfusionID(player))
-        if (infusion != Infusion.DEFUSED) {
-
-        }
-    }
-
-
-    private fun vanillaItemKharuInfluence(player: EntityPlayerMP) {
-        player.inventory.mainInventory.forEachIndexed { index, itemStack ->
-            itemStack ?: return@forEachIndexed
-            val kharuDestroyPercent = itemStack.getKharuAmountPercentInfluence(8.0)
-            // enchantments
-            itemStack.enchantmentTagList?.tagList?.removeAll {
-                SusMathHelper.tryWithPercentChance(kharuDestroyPercent)
-            }
-            if (itemStack.enchantmentTagList?.tagList?.isEmpty() == true) {
-                itemStack.stackTagCompound.removeTag("ench")
-            }
-            // potions
-            val successForPotion = SusMathHelper.tryWithPercentChance(kharuDestroyPercent)
-
-            if (itemStack.item is ItemPotion && successForPotion) {
-                player.inventory.mainInventory[index] = ItemStack(Items.glass_bottle)
-            }
-        }
-        // potion effects
-        player.activePotionEffects.forEach { effect ->
-//            val successForEffect = SusMathHelper.tryWithPercentChance()
-
-        }
-    }
-
-    private fun thaumcraftItemKharuInfluence(player: EntityPlayerMP) {
-        player.inventory.mainInventory.forEach { itemStack ->
-            itemStack ?: return@forEach
-            val wand = itemStack.item as? ItemWandCasting ?: return@forEach
-            if (SusMathHelper.tryWithPercentChance(
-                    chance = itemStack.getKharuAmountPercentInfluence(2.0)
-                )
-            ) {
-                wand.consumeAllVisCrafting(
-                    itemStack,
-                    player,
-                    AspectList().add(
-                        basicAspects[SusUtils.random.nextInt(basicAspects.size)],
-                        SusUtils.random.nextInt(10)
-                    ),
-                    true
-                )
-            }
-        }
-    }
-
-    private fun botaniaItemKharuInfluence(player: EntityPlayerMP) {
-        player.inventory.mainInventory.forEach { itemStack ->
-            val manaItem = itemStack?.item as? IManaItem ?: return@forEach
-            if (SusMathHelper.tryWithPercentChance(
-                    chance = itemStack.getKharuAmountPercentInfluence(2.0)
-                )
-            ) {
-                var toDecrease = (itemStack.getKharuLinearAmountPercent() * Config.maxManaReduce).toInt()
-                val manaPrevious = manaItem.getMana(itemStack)
-                if (toDecrease > manaPrevious) toDecrease = manaPrevious
-                manaItem.addMana(
-                    itemStack,
-                    -toDecrease
-                )
-            }
-        }
-    }
 
 
     fun ItemStack.getKharuAmount(): Int {
         val tag = getOrCreateTag()
         if (tag.hasKey(AMOUNT_NBT)) return tag.getInteger(AMOUNT_NBT)
-        tag.setInteger(AMOUNT_NBT, 0)
         return 0
     }
 
     fun Entity.getKharuAmount(): Int {
         val tag = entityData
         if (tag.hasKey(AMOUNT_NBT)) return tag.getInteger(AMOUNT_NBT)
-        tag.setInteger(AMOUNT_NBT, 0)
         return 0
     }
 
@@ -195,46 +127,29 @@ object KharuInfluenceHandler {
         return percent.coerceAtMost(1.0)
     }
 
+    fun Entity.getKharuLinearAmountPercent(): Double {
+        val percent = getKharuAmount().toDouble() / Config.kharuItemDestructionBorder
+        // in order to make non-linear influence we can use pow
+        return percent.coerceAtMost(1.0)
+    }
+
     fun ItemStack.getKharuAmountPercentInfluence(degree: Double): Double {
         val percent = getKharuAmount().toDouble() / Config.kharuItemDestructionBorder
         // in order to make non-linear influence we can use pow
         return percent.coerceAtMost(1.0).pow(degree)
     }
 
+    fun Entity.getKharuAmountPercentInfluence(degree: Double): Double {
+        val percent = getKharuAmount().toDouble() / Config.kharuDestroyingBorder
+        // in order to make non-linear influence we can use pow
+        return percent.coerceAtMost(1.0).pow(degree)
+    }
+
+
     fun TileEntity.getKharuAmountPercent(): Double {
         return getKharuLevel(world, this.getPosDouble())
             .toDouble() / Config.kharuDestroyingBorder
     }
-
-
-    private fun clearInfusion(player: EntityPlayer) {
-        if (!player.worldObj.isRemote) {
-            val nbt = Infusion.getNBT(player)
-            nbt.removeTag("witcheryInfusionCharges")
-            Infusion.syncPlayer(player.worldObj, player)
-        }
-    }
-
-    fun Infusion.consumeEnergy(world: World, player: EntityPlayer, cost: Int, playFailSound: Boolean): Boolean {
-        if (player.capabilities.isCreativeMode) {
-            return true
-        }
-        val charges = Infusion.getCurrentEnergy(player)
-        if (charges - cost < 0) {
-            world.playSoundAtEntity(
-                player as Entity,
-                "note.snare",
-                0.5f,
-                0.4f / (Math.random().toFloat() * 0.4f + 0.8f)
-            )
-            clearInfusion(player)
-            return false
-        }
-        Infusion.setCurrentEnergy(player, charges - cost)
-        return true
-    }
-
-
 }
 
 

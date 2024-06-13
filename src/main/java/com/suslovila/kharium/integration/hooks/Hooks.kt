@@ -7,5 +7,6 @@ object Hooks {
 
     fun register(hook: ModHook) {
         hooks.add(hook)
+        hook.init()
     }
 }

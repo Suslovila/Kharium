@@ -1,10 +1,13 @@
 package com.suslovila.kharium.common.event
 
+import com.emoniph.witchery.common.ExtendedPlayer
+import com.emoniph.witchery.common.ExtendedVillager
 import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter
 import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter.Companion.globalOwnerName
 import com.suslovila.kharium.common.item.ModItems
 import com.suslovila.kharium.common.multiStructure.kharuSnare.MultiStructureKharuSnare
 import com.suslovila.kharium.common.worldSavedData.CustomWorldData.Companion.customData
+import com.suslovila.kharium.extendedData.KhariumPlayerExtendedData
 import com.suslovila.kharium.research.ACAspect
 import com.suslovila.kharium.utils.SusMathHelper
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
@@ -17,9 +20,14 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent
 import cpw.mods.fml.common.gameevent.TickEvent
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent
 import net.minecraft.entity.item.EntityItem
+import net.minecraft.entity.passive.EntityVillager
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraftforge.event.entity.EntityEvent.EntityConstructing
 import net.minecraftforge.event.entity.living.LivingDropsEvent
+import net.minecraftforge.event.entity.player.PlayerEvent.Clone
 import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import thaumcraft.api.aspects.Aspect
 import thaumcraft.api.aspects.AspectList
@@ -96,6 +104,23 @@ object FMLEventListener {
                 }
                 world.customData.markDirty()
             }
+        }
+    }
+
+    @SubscribeEvent
+    fun onPlayerCloneEvent(event: Clone) {
+        val oldPlayerNBT = NBTTagCompound()
+        val oldPlayerEx = KhariumPlayerExtendedData.get(event.original)
+        oldPlayerEx?.saveNBTData(oldPlayerNBT)
+
+        val newPlayerEx = KhariumPlayerExtendedData.get(event.entityPlayer)
+        newPlayerEx?.loadNBTData(oldPlayerNBT)
+    }
+
+    @SubscribeEvent
+    fun onEntityConstructing(event: EntityConstructing) {
+        if (event.entity is EntityPlayer && KhariumPlayerExtendedData.get(event.entity as EntityPlayer) == null) {
+            KhariumPlayerExtendedData.register(event.entity as EntityPlayer)
         }
     }
 }
