@@ -81,7 +81,6 @@ object AntiNodeStabilizersRenderer {
         //values got by testing
         SusGraphicHelper.pushLight()
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k.toFloat() / 1.0f, l.toFloat() / 1.0f)
-        SusGraphicHelper.popLight()
         glTranslatef(0.0f, -0.63f, 0f)
         glRotatef(180f, 1f, 0f, 0f)
         glPushMatrix()
@@ -89,6 +88,7 @@ object AntiNodeStabilizersRenderer {
         val scaleFactor = tile.getClientPreparationPercent(partialTicks)
         glScaled(scaleFactor, scaleFactor, scaleFactor)
         val tessellator = Tessellator.instance
+        SusGraphicHelper.pushBrightness(tessellator)
         UtilsFX.bindTexture(Kharium.MOD_ID, "textures/blocks/circle2.png")
         tessellator.setBrightness(15728880)
         tessellator.startDrawingQuads()
@@ -105,7 +105,6 @@ object AntiNodeStabilizersRenderer {
         glScaled(scaleFactor, scaleFactor, scaleFactor)
 
         UtilsFX.bindTexture(Kharium.MOD_ID, "textures/blocks/circle3.png")
-        tessellator.setBrightness(15728880)
         tessellator.startDrawingQuads()
         tessellator.addVertexWithUV(-1.0, 0.0, 1.0, 0.0, 0.0)
         tessellator.addVertexWithUV(1.0, 0.0, 1.0, 1.0, 0.0)
@@ -132,6 +131,9 @@ object AntiNodeStabilizersRenderer {
         glDisable(3042)
         glAlphaFunc(516, 0.1f)
         glEnable(GL_CULL_FACE)
+
+        SusGraphicHelper.popBrightness(tessellator)
+        SusGraphicHelper.popLight()
 
         glPopMatrix()
     }

@@ -1,6 +1,8 @@
 package com.suslovila.kharium.api.implants
 
-import com.suslovila.kharium.utils.Constants
+import com.suslovila.kharium.api.implants.ImplantType.Companion.getFirstSlotIndexOf
+import com.suslovila.kharium.api.implants.ImplantType.Companion.slotAmount
+import com.suslovila.kharium.utils.Constants.NBT.TAG_COMPOUND
 import cpw.mods.fml.common.network.ByteBufUtils
 import io.netty.buffer.ByteBuf
 import net.minecraft.entity.player.EntityPlayer
@@ -8,33 +10,108 @@ import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
-import java.util.*
 
 
 class ImplantStorage(
 ) :
     IInventory {
-    val size: Int = IMPLANT_TYPE.values().size
+    val implantAmount: Int = ImplantType.slotAmount
     private val name: String = "implant_storage"
     private val stackLimit: Int = 1
 
+    fun forEachImplant(lambda : (ItemStack?) -> Unit) {
+        implantsByType.forEach { holder -> holder.implants.forEach { lambda(it) } }
+    }
+    class ImplantTypeHolder(
+        val implantType: ImplantType
+    ) {
 
-    val implants: Array<ItemStack?> = arrayOfNulls(size)
+        val implants: Array<ItemStack?> = arrayOfNulls(implantType.slotAmount)
+        companion object {
+            const val TYPE_INDEX_NBT = "typeIndex"
+            const val IMPLANTS_NBT = "implants"
+            fun readFrom(tag: NBTTagCompound): ImplantTypeHolder {
+                val type = ImplantType.values()[tag.getInteger(TYPE_INDEX_NBT)]
+                val holder = ImplantTypeHolder(type)
+                val implants = tag.getTagList(IMPLANTS_NBT, TAG_COMPOUND)
+                for (implantIndex in 0 until implants.tagCount()) {
+                    val slotNbt = implants.getCompoundTagAt(implantIndex)
+                    val indexInArray = slotNbt.getInteger(SLOT_INDEX_NBT)
+                    if(indexInArray >= type.slotAmount) continue
+                    val implant = ItemStack.loadItemStackFromNBT(slotNbt)
+                    holder.implants[indexInArray] = implant
+                }
+                return holder
+            }
+
+            fun readFrom(buf: ByteBuf): ImplantTypeHolder {
+                val type = ImplantType.values()[buf.readInt()]
+                val holder = ImplantTypeHolder(type)
+                val amount = buf.readInt()
+                for (implantIndex in 0 until amount) {
+                    val indexInArray = buf.readInt()
+                    if(indexInArray >= type.slotAmount) continue
+                    val implant = ByteBufUtils.readItemStack(buf)
+                    holder.implants[indexInArray] = implant
+                }
+                return holder
+            }
+        }
+
+        fun writeTo(tag: NBTTagCompound) {
+            val implantsNbt = NBTTagList()
+            for (index in implants.indices) {
+                val implantStack = implants[index]
+                if (implantStack != null && implantStack.stackSize > 0) {
+                    val slotContentNbt = NBTTagCompound()
+                    slotContentNbt.setInteger(
+                        SLOT_INDEX_NBT,
+                        index
+                    )
+                    implantStack.writeToNBT(slotContentNbt)
+                    implantsNbt.appendTag(slotContentNbt)
+                }
+            }
+            tag.setInteger(TYPE_INDEX_NBT, implantType.ordinal)
+            tag.setTag(IMPLANTS_NBT, implantsNbt)
+        }
+
+        fun writeTo(buf: ByteBuf) {
+            buf.writeInt(implantType.ordinal)
+            fun isValid(stack: ItemStack?) = stack != null && stack.stackSize > 0
+            buf.writeInt(implants.count { isValid(it) })
+            for (index in implants.indices) {
+                val implantStack = implants[index]
+                if (isValid(implantStack)) {
+                    buf.writeInt(index)
+                    ByteBufUtils.writeItemStack(buf, implantStack)
+                }
+            }
+        }
+
+
+    }
+
+    val implantsByType: Array<ImplantTypeHolder> = Array(ImplantType.values().size) { typeIndex ->
+        ImplantTypeHolder(ImplantType.values()[typeIndex])
+    }
 
 
     override fun getSizeInventory(): Int {
-        return implants.size
+        return implantAmount
     }
 
     override fun getStackInSlot(slotId: Int): ItemStack? {
-        return implants[slotId]
+        val possibleType = ImplantType.getTypeForSlotWithIndex(slotId) ?: return null
+        val firstSlot = getFirstSlotIndexOf(possibleType)
+        return implantsByType[possibleType.ordinal].implants[slotId - firstSlot]
     }
 
     override fun decrStackSize(slotId: Int, count: Int): ItemStack? {
-        if (slotId < implants.size) {
-            val implant = implants[slotId] ?: return null
+        if (slotId < implantsByType.size) {
+            val implant = getStackInSlot(slotId) ?: return null
             if (implant.stackSize > count) {
-                val result = implants[slotId]!!.splitStack(count)
+                val result = getStackInSlot(slotId)!!.splitStack(count)
                 markDirty()
                 return result
             }
@@ -48,10 +125,12 @@ class ImplantStorage(
     }
 
     override fun setInventorySlotContents(slotId: Int, itemstack: ItemStack?) {
-        if (slotId >= implants.size) {
+        if (slotId >= implantsByType.size) {
             return
         }
-        implants[slotId] = itemstack
+        val possibleType = ImplantType.getTypeForSlotWithIndex(slotId) ?: return
+        val firstSlot = getFirstSlotIndexOf(possibleType)
+        implantsByType[possibleType.ordinal].implants[slotId - firstSlot] = itemstack
         if (itemstack != null && itemstack.stackSize > this.inventoryStackLimit) {
             itemstack.stackSize = this.inventoryStackLimit
         }
@@ -76,70 +155,46 @@ class ImplantStorage(
     fun writeToNBT(
         rootTag: NBTTagCompound
     ) {
-        val slots = NBTTagList()
-        for (index in implants.indices) {
-            val implantStack = implants[index]
-            if (implantStack != null && implantStack.stackSize > 0) {
-                val slot = NBTTagCompound()
-                slots.appendTag(slot)
-                slot.setInteger(
-                    SLOT_INDEX_NBT,
-                    index
-                )
-                implantStack.writeToNBT(slot)
-            }
+        val holders = NBTTagList()
+        for (index in implantsByType.indices) {
+            val holder = implantsByType[index]
+            val nbtForHolder = NBTTagCompound()
+            holder.writeTo(nbtForHolder)
+            holders.appendTag(nbtForHolder)
         }
-        rootTag.setTag(IMPLANTS_NBT, slots)
+        rootTag.setTag(IMPLANTS_NBT, holders)
     }
 
     fun readFromNBT(data: NBTTagCompound) {
         if (!data.hasKey(IMPLANTS_NBT)) return
-        val nbtTagList = data.getTagList(IMPLANTS_NBT, Constants.NBT.TAG_COMPOUND)
+        val nbtTagList = data.getTagList(IMPLANTS_NBT, TAG_COMPOUND)
         for (j in 0 until nbtTagList.tagCount()) {
-            val slotNbt = nbtTagList.getCompoundTagAt(j)
-            var index = slotNbt.getInteger(SLOT_INDEX_NBT)
-            if (index >= 0 && index < implants.size) {
-                setInventorySlotContents(index, ItemStack.loadItemStackFromNBT(slotNbt))
-            }
+            val holderNbt = nbtTagList.getCompoundTagAt(j)
+            val holder = ImplantTypeHolder.readFrom(holderNbt)
+            implantsByType[holder.implantType.ordinal] = holder
         }
     }
 
     fun writeTo(
         buf: ByteBuf
     ) {
-        val realAmount = implants.count { it != null }
-        buf.writeInt(realAmount)
-        for (index in implants.indices) {
-            val implantStack = implants[index]
-            if (implantStack != null && implantStack.stackSize > 0) {
-                buf.writeInt(index)
-                ByteBufUtils.writeItemStack(buf, implantStack);
-            }
+        for (holder in implantsByType) {
+            holder.writeTo(buf)
         }
     }
 
-    fun readFrom(buf: ByteBuf) {
-        val amount = buf.readInt()
-        for (j in 0 until amount) {
-            var index = buf.readInt()
-            setInventorySlotContents(index, ByteBufUtils.readItemStack(buf))
-        }
-    }
 
     override fun getStackInSlotOnClosing(slotId: Int): ItemStack? {
-        if (implants[slotId] == null) {
-            return null
-        }
-        val stackToTake = implants[slotId]
+        val implant = getStackInSlot(slotId) ?: return null
         setInventorySlotContents(slotId, null)
-        return stackToTake
+        return implant
     }
 
-    override fun isItemValidForSlot(index: Int, itemstack: ItemStack): Boolean {
-        if (index > IMPLANT_TYPE.values().size) return false
+    override fun isItemValidForSlot(slotIndex: Int, itemstack: ItemStack): Boolean {
+        if (slotIndex >= implantAmount) return false
         val itemType = itemstack.item
-        return (itemType as? ItemImplant)?.implantType?.any { supportedType -> IMPLANT_TYPE.values()[index] == supportedType }
-            ?: false
+        val typeForSlot = ImplantType.getTypeForSlotWithIndex(slotIndex) ?: return false
+        return typeForSlot == (itemType as? ItemImplant)?.implantType
     }
 
     override fun isCustomInventoryName(): Boolean {
@@ -152,7 +207,15 @@ class ImplantStorage(
 
 
     companion object {
-        //        private const val
+        fun readFrom(buf: ByteBuf): ImplantStorage {
+            val storage = ImplantStorage()
+            for (index in 0 until ImplantType.values().size) {
+                val typeWithImplants = ImplantTypeHolder.readFrom(buf)
+                storage.implantsByType[typeWithImplants.implantType.ordinal] = typeWithImplants
+            }
+            return storage
+        }
+
         private const val IMPLANTS_NBT = "Items"
         private const val SLOT_INDEX_NBT = "index"
     }

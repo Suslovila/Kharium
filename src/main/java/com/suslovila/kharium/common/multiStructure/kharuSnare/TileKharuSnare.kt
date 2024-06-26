@@ -241,7 +241,7 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered, IInve
     open fun getInputSlotAmount(): Int = 0
 
     open fun getOutputSlotsAmount(): kotlin.Int {
-        return getSizeInventory() - getInputSlotAmount()
+        return sizeInventory - getInputSlotAmount()
     }
 
 

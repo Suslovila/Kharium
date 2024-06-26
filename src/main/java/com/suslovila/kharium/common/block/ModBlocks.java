@@ -13,6 +13,7 @@ import com.suslovila.kharium.common.block.tileEntity.rune.TileStabiliserRune;
 import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase;
 import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileKharuExtractor;
 import com.suslovila.kharium.common.item.BlockEssentiaReservoirVoidItem;
+import com.suslovila.kharium.common.multiStructure.implantInstaller.BlockImplantInstaller;
 import com.suslovila.kharium.common.multiStructure.kharuSnare.BlockKharuSnare;
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare;
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnareFilling;
@@ -37,6 +38,7 @@ public class ModBlocks {
 
     public static Block blockVoidMetal = new BlockVoidMetal();
 
+    public static Block blockImplantInstaller = new BlockImplantInstaller("implant_installer");
     public static BlockRune rune = new BlockRune(MOD_ID + "_block_rune");
 
     public static void register() {

@@ -1,4 +1,4 @@
-package com.suslovila.common.inventory.container
+package com.suslovila.kharium.common.block.container
 
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import net.minecraft.entity.player.EntityPlayer

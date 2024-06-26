@@ -133,7 +133,6 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
         val l = j / 65536
         SusGraphicHelper.pushLight()
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, k.toFloat() / 1.0f, l.toFloat() / 1.0f)
-        SusGraphicHelper.popLight()
         val co = Color(humilitasColor)
         glColor4f(
             co.red / 255f,
@@ -145,6 +144,8 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
         glDisable(GL_BLEND)
         glAlphaFunc(516, 0.1f)
         glPopMatrix()
+        SusGraphicHelper.popLight()
+
     }
 
     fun postRender(tile: TileKharuSnare, event: RenderWorldLastEvent) {

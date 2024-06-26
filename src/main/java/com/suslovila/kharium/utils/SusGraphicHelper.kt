@@ -18,6 +18,7 @@ object SusGraphicHelper {
     val whiteBlank = ResourceLocation(Kharium.MOD_ID, "textures/whiteBlank.png")
     var savedLightY: Float = 0.0f
     var savedLightX: Float = 0.0f
+    var tessellatorBrightness = 0
 
     init {
         cubeModel =
@@ -174,6 +175,14 @@ object SusGraphicHelper {
 
     fun popLight() {
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, savedLightX, savedLightY)
+    }
+
+    fun pushBrightness(tessellator: Tessellator) {
+        tessellatorBrightness = tessellator.brightness
+    }
+
+    fun popBrightness(tessellator: Tessellator) {
+        tessellator.brightness = tessellatorBrightness
     }
 
     fun getRenderGlobalTime(partialTicks: Float) =

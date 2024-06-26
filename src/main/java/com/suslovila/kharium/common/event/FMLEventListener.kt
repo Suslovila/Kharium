@@ -1,7 +1,5 @@
 package com.suslovila.kharium.common.event
 
-import com.emoniph.witchery.common.ExtendedPlayer
-import com.emoniph.witchery.common.ExtendedVillager
 import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter
 import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter.Companion.globalOwnerName
 import com.suslovila.kharium.common.item.ModItems
@@ -14,18 +12,19 @@ import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
 import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.ThaumcraftIntegrator.completeNormalResearch
 import com.suslovila.sus_multi_blocked.utils.Position
+import cpw.mods.fml.common.eventhandler.EventPriority
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemPickupEvent
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent
 import cpw.mods.fml.common.gameevent.TickEvent
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent
 import net.minecraft.entity.item.EntityItem
-import net.minecraft.entity.passive.EntityVillager
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing
+import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.entity.living.LivingDropsEvent
 import net.minecraftforge.event.entity.player.PlayerEvent.Clone
 import net.minecraftforge.event.entity.player.PlayerInteractEvent
@@ -81,7 +80,7 @@ object FMLEventListener {
     }
 
     @SubscribeEvent
-    fun construct(event: PlayerInteractEvent) {
+    fun constructMultiStructures(event: PlayerInteractEvent) {
         with(event) {
             if (action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
                 MultiStructureKharuSnare.tryConstruct(world, Position(x, y, z), entityPlayer as? EntityPlayerMP)
@@ -107,6 +106,14 @@ object FMLEventListener {
         }
     }
 
+
+
+    @SubscribeEvent
+    fun onEntityConstructing(event: EntityConstructing) {
+        if (event.entity is EntityPlayer && KhariumPlayerExtendedData.get(event.entity as EntityPlayer) == null) {
+            KhariumPlayerExtendedData.register(event.entity as EntityPlayer)
+        }
+    }
     @SubscribeEvent
     fun onPlayerCloneEvent(event: Clone) {
         val oldPlayerNBT = NBTTagCompound()
@@ -118,9 +125,10 @@ object FMLEventListener {
     }
 
     @SubscribeEvent
-    fun onEntityConstructing(event: EntityConstructing) {
-        if (event.entity is EntityPlayer && KhariumPlayerExtendedData.get(event.entity as EntityPlayer) == null) {
-            KhariumPlayerExtendedData.register(event.entity as EntityPlayer)
+    fun onEntityJoinWorld(event: EntityJoinWorldEvent) {
+        val entity = event.entity ?: return
+        if (!entity.worldObj.isRemote && entity is EntityPlayer) {
+            KhariumPlayerExtendedData.loadProxyData(entity)
         }
     }
 }

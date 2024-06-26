@@ -1,7 +1,7 @@
 package com.suslovila.kharium.client.gui
 
 
-import com.suslovila.common.inventory.container.ContainerKharuSnare
+import com.suslovila.kharium.common.block.container.ContainerKharuSnare
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import net.minecraft.client.Minecraft
