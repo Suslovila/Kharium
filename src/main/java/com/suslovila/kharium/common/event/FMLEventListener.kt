@@ -4,15 +4,17 @@ import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter
 import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter.Companion.globalOwnerName
 import com.suslovila.kharium.common.item.ModItems
 import com.suslovila.kharium.common.multiStructure.kharuSnare.MultiStructureKharuSnare
+import com.suslovila.kharium.common.sync.KhariumPacketHandler
+import com.suslovila.kharium.common.sync.implant.PacketAllExtendedPlayerSync
+import com.suslovila.kharium.common.sync.implant.PacketOneExtendedPlayerSync
 import com.suslovila.kharium.common.worldSavedData.CustomWorldData.Companion.customData
 import com.suslovila.kharium.extendedData.KhariumPlayerExtendedData
-import com.suslovila.kharium.research.ACAspect
+import com.suslovila.kharium.research.KhariumAspect
 import com.suslovila.kharium.utils.SusMathHelper
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
 import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.ThaumcraftIntegrator.completeNormalResearch
 import com.suslovila.sus_multi_blocked.utils.Position
-import cpw.mods.fml.common.eventhandler.EventPriority
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemPickupEvent
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent
@@ -23,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.world.WorldServer
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.entity.living.LivingDropsEvent
@@ -55,7 +58,7 @@ object FMLEventListener {
             (nodeJar.item as ItemJarNode).setAspects(
                 nodeJar,
                 AspectList().add(Aspect.HUNGER, 100).add(Aspect.WATER, 100).add(Aspect.ELDRITCH, 100)
-                    .add(ACAspect.HUMILITAS, 100)
+                    .add(KhariumAspect.HUMILITAS, 100)
             )
             (nodeJar.item as ItemJarNode).setNodeAttributes(nodeJar, NodeType.HUNGRY, NodeModifier.BRIGHT, "")
             event.player.worldObj.spawnEntityInWorld(
@@ -127,8 +130,15 @@ object FMLEventListener {
     @SubscribeEvent
     fun onEntityJoinWorld(event: EntityJoinWorldEvent) {
         val entity = event.entity ?: return
-        if (!entity.worldObj.isRemote && entity is EntityPlayer) {
+        if (!entity.worldObj.isRemote && entity is EntityPlayerMP) {
             KhariumPlayerExtendedData.loadProxyData(entity)
+            val server = entity.worldObj as? WorldServer ?: return
+            val playersData = server.playerEntities.map { KhariumPlayerExtendedData.get(it as EntityPlayer) }.filterNotNull()
+            KhariumPacketHandler.INSTANCE.sendTo(PacketAllExtendedPlayerSync(playersData), entity)
+            KhariumPlayerExtendedData.get(entity).let {
+                KhariumPacketHandler.INSTANCE.sendToAll(PacketOneExtendedPlayerSync(it, entity))
+
+            }
         }
     }
 }

@@ -61,6 +61,7 @@ class ClientProxy : CommonProxy(), IGuiHandler {
         ClientRegistry.bindTileEntitySpecialRenderer(TileRestrainedGlass::class.java, RestrainGlassRenderer)
         ClientRegistry.bindTileEntitySpecialRenderer(TileStabiliserRune::class.java, TileRuneRenderer)
 
+        KeyHandler.register()
     }
 
     override fun postInit(event: FMLPostInitializationEvent) {

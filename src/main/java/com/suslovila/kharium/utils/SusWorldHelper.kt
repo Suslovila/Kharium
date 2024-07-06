@@ -100,7 +100,6 @@ object SusWorldHelper {
     fun raytraceEntities(
         world: World,
         player: EntityPlayer,
-        collisionFlag: Boolean,
         reachDistance: Double
     ): MovingObjectPosition? {
         var pickedEntity: MovingObjectPosition? = null

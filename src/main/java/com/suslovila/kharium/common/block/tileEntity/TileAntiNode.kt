@@ -2,10 +2,10 @@ package com.suslovila.kharium.common.block.tileEntity
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.kharu.IKharuSupplier
+import com.suslovila.kharium.api.rune.IRuneUsingTile
+import com.suslovila.kharium.api.rune.RuneType
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
-import com.suslovila.kharium.utils.SusUtils
-import com.suslovila.kharium.utils.SusVec3
-import com.suslovila.kharium.utils.getPosition
+import com.suslovila.kharium.utils.*
 import com.suslovila.sus_multi_blocked.utils.Position
 import com.suslovila.sus_multi_blocked.utils.getTile
 import io.netty.util.internal.ConcurrentSet
@@ -13,14 +13,13 @@ import net.minecraft.nbt.NBTTagCompound
 import thaumcraft.api.TileThaumcraft
 import kotlin.math.abs
 
-class TileAntiNode : TileThaumcraft(), IKharuSupplier {
+class TileAntiNode(
+) : TileThaumcraft(), IKharuSupplier, IRuneUsingTile {
+    override val runeFactorSustains: Array<Percentage> = defaultPercentage()
+    override val runeFactorChangePerCheck: Array<Percentage> = defaultPercentage()
+
+
     companion object {
-        val TAG_ACTUAL_ENERGY_NBT = Kharium.prefixAppender.doAndGet("actualEnergy")
-        val MAX_ENERGY_NBT = Kharium.prefixAppender.doAndGet("maxEnergy")
-        val STABILISATION_NBT = Kharium.prefixAppender.doAndGet("stabilization")
-        val CONTAINMENT_NBT = Kharium.prefixAppender.doAndGet("stabilization")
-        val INSTABILITY_NBT = Kharium.prefixAppender.doAndGet("instability")
-        val CONTAINMENT_DECREMENT_NBT = Kharium.prefixAppender.doAndGet("instability")
         val tracker = object : TimeTracker() {
             override val maxValue: Int = 20
         }
@@ -32,25 +31,9 @@ class TileAntiNode : TileThaumcraft(), IKharuSupplier {
     var kharuTails = ConcurrentSet<KharuTail>()
     var maxEnergy = 0
     var actualEnergy = 0
+        // each sustain is in percent (from 0 % up to 100 % )
         set(value) {
             field = value.coerceIn(0, maxEnergy)
-        }
-    var stabilisation = 100.0
-        set(value) {
-            field = value.coerceIn(0.0, 100.0)
-        }
-    var containmentFactor = 50.0
-        set(value) {
-            field = value.coerceIn(0.0, 100.0)
-        }
-
-    var instabilityDecrement = 0.0
-        set(value) {
-            field = value.coerceIn(0.0, 100.0)
-        }
-    var containmentDecrement = 0.0
-        set(value) {
-            field = value.coerceIn(0.0, 100.0)
         }
 
     // all values are set by snare. To validate actuality, we check the snare
@@ -66,10 +49,6 @@ class TileAntiNode : TileThaumcraft(), IKharuSupplier {
     override fun writeCustomNBT(rootNbt: NBTTagCompound) {
         rootNbt.setInteger(TAG_ACTUAL_ENERGY_NBT, actualEnergy)
         rootNbt.setInteger(MAX_ENERGY_NBT, maxEnergy)
-        rootNbt.setDouble(STABILISATION_NBT, stabilisation)
-        rootNbt.setDouble(CONTAINMENT_NBT, containmentFactor)
-        rootNbt.setDouble(INSTABILITY_NBT, instabilityDecrement)
-        rootNbt.setDouble(CONTAINMENT_DECREMENT_NBT, containmentDecrement)
 
     }
 
@@ -86,13 +65,18 @@ class TileAntiNode : TileThaumcraft(), IKharuSupplier {
     override fun updateEntity() {
         super.updateEntity()
         if (world.isRemote) return
+        takeInfluenceFromSnare()
+
+
+    }
+
+    fun takeInfluenceFromSnare() {
         if (isStabilised && ((world.worldTime + ownCheckTime) % tracker.maxValue) == 0L) {
             snare!!.affectAntiNode(this)
             stabilisation -= instabilityDecrement
             containmentFactor -= containmentDecrement
             markForSaveAndSync()
         }
-
     }
 
     override fun takeFromItself(amount: Int): Int {
@@ -126,8 +110,3 @@ class KharuTail(
         get() = (timer * radiusChangePerFrame).coerceAtMost(maxRadius)
 }
 
-abstract class TimeTracker {
-    abstract val maxValue: Int
-    private var time = 0
-    fun getNext() = (++time) % maxValue
-}

@@ -1,25 +1,23 @@
 package com.suslovila.kharium.extendedData
 
-import com.emoniph.witchery.Witchery
-import com.emoniph.witchery.common.ExtendedPlayer
-import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.implants.ImplantStorage
-import com.suslovila.kharium.common.sync.PacketHandler
+import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.sync.PacketKhariumPlayerExtended
-import com.suslovila.kharium.utils.SusNBTHelper.writeTo
-import cpw.mods.fml.common.network.simpleimpl.IMessage
 import io.netty.buffer.ByteBuf
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.World
 import net.minecraftforge.common.IExtendedEntityProperties
-
+class KhariumDataForSync (
+    val playerId: Int,
+    var implantStorage: ImplantStorage = ImplantStorage(),
+    var kharuAmount: Int = 0
+)
 class KhariumPlayerExtendedData(
     val player: EntityPlayer,
-    public var implantStorage: ImplantStorage = ImplantStorage(),
-    public var kharuAmount: Int = 0
+    var implantStorage: ImplantStorage = ImplantStorage(),
+    var kharuAmount: Int = 0
 ) : IExtendedEntityProperties {
 
 
@@ -71,7 +69,7 @@ class KhariumPlayerExtendedData(
 
 
     fun sync() {
-        if (!player.worldObj.isRemote) PacketHandler.INSTANCE.sendToAll(
+        if (!player.worldObj.isRemote) KhariumPacketHandler.INSTANCE.sendToAll(
             PacketKhariumPlayerExtended(this)
         )
     }

@@ -2,6 +2,7 @@ package com.suslovila.kharium.common.multiStructure.kharuSnare
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.client.PostRendered
+import com.suslovila.kharium.api.implants.RuneType
 import com.suslovila.kharium.client.render.tile.TileKharuSnareRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.AntiNodeStabilizersRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.DischargeFlaskRenderer
@@ -10,14 +11,13 @@ import com.suslovila.kharium.common.block.tileEntity.TileAntiNode
 import com.suslovila.kharium.common.block.tileEntity.rune.TileRune
 import com.suslovila.kharium.common.worldSavedData.CustomWorldData.Companion.customData
 import com.suslovila.kharium.common.worldSavedData.KharuHotbed
-import com.suslovila.kharium.research.ACAspect
+import com.suslovila.kharium.research.KhariumAspect
 import com.suslovila.kharium.utils.getPosition
 import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
 import com.suslovila.sus_multi_blocked.utils.Position
 import com.suslovila.sus_multi_blocked.utils.getTile
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
-import net.minecraft.inventory.ISidedInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.AxisAlignedBB
@@ -40,7 +40,7 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered, IInve
     }
 
 
-    var aspects = AspectList().add(ACAspect.HUMILITAS, 1)
+    var aspects = AspectList().add(KhariumAspect.HUMILITAS, 1)
     var enabled = false
     var finalisedLayerAmount = 0
     val isPrepared: Boolean
@@ -150,11 +150,10 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered, IInve
 
     fun affectAntiNode(tileAntiNode: TileAntiNode) {
         aspects.aspects.clear()
-        aspects.add(ACAspect.HUMILITAS, 1)
+        aspects.add(KhariumAspect.HUMILITAS, 1)
         getRunes().forEach { rune ->
-            rune.onRegularSnareCheck(this, tileAntiNode)
+            makeRuneInfluence(rune, tileAntiNode)
         }
-        tileAntiNode.markForSaveAndSync()
         markForSaveAndSync()
     }
 
@@ -191,7 +190,17 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered, IInve
     }
 
 
-
+    fun makeRuneInfluence(rune: TileRune, antiNode: TileAntiNode) {
+        val runeType = rune.runeType
+        when(runeType) {
+            RuneType.STABILISATION -> {
+                antiNode.stabilisation += stabilisationFactor
+            }
+            RuneType.EXPANSION -> {
+                antiNode.actualEnergy
+            }
+        }
+    }
 
 
     override fun getSizeInventory() : Int = 0

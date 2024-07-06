@@ -1,5 +1,7 @@
 package com.suslovila.kharium.api.kharu
 
+import net.minecraft.item.ItemStack
+
 
 sealed interface IKharuManipulator
 
@@ -34,3 +36,4 @@ interface IKharuTransport : IKharuManipulator {
     fun getSuction()
     fun setSuction()
 }
+

@@ -15,31 +15,31 @@ object ImplantEvents {
     @SubscribeEvent
     fun renderWorldLast(event: RenderWorldLastEvent) {
         val player = Minecraft.getMinecraft()?.thePlayer ?: return
-        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { stack ->
-            (stack?.item as? ItemImplant)?.onRenderWorldLastEvent(event, stack)
+        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { index, stack ->
+            (stack?.item as? ItemImplant)?.onRenderWorldLastEvent(event, index, stack)
         }
     }
 
     @SubscribeEvent
     fun onRenderHandEvent(event: RenderHandEvent) {
         val player = Minecraft.getMinecraft()?.thePlayer ?: return
-        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { stack ->
-            (stack?.item as? ItemImplant)?.onRenderHandEvent(event, stack)
+        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { index, stack ->
+            (stack?.item as? ItemImplant)?.onRenderHandEvent(event, index, stack)
         }
     }
 
     @SubscribeEvent
-    fun onRenderPlayerEvent(event: RenderPlayerEvent.Specials.Post) {
+    fun onRenderPlayerEvent(event: RenderPlayerEvent.Post) {
         val player = Minecraft.getMinecraft()?.thePlayer ?: return
-        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { stack ->
-            (stack?.item as? ItemImplant)?.onRenderPlayerEvent(event, stack)
+        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { index, stack ->
+            (stack?.item as? ItemImplant)?.onRenderPlayerEvent(event, index, stack)
         }
     }
 
     @SubscribeEvent
     fun onPlayerAttackEntityEvent(event: AttackEntityEvent) {
-        KhariumPlayerExtendedData.get(event.entityPlayer)?.implantStorage?.forEachImplant { stack ->
-            (stack?.item as? ItemImplant)?.onPlayerAttackEntityEvent(event, stack)
+        KhariumPlayerExtendedData.get(event.entityPlayer)?.implantStorage?.forEachImplant { index, stack ->
+            (stack?.item as? ItemImplant)?.onPlayerAttackEntityEvent(event, index, stack)
         }
     }
 
@@ -47,8 +47,8 @@ object ImplantEvents {
     fun onPlayerHealEvent(event: LivingHealEvent) {
         val player = event.entity
         if (player !is EntityPlayer) return
-        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { stack ->
-            (stack?.item as? ItemImplant)?.onPlayerHealEvent(event, stack)
+        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { index, stack ->
+            (stack?.item as? ItemImplant)?.onPlayerHealEvent(event, index, stack)
         }
     }
 
@@ -56,8 +56,8 @@ object ImplantEvents {
     fun onPlayerUpdateEvent(event: LivingEvent.LivingUpdateEvent) {
         val player = event.entity
         if (player !is EntityPlayer) return
-        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { stack ->
-            (stack?.item as? ItemImplant)?.onPlayerUpdateEvent(event, stack)
+        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { index, stack ->
+            (stack?.item as? ItemImplant)?.onPlayerUpdateEvent(event, index, stack)
         }
     }
 
@@ -65,8 +65,8 @@ object ImplantEvents {
     fun onLivingHurtEvent(event: LivingHurtEvent) {
         val player = event.entity
         if (player !is EntityPlayer) return
-        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { stack ->
-            (stack?.item as? ItemImplant)?.onPlayerHurtEvent(event, stack)
+        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { index, stack ->
+            (stack?.item as? ItemImplant)?.onPlayerHurtEvent(event, index, stack)
         }
     }
 
@@ -74,8 +74,8 @@ object ImplantEvents {
     fun onLivingDeathEvent(event: LivingDeathEvent) {
         val player = event.entity
         if (player !is EntityPlayer) return
-        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { stack ->
-            (stack?.item as? ItemImplant)?.onPlayerDeathEvent(event, stack)
+        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { index, stack ->
+            (stack?.item as? ItemImplant)?.onPlayerDeathEvent(event, index, stack)
         }
     }
 
@@ -83,8 +83,8 @@ object ImplantEvents {
     fun onPlayerBeingAttackedEvent(event: LivingAttackEvent) {
         val player = event.entity
         if (player !is EntityPlayer) return
-        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { stack ->
-            (stack?.item as? ItemImplant)?.onPlayerBeingAttackedEvent(event, stack)
+        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { index, stack ->
+            (stack?.item as? ItemImplant)?.onPlayerBeingAttackedEvent(event, index, stack)
         }
     }
 
@@ -92,8 +92,8 @@ object ImplantEvents {
     fun onLivingSetAttackTargetEvent(event: LivingSetAttackTargetEvent) {
         val player = event.entity
         if (player !is EntityPlayer) return
-        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { stack ->
-            (stack?.item as? ItemImplant)?.onPlayerSetAttackTargetEvent(event, stack)
+        KhariumPlayerExtendedData.get(player)?.implantStorage?.forEachImplant { index, stack ->
+            (stack?.item as? ItemImplant)?.onPlayerSetAttackTargetEvent(event, index, stack)
         }
     }
 }

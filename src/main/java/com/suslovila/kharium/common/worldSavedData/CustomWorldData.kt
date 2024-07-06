@@ -3,7 +3,7 @@ package com.suslovila.kharium.common.worldSavedData
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.utils.SusNBTHelper
 import com.suslovila.kharium.utils.SusVec3
-import com.suslovila.kharium.common.sync.PacketHandler
+import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.sync.PacketKharuHotbeds
 import com.suslovila.kharium.common.sync.PacketPrimordialExplosions
 import com.suslovila.kharium.common.sync.PacketSyncSingleKharuHotbed
@@ -110,23 +110,35 @@ class CustomWorldData(datakey: String) : WorldSavedData(datakey) {
         val blocks = SusUtils.getSphereShapeCords(pos, radius).sortedWith(compareBy { it.distanceTo(pos) })
         explosions.add(Explosion(pos, radius, 0, LinkedList(blocks)))
         markDirty()
-        PacketHandler.INSTANCE.sendToDimension(PacketPrimordialExplosions(explosions), world.provider.dimensionId)
+        KhariumPacketHandler.INSTANCE.sendToDimension(PacketPrimordialExplosions(explosions), world.provider.dimensionId)
     }
 
     fun syncExplosions(world: World) {
-        PacketHandler.INSTANCE.sendToDimension(PacketPrimordialExplosions(explosions), world.provider.dimensionId)
+        KhariumPacketHandler.INSTANCE.sendToDimension(PacketPrimordialExplosions(explosions), world.provider.dimensionId)
     }
 
     fun syncAllHotbeds(world: World) {
-        PacketHandler.INSTANCE.sendToDimension(PacketKharuHotbeds(kharuHotbeds), world.provider.dimensionId)
+        KhariumPacketHandler.INSTANCE.sendToDimension(PacketKharuHotbeds(kharuHotbeds), world.provider.dimensionId)
     }
 
     fun syncAddHotbed(world: World, hotbed: KharuHotbed) {
-        PacketHandler.INSTANCE.sendToDimension(PacketSyncSingleKharuHotbed(hotbed, PacketSyncSingleKharuHotbed.SYNC_TYPE.ADD), world.provider.dimensionId)
+        KhariumPacketHandler.INSTANCE.sendToDimension(
+            PacketSyncSingleKharuHotbed(
+                hotbed,
+                PacketSyncSingleKharuHotbed.SYNC_TYPE.ADD
+            ), world.provider.dimensionId
+        )
     }
+
     fun syncRemoveHotbed(world: World, hotbed: KharuHotbed) {
-        PacketHandler.INSTANCE.sendToDimension(PacketSyncSingleKharuHotbed(hotbed, PacketSyncSingleKharuHotbed.SYNC_TYPE.REMOVE), world.provider.dimensionId)
+        KhariumPacketHandler.INSTANCE.sendToDimension(
+            PacketSyncSingleKharuHotbed(
+                hotbed,
+                PacketSyncSingleKharuHotbed.SYNC_TYPE.REMOVE
+            ), world.provider.dimensionId
+        )
     }
+
     fun addKharuHotbed(hotbed: KharuHotbed, world: World) {
         kharuHotbeds.add(hotbed)
         markDirty()

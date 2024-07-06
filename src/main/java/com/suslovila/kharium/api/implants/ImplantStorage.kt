@@ -1,9 +1,14 @@
 package com.suslovila.kharium.api.implants
 
+import baubles.common.Baubles
+import baubles.common.network.PacketHandler
+import baubles.common.network.PacketSyncBauble
 import com.suslovila.kharium.api.implants.ImplantType.Companion.getFirstSlotIndexOf
 import com.suslovila.kharium.api.implants.ImplantType.Companion.slotAmount
+import com.suslovila.kharium.common.sync.implant.PacketImplantSync
 import com.suslovila.kharium.utils.Constants.NBT.TAG_COMPOUND
 import cpw.mods.fml.common.network.ByteBufUtils
+import cpw.mods.fml.common.network.simpleimpl.IMessage
 import io.netty.buffer.ByteBuf
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
@@ -19,14 +24,23 @@ class ImplantStorage(
     private val name: String = "implant_storage"
     private val stackLimit: Int = 1
 
-    fun forEachImplant(lambda : (ItemStack?) -> Unit) {
-        implantsByType.forEach { holder -> holder.implants.forEach { lambda(it) } }
+    fun forEachImplant(lambda: (Int, ItemStack?) -> Unit) {
+        implantsByType.forEach { implantTypeHolder ->
+            implantTypeHolder.implants.forEachIndexed { indexInType, implant ->
+                lambda(
+                    getFirstSlotIndexOf(implantTypeHolder.implantType) + indexInType,
+                    implant
+                )
+            }
+        }
     }
+
     class ImplantTypeHolder(
         val implantType: ImplantType
     ) {
 
         val implants: Array<ItemStack?> = arrayOfNulls(implantType.slotAmount)
+
         companion object {
             const val TYPE_INDEX_NBT = "typeIndex"
             const val IMPLANTS_NBT = "implants"
@@ -37,7 +51,7 @@ class ImplantStorage(
                 for (implantIndex in 0 until implants.tagCount()) {
                     val slotNbt = implants.getCompoundTagAt(implantIndex)
                     val indexInArray = slotNbt.getInteger(SLOT_INDEX_NBT)
-                    if(indexInArray >= type.slotAmount) continue
+                    if (indexInArray >= type.slotAmount) continue
                     val implant = ItemStack.loadItemStackFromNBT(slotNbt)
                     holder.implants[indexInArray] = implant
                 }
@@ -50,7 +64,7 @@ class ImplantStorage(
                 val amount = buf.readInt()
                 for (implantIndex in 0 until amount) {
                     val indexInArray = buf.readInt()
-                    if(indexInArray >= type.slotAmount) continue
+                    if (indexInArray >= type.slotAmount) continue
                     val implant = ByteBufUtils.readItemStack(buf)
                     holder.implants[indexInArray] = implant
                 }
@@ -218,5 +232,9 @@ class ImplantStorage(
 
         private const val IMPLANTS_NBT = "Items"
         private const val SLOT_INDEX_NBT = "index"
+    }
+
+    fun syncSlotToClients(slot: Int) {
+//                PacketHandler.INSTANCE.sendToAll(PacketImplantSync(this.player.get(), slot) as IMessage)
     }
 }

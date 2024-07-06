@@ -1,6 +1,7 @@
 package com.suslovila.kharium.common.block.tileEntity.rune
 
 import com.suslovila.kharium.Kharium
+import com.suslovila.kharium.api.rune.RuneType
 import com.suslovila.kharium.client.render.tile.TileKharuSnareRenderer
 import com.suslovila.kharium.common.block.tileEntity.TileAntiNode
 import com.suslovila.kharium.common.block.tileEntity.TileKharium
@@ -22,7 +23,8 @@ import thaumcraft.client.lib.UtilsFX
 import kotlin.math.abs
 import kotlin.math.sqrt
 
-abstract class TileRune : TileKharium() {
+sealed class TileRune : TileKharium() {
+    abstract val runeType : RuneType
     abstract val disabled: ResourceLocation
 
     abstract val waveColor: Int
@@ -67,7 +69,6 @@ abstract class TileRune : TileKharium() {
     fun getClientPreparationPercent(partialTicks: Float): Double =
         snare?.getClientPreparationPercent(partialTicks) ?: 0.0
 
-    abstract fun onRegularSnareCheck(snare: TileKharuSnare, antiNode: TileAntiNode)
 
 
     val LAYER_NBT = Kharium.prefixAppender.doAndGet("layer_level")
@@ -114,7 +115,7 @@ abstract class TileRune : TileKharium() {
         SusGraphicHelper.translateFromPlayerTo(destination, partialTicks)
         val isCorner = abs(xOffset) == layerIndex && abs(zOffset) == layerIndex
         val isBorder = abs(xOffset) == layerIndex || abs(zOffset) == layerIndex
-        val firstLayerCenter = zOffset == 0 && xOffset == 0
+        val firstLayerCenter = (zOffset == 0 && xOffset == 0)
         if (firstLayerCenter) {
             SusGraphicHelper.setStandartColors()
             UtilsFX.bindTexture(this.cubeCoreTexture)

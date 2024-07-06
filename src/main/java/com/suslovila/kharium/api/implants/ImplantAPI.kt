@@ -1,5 +1,6 @@
 package com.suslovila.kharium.api.implants
 
+import com.suslovila.kharium.api.rune.RuneType
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
 
 import net.minecraft.item.Item
@@ -10,7 +11,7 @@ import net.minecraftforge.client.event.RenderPlayerEvent
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.event.entity.living.*
 import net.minecraftforge.event.entity.player.AttackEntityEvent
-import java.time.temporal.TemporalAmount
+import thaumcraft.api.aspects.AspectList
 
 enum class ImplantType(
 ) {
@@ -70,18 +71,11 @@ enum class ImplantType(
 
 }
 
-// all events have "normal" priority by default
-// if any other needed, you should implement all logic by yourself
-
-enum class RuneType {
-    OVERCLOCK,
-    EXPANSION,
-    STABILISATION,
-    CONTAINMENT
-}
 
 
-abstract class RuneUsingItem : Item() {
+interface RuneUsingItem {
+    fun getMaxRuneAmount(): Int
+
     companion object {
         fun getRuneAmountOfType(stack: ItemStack, type: RuneType) =
             if (stack.item is RuneUsingItem)
@@ -89,28 +83,54 @@ abstract class RuneUsingItem : Item() {
             else 0
 
         fun setRuneAmountOfType(stack: ItemStack, type: RuneType, amount: Int) {
-            if (stack.item is RuneUsingItem)
-                stack.getOrCreateTag().setInteger(type.toString(), amount)
+            val runeClass = stack.item
+            if (runeClass is RuneUsingItem)
+                stack.getOrCreateTag().setInteger(type.toString(), amount.coerceAtMost(runeClass.getMaxRuneAmount()))
         }
     }
 
 }
 
 
-abstract class ItemImplant(val implantType: ImplantType) : Item() {
+
+abstract class ItemImplant(val implantType: ImplantType) : Item(), RuneUsingItem {
+    abstract val abilities: ArrayList<AbilityPassive>
 
     init {
         maxStackSize = 1
     }
 
-    open fun onRenderWorldLastEvent(event: RenderWorldLastEvent, stack: ItemStack) {}
-    open fun onRenderHandEvent(event: RenderHandEvent, stack: ItemStack) {}
-    open fun onRenderPlayerEvent(event: RenderPlayerEvent, stack: ItemStack) {}
-    open fun onPlayerAttackEntityEvent(event: AttackEntityEvent, stack: ItemStack) {}
-    open fun onPlayerHealEvent(event: LivingHealEvent, stack: ItemStack) {}
-    open fun onPlayerUpdateEvent(event: LivingEvent.LivingUpdateEvent, stack: ItemStack) {}
-    open fun onPlayerHurtEvent(event: LivingHurtEvent, stack: ItemStack) {}
-    open fun onPlayerDeathEvent(event: LivingDeathEvent, stack: ItemStack) {}
-    open fun onPlayerBeingAttackedEvent(event: LivingAttackEvent, stack: ItemStack) {}
-    open fun onPlayerSetAttackTargetEvent(event: LivingSetAttackTargetEvent, stack: ItemStack) {}
+    open fun onRenderWorldLastEvent(event: RenderWorldLastEvent, index: Int, implant: ItemStack) {
+        abilities.forEach { it.onRenderWorldLastEvent(event, index, implant) }
+    }
+
+    open fun onRenderHandEvent(event: RenderHandEvent, index: Int, implant: ItemStack) {
+        abilities.forEach { it.onRenderHandEvent(event, index, implant) }
+    }
+    open fun onRenderPlayerEvent(event: RenderPlayerEvent.Post, index: Int, implant: ItemStack) {
+        abilities.forEach { it.onRenderPlayerEvent(event, index, implant) }
+    }
+    open fun onPlayerAttackEntityEvent(event: AttackEntityEvent, index: Int, implant: ItemStack) {
+        abilities.forEach { it.onPlayerAttackEntityEvent(event, index, implant) }
+    }
+    open fun onPlayerHealEvent(event: LivingHealEvent, index: Int, implant: ItemStack) {
+        abilities.forEach { it.onPlayerHealEvent(event, index, implant) }
+    }
+    open fun onPlayerUpdateEvent(event: LivingEvent.LivingUpdateEvent, index: Int, implant: ItemStack) {
+        abilities.forEach { it.onPlayerUpdateEvent(event, index, implant) }
+    }
+
+    open fun onPlayerHurtEvent(event: LivingHurtEvent, index: Int, implant: ItemStack) {
+        abilities.forEach { it.onPlayerHurtEvent(event, index, implant) }
+    }
+    open fun onPlayerDeathEvent(event: LivingDeathEvent, index: Int, implant: ItemStack) {
+        abilities.forEach { it.onPlayerDeathEvent(event, index, implant) }
+    }
+    open fun onPlayerBeingAttackedEvent(event: LivingAttackEvent, index: Int, implant: ItemStack) {
+        abilities.forEach { it.onPlayerBeingAttackedEvent(event, index, implant) }
+    }
+    open fun onPlayerSetAttackTargetEvent(event: LivingSetAttackTargetEvent, index: Int, implant: ItemStack) {
+        abilities.forEach { it.onPlayerSetAttackTargetEvent(event, index, implant) }
+    }
+
 }

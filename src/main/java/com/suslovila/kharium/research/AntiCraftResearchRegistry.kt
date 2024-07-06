@@ -92,7 +92,7 @@ object AntiCraftResearchRegistry {
         AntiCraftResearchItem(
             "KHARU_SNARE",
             khariumCategory,
-            AspectList().add(Aspect.ELDRITCH, 8).add(ACAspect.HUMILITAS, 4).add(Aspect.MAGIC, 6).add(Aspect.MECHANISM, 1).add(Aspect.ENERGY, 1).add(Aspect.TRAP, 1).add(Aspect.METAL, 1),
+            AspectList().add(Aspect.ELDRITCH, 8).add(KhariumAspect.HUMILITAS, 4).add(Aspect.MAGIC, 6).add(Aspect.MECHANISM, 1).add(Aspect.ENERGY, 1).add(Aspect.TRAP, 1).add(Aspect.METAL, 1),
             4,
             12,
             0,

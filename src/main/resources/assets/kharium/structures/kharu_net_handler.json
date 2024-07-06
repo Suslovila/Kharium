@@ -1,0 +1,650 @@
+[
+  {
+    "x": -4,
+    "y": -4,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": -4,
+    "z": -3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": -4,
+    "z": -2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": -4,
+    "z": 2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": -4,
+    "z": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": -4,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": -3,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": -3,
+    "z": -3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": -3,
+    "z": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": -3,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": -2,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": -2,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": 2,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": 2,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": 3,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": 3,
+    "z": -3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": 3,
+    "z": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": 3,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": 4,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": 4,
+    "z": -3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": 4,
+    "z": -2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": 4,
+    "z": 2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": 4,
+    "z": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -4,
+    "y": 4,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -3,
+    "y": -4,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -3,
+    "y": -4,
+    "z": -3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -3,
+    "y": -4,
+    "z": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -3,
+    "y": -4,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -3,
+    "y": -3,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -3,
+    "y": -3,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -3,
+    "y": 3,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -3,
+    "y": 3,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -3,
+    "y": 4,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -3,
+    "y": 4,
+    "z": -3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -3,
+    "y": 4,
+    "z": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -3,
+    "y": 4,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -2,
+    "y": -4,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -2,
+    "y": -4,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -2,
+    "y": 4,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": -2,
+    "y": 4,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "storedBlock": "kharium:AntiNode",
+    "meta": 0,
+    "tileEntity": 1
+  },
+  {
+    "x": 2,
+    "y": -4,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 2,
+    "y": -4,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 2,
+    "y": 4,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 2,
+    "y": 4,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 3,
+    "y": -4,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 3,
+    "y": -4,
+    "z": -3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 3,
+    "y": -4,
+    "z": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 3,
+    "y": -4,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 3,
+    "y": -3,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 3,
+    "y": -3,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 3,
+    "y": 3,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 3,
+    "y": 3,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 3,
+    "y": 4,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 3,
+    "y": 4,
+    "z": -3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 3,
+    "y": 4,
+    "z": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 3,
+    "y": 4,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": -4,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": -4,
+    "z": -3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": -4,
+    "z": -2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": -4,
+    "z": 2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": -4,
+    "z": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": -4,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": -3,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": -3,
+    "z": -3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": -3,
+    "z": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": -3,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": -2,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": -2,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": 2,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": 2,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": 3,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": 3,
+    "z": -3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": 3,
+    "z": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": 3,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": 4,
+    "z": -4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": 4,
+    "z": -3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": 4,
+    "z": -2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": 4,
+    "z": 2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": 4,
+    "z": 3,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  },
+  {
+    "x": 4,
+    "y": 4,
+    "z": 4,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntity": 0
+  }
+]
