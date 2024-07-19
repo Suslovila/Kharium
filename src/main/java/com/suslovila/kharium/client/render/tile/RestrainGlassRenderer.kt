@@ -40,18 +40,18 @@ object RestrainGlassRenderer : SusTileRenderer<TileRestrainedGlass>() {
 //        SusGraphicHelper.cubeModel.renderAll()
         val brightness: Int = block.getMixedBrightnessForBlock(world, tile.xCoord, tile.yCoord, tile.zCoord)
         val tessellator = Tessellator.instance
-        val previousBrightness = tessellator.brightness
+        SusGraphicHelper.pushBrightness(tessellator)
         tessellator.setBrightness(brightness)
         glCullFace(GL_FRONT)
         SusGraphicHelper.cubeModel.renderAll()
         glCullFace(GL_BACK)
         SusGraphicHelper.cubeModel.renderAll()
         glDepthMask(true)
-        tessellator.setBrightness(previousBrightness)
         glEnable(GL_ALPHA_TEST)
         glDisable(GL_BLEND)
         glDisable(GL_LIGHTING)
 
+        SusGraphicHelper.popBrightness(tessellator)
         glPopMatrix()
     }
 

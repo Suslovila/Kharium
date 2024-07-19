@@ -41,12 +41,6 @@ object WitcheryHook : ModHook() {
         }
         val charges = Infusion.getCurrentEnergy(player)
         if (charges - cost <= 0) {
-            world.playSoundAtEntity(
-                player as Entity,
-                "note.snare",
-                0.5f,
-                0.4f / (Math.random().toFloat() * 0.4f + 0.8f)
-            )
             clearInfusion(player)
             return false
         }

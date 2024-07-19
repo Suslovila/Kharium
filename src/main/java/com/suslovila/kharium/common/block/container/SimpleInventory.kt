@@ -9,11 +9,8 @@
  */
 package com.suslovila.kharium.common.block.container
 
-import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
-import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
-import net.minecraft.inventory.ISidedInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
@@ -21,7 +18,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraftforge.common.util.Constants
 import java.util.*
 
-class SimpleInventory(
+open class SimpleInventory(
     size: Int,
     private val firstOutPutSlotIndex: Int,
     private val name: String,
@@ -144,11 +141,9 @@ class SimpleInventory(
 
     override fun markDirty() {
         for (handler in listeners) {
-            if (handler.world != null) {
-                (handler as? TileDefaultMultiStructureElement)?.markForSave()
+                handler.world?.markTileEntityChunkModified(handler.xCoord, handler.yCoord, handler.zCoord, handler)
             }
         }
-    }
 
     companion object {
         private const val ITEMS_NBT = "Items"

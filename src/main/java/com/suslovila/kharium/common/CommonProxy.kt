@@ -1,18 +1,19 @@
 package com.suslovila.kharium.common
 
 
+import com.suslovila.kharium.client.gui.GuiImplants
 import com.suslovila.kharium.utils.config.Config
 import com.suslovila.kharium.common.block.ModBlocks
-import com.suslovila.kharium.common.event.FMLEventListener
-import com.suslovila.kharium.common.event.KharuTickHandler
-import com.suslovila.kharium.common.event.MixinListener
+import com.suslovila.kharium.common.event.*
 import com.suslovila.kharium.common.item.ModItems
-import com.suslovila.kharium.research.ACAspect
+import com.suslovila.kharium.research.KhariumAspect
 import com.suslovila.kharium.research.AntiCraftResearchRegistry
-import com.suslovila.kharium.common.event.PrimordialExplosionHandler
-import com.suslovila.kharium.common.sync.PacketHandler
+import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler
+import com.suslovila.kharium.utils.config.ConfigImlants
 import com.suslovila.kharium.utils.config.ConfigWitchery
+import com.suslovila.kharium.utils.config.multistructures.ConfigKharuContainer
+import com.suslovila.kharium.utils.config.multistructures.ConfigKharuSnare
 import cpw.mods.fml.common.FMLCommonHandler
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.event.FMLPostInitializationEvent
@@ -23,11 +24,21 @@ import net.minecraftforge.common.MinecraftForge
 
 open class CommonProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
+        KhariumPacketHandler.init()
         Config.registerServerConfig(event.suggestedConfigurationFile)
         ConfigWitchery.registerServerConfig(event.suggestedConfigurationFile)
+        ConfigImlants.registerServerConfig(event.suggestedConfigurationFile)
+        ConfigKharuSnare.registerServerConfig(event.suggestedConfigurationFile)
+        ConfigKharuContainer.registerServerConfig(event.suggestedConfigurationFile)
 
         FMLCommonHandler.instance().bus().register(FMLEventListener)
         MinecraftForge.EVENT_BUS.register(FMLEventListener)
+
+        FMLCommonHandler.instance().bus().register(Icons)
+        MinecraftForge.EVENT_BUS.register(Icons)
+
+        FMLCommonHandler.instance().bus().register(ImplantEvents)
+        MinecraftForge.EVENT_BUS.register(ImplantEvents)
 
         FMLCommonHandler.instance().bus().register(PrimordialExplosionHandler)
         MinecraftForge.EVENT_BUS.register(PrimordialExplosionHandler)
@@ -38,11 +49,14 @@ open class CommonProxy {
         FMLCommonHandler.instance().bus().register(KharuInfluenceHandler)
         MinecraftForge.EVENT_BUS.register(KharuInfluenceHandler)
 
+        FMLCommonHandler.instance().bus().register(GuiImplants)
+        MinecraftForge.EVENT_BUS.register(GuiImplants)
+
+
         MinecraftForge.EVENT_BUS.register(MixinListener)
         ModBlocks.register()
         ModItems.register()
-        ACAspect.initAspects()
-        PacketHandler.init()
+        KhariumAspect.initAspects()
     }
 
     open fun nodeAntiBolt(worldObj: World, x: Float, y: Float, z: Float, x2: Float, y2: Float, z2: Float) {
@@ -55,7 +69,7 @@ open class CommonProxy {
 
 
     open fun postInit(event: FMLPostInitializationEvent) {
-        ACAspect.initItemsAspects()
+        KhariumAspect.initItemsAspects()
         AntiCraftResearchRegistry.integrateInfusion()
         AntiCraftResearchRegistry.integrateResearch()
     }

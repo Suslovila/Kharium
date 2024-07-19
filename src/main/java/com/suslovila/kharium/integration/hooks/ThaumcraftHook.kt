@@ -25,6 +25,7 @@ object ThaumcraftHook : ModHook() {
 
         player.inventory.mainInventory.forEach { itemStack ->
             itemStack ?: return@forEach
+            if(itemStack.maxStackSize != 1) return@forEach
             val wand = itemStack.item as? ItemWandCasting ?: return@forEach
             if (SusMathHelper.tryWithPercentChance(
                     chance = itemStack.getKharuAmountPercentInfluence(2.0)

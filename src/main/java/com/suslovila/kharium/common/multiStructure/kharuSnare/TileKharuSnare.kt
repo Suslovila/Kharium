@@ -2,6 +2,7 @@ package com.suslovila.kharium.common.multiStructure.kharuSnare
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.client.PostRendered
+import com.suslovila.kharium.api.rune.RuneType
 import com.suslovila.kharium.client.render.tile.TileKharuSnareRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.AntiNodeStabilizersRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.DischargeFlaskRenderer
@@ -10,15 +11,15 @@ import com.suslovila.kharium.common.block.tileEntity.TileAntiNode
 import com.suslovila.kharium.common.block.tileEntity.rune.TileRune
 import com.suslovila.kharium.common.worldSavedData.CustomWorldData.Companion.customData
 import com.suslovila.kharium.common.worldSavedData.KharuHotbed
-import com.suslovila.kharium.research.ACAspect
+import com.suslovila.kharium.research.KhariumAspect
+import com.suslovila.kharium.utils.Percentage
+import com.suslovila.kharium.utils.config.multistructures.ConfigKharuSnare
 import com.suslovila.kharium.utils.getPosition
+import com.suslovila.kharium.utils.plusAssign
 import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
 import com.suslovila.sus_multi_blocked.utils.Position
 import com.suslovila.sus_multi_blocked.utils.getTile
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
-import net.minecraft.inventory.ISidedInventory
-import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.AxisAlignedBB
 import net.minecraftforge.client.event.RenderWorldLastEvent
@@ -26,10 +27,9 @@ import net.minecraftforge.common.util.ForgeDirection
 import thaumcraft.api.aspects.AspectList
 import thaumcraft.api.aspects.AspectSourceHelper
 import thaumcraft.common.lib.events.EssentiaHandler
-import kotlin.math.sqrt
 
-class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered, IInventory {
-    val inventory: IInventory = SimpleInventory(0,0, "inv", 64)
+class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered {
+    val inventory: IInventory = SimpleInventory(0, 0, "inv", 64)
     override val packetId: Int = 0
     val maxLowerAmount = 10
     var timeCheck = 20
@@ -40,7 +40,7 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered, IInve
     }
 
 
-    var aspects = AspectList().add(ACAspect.HUMILITAS, 1)
+    var aspects = AspectList().add(KhariumAspect.HUMILITAS, 1)
     var enabled = false
     var finalisedLayerAmount = 0
     val isPrepared: Boolean
@@ -84,7 +84,7 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered, IInve
                             (zCoord - 7 + 3).toDouble()
                         ),
                         100_000
-                    ) ,
+                    ),
                     world = world
                 )
                 world.customData.syncAllHotbeds(world)
@@ -129,49 +129,56 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered, IInve
     val ACTIVATION_NBT = Kharium.prefixAppender.doAndGet("activation_timer")
     val LAYER_AMOUNT_NBT = Kharium.prefixAppender.doAndGet("layer_amount")
 
-    override fun writeCustomNBT(rootNbt: NBTTagCompound) {
-        super.writeCustomNBT(rootNbt)
-        aspects.writeToNBT(rootNbt)
-        rootNbt.setBoolean(ENABLED_NBT, enabled)
-        rootNbt.setInteger(TICK_NBT, tick)
-        rootNbt.setInteger(ACTIVATION_NBT, activationTimer)
-        rootNbt.setInteger(LAYER_AMOUNT_NBT, finalisedLayerAmount)
+    override fun writeCustomNBT(nbttagcompound: NBTTagCompound) {
+        super.writeCustomNBT(nbttagcompound)
+        aspects.writeToNBT(nbttagcompound)
+        nbttagcompound.setBoolean(ENABLED_NBT, enabled)
+        nbttagcompound.setInteger(TICK_NBT, tick)
+        nbttagcompound.setInteger(ACTIVATION_NBT, activationTimer)
+        nbttagcompound.setInteger(LAYER_AMOUNT_NBT, finalisedLayerAmount)
 
     }
 
-    override fun readCustomNBT(rootNbt: NBTTagCompound) {
-        super.readCustomNBT(rootNbt)
-        aspects.readFromNBT(rootNbt)
-        enabled = rootNbt.getBoolean(ENABLED_NBT)
-        tick = rootNbt.getInteger(TICK_NBT)
-        activationTimer = rootNbt.getInteger(ACTIVATION_NBT)
-        finalisedLayerAmount = rootNbt.getInteger(LAYER_AMOUNT_NBT)
+    override fun readCustomNBT(nbttagcompound: NBTTagCompound) {
+        super.readCustomNBT(nbttagcompound)
+        aspects.readFromNBT(nbttagcompound)
+        enabled = nbttagcompound.getBoolean(ENABLED_NBT)
+        tick = nbttagcompound.getInteger(TICK_NBT)
+        activationTimer = nbttagcompound.getInteger(ACTIVATION_NBT)
+        finalisedLayerAmount = nbttagcompound.getInteger(LAYER_AMOUNT_NBT)
     }
 
     fun affectAntiNode(tileAntiNode: TileAntiNode) {
         aspects.aspects.clear()
-        aspects.add(ACAspect.HUMILITAS, 1)
-        getRunes().forEach { rune ->
-            rune.onRegularSnareCheck(this, tileAntiNode)
+        aspects.add(KhariumAspect.HUMILITAS, 1)
+        val runeAmount = getRunes()
+        for (runeType in RuneType.values()) {
+            tileAntiNode.runeFactorSustains[runeType.ordinal] +=
+                Percentage(
+                    runeAmount[runeType.ordinal] * ConfigKharuSnare.runeInfluence[runeType.ordinal]
+                )
         }
-        tileAntiNode.markForSaveAndSync()
         markForSaveAndSync()
     }
 
-    fun getRunes(): ArrayList<TileRune> {
+
+    fun getRunes(): Array<Int> {
         val startPosition = this.getPosition() + Position(0, -13, 0)
-        val runes = arrayListOf<TileRune>()
+        val runesAmount = Array(RuneType.values().size) {_ -> 0}
         finalisedLayerAmount = 0
         for (layerIndex in 0 until maxLowerAmount) {
-            val layerRunes = getLayerRunes(startPosition + Position(0, -layerIndex, 0), layerIndex) ?: return runes
+            val layerRunesAmount =
+                getLayerRunes(startPosition + Position(0, -layerIndex, 0), layerIndex) ?: return runesAmount
             finalisedLayerAmount += 1
-            runes.addAll(layerRunes)
+            for (runeType in RuneType.values()) {
+                runesAmount[runeType.ordinal] += layerRunesAmount[runeType.ordinal]
+            }
         }
-        return runes
+        return runesAmount
     }
 
-    fun getLayerRunes(layerPos: Position, layerIndex: Int): ArrayList<TileRune>? {
-        val foundRunes = arrayListOf<TileRune>()
+    fun getLayerRunes(layerPos: Position, layerIndex: Int): Array<Int>? {
+        val foundRunes = Array(RuneType.values().size) { _ -> 0 }
         for (xOffset in -layerIndex..layerIndex) {
             for (zOffset in -layerIndex..layerIndex) {
                 val foundTile = world.getTile(layerPos + Position(xOffset, 0, zOffset)) ?: return null
@@ -180,72 +187,11 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered, IInve
 
                 foundTile.ownLayerLevel = layerIndex
                 foundTile.markForSaveAndSync()
-                foundRunes.add(foundTile)
+                foundRunes[foundTile.runeType.ordinal] += 1
             }
         }
         return foundRunes
     }
-
-    override fun markDirty() {
-        inventory.markDirty()
-    }
-
-
-
-
-
-    override fun getSizeInventory() : Int = 0
-
-    override fun setInventorySlotContents(slot: kotlin.Int, stack: ItemStack?) {
-        inventory.setInventorySlotContents(slot, stack)
-    }
-
-    override fun getInventoryName(): kotlin.String? {
-        return ("tile.assemblyTableBlock.name")
-    }
-
-    override fun getStackInSlot(slot: kotlin.Int): ItemStack? {
-        return inventory.getStackInSlot(slot)
-    }
-
-    override fun decrStackSize(slot: kotlin.Int, amount: kotlin.Int): ItemStack? {
-        return inventory.decrStackSize(slot, amount)
-    }
-
-    override fun getStackInSlotOnClosing(slot: kotlin.Int): ItemStack? {
-        return inventory.getStackInSlotOnClosing(slot)
-    }
-
-
-    override fun getInventoryStackLimit(): kotlin.Int {
-        return inventory.inventoryStackLimit
-    }
-
-    override fun isUseableByPlayer(player: EntityPlayer): kotlin.Boolean {
-        return ((worldObj.getTileEntity(xCoord, yCoord, zCoord) === this) && !isInvalid() &&
-                (sqrt(player.getDistanceSq(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5)) <= 24))
-    }
-
-    override fun openChest() {}
-
-    override fun closeChest() {}
-
-    override fun isCustomInventoryName(): kotlin.Boolean {
-        return false
-    }
-
-    override fun isItemValidForSlot(slot: kotlin.Int, stack: ItemStack?): kotlin.Boolean {
-        return inventory.isItemValidForSlot(slot, stack)
-    }
-
-    open fun getInputSlotAmount(): Int = 0
-
-    open fun getOutputSlotsAmount(): kotlin.Int {
-        return getSizeInventory() - getInputSlotAmount()
-    }
-
-
-
 
 }
 

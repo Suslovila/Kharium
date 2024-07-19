@@ -1,31 +1,42 @@
 package com.suslovila.kharium.common.event
 
-import com.emoniph.witchery.common.ExtendedPlayer
-import com.emoniph.witchery.common.ExtendedVillager
+import com.suslovila.kharium.api.implants.ImplantType
+import com.suslovila.kharium.client.KeyHandler
+import com.suslovila.kharium.client.gui.GuiImplants
+import com.suslovila.kharium.client.gui.GuiMessageNotEnoughFuel
 import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter
 import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter.Companion.globalOwnerName
 import com.suslovila.kharium.common.item.ModItems
+import com.suslovila.kharium.common.multiStructure.kharuContainer.MultiStructureKharuContainer
+import com.suslovila.kharium.common.multiStructure.kharuNetHandler.MultiStructureNetHandler
 import com.suslovila.kharium.common.multiStructure.kharuSnare.MultiStructureKharuSnare
+import com.suslovila.kharium.common.sync.KhariumPacketHandler
+import com.suslovila.kharium.common.sync.implant.PacketAllExtendedPlayerSync
+import com.suslovila.kharium.common.sync.implant.PacketOneExtendedPlayerSync
 import com.suslovila.kharium.common.worldSavedData.CustomWorldData.Companion.customData
 import com.suslovila.kharium.extendedData.KhariumPlayerExtendedData
-import com.suslovila.kharium.research.ACAspect
+import com.suslovila.kharium.research.KhariumAspect
 import com.suslovila.kharium.utils.SusMathHelper
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
 import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.ThaumcraftIntegrator.completeNormalResearch
 import com.suslovila.sus_multi_blocked.utils.Position
+import cpw.mods.fml.common.eventhandler.EventPriority
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemPickupEvent
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent
 import cpw.mods.fml.common.gameevent.TickEvent
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent
+import cpw.mods.fml.relauncher.Side
+import net.minecraft.client.Minecraft
 import net.minecraft.entity.item.EntityItem
-import net.minecraft.entity.passive.EntityVillager
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.world.WorldServer
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing
+import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.entity.living.LivingDropsEvent
 import net.minecraftforge.event.entity.player.PlayerEvent.Clone
 import net.minecraftforge.event.entity.player.PlayerInteractEvent
@@ -56,7 +67,7 @@ object FMLEventListener {
             (nodeJar.item as ItemJarNode).setAspects(
                 nodeJar,
                 AspectList().add(Aspect.HUNGER, 100).add(Aspect.WATER, 100).add(Aspect.ELDRITCH, 100)
-                    .add(ACAspect.HUMILITAS, 100)
+                    .add(KhariumAspect.HUMILITAS, 100)
             )
             (nodeJar.item as ItemJarNode).setNodeAttributes(nodeJar, NodeType.HUNGRY, NodeModifier.BRIGHT, "")
             event.player.worldObj.spawnEntityInWorld(
@@ -80,18 +91,21 @@ object FMLEventListener {
         }
     }
 
-    @SubscribeEvent
-    fun construct(event: PlayerInteractEvent) {
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    fun constructMultiStructures(event: PlayerInteractEvent) {
         with(event) {
             if (action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
-                MultiStructureKharuSnare.tryConstruct(world, Position(x, y, z), entityPlayer as? EntityPlayerMP)
+                MultiStructureKharuContainer.tryConstruct(world, Position(x, y, z), entityPlayer)
+                MultiStructureKharuSnare.tryConstruct(world, Position(x, y, z), entityPlayer)
+                MultiStructureNetHandler.tryConstruct(world, Position(x, y, z), entityPlayer)
+
             }
         }
     }
 
     @SubscribeEvent
     fun expandKharuHotbeds(event: WorldTickEvent) {
-        if (event.side.isServer && event.phase == TickEvent.Phase.END) {
+        if (event.side.isServer && event.phase == TickEvent.Phase.END && !event.world.isRemote && event.side == Side.SERVER && event.world.provider.dimensionId == 0) {
             with(event) {
                 world.customData.kharuHotbeds.forEach {
                     if (SusUtils.random.nextInt(200) == 1) {
@@ -107,6 +121,14 @@ object FMLEventListener {
         }
     }
 
+
+    @SubscribeEvent
+    fun onEntityConstructing(event: EntityConstructing) {
+        if (event.entity is EntityPlayer && KhariumPlayerExtendedData.get(event.entity as EntityPlayer) == null) {
+            KhariumPlayerExtendedData.register(event.entity as EntityPlayer)
+        }
+    }
+
     @SubscribeEvent
     fun onPlayerCloneEvent(event: Clone) {
         val oldPlayerNBT = NBTTagCompound()
@@ -118,9 +140,45 @@ object FMLEventListener {
     }
 
     @SubscribeEvent
-    fun onEntityConstructing(event: EntityConstructing) {
-        if (event.entity is EntityPlayer && KhariumPlayerExtendedData.get(event.entity as EntityPlayer) == null) {
-            KhariumPlayerExtendedData.register(event.entity as EntityPlayer)
+    fun onEntityJoinWorld(event: EntityJoinWorldEvent) {
+        val entity = event.entity ?: return
+        if (entity.worldObj.isRemote && entity == Minecraft.getMinecraft().thePlayer) {
+            KhariumPlayerExtendedData.get(Minecraft.getMinecraft().thePlayer)?.let {
+                repeat(5) { sendMessage() }
+            }
+        }
+        if (!entity.worldObj.isRemote && entity is EntityPlayerMP) {
+            KhariumPlayerExtendedData.loadProxyData(entity)
+            val server = entity.worldObj as? WorldServer ?: return
+            val playersData =
+                server.playerEntities.map { KhariumPlayerExtendedData.get(it as EntityPlayer) }.filterNotNull()
+            KhariumPacketHandler.INSTANCE.sendTo(PacketAllExtendedPlayerSync(playersData), entity)
+            KhariumPlayerExtendedData.get(entity).let {
+                KhariumPacketHandler.INSTANCE.sendToAll(PacketOneExtendedPlayerSync(it, entity))
+
+            }
         }
     }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    fun setImplant(event: EntityJoinWorldEvent) {
+        val entity = event.entity ?: return
+        if (entity.worldObj.isRemote && entity == Minecraft.getMinecraft().thePlayer) {
+            KhariumPlayerExtendedData.get(Minecraft.getMinecraft().thePlayer)?.let {
+                KeyHandler.setNextImplant(it, Array(ImplantType.slotAmount) { index -> index }.toMutableList())
+            }
+        }
+    }
+
+    fun sendMessage() {
+        GuiImplants.notEnoughFuelMessages.add(
+            GuiMessageNotEnoughFuel(
+                200,
+                "ETGKLMGRTKLHMTRLKHMRTLHMRTLHTRMHLTMHLHMTRLHTH",
+                100,
+                Aspect.FIRE.image,
+            )
+        )
+    }
+
 }

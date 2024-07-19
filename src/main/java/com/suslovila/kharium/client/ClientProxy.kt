@@ -17,7 +17,6 @@ import com.suslovila.kharium.common.CommonProxy
 import com.suslovila.kharium.common.block.ModBlocks
 import com.suslovila.kharium.common.block.tileEntity.*
 import com.suslovila.kharium.common.block.tileEntity.rune.TileStabiliserRune
-import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileKharuReactor
 import com.suslovila.kharium.common.item.ItemSpaceDivider
 import com.suslovila.kharium.common.item.ModItems
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
@@ -61,6 +60,7 @@ class ClientProxy : CommonProxy(), IGuiHandler {
         ClientRegistry.bindTileEntitySpecialRenderer(TileRestrainedGlass::class.java, RestrainGlassRenderer)
         ClientRegistry.bindTileEntitySpecialRenderer(TileStabiliserRune::class.java, TileRuneRenderer)
 
+        KeyHandler.register()
     }
 
     override fun postInit(event: FMLPostInitializationEvent) {

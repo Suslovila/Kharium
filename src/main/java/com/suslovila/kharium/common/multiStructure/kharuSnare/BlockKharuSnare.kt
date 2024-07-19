@@ -35,8 +35,7 @@ class BlockKharuSnare(name: String
         clickY: Float,
         clickZ: Float
     ): Boolean {
-        if (world.isRemote || player == null) return true
-        val block = world.getBlock(x, y, z)
+        if (world.isRemote || player == null) return false
         val tile = world.getTileEntity(x, y, z) as? TileDefaultMultiStructureElement ?: return false
         val snare = (world.getTile(tile.structureMasterPos))
 

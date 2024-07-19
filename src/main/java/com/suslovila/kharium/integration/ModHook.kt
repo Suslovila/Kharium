@@ -53,6 +53,7 @@ abstract class ModHook {
         }
     }
 
+    // WARNING!!!!!!!!!!! DO NOT CALL "getOrCreateTag" on items whose maxStackSize is not 1 (stacking problems)
     protected abstract fun reducePlayerMagicPower(entity: EntityLivingBase?)
 }
 

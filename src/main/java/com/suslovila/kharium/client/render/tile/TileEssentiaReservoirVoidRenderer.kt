@@ -94,7 +94,6 @@ object TileEssentiaReservoirVoidRenderer : SusTileRenderer<TileEssentiaReservoir
             )
             t.startDrawingQuads()
             t.setColorRGBA_F(tile.cr, tile.cg, tile.cb, 0.9f)
-            val bright = 200
             t.setBrightness(200)
             val icon = (ConfigBlocks.blockJar as BlockJar).iconLiquid
             field_147501_a.renderEngine.bindTexture(TextureMap.locationBlocksTexture)

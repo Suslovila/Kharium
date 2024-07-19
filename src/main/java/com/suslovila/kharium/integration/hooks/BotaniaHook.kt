@@ -24,7 +24,9 @@ object BotaniaHook : ModHook() {
     override fun reducePlayerMagicPower(entity: EntityLivingBase?) {
         val player = entity as? EntityPlayerMP ?: return
         player.inventory.mainInventory.forEach { itemStack ->
-            val manaItem = itemStack?.item as? IManaItem ?: return@forEach
+            itemStack ?: return
+            if(itemStack.maxStackSize != 1) return@forEach
+            val manaItem = itemStack.item as? IManaItem ?: return@forEach
             if (SusMathHelper.tryWithPercentChance(
                     chance = itemStack.getKharuAmountPercentInfluence(2.0)
                 )

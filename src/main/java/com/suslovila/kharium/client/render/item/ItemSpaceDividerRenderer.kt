@@ -105,7 +105,7 @@ object ItemSpaceDividerRenderer : IItemRenderer {
                 val bladeWidth = 0.1
                 val runeAmount = 7
                 glTranslated(1.5, 0.15, -0.0)
-                val minecraft = Minecraft.getMinecraft() ?: return
+                val minecraft = Minecraft.getMinecraft()
 
                 val partialTicks = UtilsFX.getTimer(minecraft).renderPartialTicks
                 val time = ((entity as? EntityPlayer)?.itemInUseDuration?.toFloat() ?: return) + partialTicks

@@ -2,6 +2,7 @@ package com.suslovila.kharium.common.multiStructure.kharuSnare
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.common.block.ModBlocks
+import com.suslovila.kharium.common.multiStructure.TileFilling
 import com.suslovila.sus_multi_blocked.api.multiblock.AdditionalData
 import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructure
 import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructureElement
@@ -20,7 +21,6 @@ import thaumcraft.api.aspects.Aspect
 import thaumcraft.api.aspects.AspectList
 import thaumcraft.common.Thaumcraft
 import thaumcraft.common.items.wands.ItemWandCasting
-import java.nio.file.Paths
 
 object MultiStructureKharuSnare : MultiStructure<KharuSnareAdditionalData, KharuSnareElement>(
     "/assets/${Kharium.MOD_ID}/structures/kharu_snare.json",
@@ -32,9 +32,9 @@ object MultiStructureKharuSnare : MultiStructure<KharuSnareAdditionalData, Kharu
     validationType = VALIDATION_TYPE.EACH_BLOCK
 ) {
     val possibleTilesByMeta = listOf<() -> TileEntity>(
-        ::TileKharuSnareFilling,
+        ::TileFilling,
         ::TileKharuSnare,
-        ::TileKharuSnareFilling
+        ::TileFilling
     )
 
     override fun onCreated(
@@ -63,7 +63,7 @@ object MultiStructureKharuSnare : MultiStructure<KharuSnareAdditionalData, Kharu
         )
         if (hasEnoughVis) {
             val basicSuccess = super.tryConstruct(world, clickedPosition, player)
-            if(basicSuccess) {
+            if (basicSuccess) {
                 wand.consumeAllVisCrafting(
                     player.heldItem,
                     player,
@@ -86,7 +86,14 @@ object MultiStructureKharuSnare : MultiStructure<KharuSnareAdditionalData, Kharu
     ) {
         super.finaliseConstruction(world, masterPosition, facing, rotationAngle, player)
 
-        world.playSoundEffect(masterPosition.x + 0.5, masterPosition.y + 0.5, masterPosition.z + 0.5, "thaumcraft:wand", 1.0f, 1.0f)
+        world.playSoundEffect(
+            masterPosition.x + 0.5,
+            masterPosition.y + 0.5,
+            masterPosition.z + 0.5,
+            "thaumcraft:wand",
+            1.0f,
+            1.0f
+        )
     }
 }
 
@@ -109,15 +116,17 @@ class KharuSnareElement(
         masterWorldPosition: Position,
         facing: ForgeDirection,
         angle: Int,
+        index: Int,
         player: EntityPlayer?
     ) {
         val realPos = masterWorldPosition + getRealOffset(facing, angle)
 
-            world.setBlock(realPos, additionalData.fillingBlock, tileEntityByMeta, 2)
-            val tile = (world.getTile(realPos) as? ITileMultiStructureElement) ?: return
-            tile.setMasterPos(masterWorldPosition)
-            tile.setFacing(facing)
-            tile.setRotationAngle(angle)
+        world.setBlock(realPos, additionalData.fillingBlock, tileEntityByMeta, 2)
+        val tile = (world.getTile(realPos) as? ITileMultiStructureElement) ?: return
+        tile.setMasterPos(masterWorldPosition)
+        tile.setFacing(facing)
+        tile.setRotationAngle(angle)
+        tile.setElementIndex(index)
 
         Thaumcraft.proxy.blockSparkle(world, realPos.x, realPos.y, realPos.z, 16736256, 5)
 

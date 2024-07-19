@@ -1,5 +1,6 @@
 package com.suslovila.kharium.client.particles;
 
+import com.suslovila.kharium.utils.SusGraphicHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -103,6 +104,7 @@ public abstract class FXBase extends EntityFX {
         float f12 = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTick - interpPosY);
         float f13 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTick - interpPosZ);
 
+        SusGraphicHelper.INSTANCE.pushBrightness(tessellator);
         tessellator.setBrightness(getBrightnessForRender(partialTick));
 
         tessellator.addVertexWithUV(f11 - x * f10 - u * f10, f12 - y * f10, (f13 - z * f10 - v * f10), 0, 0);
@@ -110,6 +112,7 @@ public abstract class FXBase extends EntityFX {
         tessellator.addVertexWithUV(f11 + x * f10 + u * f10, f12 + y * f10, (f13 + z * f10 + v * f10), 1, 1);
         tessellator.addVertexWithUV(f11 + x * f10 - u * f10, f12 - y * f10, (f13 + z * f10 - v * f10), 1, 0);
 
+        SusGraphicHelper.INSTANCE.popBrightness(tessellator);
         glDisable(GL_BLEND);
         glAlphaFunc(GL_GREATER, 0.1F);
     }

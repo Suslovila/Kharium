@@ -1,7 +1,7 @@
 package com.suslovila.kharium.client.gui
 
 
-import com.suslovila.common.inventory.container.ContainerKharuSnare
+import com.suslovila.kharium.common.block.container.ContainerKharuSnare
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import net.minecraft.client.Minecraft
@@ -21,8 +21,8 @@ class GuiKharuSnare(
     GuiContainer(ContainerKharuSnare(inventoryPlayer, snare)) {
 
     init {
-        xSize = 176
-        ySize = 207
+        xSize = 248
+        ySize = 222
     }
 
     override fun drawGuiContainerBackgroundLayer(partialTicks: Float, mouseX: Int, mouseY: Int) {
@@ -59,7 +59,7 @@ class GuiKharuSnare(
         get() = fontRendererObj
 
     companion object {
-        private val IMAGE_URL = ResourceLocation(Kharium.MOD_ID, "textures/gui/assembly_table.png")
+        private val IMAGE_URL = ResourceLocation(Kharium.MOD_ID, "textures/gui/gui_snare.png")
         const val energyClientPixels = 70.0
     }
 }
