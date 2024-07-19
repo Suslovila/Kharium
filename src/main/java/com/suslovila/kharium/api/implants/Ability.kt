@@ -1,7 +1,6 @@
 package com.suslovila.kharium.api.implants
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.api.essentia.EssentiaHelper
 import com.suslovila.kharium.api.fuel.MagicFuel
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.sync.implant.PacketImplantSync
@@ -10,6 +9,7 @@ import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.event.RenderHandEvent
 import net.minecraftforge.client.event.RenderPlayerEvent
 import net.minecraftforge.client.event.RenderWorldLastEvent
@@ -21,6 +21,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent
 
 abstract class Ability(val name: String) {
     val COOLDOWN_NBT = Kharium.prefixAppender.doAndGet("$name:cooldown")
+    open val texture = ResourceLocation(Kharium.MOD_ID, "textures/implants/ability_$name.png")
     abstract fun onEnableButtonClicked(player: EntityPlayer, index: Int, implant: ItemStack)
 
     open fun isOnCooldown(implant: ItemStack) =
@@ -30,6 +31,8 @@ abstract class Ability(val name: String) {
     abstract fun getKharuEmissionOnActivation(implant: ItemStack): Int
 
     abstract fun getCooldownTotal(implant: ItemStack): Int
+
+    abstract fun isActive(implant: ItemStack): Boolean
 
     open fun getCooldown(implant: ItemStack) =
         implant.getOrCreateTag().getOrCreateInteger(COOLDOWN_NBT, 0)

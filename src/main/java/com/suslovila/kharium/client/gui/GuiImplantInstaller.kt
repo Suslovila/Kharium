@@ -1,12 +1,11 @@
 package com.suslovila.kharium.client.gui
 
 
-import baubles.client.gui.GuiPlayerExpanded
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.implants.ImplantType
 import com.suslovila.kharium.api.implants.ImplantType.Companion.slotAmount
 import com.suslovila.kharium.common.block.container.DefaultContainer
-import com.suslovila.kharium.common.multiStructure.implantInstaller.ContainerImplantHolder
+import com.suslovila.kharium.common.container.ContainerImplantHolder
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.inventory.GuiContainer

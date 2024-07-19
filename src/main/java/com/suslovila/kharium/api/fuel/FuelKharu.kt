@@ -76,7 +76,7 @@ class FuelKharu(val amount: Int) : MagicFuel {
 interface IKharuHolder {
     fun getStoredKharu() : Int
     // returns the overlapping amount
-    fun setStoredKharu(amount: Int) : Int
+    fun setStoredKharu(amount: Int)
 
     fun getMaxAmount() : Int
 }
@@ -84,7 +84,7 @@ interface IKharuHolder {
 interface IKharuHolderItem {
     fun getStoredKharu(stack: ItemStack) : Int
     // returns the overlapping amount
-    fun setStoredKharu(stack: ItemStack, amount: Int) : Int
+    fun setStoredKharu(stack: ItemStack, amount: Int)
 
-    fun getMaxAmount(stack: ItemStack) : Int
+    fun getMaxKharuAmount(stack: ItemStack) : Int
 }

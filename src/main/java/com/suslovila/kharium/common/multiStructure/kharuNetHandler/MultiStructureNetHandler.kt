@@ -2,6 +2,7 @@ package com.suslovila.kharium.common.multiStructure.kharuNetHandler
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.common.block.ModBlocks
+import com.suslovila.kharium.common.multiStructure.TileFilling
 import com.suslovila.sus_multi_blocked.api.multiblock.AdditionalData
 import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructure
 import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructureElement
@@ -22,7 +23,7 @@ import thaumcraft.common.Thaumcraft
 import thaumcraft.common.items.wands.ItemWandCasting
 
 object MultiStructureNetHandler : MultiStructure<NetHandlerAdditionalDta, NetHandlerElement>(
-    "/assets/${Kharium.MOD_ID}/structures/net_handler.json",
+    "/assets/${Kharium.MOD_ID}/structures/kharu_net_handler.json",
     availableFacings = arrayListOf(
         ForgeDirection.UP
     ),
@@ -31,27 +32,21 @@ object MultiStructureNetHandler : MultiStructure<NetHandlerAdditionalDta, NetHan
     validationType = VALIDATION_TYPE.EACH_BLOCK
 ) {
     val possibleTilesByMeta = listOf<() -> TileEntity>(
-        ::TileKharuSnareFilling,
+        ::TileFilling,
         ::TileNetHandler,
-        ::TileKharuSnareFilling
     )
-
-    override fun onCreated(
-        world: World,
-        masterWorldPosition: Position,
-        facing: ForgeDirection,
-        angle: Int,
-        player: EntityPlayer?
-    ) {
-        super.onCreated(world, masterWorldPosition, facing, angle, player)
-    }
 
 
     override fun <T : TileEntity> render(tile: T, playersOffset: SusVec3, partialTicks: Float) {
 
     }
 
-    override fun tryConstruct(world: World, clickedPosition: Position, player: EntityPlayer?): Boolean {
+    override fun tryConstruct(
+        world: World,
+        clickedPosition: Position,
+        player: EntityPlayer?
+    )
+            : Boolean {
         val wand = player?.heldItem?.item as? ItemWandCasting ?: return false
         val hasEnoughVis = wand.consumeAllVisCrafting(
             player.heldItem,
@@ -62,7 +57,7 @@ object MultiStructureNetHandler : MultiStructure<NetHandlerAdditionalDta, NetHan
         )
         if (hasEnoughVis) {
             val basicSuccess = super.tryConstruct(world, clickedPosition, player)
-            if(basicSuccess) {
+            if (basicSuccess) {
                 wand.consumeAllVisCrafting(
                     player.heldItem,
                     player,
@@ -85,7 +80,14 @@ object MultiStructureNetHandler : MultiStructure<NetHandlerAdditionalDta, NetHan
     ) {
         super.finaliseConstruction(world, masterPosition, facing, rotationAngle, player)
 
-        world.playSoundEffect(masterPosition.x + 0.5, masterPosition.y + 0.5, masterPosition.z + 0.5, "thaumcraft:wand", 1.0f, 1.0f)
+        world.playSoundEffect(
+            masterPosition.x + 0.5,
+            masterPosition.y + 0.5,
+            masterPosition.z + 0.5,
+            "thaumcraft:wand",
+            1.0f,
+            1.0f
+        )
     }
 }
 
@@ -108,15 +110,17 @@ class NetHandlerElement(
         masterWorldPosition: Position,
         facing: ForgeDirection,
         angle: Int,
+        index: Int,
         player: EntityPlayer?
     ) {
         val realPos = masterWorldPosition + getRealOffset(facing, angle)
 
-            world.setBlock(realPos, additionalData.fillingBlock, tileEntityByMeta, 2)
-            val tile = (world.getTile(realPos) as? ITileMultiStructureElement) ?: return
-            tile.setMasterPos(masterWorldPosition)
-            tile.setFacing(facing)
-            tile.setRotationAngle(angle)
+        world.setBlock(realPos, additionalData.fillingBlock, tileEntityByMeta, 2)
+        val tile = (world.getTile(realPos) as? ITileMultiStructureElement) ?: return
+        tile.setMasterPos(masterWorldPosition)
+        tile.setFacing(facing)
+        tile.setRotationAngle(angle)
+        tile.setElementIndex(index)
 
         Thaumcraft.proxy.blockSparkle(world, realPos.x, realPos.y, realPos.z, 16736256, 5)
 
@@ -125,5 +129,5 @@ class NetHandlerElement(
 }
 
 class NetHandlerAdditionalDta() : AdditionalData() {
-    override val fillingBlock: Block = ModBlocks.KHARU_SNARE
+    override val fillingBlock: Block = ModBlocks.KHARU_NET_HANDLER
 }

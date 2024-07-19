@@ -1,8 +1,8 @@
 package com.suslovila.kharium.client
 
-import GuiImplants
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.implants.ImplantType
+import com.suslovila.kharium.client.gui.GuiImplants
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.sync.implant.PacketEnableImplantSync
 import com.suslovila.kharium.extendedData.KhariumPlayerExtendedData
@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.settings.KeyBinding
 import net.minecraftforge.common.MinecraftForge
 import org.lwjgl.input.Keyboard
+import java.util.*
 
 
 object KeyHandler {
@@ -54,13 +55,7 @@ object KeyHandler {
                 val data = KhariumPlayerExtendedData.get(player) ?: return@let
                 val nextIndex = (GuiImplants.currentImplantSlotId + 1) % ImplantType.slotAmount
                 val indexes = SusUtils.getIndicesCycledFrom(nextIndex, ImplantType.slotAmount)
-                for (index in indexes) {
-                    val implant = data.implantStorage.getStackInSlot(index)
-                    if (implant != null) {
-                        GuiImplants.currentImplantSlotId = index
-                        return
-                    }
-                }
+                setNextImplant(data, indexes)
             }
         }
 
@@ -74,13 +69,17 @@ object KeyHandler {
                     else previousIndex - 1
 
                 val indexes = SusUtils.getIndicesCycledFrom(nextIndex, ImplantType.slotAmount).reversed()
-                for (index in indexes) {
-                    val implant = data.implantStorage.getStackInSlot(index)
-                    if (implant != null) {
-                        GuiImplants.currentImplantSlotId = index
-                        return
-                    }
-                }
+                setNextImplant(data, indexes)
+            }
+        }
+    }
+
+    fun setNextImplant(data: KhariumPlayerExtendedData, indexes: List<Int>) {
+        for (index in indexes) {
+            val implant = data.implantStorage.getStackInSlot(index)
+            if (implant != null) {
+                GuiImplants.currentImplantSlotId = index
+                return
             }
         }
     }

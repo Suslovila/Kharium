@@ -29,7 +29,7 @@ interface IRuneUsingTile {
 
     fun readRuneInfluenceFrom(nbt: NBTTagCompound) {
         for (index in runeFactorSustains.indices) {
-            runeFactorSustains[index].value = nbt.getOrCreateDouble(runeKeys[index], 100.0)
+            runeFactorSustains[index].value = nbt.getOrCreateDouble(runeKeys[index], 1.0)
         }
     }
 

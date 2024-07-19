@@ -3,7 +3,6 @@ package com.suslovila.kharium.common.block.tileEntity.rune
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.rune.RuneType
 import com.suslovila.kharium.client.render.tile.TileKharuSnareRenderer
-import com.suslovila.kharium.common.block.tileEntity.TileAntiNode
 import com.suslovila.kharium.common.block.tileEntity.TileKharium
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import com.suslovila.kharium.utils.SusGraphicHelper

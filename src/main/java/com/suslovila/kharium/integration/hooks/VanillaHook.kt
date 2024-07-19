@@ -22,6 +22,7 @@ object VanillaHook : ModHook() {
         val player = entity as? EntityPlayerMP ?: return
         player.inventory.mainInventory.forEachIndexed { index, itemStack ->
             itemStack ?: return@forEachIndexed
+            if(itemStack.maxStackSize != 1) return@forEachIndexed
             val kharuDestroyPercent = itemStack.getKharuAmountPercentInfluence(8.0)
             // enchantments
             itemStack.enchantmentTagList?.tagList?.removeAll {

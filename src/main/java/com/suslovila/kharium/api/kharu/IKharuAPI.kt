@@ -3,37 +3,23 @@ package com.suslovila.kharium.api.kharu
 import net.minecraft.item.ItemStack
 
 
-sealed interface IKharuManipulator
-
-interface IKharuContainer : IKharuSupplier, IKharuConsumer {
+// plays role of consumer and supplier in one
+interface IKharuContainer {
     fun getStoredKharuAmount(): Int
     fun getCapacity(): Int
-}
 
-interface IKharuConsumer : IKharuManipulator {
-    //this methods return successfully put Kharu
-    fun putToItself(amount: Int): Int
+    fun setKharuAmount(amount: Int)
 
-    // as in thaumcraft, suction determines which transport will take essentia from another.
-    fun getSuction()
-    fun setSuction()
-}
+    // returns amount which was successfully taken
+    fun takeKharu(amount: Int): Int
 
-interface IKharuSupplier : IKharuManipulator {
-    //this methods return successfully taken Kharu
-    fun takeFromItself(amount: Int): Int
-}
+    // returns exclusive amount that was not put
+    fun putKharu(amount: Int): Int
 
+    // how many kharu does it need right now
+    fun getRequiredAmount(): Int
 
-interface IKharuTransport : IKharuManipulator {
-
-    /*
-    The main idea of kharu transport is similar to thaumcraft's essentia transport - one essentia transport takes
-    kharu from another - all logic is individual for each kharu transport
-
-*/
-    //Mostly kharu-tranports are tileEntities, but not always
-    fun getSuction()
-    fun setSuction()
+    // how many kharu can it take or output per second
+    fun getConduction(): Int
 }
 

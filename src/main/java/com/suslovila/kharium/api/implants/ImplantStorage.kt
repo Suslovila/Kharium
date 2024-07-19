@@ -122,7 +122,7 @@ class ImplantStorage(
     }
 
     override fun decrStackSize(slotId: Int, count: Int): ItemStack? {
-        if (slotId < implantsByType.size) {
+        if (slotId < sizeInventory) {
             val implant = getStackInSlot(slotId) ?: return null
             if (implant.stackSize > count) {
                 val result = getStackInSlot(slotId)!!.splitStack(count)
@@ -139,7 +139,7 @@ class ImplantStorage(
     }
 
     override fun setInventorySlotContents(slotId: Int, itemstack: ItemStack?) {
-        if (slotId >= implantsByType.size) {
+        if (slotId >= implantAmount) {
             return
         }
         val possibleType = ImplantType.getTypeForSlotWithIndex(slotId) ?: return
@@ -234,7 +234,4 @@ class ImplantStorage(
         private const val SLOT_INDEX_NBT = "index"
     }
 
-    fun syncSlotToClients(slot: Int) {
-//                PacketHandler.INSTANCE.sendToAll(PacketImplantSync(this.player.get(), slot) as IMessage)
-    }
 }

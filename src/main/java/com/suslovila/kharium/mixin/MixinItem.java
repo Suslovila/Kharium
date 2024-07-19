@@ -18,11 +18,9 @@ import java.util.List;
 public abstract class MixinItem {
     @Inject(method = "addInformation", at = @At(value = "HEAD"))
     public void addingKharuToAll(ItemStack stack, EntityPlayer player, List list, boolean isShift, CallbackInfo ci) {
-//        if(isShift) {
-            NBTTagCompound tag = SusNBTHelper.INSTANCE.getOrCreateTag(stack);
-            if(tag.hasKey(KharuInfluenceHandler.INSTANCE.getAMOUNT_NBT())) {
-                list.add(EnumChatFormatting.DARK_RED.toString() + "Destructed by: " + (int)(KharuInfluenceHandler.INSTANCE.getKharuLinearAmountPercent(stack) * 100) + "%");
-//            }
-        }
+//            NBTTagCompound tag = SusNBTHelper.INSTANCE.getOrCreateTag(stack);
+//            if(tag.hasKey(KharuInfluenceHandler.INSTANCE.getAMOUNT_NBT())) {
+//                list.add(EnumChatFormatting.DARK_RED.toString() + "Destructed by: " + (int)(KharuInfluenceHandler.INSTANCE.getKharuLinearAmountPercent(stack) * 100) + "%");
+//        }
     }
 }

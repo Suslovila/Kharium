@@ -1,7 +1,6 @@
 package com.suslovila.kharium.api.implants
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.api.essentia.EssentiaHelper
 import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler.addKharu
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
@@ -25,8 +24,7 @@ abstract class AbilityTemporary(name: String) : Ability(name) {
     open fun activateAbility(player: EntityPlayer, index: Int, implant: ItemStack): Boolean =
         implant.getOrCreateTag().let { tag ->
             if (isOnCooldown(implant) || isActive(implant)) return false
-            val requiredFuel = getFuelConsumeOnActivation(implant)
-            val hasEnoughFuel = EssentiaHelper.takeMagicFuelFromPlayer(player, requiredFuel)
+            val hasEnoughFuel = getFuelConsumeOnActivation(implant)?.takeFrom(player)?.isEmpty() ?: true
             if (!hasEnoughFuel) {
                 return false
             }
@@ -53,7 +51,7 @@ abstract class AbilityTemporary(name: String) : Ability(name) {
     }
 
 
-    open fun isActive(implant: ItemStack): Boolean =
+    override fun isActive(implant: ItemStack): Boolean =
         implant.getOrCreateTag().getOrCreateInteger(TIME_LEFT_NBT, 0) != 0
 
 }

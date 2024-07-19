@@ -122,7 +122,7 @@ interface IEssentiaHolder {
     fun getStoredEssentia(): AspectList
 
     // returns the overlapping aspects
-    fun setStoredAspects(aspects: AspectList): AspectList
+    fun setStoredAspects(aspects: AspectList)
 
     // returns overlapping amount
     fun add(aspect: Aspect, amount: Int): Int
@@ -138,5 +138,5 @@ interface IEssentiaHolderItem {
     fun addAspect(stack: ItemStack, aspect: Aspect, amount: Int): Int
 
     // returns max amount for each aspect
-    fun getMaxAmount(stack: ItemStack): Int
+    fun getMaxAspectAmount(stack: ItemStack): Int
 }

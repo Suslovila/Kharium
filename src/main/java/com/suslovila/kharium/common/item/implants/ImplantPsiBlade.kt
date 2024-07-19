@@ -1,6 +1,7 @@
 package com.suslovila.kharium.common.item.implants
 
 import com.suslovila.kharium.Kharium
+import com.suslovila.kharium.api.damage.DamageSourceEnergy
 import com.suslovila.kharium.api.fuel.FuelComposite
 import com.suslovila.kharium.api.fuel.MagicFuel
 import com.suslovila.kharium.api.implants.*
@@ -8,21 +9,17 @@ import com.suslovila.kharium.api.implants.RuneUsingItem.Companion.getRuneAmountO
 import com.suslovila.kharium.api.rune.RuneType
 import com.suslovila.kharium.client.render.item.ItemSpaceDividerRenderer
 import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler.addKharu
-import com.suslovila.kharium.utils.SusGraphicHelper
-import net.minecraft.client.Minecraft
 import net.minecraft.entity.EntityLiving
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.event.RenderHandEvent
 import net.minecraftforge.client.event.RenderPlayerEvent
 import net.minecraftforge.event.entity.player.AttackEntityEvent
 import org.lwjgl.opengl.GL11.*
-import thaumcraft.api.aspects.Aspect
-import thaumcraft.api.aspects.AspectList
-import thaumcraft.client.lib.UtilsFX
+import kotlin.random.Random
 
-class ImplantPsiBlade() : ItemImplant(ImplantType.HAND) {
-    override val abilities: ArrayList<AbilityPassive> =
+class ImplantPsiBlade() : ItemImplant(ImplantType.HEART) {
+    override val abilities: ArrayList<Ability> =
         arrayListOf(
             object : AbilityPassive("dissolate") {
                 override fun getFuelConsumeOnActivation(implant: ItemStack): MagicFuel? = null
@@ -37,65 +34,64 @@ class ImplantPsiBlade() : ItemImplant(ImplantType.HAND) {
                 }
 
                 override fun getCooldownTotal(implant: ItemStack): Int {
-                    return 40
+                    return 40 / (1 + getRuneAmountOfType(implant, RuneType.OVERCLOCK))
                 }
 
                 override fun onPlayerAttackEntityEvent(event: AttackEntityEvent, index: Int, implant: ItemStack) {
-                    if (event.entityPlayer.worldObj.isRemote) return
+                    // both sides for bolt render
                     val basicDamage = 4
-                    if (!isOnCooldown(implant) && isEnabled(implant)) {
-//                       val damage = basicDamage * (1 + getRuneAmountOfType(implant, RuneType.EXPANSION).toFloat() / 2)
+                    if (!isOnCooldown(implant) && isActive(implant)) {
 
                         (event.target as? EntityLiving)?.run {
-                            worldObj.createExplosion(
-                                null,
-                                this.posX + 0.5,
+                            this.attackEntityFrom(
+                                DamageSourceEnergy,
+                                (basicDamage + 3 * getRuneAmountOfType(implant, RuneType.EXPANSION)).toFloat()
+                            )
+
+                            repeat(2) {
+                                val lightningOffset = 0.5
+                                Kharium.proxy.nodeAntiBolt(
+                                    worldObj,
+                                    x = (posX + Random.nextDouble(
+                                        -lightningOffset,
+                                        lightningOffset
+                                    )).toFloat(),
+                                    y = (posY).toFloat(),
+                                    z = (posZ + Random.nextDouble(
+                                        -lightningOffset,
+                                        lightningOffset
+                                    )).toFloat(),
+                                    x2 = (posX + Random.nextDouble(
+                                        -lightningOffset,
+                                        lightningOffset
+                                    )).toFloat(),
+                                    y2 = (posY + this.height).toFloat(),
+                                    z2 = (posZ + Random.nextDouble(
+                                        -lightningOffset,
+                                        lightningOffset
+                                    )).toFloat(),
+                                )
+                            }
+                            worldObj.playSound(
+                                this.posX,
                                 this.posY + 0.5,
-                                this.posZ + 0.5,
+                                this.posZ,
+                                Kharium.MOD_ID + ":psi_blade",
                                 1.0f,
+                                1.4f + worldObj.rand.nextFloat() * 0.2f,
                                 false
                             )
 
+
                             sendToCooldown(implant)
                             event.entityPlayer.addKharu(getKharuEmissionOnSpecial(implant))
-                            notifyClient(event.entityPlayer, index, implant)
+//                            notifyClient(event.entityPlayer, index, implant)
                         }
                     }
                 }
 
-                override fun onRenderPlayerEvent(event: RenderPlayerEvent.Post, index: Int, implant: ItemStack) {
-                    if (!isEnabled(implant)) return
-                    glPushMatrix()
-                    val viewingPlayer: EntityPlayer = Minecraft.getMinecraft().thePlayer
-                    if (viewingPlayer !== event.entityPlayer) {
-                        val translationXLT: Double = event.entityPlayer.prevPosX - viewingPlayer.prevPosX
-                        val translationYLT: Double = event.entityPlayer.prevPosY - viewingPlayer.prevPosY
-                        val translationZLT: Double = event.entityPlayer.prevPosZ - viewingPlayer.prevPosZ
-                        val translationX: Double =
-                            translationXLT + (event.entityPlayer.posX - viewingPlayer.posX - translationXLT) * event.partialRenderTick
-                        val translationY: Double =
-                            translationYLT + (event.entityPlayer.posY - viewingPlayer.posY - translationYLT) * event.partialRenderTick
-                        val translationZ: Double =
-                            translationZLT + (event.entityPlayer.posZ - viewingPlayer.posZ - translationZLT) * event.partialRenderTick
-                        glTranslated(translationX, translationY + 1.1, translationZ)
-                    } else {
-                        glTranslated(0.0, -0.5, 0.0)
-                    }
-                    glEnable(GL_CULL_FACE)
-                    glDisable(GL_BLEND)
-                    glDisable(GL_ALPHA_TEST)
-                    UtilsFX.bindTexture(SusGraphicHelper.whiteBlank)
-                    glColor4f(1f, 1f, 1f, 1f)
-
-                    glScaled(1.0, 1.5, 1.0)
-
-//                   KharuTickHandler.model.renderAll()
-
-                    glPopMatrix()
-                }
-
                 override fun onRenderHandEvent(event: RenderHandEvent, index: Int, implant: ItemStack) {
-                    if (!isEnabled(implant)) return
+                    if (!isActive(implant)) return
                     glPushMatrix()
 
                     glTranslated(0.5, 0.0, 0.0)

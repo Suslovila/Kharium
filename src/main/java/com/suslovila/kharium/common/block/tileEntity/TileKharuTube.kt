@@ -1,6 +1,5 @@
 package com.suslovila.kharium.common.block.tileEntity
 
-import com.suslovila.kharium.api.kharu.IKharuTransport
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.MathHelper
@@ -18,7 +17,7 @@ import thaumcraft.common.config.ConfigBlocks
 import thaumcraft.common.tiles.TileTube
 import java.util.*
 
-class TileKharuTube() : TileThaumcraft(), IWandable, IKharuTransport {
+class TileKharuTube() : TileThaumcraft(), IWandable {
 
     // pos in array => side of tube (opened/closed is turned with wand)
     val openSides = arrayOf(false, false, false, false, false, false)
@@ -249,14 +248,6 @@ class TileKharuTube() : TileThaumcraft(), IWandable, IKharuTransport {
     }
 
     override fun onWandStoppedUsing(var1: ItemStack?, var2: World?, var3: EntityPlayer?, var4: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getSuction() {
-        TODO("Not yet implemented")
-    }
-
-    override fun setSuction() {
         TODO("Not yet implemented")
     }
 

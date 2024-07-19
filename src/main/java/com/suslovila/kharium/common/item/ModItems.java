@@ -1,5 +1,6 @@
 package com.suslovila.kharium.common.item;
 
+import com.suslovila.kharium.common.item.implants.ImplantPhoenixHeart;
 import com.suslovila.kharium.common.item.implants.ImplantPsiBlade;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
@@ -11,8 +12,6 @@ public class ModItems {
     public static Item crystallizedKharu = new ItemCrystallizedAntiMatter();
 
     public static Item blade = new ImplantPsiBlade();
-
-
     public static Item.ToolMaterial voidMetalMaterial = EnumHelper.addToolMaterial("VOID_METAL", 3, 300, 6.2F, 2.0F, 20);
 
     public static void register() {
@@ -21,5 +20,9 @@ public class ModItems {
         GameRegistry.registerItem(blade, "blade");
 
         GameRegistry.registerItem(ItemSpaceDivider.INSTANCE, ItemSpaceDivider.name);
+        GameRegistry.registerItem(ItemRune.INSTANCE, ItemRune.name);
+        GameRegistry.registerItem(ItemKharuNetConfigurator.INSTANCE, ItemKharuNetConfigurator.name);
+        GameRegistry.registerItem(ImplantPhoenixHeart.INSTANCE, ImplantPhoenixHeart.name);
+
     }
 }

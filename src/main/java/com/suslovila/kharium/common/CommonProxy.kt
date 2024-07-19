@@ -1,7 +1,7 @@
 package com.suslovila.kharium.common
 
 
-import GuiImplants
+import com.suslovila.kharium.client.gui.GuiImplants
 import com.suslovila.kharium.utils.config.Config
 import com.suslovila.kharium.common.block.ModBlocks
 import com.suslovila.kharium.common.event.*
@@ -12,6 +12,7 @@ import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler
 import com.suslovila.kharium.utils.config.ConfigImlants
 import com.suslovila.kharium.utils.config.ConfigWitchery
+import com.suslovila.kharium.utils.config.multistructures.ConfigKharuContainer
 import com.suslovila.kharium.utils.config.multistructures.ConfigKharuSnare
 import cpw.mods.fml.common.FMLCommonHandler
 import cpw.mods.fml.common.event.FMLInitializationEvent
@@ -28,6 +29,7 @@ open class CommonProxy {
         ConfigWitchery.registerServerConfig(event.suggestedConfigurationFile)
         ConfigImlants.registerServerConfig(event.suggestedConfigurationFile)
         ConfigKharuSnare.registerServerConfig(event.suggestedConfigurationFile)
+        ConfigKharuContainer.registerServerConfig(event.suggestedConfigurationFile)
 
         FMLCommonHandler.instance().bus().register(FMLEventListener)
         MinecraftForge.EVENT_BUS.register(FMLEventListener)

@@ -1,6 +1,8 @@
 package com.suslovila.kharium.api.implants
 
+import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.rune.RuneType
+import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
 
 import net.minecraft.item.Item
@@ -72,29 +74,33 @@ enum class ImplantType(
 }
 
 
-
 interface RuneUsingItem {
     fun getMaxRuneAmount(): Int
 
     companion object {
         fun getRuneAmountOfType(stack: ItemStack, type: RuneType) =
-            if (stack.item is RuneUsingItem)
-                stack.getOrCreateTag().getInteger(type.toString())
-            else 0
+            if (stack.item is RuneUsingItem) {
+                stack.getOrCreateTag()
+                    .getOrCreateInteger(Kharium.MOD_ID + ":rune_amount_of_type: " + type.toString(), 0)
+            } else {
+                0
+            }
 
         fun setRuneAmountOfType(stack: ItemStack, type: RuneType, amount: Int) {
             val runeClass = stack.item
-            if (runeClass is RuneUsingItem)
-                stack.getOrCreateTag().setInteger(type.toString(), amount.coerceAtMost(runeClass.getMaxRuneAmount()))
+            if (runeClass is RuneUsingItem) {
+                stack.getOrCreateTag().setInteger(
+                    Kharium.MOD_ID + ":rune_amount_of_type: " + type.toString(),
+                    amount.coerceAtMost(runeClass.getMaxRuneAmount())
+                )
+            }
         }
     }
-
 }
 
 
-
 abstract class ItemImplant(val implantType: ImplantType) : Item(), RuneUsingItem {
-    abstract val abilities: ArrayList<AbilityPassive>
+    abstract val abilities: ArrayList<Ability>
 
     init {
         maxStackSize = 1
@@ -107,15 +113,19 @@ abstract class ItemImplant(val implantType: ImplantType) : Item(), RuneUsingItem
     open fun onRenderHandEvent(event: RenderHandEvent, index: Int, implant: ItemStack) {
         abilities.forEach { it.onRenderHandEvent(event, index, implant) }
     }
+
     open fun onRenderPlayerEvent(event: RenderPlayerEvent.Post, index: Int, implant: ItemStack) {
         abilities.forEach { it.onRenderPlayerEvent(event, index, implant) }
     }
+
     open fun onPlayerAttackEntityEvent(event: AttackEntityEvent, index: Int, implant: ItemStack) {
         abilities.forEach { it.onPlayerAttackEntityEvent(event, index, implant) }
     }
+
     open fun onPlayerHealEvent(event: LivingHealEvent, index: Int, implant: ItemStack) {
         abilities.forEach { it.onPlayerHealEvent(event, index, implant) }
     }
+
     open fun onPlayerUpdateEvent(event: LivingEvent.LivingUpdateEvent, index: Int, implant: ItemStack) {
         abilities.forEach { it.onPlayerUpdateEvent(event, index, implant) }
     }
@@ -123,12 +133,15 @@ abstract class ItemImplant(val implantType: ImplantType) : Item(), RuneUsingItem
     open fun onPlayerHurtEvent(event: LivingHurtEvent, index: Int, implant: ItemStack) {
         abilities.forEach { it.onPlayerHurtEvent(event, index, implant) }
     }
+
     open fun onPlayerDeathEvent(event: LivingDeathEvent, index: Int, implant: ItemStack) {
         abilities.forEach { it.onPlayerDeathEvent(event, index, implant) }
     }
+
     open fun onPlayerBeingAttackedEvent(event: LivingAttackEvent, index: Int, implant: ItemStack) {
         abilities.forEach { it.onPlayerBeingAttackedEvent(event, index, implant) }
     }
+
     open fun onPlayerSetAttackTargetEvent(event: LivingSetAttackTargetEvent, index: Int, implant: ItemStack) {
         abilities.forEach { it.onPlayerSetAttackTargetEvent(event, index, implant) }
     }

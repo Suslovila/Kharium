@@ -22,6 +22,7 @@ public class KhariumPacketHandler {
         INSTANCE.registerMessage(PacketEnableImplantSync.Handler.class, PacketEnableImplantSync.class, idx++, Side.SERVER);
         INSTANCE.registerMessage(PacketAllExtendedPlayerSync.Handler.class, PacketAllExtendedPlayerSync.class, idx++, Side.CLIENT);
         INSTANCE.registerMessage(PacketOneExtendedPlayerSync.Handler.class, PacketOneExtendedPlayerSync.class, idx++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketRuneInstallerButtonClicked.Handler.class, PacketRuneInstallerButtonClicked.class, idx++, Side.SERVER);
 
     }
 

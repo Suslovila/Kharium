@@ -1,25 +1,26 @@
 package com.suslovila.kharium.common.block.tileEntity
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.api.kharu.IKharuSupplier
 import com.suslovila.kharium.api.rune.IRuneUsingTile
 import com.suslovila.kharium.api.rune.RuneType
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import com.suslovila.kharium.utils.*
+import com.suslovila.kharium.utils.config.multistructures.ConfigKharuSnare
 import com.suslovila.sus_multi_blocked.utils.Position
 import com.suslovila.sus_multi_blocked.utils.getTile
 import io.netty.util.internal.ConcurrentSet
 import net.minecraft.nbt.NBTTagCompound
-import thaumcraft.api.TileThaumcraft
-import kotlin.math.abs
 
 class TileAntiNode(
-) : TileThaumcraft(), IKharuSupplier, IRuneUsingTile {
+) : TileKharium(), IRuneUsingTile {
     override val runeFactorSustains: Array<Percentage> = defaultPercentage()
-    override val runeFactorChangePerCheck: Array<Percentage> = defaultPercentage()
+    override val runeFactorChangePerCheck: Array<Percentage> =
+        Array(RuneType.values().size) { _ -> Percentage(ConfigKharuSnare.antiNodeSustainDecreasePerCheck) }
 
 
     companion object {
+        val TAG_ACTUAL_ENERGY_NBT = Kharium.prefixAppender.doAndGet("actual_energy")
+        val MAX_ENERGY_NBT = Kharium.prefixAppender.doAndGet("max_energy")
         val tracker = object : TimeTracker() {
             override val maxValue: Int = 20
         }
@@ -49,53 +50,34 @@ class TileAntiNode(
     override fun writeCustomNBT(rootNbt: NBTTagCompound) {
         rootNbt.setInteger(TAG_ACTUAL_ENERGY_NBT, actualEnergy)
         rootNbt.setInteger(MAX_ENERGY_NBT, maxEnergy)
+        writeRuneInfluenceStateTo(rootNbt)
 
     }
 
     override fun readCustomNBT(rootNbt: NBTTagCompound) {
         actualEnergy = rootNbt.getInteger(TAG_ACTUAL_ENERGY_NBT)
         maxEnergy = rootNbt.getInteger(MAX_ENERGY_NBT)
-        stabilisation = rootNbt.getDouble(STABILISATION_NBT)
-        containmentFactor = rootNbt.getDouble(CONTAINMENT_NBT)
-        instabilityDecrement = rootNbt.getDouble(INSTABILITY_NBT)
-        containmentFactor = rootNbt.getDouble(CONTAINMENT_DECREMENT_NBT)
+        readRuneInfluenceFrom(rootNbt)
     }
 
 
     override fun updateEntity() {
         super.updateEntity()
         if (world.isRemote) return
+        for (runeType in RuneType.values()) takeInfluence(runeType)
         takeInfluenceFromSnare()
-
 
     }
 
     fun takeInfluenceFromSnare() {
         if (isStabilised && ((world.worldTime + ownCheckTime) % tracker.maxValue) == 0L) {
             snare!!.affectAntiNode(this)
-            stabilisation -= instabilityDecrement
-            containmentFactor -= containmentDecrement
             markForSaveAndSync()
         }
     }
 
-    override fun takeFromItself(amount: Int): Int {
-        TODO("Not yet implemented")
-    }
 
 
-    open fun markForSaveAndSync() {
-        markForSave()
-        markForSync()
-    }
-
-    open fun markForSave() {
-        worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this)
-    }
-
-    open fun markForSync() {
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord)
-    }
 }
 
 class KharuTail(

@@ -24,7 +24,6 @@ import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL11.*
 import thaumcraft.client.lib.UtilsFX
 import java.awt.Color
-import kotlin.math.abs
 
 object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
 
@@ -56,7 +55,7 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
         val time = Minecraft.getMinecraft().renderViewEntity.ticksExisted.toFloat() + partialTicks
         glPushMatrix()
         glTranslated(0.0, correctionOffset, 0.0)
-        renderCore()
+        renderCore(tile, partialTicks)
         if (tile.isPrepared) {
             renderTranslatingKharu(tile, partialTicks, time)
         }
@@ -106,7 +105,7 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
     }
 
 
-    fun renderCore() {
+    fun renderCore(tile: TileKharuSnare, partialTicks: Float) {
         glPushMatrix()
 
         glScaled(0.5, 0.5, 0.5)
@@ -114,13 +113,13 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
 
         glColor4f(1f, 1f, 1f, 1f)
         coreModel.renderAll()
-        renderGlowingElements()
+        renderGlowingElements(tile, partialTicks)
 
         glPopMatrix()
     }
 
 
-    private fun renderGlowingElements() {
+    private fun renderGlowingElements(tile: TileKharuSnare, partialTicks: Float) {
         glPushMatrix()
         glAlphaFunc(516, 0.003921569f)
         glEnable(3042)
@@ -138,7 +137,7 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
             co.red / 255f,
             co.green / 255f,
             co.blue / 255f,
-            1f
+            (1f * tile.getClientPreparationPercent(partialTicks)).toFloat()
         )
         coreModel.renderAll()
         glDisable(GL_BLEND)
@@ -172,9 +171,11 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
         fieldModel.renderAll()
         glPopMatrix()
         glDisable(GL_BLEND)
-        glEnable(GL_LIGHTING)
-        glDisable(GL_ALPHA_TEST)
+//        glEnable(GL_LIGHTING)
+        glEnable(GL_ALPHA_TEST)
         glDepthMask(true)
+        glEnable(GL_CULL_FACE)
+
     }
 
     fun renderUpgradeRunes(tile: TileKharuSnare, partialTicks: Float) {

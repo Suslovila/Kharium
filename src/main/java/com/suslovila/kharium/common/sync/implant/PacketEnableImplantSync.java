@@ -1,5 +1,6 @@
 package com.suslovila.kharium.common.sync.implant;
 
+import com.suslovila.kharium.api.implants.Ability;
 import com.suslovila.kharium.api.implants.AbilityPassive;
 import com.suslovila.kharium.api.implants.ItemImplant;
 import com.suslovila.kharium.extendedData.KhariumPlayerExtendedData;
@@ -48,7 +49,7 @@ public class PacketEnableImplantSync
                 ItemStack implant = data.getImplantStorage().getStackInSlot(message.slotId);
                 if (implant != null) {
                     ItemImplant implantClass = (ItemImplant) implant.getItem();
-                    ArrayList<AbilityPassive> abilities = implantClass.getAbilities();
+                    ArrayList<Ability> abilities = implantClass.getAbilities();
                     if (abilities.size() > message.abilityId) {
                         abilities.get(message.abilityId).onEnableButtonClicked(player, message.slotId, implant);
                     }

@@ -11,18 +11,13 @@ class EssentiaHolderItemWrapper(
     override fun getStoredEssentia(): AspectList =
         itemType.getStoredAspects(itemStackIn)
 
-    override fun setStoredAspects(aspects: AspectList) {
+    override fun setStoredAspects(aspects: AspectList) =
         itemType.setStoredAspects(itemStackIn, aspects)
-    }
-
-
-
 
 
     override fun add(aspect: Aspect, amount: Int): Int =
         itemType.addAspect(itemStackIn, aspect, amount)
 
-    override fun getMaxAmount(): Int {
-        itemType.getMaxAmount(itemStackIn)
-    }
+    override fun getMaxAmount() =
+        itemType.getMaxAspectAmount(itemStackIn)
 }

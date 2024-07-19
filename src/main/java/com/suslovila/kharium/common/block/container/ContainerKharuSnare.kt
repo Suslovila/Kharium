@@ -3,9 +3,7 @@ package com.suslovila.kharium.common.block.container
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.InventoryPlayer
-import net.minecraft.inventory.Container
 import net.minecraft.inventory.Slot
-import net.minecraft.item.ItemStack
 
 class ContainerKharuSnare(val inventoryPlayer: InventoryPlayer, val snare: TileKharuSnare) : DefaultContainer() {
 
@@ -28,6 +26,6 @@ class ContainerKharuSnare(val inventoryPlayer: InventoryPlayer, val snare: TileK
     }
 
     override fun canInteractWith(player: EntityPlayer): Boolean {
-        return snare.isUseableByPlayer(player)
+        return snare.inventory.isUseableByPlayer(player)
     }
 }

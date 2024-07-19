@@ -19,6 +19,8 @@ abstract class AbilityHack(name: String) : Ability(name) {
         val HACK_VICTIM_ID_NBT = Kharium.prefixAppender.doAndGet("victim_id")
     }
 
+    override fun isActive(implant: ItemStack): Boolean =
+        isHacking(implant)
     abstract fun getHackTime(): Int
     abstract fun hackEntity(hacker: EntityPlayer, victim: Entity, slotIndex: Int, implant: ItemStack)
     override fun onEnableButtonClicked(player: EntityPlayer, index: Int, implant: ItemStack) {

@@ -3,17 +3,26 @@ package com.suslovila.kharium.utils
 import com.suslovila.kharium.Kharium
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.OpenGlHelper
+import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.Tessellator
+import net.minecraft.client.renderer.entity.RenderItem
+import net.minecraft.item.ItemStack
 import net.minecraft.util.MathHelper
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
 import org.lwjgl.opengl.GL11.*
+import org.lwjgl.opengl.GL12
 import thaumcraft.client.lib.UtilsFX
 import thaumcraft.common.config.Config
 import java.awt.Color
 
 object SusGraphicHelper {
+    val v1 = 0.0
+    val v2 = 1.0
+    val u1 = 0.0
+    val u2 = 1.0
+
     var cubeModel: IModelCustom
     val whiteBlank = ResourceLocation(Kharium.MOD_ID, "textures/whiteBlank.png")
     var savedLightY: Float = 0.0f
@@ -70,6 +79,7 @@ object SusGraphicHelper {
         val b = co.blue / 255.0f
         tessellator.setColorRGBA_F(r * fadeFactor, g * fadeFactor, b * fadeFactor, alpha)
     }
+
     fun bindColor(color: Int, alpha: Float, fadeFactor: Float) {
         val co = Color(color)
         val r = co.red / 255.0f
@@ -77,6 +87,7 @@ object SusGraphicHelper {
         val b = co.blue / 255.0f
         glColor4f(r * fadeFactor, g * fadeFactor, b * fadeFactor, alpha)
     }
+
     fun translateFromPlayerTo(pos: SusVec3, partialTicks: Float) {
         val player = Minecraft.getMinecraft().thePlayer
         val destX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks
@@ -86,7 +97,7 @@ object SusGraphicHelper {
     }
 
 
-    //draws line from specified position to zero of cord system
+    //draws line from specified graphic cords position to zero of cord system
     fun drawFloatyLine(
         xFrom: Double,
         yFrom: Double,
@@ -209,5 +220,41 @@ object SusGraphicHelper {
     fun disableBlend() {
         glEnable(GL_LIGHTING)
         glDisable(GL_BLEND)
+    }
+
+
+    fun drawStack(itemRender: RenderItem, item: ItemStack?, x: Int, y: Int, zLevel: Float) {
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
+        RenderHelper.enableGUIStandardItemLighting()
+        val mc = Minecraft.getMinecraft() ?: return
+        glPushMatrix()
+        glPushAttrib(GL_TRANSFORM_BIT)
+        glEnable(GL12.GL_RESCALE_NORMAL)
+        if (item != null) {
+            glEnable(GL_LIGHTING)
+            glEnable(GL_DEPTH_TEST)
+            val prevZ: Float = itemRender.zLevel
+            itemRender.zLevel = zLevel
+            itemRender.renderWithColor = false
+            itemRender.renderItemAndEffectIntoGUI(mc.fontRendererObj, mc.renderEngine, item, x, y)
+            itemRender.renderItemOverlayIntoGUI(mc.fontRendererObj, mc.renderEngine, item, x, y)
+            itemRender.zLevel = prevZ
+            itemRender.renderWithColor = true
+            glDisable(GL_DEPTH_TEST)
+            glDisable(GL_LIGHTING)
+        }
+        glPopAttrib()
+        glPopMatrix()
+    }
+
+
+    fun drawFromCenter(radius: Double) {
+        val tessellator = Tessellator.instance
+        tessellator.startDrawingQuads()
+        tessellator.addVertexWithUV(-radius, radius, 0.0, u2, v2)
+        tessellator.addVertexWithUV(radius, radius, 0.0, u2, v1)
+        tessellator.addVertexWithUV(radius, -radius, 0.0, u1, v1)
+        tessellator.addVertexWithUV(-radius, -radius, 0.0, u1, v2)
+        tessellator.draw()
     }
 }

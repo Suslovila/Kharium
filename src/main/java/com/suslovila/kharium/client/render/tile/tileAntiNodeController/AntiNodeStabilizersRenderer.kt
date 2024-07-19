@@ -155,7 +155,7 @@ object AntiNodeStabilizersRenderer {
         glEnable(GL_CULL_FACE)
         glEnable(GL_ALPHA_TEST)
         glDisable(GL_BLEND)
-        glEnable(GL_LIGHTING)
+//        glEnable(GL_LIGHTING)
         glDepthMask(true)
 
         glPopMatrix()
