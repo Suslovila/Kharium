@@ -1,3 +1,38 @@
 {
-   "psi_blade": {"category": "master","sounds": [{"name": "psi_blade","stream": false}]}
+   "psi_blade": {
+      "category": "master",
+      "sounds": [
+         {
+            "name": "psi_blade",
+            "stream": false
+         }
+      ]
+   },
+   "ability_phoenix_heart": {
+      "category": "master",
+      "sounds": [
+         {
+            "name": "ability_phoenix_heart",
+            "stream": false
+         }
+      ]
+   },
+   "travel_through_time": {
+      "category": "master",
+      "sounds": [
+         {
+            "name": "travel_through_time",
+            "stream": false
+         }
+      ]
+   },
+   "swap_places": {
+      "category": "master",
+      "sounds": [
+         {
+            "name": "swap_places",
+            "stream": false
+         }
+      ]
+   }
 }

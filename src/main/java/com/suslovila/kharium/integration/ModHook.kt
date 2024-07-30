@@ -1,6 +1,5 @@
 package com.suslovila.kharium.integration
 
-import com.emoniph.witchery.util.Log
 import cpw.mods.fml.common.Loader
 import net.minecraft.entity.EntityLivingBase
 
@@ -14,7 +13,7 @@ abstract class ModHook {
         )
         if (initialized) {
             doInit()
-            Log.instance().debug(
+            KhariumLog.debug(
                 String.format(
                     "Mod: %s support initialized", *arrayOf<Any>(
                         modID
@@ -22,7 +21,7 @@ abstract class ModHook {
                 )
             )
         } else {
-            Log.instance().debug(
+            KhariumLog.debug(
                 String.format(
                     "Mod: %s not found", *arrayOf<Any>(
                         modID
@@ -36,7 +35,7 @@ abstract class ModHook {
     fun postInit() {
         if (initialized) {
             doPostInit()
-            Log.instance().debug(
+            KhariumLog.debug(
                 String.format(
                     "Mod: %s support post initialized", *arrayOf<Any>(
                         modID

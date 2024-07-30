@@ -1,6 +1,7 @@
 package com.suslovila.kharium.api.implants
 
 import com.suslovila.kharium.Kharium
+import com.suslovila.kharium.api.fuel.FuelComposite
 import com.suslovila.kharium.api.fuel.MagicFuel
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.sync.implant.PacketImplantSync
@@ -27,7 +28,7 @@ abstract class Ability(val name: String) {
     open fun isOnCooldown(implant: ItemStack) =
         implant.getOrCreateTag().getOrCreateInteger(COOLDOWN_NBT, 0) != 0
 
-    abstract fun getFuelConsumeOnActivation(implant: ItemStack): MagicFuel?
+    abstract fun getFuelConsumeOnActivation(implant: ItemStack): FuelComposite?
     abstract fun getKharuEmissionOnActivation(implant: ItemStack): Int
 
     abstract fun getCooldownTotal(implant: ItemStack): Int

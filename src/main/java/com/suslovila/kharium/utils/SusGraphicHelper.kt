@@ -257,4 +257,10 @@ object SusGraphicHelper {
         tessellator.addVertexWithUV(-radius, -radius, 0.0, u1, v2)
         tessellator.draw()
     }
+
+    fun alignZAxisWithVector(vec3: SusVec3) {
+
+    }
+
+
 }

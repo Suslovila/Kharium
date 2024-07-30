@@ -102,7 +102,7 @@ object KharuInfluenceHandler {
 
 
     fun ItemStack.getKharuAmount(): Int {
-        val tag = getOrCreateTag()
+        val tag = if(this.hasTagCompound()) this.tagCompound else return 0
         if (tag.hasKey(AMOUNT_NBT)) return tag.getInteger(AMOUNT_NBT)
         return 0
     }

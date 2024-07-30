@@ -2,6 +2,7 @@ package com.suslovila.kharium.common.multiStructure.kharuSnare
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.client.PostRendered
+import com.suslovila.kharium.api.kharu.IKharuContainer
 import com.suslovila.kharium.api.rune.RuneType
 import com.suslovila.kharium.client.render.tile.TileKharuSnareRenderer
 import com.suslovila.kharium.client.render.tile.tileAntiNodeController.AntiNodeStabilizersRenderer
@@ -13,6 +14,7 @@ import com.suslovila.kharium.common.worldSavedData.CustomWorldData.Companion.cus
 import com.suslovila.kharium.common.worldSavedData.KharuHotbed
 import com.suslovila.kharium.research.KhariumAspect
 import com.suslovila.kharium.utils.Percentage
+import com.suslovila.kharium.utils.config.multistructures.ConfigKharuContainer
 import com.suslovila.kharium.utils.config.multistructures.ConfigKharuSnare
 import com.suslovila.kharium.utils.getPosition
 import com.suslovila.kharium.utils.plusAssign
@@ -27,6 +29,7 @@ import net.minecraftforge.common.util.ForgeDirection
 import thaumcraft.api.aspects.AspectList
 import thaumcraft.api.aspects.AspectSourceHelper
 import thaumcraft.common.lib.events.EssentiaHandler
+import kotlin.math.min
 
 class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered {
     val inventory: IInventory = SimpleInventory(0, 0, "inv", 64)
@@ -38,7 +41,6 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered {
     companion object {
         val activationTime = 60
     }
-
 
     var aspects = AspectList().add(KhariumAspect.HUMILITAS, 1)
     var enabled = false
@@ -71,31 +73,41 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered {
 
         tick = (tick + 1) % Int.MAX_VALUE
         if (tick % timeCheck == 0) {
-            if (tick % timeCheck == 0) {
-                world.customData.kharuHotbeds.clear()
-                world.customData.addKharuHotbed(
-                    KharuHotbed(
-                        AxisAlignedBB.getBoundingBox(
-                            (xCoord - 7 - 3).toDouble(),
-                            (yCoord - 7 - 3).toDouble(),
-                            (zCoord - 7 - 3).toDouble(),
-                            (xCoord - 7 + 3).toDouble(),
-                            (yCoord - 7 + 3).toDouble(),
-                            (zCoord - 7 + 3).toDouble()
-                        ),
-                        100_000
-                    ),
-                    world = world
-                )
-                world.customData.syncAllHotbeds(world)
-//                world.customData.addKharuHotbed(world)
-            }
-            val hasAntiNode = world.getTile(this.getPosition() + Position(0, -8, 0)) is TileAntiNode
-            if (!hasAntiNode) {
+//            if (tick % timeCheck == 0) {
+//                world.customData.kharuHotbeds.clear()
+//                world.customData.addKharuHotbed(
+//                    KharuHotbed(
+//                        AxisAlignedBB.getBoundingBox(
+//                            (xCoord - 7 - 3).toDouble(),
+//                            (yCoord - 7 - 3).toDouble(),
+//                            (zCoord - 7 - 3).toDouble(),
+//                            (xCoord - 7 + 3).toDouble(),
+//                            (yCoord - 7 + 3).toDouble(),
+//                            (zCoord - 7 + 3).toDouble()
+//                        ),
+//                        100_000
+//                    ),
+//                    world = world
+//                )
+//                world.customData.syncAllHotbeds(world)
+////                world.customData.addKharuHotbed(world)
+//            }
+
+            val antiNode = world.getTile(this.getPosition() + Position(0, -8, 0)) as? TileAntiNode
+            if (antiNode == null) {
                 enabled = false
             } else {
                 val hasEssentia = tryTakeEssentia()
                 enabled = hasEssentia
+
+                val container = (world.getTile(
+                    this.getPosition() + Position(
+                        0,
+                        1,
+                        0
+                    )
+                ) as? TileKharuSnareContainer)
+                container?.putKharu(antiNode.actualEnergy)
             }
         }
         markForSaveAndSync()
@@ -158,13 +170,14 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered {
                     runeAmount[runeType.ordinal] * ConfigKharuSnare.runeInfluence[runeType.ordinal]
                 )
         }
+
         markForSaveAndSync()
     }
 
 
     fun getRunes(): Array<Int> {
         val startPosition = this.getPosition() + Position(0, -13, 0)
-        val runesAmount = Array(RuneType.values().size) {_ -> 0}
+        val runesAmount = Array(RuneType.values().size) { _ -> 0 }
         finalisedLayerAmount = 0
         for (layerIndex in 0 until maxLowerAmount) {
             val layerRunesAmount =
@@ -192,7 +205,4 @@ class TileKharuSnare() : TileDefaultMultiStructureElement(), PostRendered {
         }
         return foundRunes
     }
-
 }
-
-fun Boolean.toInt(): Int = if (this) 1 else 0

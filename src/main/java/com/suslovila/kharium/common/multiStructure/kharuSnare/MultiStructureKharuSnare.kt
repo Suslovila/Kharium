@@ -34,7 +34,7 @@ object MultiStructureKharuSnare : MultiStructure<KharuSnareAdditionalData, Kharu
     val possibleTilesByMeta = listOf<() -> TileEntity>(
         ::TileFilling,
         ::TileKharuSnare,
-        ::TileFilling
+        ::TileKharuSnareContainer
     )
 
     override fun onCreated(

@@ -12,51 +12,52 @@ import net.minecraft.util.Vec3
 import net.minecraft.world.World
 
 fun TileEntity.getPosDouble() = SusVec3(this.xCoord, this.yCoord, this.zCoord)
-    fun TileEntity.getPosition() = Position(this.xCoord, this.yCoord, this.zCoord)
+fun TileEntity.getPosition() = Position(this.xCoord, this.yCoord, this.zCoord)
 fun Entity.getPosition() = SusVec3(this.posX, this.posY, this.posZ)
 
-    fun World.getBlockFromPos(position: Position) = getBlock(position.x, position.y, position.z)
+fun World.getBlockFromPos(position: Position) = getBlock(position.x, position.y, position.z)
 
 object SusWorldHelper {
-    fun teleportEntity(player: EntityPlayer?, hitMOP: MovingObjectPosition?) {
-        if (hitMOP != null && player is EntityPlayerMP) {
-            if (player.playerNetServerHandler.netManager.isChannelOpen) {
-                var hitx: Double
-                var hity: Double
-                var hitz: Double
-                when (hitMOP.typeOfHit) {
+    fun teleportEntity(entity: Entity, hitMOP: MovingObjectPosition?) {
+        if(entity is EntityPlayerMP && !entity.playerNetServerHandler.netManager.isChannelOpen) return
+        if (hitMOP != null) {
+            var hitx: Double
+            var hity: Double
+            var hitz: Double
+            when (hitMOP.typeOfHit) {
 
-                    MovingObjectType.BLOCK -> {
-                        hitx = hitMOP.hitVec.xCoord
-                        hity = hitMOP.hitVec.yCoord
-                        hitz = hitMOP.hitVec.zCoord
-                        when (hitMOP.sideHit) {
-                            0 -> hity -= 2.0
-                            2 -> hitz -= 0.5
-                            3 -> hitz += 0.5
-                            4 -> hitx -= 0.5
-                            5 -> hitx += 0.5
-                        }
-                        player.fallDistance = 0.0f
-                        player.setPositionAndUpdate(hitx, hity, hitz)
+                MovingObjectType.BLOCK -> {
+                    hitx = hitMOP.hitVec.xCoord
+                    hity = hitMOP.hitVec.yCoord
+                    hitz = hitMOP.hitVec.zCoord
+                    when (hitMOP.sideHit) {
+                        0 -> hity -= 2.0
+                        2 -> hitz -= 0.5
+                        3 -> hitz += 0.5
+                        4 -> hitx -= 0.5
+                        5 -> hitx += 0.5
                     }
-
-                    else -> player.setPositionAndUpdate(
-                        hitMOP.hitVec.xCoord,
-                        hitMOP.hitVec.yCoord,
-                        hitMOP.hitVec.zCoord
-                    )
+                    entity.fallDistance = 0.0f
+                    entity.setPosition(hitx, hity, hitz)
                 }
+
+                else -> entity.setPosition(
+                    hitMOP.hitVec.xCoord,
+                    hitMOP.hitVec.yCoord,
+                    hitMOP.hitVec.zCoord
+                )
             }
         }
     }
 
-    fun teleportEntity(player: EntityPlayer?, pos: SusVec3) {
-        if (player is EntityPlayerMP) {
-            if (player.playerNetServerHandler.netManager.isChannelOpen) {
-                player.setPositionAndUpdate(pos.x, pos.y, pos.z)
+    fun teleportEntity(entity: Entity, pos: SusVec3) {
+        if (entity is EntityPlayerMP) {
+            if (entity.playerNetServerHandler.netManager.isChannelOpen) {
+                entity.setPositionAndUpdate(pos.x, pos.y, pos.z)
+                return
             }
         }
+        entity.setPosition(pos.x, pos.y, pos.z)
     }
 
     fun doCustomRayTrace(

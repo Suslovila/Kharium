@@ -1,9 +1,13 @@
 package com.suslovila.kharium.api.implants
 
 import com.suslovila.kharium.Kharium
+import com.suslovila.kharium.api.fuel.FuelComposite
+import com.suslovila.kharium.api.fuel.FuelKharu
 import com.suslovila.kharium.api.rune.RuneType
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
 
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -146,4 +150,5 @@ abstract class ItemImplant(val implantType: ImplantType) : Item(), RuneUsingItem
         abilities.forEach { it.onPlayerSetAttackTargetEvent(event, index, implant) }
     }
 
+    // makes taking logic and all preparations and send messages for you
 }

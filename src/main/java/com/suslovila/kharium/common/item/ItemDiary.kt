@@ -3,6 +3,7 @@ package com.suslovila.kharium.common.item
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.utils.ThaumcraftIntegrator
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ChatComponentText
@@ -21,7 +22,7 @@ class ItemDiary : Item() {
     }
 
     override fun onItemRightClick(stack: ItemStack, world: World, player: EntityPlayer): ItemStack {
-        if (!world.isRemote && !ResearchManager.isResearchComplete(player.commandSenderName, "DIARY")) {
+        if (!world.isRemote && player is EntityPlayerMP && !ResearchManager.isResearchComplete(player.commandSenderName, "DIARY")) {
             if (Thaumcraft.proxy.playerKnowledge.getWarpTotal(player.commandSenderName) >= 100) {
                 ThaumcraftIntegrator.completeNormalResearch("DIARY", player, world)
                 --stack.stackSize

@@ -24,8 +24,12 @@ abstract class AbilityTemporary(name: String) : Ability(name) {
     open fun activateAbility(player: EntityPlayer, index: Int, implant: ItemStack): Boolean =
         implant.getOrCreateTag().let { tag ->
             if (isOnCooldown(implant) || isActive(implant)) return false
-            val hasEnoughFuel = getFuelConsumeOnActivation(implant)?.takeFrom(player)?.isEmpty() ?: true
-            if (!hasEnoughFuel) {
+            val requiredFuel = getFuelConsumeOnActivation(implant)
+            val lackAmount = requiredFuel?.getLack(player)
+            if (lackAmount?.isEmpty() != true) {
+                if(!player.worldObj.isRemote) {
+                    lackAmount
+                }
                 return false
             }
 

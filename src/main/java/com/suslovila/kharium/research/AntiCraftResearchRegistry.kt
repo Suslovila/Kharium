@@ -12,12 +12,39 @@ import thaumcraft.api.aspects.Aspect
 import thaumcraft.api.aspects.AspectList
 import thaumcraft.api.crafting.InfusionRecipe
 import thaumcraft.api.research.ResearchCategories
+import thaumcraft.api.research.ResearchItem
 import thaumcraft.api.research.ResearchPage
 import thaumcraft.common.config.ConfigBlocks
 
 object AntiCraftResearchRegistry {
 
     var recipes = HashMap<String, InfusionRecipe>()
+
+    val researchItemChildren: HashMap<ResearchItem, ArrayList<ResearchItem>> by lazy {
+        val childrenToParents = hashMapOf<ResearchItem, ArrayList<ResearchItem>>()
+        for (researchCategory in ResearchCategories.researchCategories.values) {
+            for (researchItem in researchCategory.research.values) {
+                childrenToParents[researchItem] = arrayListOf()
+            }
+        }
+
+        for (researchCategory in ResearchCategories.researchCategories.values) {
+            for (researchItem in researchCategory.research.values) {
+                if (researchItem.parents != null) {
+                    for (parent in researchItem.parents) {
+                        childrenToParents[ResearchCategories.getResearch(parent)]?.add(researchItem)
+                    }
+                }
+                if (researchItem.parentsHidden != null) {
+                    for (parent in researchItem.parentsHidden) {
+                        childrenToParents[ResearchCategories.getResearch(parent)]?.add(researchItem)
+                    }
+                }
+            }
+        }
+
+        childrenToParents
+    }
 
     //ItemStacks
     var essentiaReservoirVoid = ItemStack(ModBlocks.BlockEssentiaReservoirVoid, 1, 0)
@@ -92,7 +119,8 @@ object AntiCraftResearchRegistry {
         AntiCraftResearchItem(
             "KHARU_SNARE",
             khariumCategory,
-            AspectList().add(Aspect.ELDRITCH, 8).add(KhariumAspect.HUMILITAS, 4).add(Aspect.MAGIC, 6).add(Aspect.MECHANISM, 1).add(Aspect.ENERGY, 1).add(Aspect.TRAP, 1).add(Aspect.METAL, 1),
+            AspectList().add(Aspect.ELDRITCH, 8).add(KhariumAspect.HUMILITAS, 4).add(Aspect.MAGIC, 6)
+                .add(Aspect.MECHANISM, 1).add(Aspect.ENERGY, 1).add(Aspect.TRAP, 1).add(Aspect.METAL, 1),
             4,
             12,
             0,

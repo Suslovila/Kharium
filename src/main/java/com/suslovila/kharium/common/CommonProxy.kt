@@ -5,11 +5,13 @@ import com.suslovila.kharium.client.gui.GuiImplants
 import com.suslovila.kharium.utils.config.Config
 import com.suslovila.kharium.common.block.ModBlocks
 import com.suslovila.kharium.common.event.*
+import com.suslovila.kharium.common.item.ItemPortableAspectContainer
 import com.suslovila.kharium.common.item.ModItems
 import com.suslovila.kharium.research.KhariumAspect
 import com.suslovila.kharium.research.AntiCraftResearchRegistry
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler
+import com.suslovila.kharium.utils.config.ConfigPortableContainer
 import com.suslovila.kharium.utils.config.ConfigImlants
 import com.suslovila.kharium.utils.config.ConfigWitchery
 import com.suslovila.kharium.utils.config.multistructures.ConfigKharuContainer
@@ -30,6 +32,7 @@ open class CommonProxy {
         ConfigImlants.registerServerConfig(event.suggestedConfigurationFile)
         ConfigKharuSnare.registerServerConfig(event.suggestedConfigurationFile)
         ConfigKharuContainer.registerServerConfig(event.suggestedConfigurationFile)
+        ConfigPortableContainer.registerServerConfig(event.suggestedConfigurationFile)
 
         FMLCommonHandler.instance().bus().register(FMLEventListener)
         MinecraftForge.EVENT_BUS.register(FMLEventListener)
@@ -54,11 +57,15 @@ open class CommonProxy {
 
 
         MinecraftForge.EVENT_BUS.register(MixinListener)
+        MinecraftForge.EVENT_BUS.register(ItemPortableAspectContainer)
         ModBlocks.register()
         ModItems.register()
         KhariumAspect.initAspects()
     }
 
+    fun registerServer(){
+
+    }
     open fun nodeAntiBolt(worldObj: World, x: Float, y: Float, z: Float, x2: Float, y2: Float, z2: Float) {
 
     }
@@ -72,6 +79,8 @@ open class CommonProxy {
         KhariumAspect.initItemsAspects()
         AntiCraftResearchRegistry.integrateInfusion()
         AntiCraftResearchRegistry.integrateResearch()
+
+
     }
 
     open fun registerRenderers() {}

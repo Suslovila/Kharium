@@ -72,6 +72,7 @@ class TileAntiNode(
     fun takeInfluenceFromSnare() {
         if (isStabilised && ((world.worldTime + ownCheckTime) % tracker.maxValue) == 0L) {
             snare!!.affectAntiNode(this)
+            actualEnergy = (3 * runeFactorSustains[RuneType.EXPANSION.ordinal].value).toInt()
             markForSaveAndSync()
         }
     }

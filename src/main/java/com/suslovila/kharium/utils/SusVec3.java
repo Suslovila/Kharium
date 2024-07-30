@@ -1,6 +1,7 @@
 package com.suslovila.kharium.utils;
 
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
@@ -41,11 +42,13 @@ public class SusVec3 {
         this.y = p_82485_;
         this.z = p_82486_;
     }
+
     public SusVec3(Vec3 vec3) {
         this.x = vec3.xCoord;
         this.y = vec3.yCoord;
         this.z = vec3.zCoord;
     }
+
     public SusVec3(int p_82484_, int p_82485_, int p_82486_) {
         this.x = p_82484_;
         this.y = p_82485_;
@@ -253,6 +256,20 @@ public class SusVec3 {
         Number[] array = new Number[3];
         collection.toArray(array);
         return new SusVec3(array[0], array[1], array[2]);
+    }
+
+    public static SusVec3 readFrom(NBTTagCompound nbt) {
+        return new SusVec3(
+                nbt.getDouble("x"),
+                nbt.getDouble("y"),
+                nbt.getDouble("z")
+        );
+    }
+
+    public void writeTo(NBTTagCompound nbt) {
+        nbt.setDouble("x", x);
+        nbt.setDouble("y", y);
+        nbt.setDouble("z", z);
     }
 
     @NotNull

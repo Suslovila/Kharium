@@ -1,12 +1,14 @@
 package com.suslovila.kharium.utils.config
 
 import net.minecraftforge.common.config.Configuration
+import thaumcraft.api.aspects.Aspect
 import java.io.File
 import kotlin.properties.Delegates
 
-object ConfigFuelHolders {
+object ConfigPortableContainer {
     var basicContainerAspectCapacity by Delegates.notNull<Int>()
     var basicContainerKharuCapacity by Delegates.notNull<Int>()
+    var basicContainerAspectTypeAmount by Delegates.notNull<Int>()
 
     fun registerServerConfig(modCfg: File?) {
         val cfg = Configuration(modCfg)
@@ -23,6 +25,16 @@ object ConfigFuelHolders {
                 "Fuel Holders",
                 10_000,
                 1, Int.MAX_VALUE / 8,
+                ""
+            )
+
+            basicContainerAspectTypeAmount = cfg.getInt(
+                "basic container aspect amount",
+                "Fuel Holders",
+                4,
+                // to be honest, there should be max amount of Aspects, but they are not initialised
+                // by this moment I guess
+                1, 100,
                 ""
             )
         } catch (exception: Exception) {

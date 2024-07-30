@@ -1,12 +1,16 @@
 package com.suslovila.kharium.api.fuel
 
 import baubles.api.BaublesApi
+import com.suslovila.kharium.Kharium
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.util.ResourceLocation
 import kotlin.math.min
 
 class FuelKharu(val amount: Int) : MagicFuel {
     companion object {
+        val texture = ResourceLocation(Kharium.MOD_ID, "textures/misc/antinode.png")
+
         val kharuHolderProviders = mutableListOf<(EntityPlayer) -> MutableList<IKharuHolder>>()
         fun getPlacesToCheckForKharu(player: EntityPlayer) =
             mutableListOf<IKharuHolder>().apply {
@@ -43,22 +47,38 @@ class FuelKharu(val amount: Int) : MagicFuel {
         if (hasEnoughKharu) {
             var amountLeft = this.amount
             kharuStorages.forEach { storage ->
-                val taken = min(storedInPlayer, amountLeft)
+                val taken = min(storage.getStoredKharu(), amountLeft)
                 amountLeft -= taken
-                storedInPlayer -= taken
-                storage.setStoredKharu(storedInPlayer)
+                storage.setStoredKharu(storage.getStoredKharu() - taken)
             }
             return FuelKharu(0)
         }
-        return FuelKharu(storedInPlayer)
+        return FuelKharu(this.amount - storedInPlayer)
+    }
+
+    override fun forceTakeFrom(player: EntityPlayer) {
+        val kharuStorages = getPlacesToCheckForKharu(player)
+        var amountLeft = this.amount
+        kharuStorages.forEach { storage ->
+            val taken = min(storage.getStoredKharu(), amountLeft)
+            amountLeft -= taken
+            storage.setStoredKharu(storage.getStoredKharu() - taken)
+        }
+    }
+
+
+    override fun getLack(player: EntityPlayer): MagicFuel {
+        val kharuStorages = getPlacesToCheckForKharu(player)
+        var storedInPlayer = kharuStorages.sumOf { storage -> storage.getStoredKharu() }
+        return FuelKharu((this.amount - storedInPlayer).coerceAtLeast(0))
     }
 
     override fun addTo(player: EntityPlayer): MagicFuel {
         var left = this.amount
-        getPlacesToCheckForKharu(player).forEach {storage ->
+        getPlacesToCheckForKharu(player).forEach { storage ->
             val currentAmount = storage.getStoredKharu()
             val maxAmount = storage.getMaxAmount()
-            val toPut = min(maxAmount - currentAmount, left)
+            val toPut = min(maxAmount - currentAmount, left).coerceAtLeast(0)
             left -= toPut
             storage.setStoredKharu(currentAmount + toPut)
         }
@@ -69,22 +89,25 @@ class FuelKharu(val amount: Int) : MagicFuel {
     override fun isEmpty(): Boolean =
         amount == 0
 
-    override fun getNotEnoughMessage(): String =
-        "not enough kharu: $amount"
+    override fun getNotEnoughMessages(): ArrayList<NotEnoughFuelNotification> =
+        if (amount != 0)
+            arrayListOf(NotEnoughFuelNotification("not enough kharu: $amount", texture))
+        else arrayListOf()
 }
 
 interface IKharuHolder {
-    fun getStoredKharu() : Int
+    fun getStoredKharu(): Int
+
     // returns the overlapping amount
     fun setStoredKharu(amount: Int)
 
-    fun getMaxAmount() : Int
+    fun getMaxAmount(): Int
 }
 
 interface IKharuHolderItem {
-    fun getStoredKharu(stack: ItemStack) : Int
-    // returns the overlapping amount
+    fun getStoredKharu(stack: ItemStack): Int
+
     fun setStoredKharu(stack: ItemStack, amount: Int)
 
-    fun getMaxKharuAmount(stack: ItemStack) : Int
+    fun getMaxKharuAmount(stack: ItemStack): Int
 }
