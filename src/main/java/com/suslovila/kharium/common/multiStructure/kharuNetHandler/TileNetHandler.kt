@@ -4,9 +4,11 @@ import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.client.PostRendered
 import com.suslovila.kharium.api.kharu.IKharuContainer
 import com.suslovila.kharium.common.block.container.SimpleInventory
+import com.suslovila.kharium.common.block.tileEntity.TileAntiNode
 import com.suslovila.kharium.common.block.tileEntity.rune.TileRune
 import com.suslovila.kharium.utils.SusNBTHelper
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
+import com.suslovila.kharium.utils.TimeTracker
 import com.suslovila.kharium.utils.getPosition
 import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
 import com.suslovila.sus_multi_blocked.utils.Position
@@ -26,6 +28,13 @@ class TileNetHandler(
     override val packetId: Int = 0
     val maxLowerAmount = 10
 
+    val tracker = object : TimeTracker() {
+        override val maxValue: Int = 20
+    }
+
+    val ownCheckTime = tracker.getNext()
+
+
     var netSuppliers = TreeSet<KharuNetMember>(compareBy { it.priority })
     var netConsumers = TreeSet<KharuNetMember>(compareBy { it.priority })
 
@@ -37,7 +46,7 @@ class TileNetHandler(
 
     override fun updateEntity() {
 
-        if (world.isRemote) {
+        if (world.isRemote || !isCheckTime()) {
             return
         }
 
@@ -173,6 +182,10 @@ class TileNetHandler(
         }
         return foundRunes
     }
+
+    fun isCheckTime() =
+        ((world.worldTime + ownCheckTime)
+                % TileAntiNode.tracker.maxValue) == 0L
 
 
 }

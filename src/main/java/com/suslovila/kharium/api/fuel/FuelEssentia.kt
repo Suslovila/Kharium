@@ -1,8 +1,10 @@
 package com.suslovila.kharium.api.fuel
 
 import baubles.api.BaublesApi
+import com.suslovila.kharium.Kharium
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraft.util.ResourceLocation
 import thaumcraft.api.aspects.Aspect
 import thaumcraft.api.aspects.AspectList
 import java.util.concurrent.ConcurrentHashMap
@@ -70,12 +72,40 @@ class FuelEssentia(
                     val requiredAmount = copyAspects[aspect] ?: continue
                     val availableAmount = essentiaInHolder.aspects[aspect] ?: continue
                     val toTake = min(availableAmount, requiredAmount)
-                    essentiaInHolder.remove(aspect, availableAmount - toTake)
-                    copyAspects.remove(aspect, requiredAmount - toTake)
+                    essentiaInHolder.remove(aspect, toTake)
+                    copyAspects.remove(aspect, toTake)
                 }
                 holder.setStoredAspects(essentiaInHolder)
             }
             return FuelEssentia(AspectList())
+        }
+        return FuelEssentia(requiredEssentia)
+    }
+
+    override fun forceTakeFrom(player: EntityPlayer) {
+        val playerEssentiaHolders = getPlacesToCheckForEssentia(player)
+        val copyAspects = ConcurrentHashMap(copyAspectList(this.aspects).aspects)
+        playerEssentiaHolders.forEach { holder ->
+            val essentiaInHolder = copyAspectList(holder.getStoredEssentia())
+            for (aspect in copyAspects.keys) {
+                val requiredAmount = copyAspects[aspect] ?: continue
+                val availableAmount = essentiaInHolder.aspects[aspect] ?: continue
+                val toTake = min(availableAmount, requiredAmount)
+                essentiaInHolder.remove(aspect, toTake)
+                copyAspects.remove(aspect, toTake)
+            }
+            holder.setStoredAspects(essentiaInHolder)
+        }
+    }
+
+    override fun getLack(player: EntityPlayer): MagicFuel {
+        val requiredEssentia = copyAspectList(this.aspects)
+        val playerEssentiaHolders = getPlacesToCheckForEssentia(player)
+        playerEssentiaHolders.forEach { holder ->
+            val essentiaInHolder = holder.getStoredEssentia()
+            essentiaInHolder.aspects.forEach { (aspectType, amount) ->
+                requiredEssentia.remove(aspectType, amount)
+            }
         }
         return FuelEssentia(requiredEssentia)
     }
@@ -107,13 +137,21 @@ class FuelEssentia(
     override fun isEmpty(): Boolean =
         this.aspects.aspects.filter { entry -> entry.value != 0 }.isEmpty()
 
-    override fun getNotEnoughMessage(): String =
-        String().also {
-            val notEmptyAspects = this.aspects.aspects.filter { entry -> entry.value != 0 }
-            for (aspect in notEmptyAspects) {
-                it.plus("Not enough aspect: ${aspect.key.name}")
-            }
+    override fun getNotEnoughMessages(): ArrayList<NotEnoughFuelNotification> {
+        if(this.aspects.aspects.filter { it.value != 0 }.isEmpty()) return arrayListOf()
+        val messages = arrayListOf<NotEnoughFuelNotification>()
+        val notEmptyAspects = this.aspects.aspects.filter { entry -> entry.value != 0 }
+        for (aspect in notEmptyAspects) {
+            messages.add(
+                NotEnoughFuelNotification(
+                    "Not enough aspect ${aspect.key.name}: ${aspect.value}",
+                    aspect.key.image,
+                    aspect.key.color
+                )
+            )
         }
+        return messages
+    }
 }
 
 // aspect list objects should not be modified in outer scope

@@ -83,10 +83,11 @@ object FMLEventListener {
 
     @SubscribeEvent
     fun onPlayerPickedUpCrystallizedKharu(event: ItemPickupEvent) {
+        val player = event.player as? EntityPlayerMP ?: return
         if (event.pickedUp.entityItem.item is ItemCrystallizedAntiMatter) {
             event.pickedUp.entityItem.getOrCreateTag().removeTag(globalOwnerName)
             if (!ResearchManager.isResearchComplete(event.player.commandSenderName, "CRYSTALLIZED_KHARU")) {
-                completeNormalResearch("CRYSTALLIZED_KHARU", event.player, event.player.worldObj)
+                completeNormalResearch("CRYSTALLIZED_KHARU", player, event.player.worldObj)
             }
         }
     }
@@ -142,11 +143,6 @@ object FMLEventListener {
     @SubscribeEvent
     fun onEntityJoinWorld(event: EntityJoinWorldEvent) {
         val entity = event.entity ?: return
-        if (entity.worldObj.isRemote && entity == Minecraft.getMinecraft().thePlayer) {
-            KhariumPlayerExtendedData.get(Minecraft.getMinecraft().thePlayer)?.let {
-                repeat(5) { sendMessage() }
-            }
-        }
         if (!entity.worldObj.isRemote && entity is EntityPlayerMP) {
             KhariumPlayerExtendedData.loadProxyData(entity)
             val server = entity.worldObj as? WorldServer ?: return
@@ -155,30 +151,22 @@ object FMLEventListener {
             KhariumPacketHandler.INSTANCE.sendTo(PacketAllExtendedPlayerSync(playersData), entity)
             KhariumPlayerExtendedData.get(entity).let {
                 KhariumPacketHandler.INSTANCE.sendToAll(PacketOneExtendedPlayerSync(it, entity))
-
             }
         }
-    }
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    fun setImplant(event: EntityJoinWorldEvent) {
-        val entity = event.entity ?: return
         if (entity.worldObj.isRemote && entity == Minecraft.getMinecraft().thePlayer) {
+            val d = 4
             KhariumPlayerExtendedData.get(Minecraft.getMinecraft().thePlayer)?.let {
                 KeyHandler.setNextImplant(it, Array(ImplantType.slotAmount) { index -> index }.toMutableList())
             }
         }
-    }
 
-    fun sendMessage() {
-        GuiImplants.notEnoughFuelMessages.add(
-            GuiMessageNotEnoughFuel(
-                200,
-                "ETGKLMGRTKLHMTRLKHMRTLHMRTLHTRMHLTMHLHMTRLHTH",
-                100,
-                Aspect.FIRE.image,
-            )
-        )
+//        @SubscribeEvent
+//        fun onEntityJoinWorld(event: EntityJoinWorldEvent) {
+//            if (entity.worldObj.isRemote && entity == Minecraft.getMinecraft().thePlayer) {
+//                KhariumPlayerExtendedData.get(Minecraft.getMinecraft().thePlayer)?.let {
+//                    KeyHandler.setNextImplant(it, Array(ImplantType.slotAmount) { index -> index }.toMutableList())
+//                }
+//            }
+//        }
     }
-
 }

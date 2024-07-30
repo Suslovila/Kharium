@@ -116,8 +116,8 @@ object SusNBTHelper {
     fun NBTTagCompound.getOrCreateUUID(key: String, defaultValue: UUID): UUID {
         if (!hasKey(key)) {
             val innerTag = NBTTagCompound()
-            innerTag.setLong(UUID_LEAST_NBT, defaultValue.leastSignificantBits)
             innerTag.setLong(UUID_MOST_NBT, defaultValue.mostSignificantBits)
+            innerTag.setLong(UUID_LEAST_NBT, defaultValue.leastSignificantBits)
             this.setTag(key, innerTag)
             return defaultValue
         }

@@ -11,9 +11,10 @@ import thaumcraft.common.lib.network.PacketHandler
 import thaumcraft.common.lib.network.playerdata.PacketResearchComplete
 
 object ThaumcraftIntegrator {
-    fun completeNormalResearch(researchName: String?, player: EntityPlayer?, world: World) {
 
-        PacketHandler.INSTANCE.sendTo(PacketResearchComplete(researchName), player as EntityPlayerMP?)
+    fun completeNormalResearch(researchName: String, player: EntityPlayerMP, world: World) {
+
+        PacketHandler.INSTANCE.sendTo(PacketResearchComplete(researchName), player)
         Thaumcraft.proxy.getResearchManager().completeResearch(player, researchName)
         world.playSoundAtEntity(player, "thaumcraft:learn", 0.75f, 1.0f)
 

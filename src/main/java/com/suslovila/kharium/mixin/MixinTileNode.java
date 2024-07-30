@@ -8,6 +8,7 @@ import com.suslovila.kharium.utils.SusUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -106,7 +107,7 @@ public abstract class MixinTileNode extends TileThaumcraft implements IMixinTile
 
                 if (transformationTimer >= getRequiredTimeForTransformation()) {
                     if (Thaumcraft.proxy.getCompletedResearch().get(getOwnerName()).contains("CRYSTALLIZED_KHARU")) {
-                        EntityPlayer player = worldObj.getPlayerEntityByName(getOwnerName());
+                        EntityPlayerMP player = (EntityPlayerMP) worldObj.getPlayerEntityByName(getOwnerName());
                         ThaumcraftIntegrator.INSTANCE.completeNormalResearch("ANTI_NODE", player, worldObj);
                     }
                     //handling anti-node initialization

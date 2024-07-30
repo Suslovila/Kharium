@@ -181,10 +181,6 @@ class GuiImplantInstaller(
         playerdrawn.rotationYawHead = f6
         GL11.glPopMatrix()
         RenderHelper.disableStandardItemLighting()
-        GL11.glDisable(32826)
-        OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit)
-        GL11.glDisable(3553)
-        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit)
     }
 
     companion object {

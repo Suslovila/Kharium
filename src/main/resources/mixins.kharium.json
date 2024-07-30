@@ -7,7 +7,7 @@
   "mixins": [
     "MixinEntityFX",
     "MixinItem",
-    "MixinMagicTile",
+    "MixinResearch",
     "MixinTileNode",
     "MixinTileNodeRenderer",
     "MixinWand"

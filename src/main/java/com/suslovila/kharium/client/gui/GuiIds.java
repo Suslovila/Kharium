@@ -7,5 +7,9 @@ public final class GuiIds {
     public static final int RUNE_INSTALLER = id++;
     public static final int KHARU_CONTAINER = id++;
     public static final int KHARU_NET_HANDLER = id++;
+    public static final int ITEM_KHARU_NET_HANDLER = id++;
+
+    public static final int ITEM_ASPECT_HOLDER = id++;
+
 
 }

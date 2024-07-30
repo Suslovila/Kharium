@@ -20,6 +20,7 @@ import com.suslovila.kharium.common.multiStructure.kharuNetHandler.BlockNetHandl
 import com.suslovila.kharium.common.multiStructure.kharuNetHandler.TileNetHandler;
 import com.suslovila.kharium.common.multiStructure.kharuSnare.BlockKharuSnare;
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare;
+import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnareContainer;
 import com.suslovila.kharium.common.multiStructure.runeInstaller.BlockRuneInstaller;
 import com.suslovila.kharium.common.multiStructure.runeInstaller.TileRuneInstaller;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -78,6 +79,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TileNetHandler.class, MOD_ID + "TileNetHandler");
 
         GameRegistry.registerTileEntity(TileFilling.class, MOD_ID + "TileFilling");
+        GameRegistry.registerTileEntity(TileKharuSnareContainer.class, MOD_ID + "TileKharuSnareContainer");
     }
 
     public static void registerRender() {
