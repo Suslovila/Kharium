@@ -21,7 +21,6 @@ import thaumcraft.client.lib.UtilsFX
 import java.awt.Color
 import java.util.*
 
-@SideOnly(Side.CLIENT)
 object GuiImplants {
     //    var itemRender = RenderItem()
     val itemRender: RenderItem = RenderItem()
@@ -34,11 +33,13 @@ object GuiImplants {
 
     val slotActive = ResourceLocation(Kharium.MOD_ID, "textures/gui/implants/abilitySlotActive.png")
     val slotDeactivated = ResourceLocation(Kharium.MOD_ID, "textures/gui/implants/abilitySlotDeactivated.png")
+    val slotInCooldown = ResourceLocation(Kharium.MOD_ID, "textures/gui/implants/abilitySlotCooldown.png")
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     fun renderGui(event: RenderGameOverlayEvent.Post) {
         if (event.type == RenderGameOverlayEvent.ElementType.ALL) {
-            if(!shouldRenderGui) return
+            if (!shouldRenderGui) return
             KhariumPlayerExtendedData.get(Minecraft.getMinecraft().thePlayer)?.implantStorage?.getStackInSlot(
                 currentImplantSlotId
             )?.let {
@@ -97,8 +98,11 @@ object GuiImplants {
             0.0,
             1.0
         )
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
         UtilsFX.bindTexture(Kharium.MOD_ID, "textures/misc/radial4.png")
         SusGraphicHelper.drawFromCenter(radius)
+        glDisable(GL_BLEND)
         glPopMatrix()
 
         glPushMatrix()
@@ -108,7 +112,11 @@ object GuiImplants {
             glPushMatrix()
 
             val slotTexture =
-                if (ability.isOnCooldown(implant) || !ability.isActive(implant)) slotDeactivated else slotActive
+                if (ability.isOnCooldown(implant)) slotInCooldown
+                else {
+                    if (ability.isActive(implant)) slotActive
+                    else slotDeactivated
+                }
             UtilsFX.bindTexture(slotTexture)
             SusGraphicHelper.drawFromCenter(radius * 0.7)
 
@@ -119,7 +127,7 @@ object GuiImplants {
             glRotated(-90.0, 0.0, 0.0, 1.0)
             SusGraphicHelper.drawFromCenter(radius * 0.5)
             glPopMatrix()
-            
+
             glTranslated(0.0, 0.0, 1.0)
 
             glPushMatrix()
@@ -149,7 +157,6 @@ object GuiImplants {
 
         glPopAttrib()
     }
-
 
 
     fun drawStack(mc: Minecraft, item: ItemStack?, x: Int, y: Int, zLevel: Float) {

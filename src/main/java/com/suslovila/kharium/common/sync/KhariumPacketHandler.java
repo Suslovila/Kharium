@@ -8,7 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 
 public class KhariumPacketHandler {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Kharium.NAME.toLowerCase());
-    public static int idx = 0;
+
     public static void init() {
         int idx = 12;
 
@@ -17,6 +17,8 @@ public class KhariumPacketHandler {
         INSTANCE.registerMessage(PacketSyncSingleKharuHotbed.Handler.class, PacketSyncSingleKharuHotbed.class, idx++, Side.CLIENT);
         INSTANCE.registerMessage(PacketKhariumPlayerExtended.Handler.class, PacketKhariumPlayerExtended.class, idx++, Side.CLIENT);
         INSTANCE.registerMessage(PacketImplantSync.Handler.class, PacketImplantSync.class, idx++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketAddIllusion.Handler.class, PacketAddIllusion.class, idx++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketLackNotifications.Handler.class, PacketLackNotifications.class, idx++, Side.CLIENT);
 
         INSTANCE.registerMessage(PacketUseImplantSync.Handler.class, PacketUseImplantSync.class, idx++, Side.SERVER);
         INSTANCE.registerMessage(PacketEnableImplantSync.Handler.class, PacketEnableImplantSync.class, idx++, Side.SERVER);
@@ -27,4 +29,5 @@ public class KhariumPacketHandler {
         INSTANCE.registerMessage(PacketItemPortableContainer.Handler.class, PacketItemPortableContainer.class, idx++, Side.SERVER);
 
     }
+
 }

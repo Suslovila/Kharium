@@ -42,29 +42,23 @@ object ImplantPsiBlade : ItemImplant(ImplantType.HEART) {
                 }
 
                 override fun onPlayerAttackEntityEvent(event: AttackEntityEvent, index: Int, implant: ItemStack) {
+                    println("bbb")
                     // both sides for bolt render
                     val basicDamage = 4
                     if (!isOnCooldown(implant) && isActive(implant)) {
-                        val requiredFuel = FuelComposite(
+                        val requiredFuel =
+                            FuelComposite(
                             arrayListOf(
-                                FuelKharu(
-                                    50
-                                ),
-                                FuelEssentia(
-                                    AspectList().add(KhariumAspect.HUMILITAS, 5)
-                                )
+//                                FuelKharu(
+//                                    50
+//                                ),
+//                                FuelEssentia(
+//                                    AspectList().add(KhariumAspect.HUMILITAS, 5)
+//                                )
                             )
                         )
-                        val lack = requiredFuel.getLack(event.entityPlayer)
-                        val hasEnough = lack.isEmpty()
-                        if (!hasEnough) {
-                            if (event.entityPlayer.worldObj.isRemote) {
-                                lack.notifyPlayerAboutLack()
-                            }
-                            return
-                        }
-
-                        requiredFuel.forceTakeFrom(event.entityPlayer)
+                        val hasEnoughFuel = requiredFuel.tryTakeFuelFromPlayer(event.entityPlayer)
+                        if(!hasEnoughFuel) return
                         (event.target as? EntityLiving)?.run {
                             this.attackEntityFrom(
                                 DamageSourceEnergy,

@@ -154,7 +154,6 @@ object FMLEventListener {
             }
         }
         if (entity.worldObj.isRemote && entity == Minecraft.getMinecraft().thePlayer) {
-            val d = 4
             KhariumPlayerExtendedData.get(Minecraft.getMinecraft().thePlayer)?.let {
                 KeyHandler.setNextImplant(it, Array(ImplantType.slotAmount) { index -> index }.toMutableList())
             }

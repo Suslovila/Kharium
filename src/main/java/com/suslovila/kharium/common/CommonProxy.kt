@@ -1,7 +1,6 @@
 package com.suslovila.kharium.common
 
 
-import com.suslovila.kharium.client.gui.GuiImplants
 import com.suslovila.kharium.utils.config.Config
 import com.suslovila.kharium.common.block.ModBlocks
 import com.suslovila.kharium.common.event.*
@@ -52,8 +51,6 @@ open class CommonProxy {
         FMLCommonHandler.instance().bus().register(KharuInfluenceHandler)
         MinecraftForge.EVENT_BUS.register(KharuInfluenceHandler)
 
-        FMLCommonHandler.instance().bus().register(GuiImplants)
-        MinecraftForge.EVENT_BUS.register(GuiImplants)
 
 
         MinecraftForge.EVENT_BUS.register(MixinListener)

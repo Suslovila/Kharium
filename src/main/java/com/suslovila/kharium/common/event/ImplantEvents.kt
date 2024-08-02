@@ -3,6 +3,8 @@ package com.suslovila.kharium.common.event
 import com.suslovila.kharium.api.implants.ItemImplant
 import com.suslovila.kharium.extendedData.KhariumPlayerExtendedData
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
+import cpw.mods.fml.relauncher.Side
+import cpw.mods.fml.relauncher.SideOnly
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraftforge.client.event.RenderHandEvent
@@ -12,6 +14,7 @@ import net.minecraftforge.event.entity.living.*
 import net.minecraftforge.event.entity.player.AttackEntityEvent
 
 object ImplantEvents {
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     fun renderWorldLast(event: RenderWorldLastEvent) {
         val player = Minecraft.getMinecraft()?.thePlayer ?: return
@@ -19,7 +22,7 @@ object ImplantEvents {
             (stack?.item as? ItemImplant)?.onRenderWorldLastEvent(event, index, stack)
         }
     }
-
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     fun onRenderHandEvent(event: RenderHandEvent) {
         val player = Minecraft.getMinecraft()?.thePlayer ?: return
@@ -27,7 +30,7 @@ object ImplantEvents {
             (stack?.item as? ItemImplant)?.onRenderHandEvent(event, index, stack)
         }
     }
-
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     fun onRenderPlayerEvent(event: RenderPlayerEvent.Post) {
         val player = Minecraft.getMinecraft()?.thePlayer ?: return

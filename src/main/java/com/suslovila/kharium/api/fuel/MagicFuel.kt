@@ -1,5 +1,8 @@
 package com.suslovila.kharium.api.fuel
 
+import cpw.mods.fml.common.network.ByteBufUtils
+import io.netty.buffer.ByteBuf
+import io.netty.buffer.ByteBufUtil
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.ResourceLocation
 import java.awt.Color
@@ -29,4 +32,30 @@ class NotEnoughFuelNotification(
     val text: String,
     val texture: ResourceLocation?,
     val color: Int = Color.white.rgb
-)
+) {
+    fun writeTo(byteBuf: ByteBuf) {
+        ByteBufUtils.writeUTF8String(byteBuf, text)
+        byteBuf.writeBoolean(texture != null)
+        texture?.let {
+            ByteBufUtils.writeUTF8String(byteBuf, texture.resourceDomain)
+            ByteBufUtils.writeUTF8String(byteBuf, texture.resourcePath)
+        }
+        byteBuf.writeInt(color)
+    }
+    companion object {
+        fun readFrom(byteBuf: ByteBuf): NotEnoughFuelNotification {
+            val text = ByteBufUtils.readUTF8String(byteBuf)
+            val texture = if(byteBuf.readBoolean()) {
+                val domain = ByteBufUtils.readUTF8String(byteBuf)
+                val path = ByteBufUtils.readUTF8String(byteBuf)
+                ResourceLocation(
+                    domain,
+                    path
+                )
+            }
+            else null
+            val color = byteBuf.readInt()
+            return NotEnoughFuelNotification(text, texture, color)
+        }
+    }
+}

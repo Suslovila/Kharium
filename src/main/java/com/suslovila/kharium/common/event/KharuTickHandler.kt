@@ -30,26 +30,28 @@ object KharuTickHandler {
     val clientKharuHotbeds = ArrayList<KharuHotbed>()
 
     val MODEL = ResourceLocation(Kharium.MOD_ID, "models/shieldSphere.obj")
-    val model: IModelCustom = AdvancedModelLoader.loadModel(MODEL)
+    val model: IModelCustom by lazy { AdvancedModelLoader.loadModel(MODEL) }
 
     @SubscribeEvent
     fun kharuHotBedTick(event: TickEvent.WorldTickEvent) {
 
     }
+
     @SubscribeEvent
     fun kharuHotBedTick(event: WorldEvent.Load) {
         with(event) {
-            if(!world.isRemote) {
+            if (!world.isRemote) {
                 world.customData.syncAllHotbeds(world)
             }
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     fun explosionRenderer(event: RenderWorldLastEvent) {
         val player = Minecraft.getMinecraft().thePlayer ?: return
         UtilsFX.bindTexture(Kharium.MOD_ID, "textures/antinode/controller/field.png")
-        clientKharuHotbeds.forEach {hotbed ->
+        clientKharuHotbeds.forEach { hotbed ->
             val clientTime = SusGraphicHelper.getRenderGlobalTime(event.partialTicks)
             GL11.glPushMatrix()
             SusGraphicHelper.translateFromPlayerTo(hotbed.zone.center, event.partialTicks)

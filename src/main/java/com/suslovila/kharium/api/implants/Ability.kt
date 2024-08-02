@@ -23,6 +23,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent
 abstract class Ability(val name: String) {
     val COOLDOWN_NBT = Kharium.prefixAppender.doAndGet("$name:cooldown")
     open val texture = ResourceLocation(Kharium.MOD_ID, "textures/implants/ability_$name.png")
+    // fired on both sides
     abstract fun onEnableButtonClicked(player: EntityPlayer, index: Int, implant: ItemStack)
 
     open fun isOnCooldown(implant: ItemStack) =

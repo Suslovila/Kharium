@@ -17,11 +17,10 @@ import thaumcraft.codechicken.lib.math.MathHelper
 import kotlin.math.abs
 
 object TileAntiNodeWatcherRenderer : SusTileRenderer<TileAntiNodeWatcher>() {
-    private val watcher: IModelCustom
-
-    init {
-        watcher = AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/blocks/watcher.obj"));
-    }
+    private val watcher
+    by lazy {
+            AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/blocks/watcher.obj"));
+        }
 
     override fun render(tile: TileAntiNodeWatcher, partialTicks: Float) {
         this.renderLenses(tile, partialTicks);

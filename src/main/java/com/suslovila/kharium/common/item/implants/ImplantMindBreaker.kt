@@ -32,18 +32,21 @@ object ImplantMindBreaker : ItemImplant(ImplantType.OCULAR_SYSTEM) {
         arrayListOf(
             object : AbilityInstant("illusions") {
                 override fun onActivated(player: EntityPlayer, index: Int, implant: ItemStack) {
-                    if (!isOnCooldown(implant)) {
-                        val hitResult = SusWorldHelper.raytraceEntities(player.worldObj, player, Double.MAX_VALUE)
+                    println("entering button")
+                    if (!isOnCooldown(implant) && !player.worldObj.isRemote) {
+                        val hitResult = SusWorldHelper.raytraceEntities(player.worldObj, player, 20.0)
                         val hitEntity = hitResult?.entityHit
                         if (hitResult?.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY ||
                             hitEntity == null
                         ) {
                             return
                         }
+                        println("Entity not null")
                         if (hitEntity is EntityPlayerMP) {
+                            println("entity is player. Sending packet")
                             KhariumPacketHandler.INSTANCE.sendTo(
                                 PacketAddIllusion(
-                                    Illusion(hitEntity.persistentID, 200, 3)
+                                    Illusion(player.persistentID, duration = 2000, illusionAmount = 3)
                                 ),
                                 hitEntity
                             )

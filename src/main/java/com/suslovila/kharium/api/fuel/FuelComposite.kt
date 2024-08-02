@@ -1,6 +1,9 @@
 package com.suslovila.kharium.api.fuel
 
+import com.suslovila.kharium.common.sync.KhariumPacketHandler
+import com.suslovila.kharium.common.sync.PacketLackNotifications
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
 import thaumcraft.client.lib.PlayerNotifications
 
 class FuelComposite(
@@ -38,6 +41,25 @@ class FuelComposite(
         }
     }
 
+    fun notifyClientAboutLack(player: EntityPlayerMP) {
+        KhariumPacketHandler.INSTANCE.sendTo(PacketLackNotifications(getNotEnoughMessages()), player)
+    }
+
+    fun tryTakeFuelFromPlayerWithPacket(player: EntityPlayer): Boolean {
+        val amountLeft = this.getLack(player)
+        val hasEnough = amountLeft.isEmpty()
+        if (hasEnough) {
+            this.forceTakeFrom(player)
+        }
+        else {
+            (player as? EntityPlayerMP)?.let {
+                amountLeft.notifyClientAboutLack(it)
+            }
+        }
+
+        return hasEnough
+    }
+
     fun tryTakeFuelFromPlayer(player: EntityPlayer): Boolean {
         val amountLeft = this.getLack(player)
         val hasEnough = amountLeft.isEmpty()
@@ -45,7 +67,9 @@ class FuelComposite(
             this.forceTakeFrom(player)
         }
         else {
-            amountLeft.notifyPlayerAboutLack()
+            if(player.worldObj.isRemote) {
+                amountLeft.notifyPlayerAboutLack()
+            }
         }
 
         return hasEnough

@@ -24,11 +24,11 @@ import kotlin.math.sqrt
 
 object PrimordialExplosionHandler {
 
-    @SideOnly(Side.CLIENT)
-    val clientExplosions = ArrayList<Explosion>()
+    val clientExplosions by lazy { ArrayList<Explosion>() }
 
     val MODEL = ResourceLocation(Kharium.MOD_ID, "models/shieldSphere.obj")
-    val model: IModelCustom = AdvancedModelLoader.loadModel(MODEL)
+
+    val model: IModelCustom by lazy { AdvancedModelLoader.loadModel(MODEL) }
 
     @SubscribeEvent
     fun primordialExplosionsTick(event: WorldTickEvent) {
@@ -63,7 +63,7 @@ object PrimordialExplosionHandler {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun explosionRenderer(event: RenderWorldLastEvent) {
         Minecraft.getMinecraft().thePlayer ?: return
-        UtilsFX.bindTexture(Kharium.MOD_ID, "textures/antinode/controller/field.png");
+        UtilsFX.bindTexture(Kharium.MOD_ID, "textures/antinode/controller/field.png")
         clientExplosions.forEach {
             val clientTime = it.timer + event.partialTicks
             val actualRadius = (clientTime * SusUtils.explosionSpreadSpeed).coerceAtMost(it.radius)

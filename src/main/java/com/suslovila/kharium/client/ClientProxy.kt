@@ -1,6 +1,8 @@
 package com.suslovila.kharium.client
 
 
+import com.suslovila.kharium.client.gui.GuiImplants
+import com.suslovila.kharium.client.implantInfluence.IllusionRenderer
 import com.suslovila.kharium.client.particles.antiNodeBolt.AntiNodeBolt
 import com.suslovila.kharium.client.render.ClientEventHandler
 import com.suslovila.kharium.client.render.block.BlockEssentiaReservoirVoidRenderer
@@ -22,6 +24,7 @@ import com.suslovila.kharium.common.item.ModItems
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import cpw.mods.fml.client.registry.ClientRegistry
 import cpw.mods.fml.client.registry.RenderingRegistry
+import cpw.mods.fml.common.FMLCommonHandler
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.event.FMLPostInitializationEvent
 import cpw.mods.fml.common.event.FMLPreInitializationEvent
@@ -43,6 +46,12 @@ class ClientProxy : CommonProxy(), IGuiHandler {
 
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
+
+        FMLCommonHandler.instance().bus().register(GuiImplants)
+        MinecraftForge.EVENT_BUS.register(GuiImplants)
+
+        FMLCommonHandler.instance().bus().register(IllusionRenderer)
+        MinecraftForge.EVENT_BUS.register(IllusionRenderer)
     }
 
     override fun init(event: FMLInitializationEvent) {
