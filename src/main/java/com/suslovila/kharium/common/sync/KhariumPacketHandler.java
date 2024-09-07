@@ -5,6 +5,9 @@ import com.suslovila.kharium.common.sync.implant.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+import io.netty.channel.Channel;
+import io.netty.channel.SimpleChannelInboundHandler;
+import net.minecraft.network.EnumConnectionState;
 
 public class KhariumPacketHandler {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Kharium.NAME.toLowerCase());

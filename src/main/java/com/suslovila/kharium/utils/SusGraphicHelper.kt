@@ -2,6 +2,8 @@ package com.suslovila.kharium.utils
 
 import com.suslovila.kharium.Kharium
 import net.minecraft.client.Minecraft
+import net.minecraft.client.particle.EntityFX
+import net.minecraft.client.renderer.ActiveRenderInfo
 import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.Tessellator
@@ -10,8 +12,10 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.MathHelper
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.Vec3
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
+import net.minecraftforge.client.model.obj.WavefrontObject
 import org.lwjgl.opengl.GL11.*
 import org.lwjgl.opengl.GL12
 import thaumcraft.client.lib.UtilsFX
@@ -32,7 +36,14 @@ object SusGraphicHelper {
 
     init {
         cubeModel =
-            AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/cube.obj"))
+            ModelWrapperDisplayList(
+                AdvancedModelLoader.loadModel(
+                    ResourceLocation(
+                        Kharium.MOD_ID,
+                        "models/cube.obj"
+                    )
+                ) as WavefrontObject
+            )
     }
 
     enum class BasicDirection(val vec3: SusVec3) {
@@ -270,5 +281,63 @@ object SusGraphicHelper {
 
     }
 
+    fun renderTexture(texture: ResourceLocation, scaleX: Double, scaleY: Double, scaleZ: Double) {
+        UtilsFX.bindTexture(texture)
+        glPushMatrix()
+        glEnable(3042)
+        glBlendFunc(770, 771)
+        glColor4f(1.0f, 0.0f, 1.0f, 1.0f)
+        if (Minecraft.getMinecraft().renderViewEntity is EntityPlayer) {
+            val tessellator = Tessellator.instance
+            val arX = ActiveRenderInfo.rotationX
+            val arZ = ActiveRenderInfo.rotationZ
+            val arYZ = ActiveRenderInfo.rotationYZ
+            val arXY = ActiveRenderInfo.rotationXY
+            val arXZ = ActiveRenderInfo.rotationXZ
+            tessellator.startDrawingQuads()
+            tessellator.setBrightness(220)
+            tessellator.setColorRGBA_F(1.0f, 1.0f, 1.0f, 1.0f)
+            val v1 = Vec3.createVectorHelper((-arX - arYZ).toDouble(), (-arXZ).toDouble(), (-arZ - arXY).toDouble())
+            val v2 = Vec3.createVectorHelper((-arX + arYZ).toDouble(), arXZ.toDouble(), (-arZ + arXY).toDouble())
+            val v3 = Vec3.createVectorHelper((arX + arYZ).toDouble(), arXZ.toDouble(), (arZ + arXY).toDouble())
+            val v4 = Vec3.createVectorHelper((arX - arYZ).toDouble(), (-arXZ).toDouble(), (arZ - arXY).toDouble())
+            val f2 = 0.0
+            val f3 = 1.0
 
+            val f4 = 0.0
+            val f5 = 1.0
+            tessellator.setNormal(0.0f, 0.0f, -1.0f)
+            tessellator.addVertexWithUV(
+                v1.xCoord * scaleX,
+                v1.yCoord * scaleY,
+                v1.zCoord * scaleZ,
+                f2,
+                f5
+            )
+            tessellator.addVertexWithUV(
+                v2.xCoord * scaleX,
+                v2.yCoord * scaleY,
+                v2.zCoord * scaleZ,
+                f3,
+                f5
+            )
+            tessellator.addVertexWithUV(
+                v3.xCoord * scaleX,
+                v3.yCoord * scaleY,
+                v3.zCoord * scaleZ,
+                f3,
+                f4
+            )
+            tessellator.addVertexWithUV(
+                v4.xCoord * scaleX,
+                v4.yCoord * scaleY,
+                v4.zCoord * scaleZ,
+                f2,
+                f4
+            )
+            tessellator.draw()
+        }
+        glDisable(3042)
+        glPopMatrix()
+    }
 }

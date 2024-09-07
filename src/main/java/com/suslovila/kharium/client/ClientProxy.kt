@@ -1,6 +1,7 @@
 package com.suslovila.kharium.client
 
 
+import com.suslovila.kharium.client.clientProcess.ClientProcessHandler
 import com.suslovila.kharium.client.gui.GuiImplants
 import com.suslovila.kharium.client.implantInfluence.IllusionRenderer
 import com.suslovila.kharium.client.particles.antiNodeBolt.AntiNodeBolt
@@ -52,6 +53,9 @@ class ClientProxy : CommonProxy(), IGuiHandler {
 
         FMLCommonHandler.instance().bus().register(IllusionRenderer)
         MinecraftForge.EVENT_BUS.register(IllusionRenderer)
+
+        FMLCommonHandler.instance().bus().register(ClientProcessHandler)
+        MinecraftForge.EVENT_BUS.register(ClientProcessHandler)
     }
 
     override fun init(event: FMLInitializationEvent) {

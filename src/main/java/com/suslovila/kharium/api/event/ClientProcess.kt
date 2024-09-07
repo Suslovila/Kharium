@@ -2,9 +2,9 @@ package com.suslovila.kharium.api.event
 
 // is not serialised
 abstract class ClientProcess(
-    var x : Int,
-    var y: Int,
-    var z: Int,
+    var x : Double,
+    var y: Double,
+    var z: Double,
 
     val duration: Int
 ) : IProcess {
@@ -12,5 +12,7 @@ abstract class ClientProcess(
 
     override fun isExpired() =
         timer < duration
+
+
 
 }

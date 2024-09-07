@@ -49,12 +49,12 @@ object ImplantPsiBlade : ItemImplant(ImplantType.HEART) {
                         val requiredFuel =
                             FuelComposite(
                             arrayListOf(
-//                                FuelKharu(
-//                                    50
-//                                ),
-//                                FuelEssentia(
-//                                    AspectList().add(KhariumAspect.HUMILITAS, 5)
-//                                )
+                                FuelKharu(
+                                    50
+                                ),
+                                FuelEssentia(
+                                    AspectList().add(KhariumAspect.HUMILITAS, 5)
+                                )
                             )
                         )
                         val hasEnoughFuel = requiredFuel.tryTakeFuelFromPlayer(event.entityPlayer)

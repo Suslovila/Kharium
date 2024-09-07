@@ -1,11 +1,13 @@
 package com.suslovila.kharium.client.render.item
 
 import com.suslovila.kharium.Kharium
+import com.suslovila.kharium.utils.ModelWrapperDisplayList
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.IItemRenderer
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
+import net.minecraftforge.client.model.obj.WavefrontObject
 import org.lwjgl.opengl.GL11
 import thaumcraft.client.lib.UtilsFX
 
@@ -13,7 +15,7 @@ object ItemCrystallizedAntiMatterRenderer : IItemRenderer {
     val model: IModelCustom
 
     init {
-        model = AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/items/anti_matter.obj"));
+        model = ModelWrapperDisplayList(AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/items/anti_matter.obj")) as WavefrontObject)
     }
 
     override fun handleRenderType(item: ItemStack?, type: IItemRenderer.ItemRenderType?) = true

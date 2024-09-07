@@ -20,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.DamageSource
 import net.minecraft.util.MovingObjectPosition
 import org.lwjgl.opengl.GL11.*
 import thaumcraft.api.aspects.Aspect
@@ -41,9 +42,7 @@ object ImplantMindBreaker : ItemImplant(ImplantType.OCULAR_SYSTEM) {
                         ) {
                             return
                         }
-                        println("Entity not null")
                         if (hitEntity is EntityPlayerMP) {
-                            println("entity is player. Sending packet")
                             KhariumPacketHandler.INSTANCE.sendTo(
                                 PacketAddIllusion(
                                     Illusion(player.persistentID, duration = 2000, illusionAmount = 3)

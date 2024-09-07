@@ -66,10 +66,14 @@ public class PacketRuneInstallerButtonClicked implements IMessage {
                         if (item instanceof RuneUsingItem) {
                             RuneUsingItem runeUsingItem = (RuneUsingItem) item;
                             int maxAmount = runeUsingItem.getMaxRuneAmount();
-                            int currentAmount = RuneUsingItem.Companion.getRuneAmountOfType(stack, packet.runeType);
+                            int runeTypeCurrentAmount = RuneUsingItem.Companion.getRuneAmountOfType(stack, packet.runeType);
+                            int wholeRuneAmount = 0;
+                            for(RuneType runeType : RuneType.values()) {
+                                wholeRuneAmount += RuneUsingItem.Companion.getRuneAmountOfType(stack, runeType);
+                            }
 
                             if (packet.isAddRuneButton) {
-                                if (currentAmount < maxAmount) {
+                                if (wholeRuneAmount < maxAmount) {
                                     ItemStack stackLeft =
                                             InventoryUtils.extractStack(
                                                     ctx.getServerHandler().playerEntity.inventory,
@@ -81,12 +85,12 @@ public class PacketRuneInstallerButtonClicked implements IMessage {
                                                     true
                                             );
                                     if (stackLeft != null) {
-                                        RuneUsingItem.Companion.setRuneAmountOfType(stack, packet.runeType, currentAmount + 1);
+                                        RuneUsingItem.Companion.setRuneAmountOfType(stack, packet.runeType, runeTypeCurrentAmount + 1);
                                     }
                                 }
                             }
                             else {
-                                if (currentAmount > 0) {
+                                if (runeTypeCurrentAmount > 0) {
                                     ItemStack stackLeft =
                                             InventoryUtils.placeItemStackIntoInventory(
                                                     new ItemStack(ItemRune.INSTANCE, 1, packet.runeType.ordinal()),
@@ -95,7 +99,7 @@ public class PacketRuneInstallerButtonClicked implements IMessage {
                                                     true
                                             );
                                     if (stackLeft == null || stackLeft.stackSize == 0) {
-                                        RuneUsingItem.Companion.setRuneAmountOfType(stack, packet.runeType, currentAmount - 1);
+                                        RuneUsingItem.Companion.setRuneAmountOfType(stack, packet.runeType, runeTypeCurrentAmount - 1);
                                     }
                                 }
                             }
