@@ -1,13 +1,8 @@
 package com.suslovila.kharium.common.multiStructure.runeInstaller
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.client.gui.GuiIds
-import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructure
-import com.suslovila.sus_multi_blocked.api.multiblock.block.MultiStructureBlock
-import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
-import com.suslovila.sus_multi_blocked.utils.getTile
+import com.suslovila.kharium.client.gui.KhariumGui
 import cpw.mods.fml.common.registry.GameRegistry
-import net.minecraft.block.Block
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.material.Material
 import net.minecraft.entity.player.EntityPlayer
@@ -41,7 +36,7 @@ class BlockRuneInstaller(name: String
         if (player == null) return true
 
         if (!player.isSneaking) {
-                player.openGui(Kharium.instance, GuiIds.RUNE_INSTALLER, world, x, y, z)
+                player.openGui(Kharium.instance, KhariumGui.RUNE_INSTALLER.ordinal, world, x, y, z)
                 return true
         }
         return false

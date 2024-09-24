@@ -2,14 +2,11 @@ package com.suslovila.kharium.common.item
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.kharu.IKharuContainer
-import com.suslovila.kharium.client.gui.GuiHandler
-import com.suslovila.kharium.client.gui.GuiIds
+import com.suslovila.kharium.client.gui.KhariumGui
 import com.suslovila.kharium.common.multiStructure.kharuNetHandler.KharuNetMember
 import com.suslovila.kharium.common.multiStructure.kharuNetHandler.TileNetHandler
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
 import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
-import com.suslovila.sus_multi_blocked.SusMultiBlocked
-import com.suslovila.sus_multi_blocked.common.item.MultiBlockWrapper
 import com.suslovila.sus_multi_blocked.utils.PlayerInteractionHelper.sendChatMessage
 import com.suslovila.sus_multi_blocked.utils.Position
 import com.suslovila.sus_multi_blocked.utils.getTile
@@ -124,7 +121,7 @@ object ItemKharuNetConfigurator : Item() {
         if (itemStackIn == null || worldIn == null || player == null) return itemStackIn
             player.openGui(
                 Kharium.MOD_ID,
-                GuiIds.ITEM_KHARU_NET_HANDLER,
+                KhariumGui.ITEM_KHARU_NET_HANDLER.ordinal,
                 worldIn,
                 player.posX.toInt(),
                 player.posY.toInt(),

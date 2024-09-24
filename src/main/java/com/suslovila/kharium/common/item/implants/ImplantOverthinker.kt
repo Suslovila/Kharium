@@ -8,7 +8,7 @@ import com.suslovila.kharium.api.implants.ImplantType
 import com.suslovila.kharium.api.implants.ItemImplant
 import com.suslovila.kharium.api.implants.RuneUsingItem.Companion.getRuneAmountOfType
 import com.suslovila.kharium.api.rune.RuneType
-import com.suslovila.kharium.research.AntiCraftResearchRegistry
+import com.suslovila.kharium.research.KhariumResearchRegistry
 import com.suslovila.kharium.utils.SusMathHelper.tryWithPercentChance
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
@@ -80,7 +80,7 @@ object ImplantOverthinker : ItemImplant(ImplantType.OCULAR_SYSTEM) {
         val success = tryWithPercentChance(getChance(implant))
         if (success && overthinkAbility.isActive(implant) && !overthinkAbility.isOnCooldown(implant) && !research.isAutoUnlock) {
             var hasAlreadyOpenedOne = false
-            AntiCraftResearchRegistry.researchItemChildren[research]?.forEach { child ->
+            KhariumResearchRegistry.researchItemChildren[research]?.forEach { child ->
                 if (hasAlreadyOpenedOne || ResearchManager.isResearchComplete(
                         player.commandSenderName,
                         child.key

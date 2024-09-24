@@ -7,7 +7,7 @@ import com.suslovila.kharium.common.event.*
 import com.suslovila.kharium.common.item.ItemPortableAspectContainer
 import com.suslovila.kharium.common.item.ModItems
 import com.suslovila.kharium.research.KhariumAspect
-import com.suslovila.kharium.research.AntiCraftResearchRegistry
+import com.suslovila.kharium.research.KhariumResearchRegistry
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler
 import com.suslovila.kharium.utils.config.ConfigPortableContainer
@@ -74,8 +74,8 @@ open class CommonProxy {
 
     open fun postInit(event: FMLPostInitializationEvent) {
         KhariumAspect.initItemsAspects()
-        AntiCraftResearchRegistry.integrateInfusion()
-        AntiCraftResearchRegistry.integrateResearch()
+        KhariumResearchRegistry.integrateInfusion()
+        KhariumResearchRegistry.integrateResearch()
 
 
     }

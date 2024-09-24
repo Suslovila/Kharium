@@ -1,4 +1,4 @@
-package com.suslovila.kharium.common.multiStructure.kharuNetHandler
+package com.suslovila.kharium.common.multiStructure.synthesizer
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.client.gui.KhariumGui
@@ -12,9 +12,9 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.common.util.ForgeDirection
 
-class BlockNetHandler(name: String
-) : MultiStructureBlock<NetHandlerAdditionalDta, NetHandlerElement>() {
-    override val multiStructure: MultiStructure<NetHandlerAdditionalDta, NetHandlerElement> by lazy { MultiStructureNetHandler }
+class BlockSynthesizer(name: String
+) : MultiStructureBlock<SynthesizerAdditionalData, SynthesizerElement>() {
+    override val multiStructure: MultiStructure<SynthesizerAdditionalData, SynthesizerElement> by lazy { MultiStructureSynthesizer }
 
     init {
         this.setHardness(3.0F)
@@ -35,20 +35,19 @@ class BlockNetHandler(name: String
         clickY: Float,
         clickZ: Float
     ): Boolean {
-        if (world.isRemote || player == null) return true
-        val block = world.getBlock(x, y, z)
+        if (world.isRemote || player == null) return false
         val tile = world.getTileEntity(x, y, z) as? TileDefaultMultiStructureElement ?: return false
-        val netHandler = (world.getTile(tile.structureMasterPos))
+        val synthesizerCore = (world.getTile(tile.structureMasterPos))
 
-        if(netHandler !is TileNetHandler) return false
+        if(synthesizerCore !is TileSynthesizerCore) return false
         if (!player.isSneaking) {
-                player.openGui(Kharium.instance, KhariumGui.KHARU_NET_HANDLER.ordinal, world, netHandler.xCoord, netHandler.yCoord, netHandler.zCoord)
+                player.openGui(Kharium.instance, KhariumGui.SYNTHESIZER.ordinal, world, synthesizerCore.xCoord, synthesizerCore.yCoord, synthesizerCore.zCoord)
                 return true
         }
         return false
     }
     override fun createNewTileEntity(world: World?, meta: Int) =
-        MultiStructureNetHandler.possibleTilesByMeta[meta].invoke()
+        MultiStructureSynthesizer.possibleTilesByMeta[meta].invoke()
     override fun isOpaqueCube() = false
 
     override fun renderAsNormalBlock() = false

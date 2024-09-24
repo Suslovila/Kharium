@@ -17,11 +17,21 @@ open class TileKharium : TileThaumcraft() {
         markForSync()
     }
 
+    // note: no neighbour update
     open fun markForSave() {
         worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this)
     }
 
     open fun markForSync() {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord)
+    }
+
+    open fun markForSaveAndNotifyOthers() {
+        markDirty()
+    }
+
+    open fun markForSaveSyncNotify() {
+        markForSync()
+        markForSaveAndNotifyOthers()
     }
 }

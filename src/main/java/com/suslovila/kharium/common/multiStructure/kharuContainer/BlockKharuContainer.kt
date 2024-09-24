@@ -1,7 +1,7 @@
 package com.suslovila.kharium.common.multiStructure.kharuContainer
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.client.gui.GuiIds
+import com.suslovila.kharium.client.gui.KhariumGui
 import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructure
 import com.suslovila.sus_multi_blocked.api.multiblock.block.MultiStructureBlock
 import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
@@ -41,7 +41,7 @@ class BlockKharuContainer(name: String
 
         if(tileContainer !is TileKharuContainer) return false
         if (!player.isSneaking) {
-                player.openGui(Kharium.instance, GuiIds.KHARU_CONTAINER, world, tileContainer.xCoord, tileContainer.yCoord, tileContainer.zCoord)
+                player.openGui(Kharium.instance, KhariumGui.KHARU_CONTAINER.ordinal, world, tileContainer.xCoord, tileContainer.yCoord, tileContainer.zCoord)
                 return false
         }
         return false
