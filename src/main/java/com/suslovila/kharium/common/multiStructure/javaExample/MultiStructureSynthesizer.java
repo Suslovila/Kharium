@@ -3,19 +3,15 @@ package com.suslovila.kharium.common.multiStructure.javaExample;
 
 
 import com.suslovila.kharium.Kharium;
-import com.suslovila.kharium.common.block.ModBlocks;
 import com.suslovila.kharium.common.multiStructure.TileFilling;
-import com.suslovila.kharium.common.multiStructure.synthesizer.TileSynthesizerAspectInput;
-import com.suslovila.kharium.common.multiStructure.synthesizer.TileSynthesizerAspectOutput;
-import com.suslovila.kharium.common.multiStructure.synthesizer.TileSynthesizerCore;
-import com.suslovila.kharium.common.multiStructure.synthesizer.TileSynthesizerKharuInput;
-import com.suslovila.sus_multi_blocked.api.multiblock.AdditionalData;
+import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.TileSynthesizerAspectInput;
+import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.TileSynthesizerAspectOutput;
+import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.TileSynthesizerCore;
+import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.TileSynthesizerKharuInput;
 import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructure;
-import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructureElement;
 import com.suslovila.sus_multi_blocked.api.multiblock.VALIDATION_TYPE;
 import com.suslovila.sus_multi_blocked.utils.Position;
 import com.suslovila.sus_multi_blocked.utils.SusVec3;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

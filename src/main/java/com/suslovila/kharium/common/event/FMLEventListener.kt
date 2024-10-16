@@ -3,8 +3,6 @@ package com.suslovila.kharium.common.event
 import com.suslovila.kharium.api.fuel.IKharuHolderItem
 import com.suslovila.kharium.api.implants.ImplantType
 import com.suslovila.kharium.client.KeyHandler
-import com.suslovila.kharium.client.gui.GuiImplants
-import com.suslovila.kharium.client.gui.GuiMessageNotEnoughFuel
 import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter
 import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter.Companion.globalOwnerName
 import com.suslovila.kharium.common.item.ItemPortableAspectContainer
@@ -12,6 +10,8 @@ import com.suslovila.kharium.common.item.ModItems
 import com.suslovila.kharium.common.multiStructure.kharuContainer.MultiStructureKharuContainer
 import com.suslovila.kharium.common.multiStructure.kharuNetHandler.MultiStructureNetHandler
 import com.suslovila.kharium.common.multiStructure.kharuSnare.MultiStructureKharuSnare
+import com.suslovila.kharium.common.multiStructure.synthesizer.advancedSynthesizer.MultiStructureAdvancedSynthesizer
+import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.MultiStructureSynthesizer
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.sync.implant.PacketAllExtendedPlayerSync
 import com.suslovila.kharium.common.sync.implant.PacketOneExtendedPlayerSync
@@ -19,7 +19,7 @@ import com.suslovila.kharium.common.worldSavedData.CustomWorldData.Companion.cus
 import com.suslovila.kharium.extendedData.KhariumPlayerExtendedData
 import com.suslovila.kharium.research.KhariumAspect
 import com.suslovila.kharium.utils.SusMathHelper
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateTag
 import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.ThaumcraftIntegrator.completeNormalResearch
 import com.suslovila.sus_multi_blocked.utils.Position
@@ -37,7 +37,6 @@ import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.WorldServer
-import net.minecraftforge.event.entity.EntityEvent
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.entity.living.LivingDropsEvent
@@ -54,7 +53,6 @@ import thaumcraft.common.entities.monster.boss.EntityEldritchWarden
 import thaumcraft.common.lib.network.PacketHandler
 import thaumcraft.common.lib.network.playerdata.PacketSyncAspects
 import thaumcraft.common.lib.research.ResearchManager
-import javax.vecmath.Matrix4f
 
 object FMLEventListener {
     //event class
@@ -110,6 +108,8 @@ object FMLEventListener {
                 MultiStructureKharuContainer.tryConstruct(world, Position(x, y, z), entityPlayer)
                 MultiStructureKharuSnare.tryConstruct(world, Position(x, y, z), entityPlayer)
                 MultiStructureNetHandler.tryConstruct(world, Position(x, y, z), entityPlayer)
+                MultiStructureSynthesizer.tryConstruct(world, Position(x, y, z), entityPlayer)
+                MultiStructureAdvancedSynthesizer.tryConstruct(world, Position(x, y, z), entityPlayer)
 
             }
         }

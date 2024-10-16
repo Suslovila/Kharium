@@ -1,12 +1,10 @@
-package com.suslovila.kharium.common.multiStructure.synthesizer
+package com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer
 
 import com.suslovila.kharium.api.kharu.IKharuContainer
 import com.suslovila.kharium.utils.ThaumcraftIntegrator
 import com.suslovila.kharium.utils.config.multistructures.ConfigKharuContainer
 import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
 import com.suslovila.sus_multi_blocked.utils.getTile
-import scala.actors.threadpool.AtomicInteger
-import thaumcraft.api.aspects.Aspect
 import kotlin.math.min
 
 class TileSynthesizerKharuInput() : TileDefaultMultiStructureElement(), IKharuContainer {

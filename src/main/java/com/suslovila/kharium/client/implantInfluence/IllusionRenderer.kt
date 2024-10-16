@@ -27,7 +27,6 @@ object IllusionRenderer {
     @SubscribeEvent
     fun renderIllusions(event: RenderWorldLastEvent) {
         val player = Minecraft.getMinecraft()?.thePlayer ?: return
-        println("started render")
 
         illusions.forEach { it.timer++ }
         illusions.removeIf { it.timer > it.duration }
@@ -51,7 +50,6 @@ object IllusionRenderer {
             for (i in 0 until hackerObj.illusionAmount) {
                 glRotated(-360.0 / (1 + hackerObj.illusionAmount), 0.0, 1.0, 0.0)
                 glPushMatrix()
-                println("Drawing illusionassssssssssss")
                 // idk why, but for correct work we need to substract 1.3 :/
                 glTranslated(0.0, 0.0, vecFromPlayerToHacker.length())
                 glRotated(90.0, 0.0, 1.0, 0.0)

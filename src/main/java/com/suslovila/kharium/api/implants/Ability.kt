@@ -2,12 +2,10 @@ package com.suslovila.kharium.api.implants
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.fuel.FuelComposite
-import com.suslovila.kharium.api.fuel.MagicFuel
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.sync.implant.PacketImplantSync
-import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler.addKharu
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateInteger
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateTag
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation

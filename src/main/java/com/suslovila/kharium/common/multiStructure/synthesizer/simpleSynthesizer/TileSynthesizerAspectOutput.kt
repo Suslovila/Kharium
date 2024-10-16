@@ -1,8 +1,6 @@
-package com.suslovila.kharium.common.multiStructure.synthesizer
+package com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer
 
-import com.suslovila.kharium.Kharium
 import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
-import com.suslovila.sus_multi_blocked.utils.getTile
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.common.util.ForgeDirection
 import thaumcraft.api.aspects.Aspect
@@ -10,54 +8,26 @@ import thaumcraft.api.aspects.AspectList
 import thaumcraft.api.aspects.IAspectContainer
 import thaumcraft.api.aspects.IEssentiaTransport
 import kotlin.math.min
-
-
-// really works the same as EssentiaReservoir, accepts all aspect types
-class TileSynthesizerAspectInput() : TileDefaultMultiStructureElement(), IEssentiaTransport, IAspectContainer {
+// thaumcraft API is the bad and good at the same time. This tile works a lot like TileEssentiaReservoir
+class TileSynthesizerAspectOutput() : TileDefaultMultiStructureElement(), IEssentiaTransport,
+    IAspectContainer {
     override val packetId: Int = 0
-    companion object {
-        val COMPONENT_INDEX_NBT = Kharium.prefixAppender.doAndGet("componentIndex")
-    }
+    //	private val inputs: Array<ForgeDirection> = arrayOf(ForgeDirection.DOWN, ForgeDirection.UP)
 
-    var essentia: AspectList = AspectList()
-//    var correspondingComponentIndex = 0
+    private var essentia: AspectList = AspectList()
+
     val capacity: Int
         get() {
             return 64
-        }
-// I hope it will not cause NPE -_-
-    val connectedSynthesizerCore: TileSynthesizerCore
-        get() {
-            return world.getTile(this.getMasterPos()) as TileSynthesizerCore
-        }
-
-//    val requiredAspect: Aspect?
-//        get() {
-//            return connectedSynthesizerCore.currentProducingAspect?.components?.get(correspondingComponentIndex)
-//        }
-    /* if you ask "what a hell is this???" :
-    First of all, to achieve my goals, I need to build the structure in world facing NORTH and then give it spinning checks (0, 90, 180 270 degrees)
-    I want the tube to connect only to the "back" of Synthesizer. So I need to connect spinning with real world situation. To do this, I need to know
-    how make a "forgeFirection facing" from spin angle. To do this, when I write structure to file, I MUST MAKE it facing NORTH in world (but in code
-    it will have UP facing to make spinning around UP vector), and now I know what is default forgeDirection for zero angle. Now if I have,
-    for example, 90 angle, I know that the start is NORTH, so 90 angle from it is EAST. That's how I get forgeDirection real structure facing from spinning
-    FOR Synthesizer.
-    I know all this sounds really bad and like a mess, but that is how it works
-     */
-    val structureForgeDirection: ForgeDirection
-        get() {
-            val angles = arrayListOf(0, 90, 180, 270)
-            val directions = arrayListOf(ForgeDirection.NORTH, ForgeDirection.WEST, ForgeDirection.SOUTH, ForgeDirection.EAST)
-            val index = angles.indexOf(structureRotationAngle)
-            return directions[index]
         }
 
     // We just do not give a fuck about directions because we have a multistructure
     override fun isConnectable(face: ForgeDirection): Boolean =
         true
 
+    fun hasEmptySpace() : Boolean = essentia.visSize() < capacity
     override fun canInputFrom(face: ForgeDirection) =
-        structureForgeDirection == face.opposite
+        true
 
 
     override fun canOutputTo(face: ForgeDirection) =
@@ -69,7 +39,7 @@ class TileSynthesizerAspectInput() : TileDefaultMultiStructureElement(), IEssent
     override fun getSuctionType(face: ForgeDirection): Aspect? = null
 
 
-    override fun getSuctionAmount(forgeDirection: ForgeDirection): Int =
+    override fun getSuctionAmount(forgeDirection: ForgeDirection): Int = /* 156 */
         if (essentia.visSize() < capacity) 24 else 0
 
 
@@ -80,12 +50,13 @@ class TileSynthesizerAspectInput() : TileDefaultMultiStructureElement(), IEssent
     override fun addEssentia(aspect: Aspect, amount: Int, face: ForgeDirection): Int {
         return if (canInputFrom(face)) amount - addToContainer(aspect, amount) else 0
     }
-    // I just do not know what a hell does some this functions do, I am just copying from thaumcraft with hope everything will work properly
-    override fun getEssentiaType(direction: ForgeDirection) = essentia.getAspects().firstOrNull()
+// I just do not know what a hell does some this functions do, I am just copying from thaumcraft with hope everything will work properly
+    override fun getEssentiaType(direction: ForgeDirection) =
+        if (essentia.visSize() > 0 && direction == ForgeDirection.UNKNOWN) essentia.getAspects()[0] else null
     override fun getEssentiaAmount(forgeDirection: ForgeDirection) = this.essentia.visSize()
 
-    // also just copying from EssentiaReservoir :(
-    override fun getMinimumSuction(): Int = 24
+
+    override fun getMinimumSuction(): Int = 0
 
     override fun renderExtendedTube(): Boolean = false
     override fun getAspects(): AspectList = essentia
@@ -105,8 +76,7 @@ class TileSynthesizerAspectInput() : TileDefaultMultiStructureElement(), IEssent
         val toPut = min(emptySpace, amount)
         essentia.add(aspect, toPut)
         leftAmount -= toPut
-        markDirty()
-        markForSync()
+        markForSaveAndSync()
         return leftAmount
     }
 
@@ -114,7 +84,7 @@ class TileSynthesizerAspectInput() : TileDefaultMultiStructureElement(), IEssent
         if (essentia.getAmount(aspect) >= am) {
             essentia.remove(aspect, am)
             markDirty()
-            markForSync()
+            markForSaveAndSync()
             return true
         }
         return false
@@ -144,14 +114,12 @@ class TileSynthesizerAspectInput() : TileDefaultMultiStructureElement(), IEssent
     override fun writeCustomNBT(nbttagcompound: NBTTagCompound) {
         super.writeCustomNBT(nbttagcompound)
         essentia.writeToNBT(nbttagcompound)
-//        nbttagcompound.setInteger(COMPONENT_INDEX_NBT, correspondingComponentIndex)
 
     }
 
     override fun readCustomNBT(nbttagcompound: NBTTagCompound) {
         super.readCustomNBT(nbttagcompound)
         essentia.readFromNBT(nbttagcompound)
-//        correspondingComponentIndex = nbttagcompound.getInteger(COMPONENT_INDEX_NBT)
     }
 
 }

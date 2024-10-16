@@ -21,7 +21,7 @@ import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare;
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnareContainer;
 import com.suslovila.kharium.common.multiStructure.runeInstaller.BlockRuneInstaller;
 import com.suslovila.kharium.common.multiStructure.runeInstaller.TileRuneInstaller;
-import com.suslovila.kharium.common.multiStructure.synthesizer.BlockSynthesizer;
+import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.*;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -61,6 +61,9 @@ public class ModBlocks {
         GameRegistry.registerBlock(blockVoidMetal,"blockVoidMetal");
 //        GameRegistry.registerBlock(KHARU_SNARE,"blockKharuSnare");
 
+
+        GameRegistry.registerTileEntity(TileFilling.class, MOD_ID + "TileFilling");
+
         GameRegistry.registerTileEntity(TileEssentiaReservoirVoid.class, MOD_ID + "TileEssentiaReservoirVoid");
         GameRegistry.registerTileEntity(TileAntiNode.class, MOD_ID + "TileAntiNode");
         GameRegistry.registerTileEntity(TileAntiNodeControllerBase.class, MOD_ID + "TileControllerBase");
@@ -77,8 +80,13 @@ public class ModBlocks {
 
         GameRegistry.registerTileEntity(TileNetHandler.class, MOD_ID + "TileNetHandler");
 
-        GameRegistry.registerTileEntity(TileFilling.class, MOD_ID + "TileFilling");
         GameRegistry.registerTileEntity(TileKharuSnareContainer.class, MOD_ID + "TileKharuSnareContainer");
+
+        GameRegistry.registerTileEntity(TileSynthesizerCore.class, MOD_ID + "TileSynthesizerCore");
+        GameRegistry.registerTileEntity(TileSynthesizerAspectInput.class, MOD_ID + "TileSynthesizerAspectInput");
+        GameRegistry.registerTileEntity(TileSynthesizerAspectOutput.class, MOD_ID + "TileSynthesizerAspectOutput");
+        GameRegistry.registerTileEntity(TileSynthesizerKharuInput.class, MOD_ID + "TileSynthesizerKharuInput");
+
     }
 
     public static void registerRender() {

@@ -1,23 +1,18 @@
 package com.suslovila.kharium.api.implants
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.utils.SusGraphicHelper
-import com.suslovila.kharium.utils.SusGraphicHelper.pushBrightness
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
-import com.suslovila.kharium.utils.SusNBTHelper.getUUIDOrNull
-import com.suslovila.kharium.utils.SusNBTHelper.setUUID
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateInteger
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateTag
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getUUIDOrNull
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.setUUID
 import com.suslovila.kharium.utils.SusWorldHelper
 import net.minecraft.client.Minecraft
-import net.minecraft.client.particle.EntityFX
-import net.minecraft.client.renderer.Tessellator
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.MovingObjectPosition
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.event.entity.living.LivingEvent
-import org.lwjgl.opengl.GL11.*
 
 abstract class AbilityHack(name: String) : Ability(name) {
     companion object {

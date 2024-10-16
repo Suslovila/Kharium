@@ -6,8 +6,8 @@ import com.suslovila.kharium.api.fuel.IKharuHolderItem
 import com.suslovila.kharium.api.implants.RuneUsingItem
 import com.suslovila.kharium.api.rune.RuneType
 import com.suslovila.kharium.client.gui.KhariumGui
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateInteger
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateTag
 import com.suslovila.kharium.utils.config.ConfigPortableContainer
 import com.suslovila.sus_multi_blocked.utils.Position
 import com.suslovila.sus_multi_blocked.utils.getTile
@@ -139,7 +139,7 @@ object ItemPortableAspectContainer : Item(), RuneUsingItem, IEssentiaHolderItem,
                     event.z
                 )
             ) as? IAspectContainer)?.let { blockAspectContainer ->
-                val requiredAspect = getRequiredAspect(stack)
+                val requiredAspect = getRequiredAspect(stack) ?: return
                 val requiredAmount = getRequiredAmount(stack)
                 val stored = this.getStoredAspects(stack)
                 val hasEnough = blockAspectContainer.doesContainerContainAmount(requiredAspect, requiredAmount)

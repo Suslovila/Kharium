@@ -1,6 +1,5 @@
 package com.suslovila.kharium.common.multiStructure.javaExample;
 
-import com.suslovila.kharium.common.multiStructure.synthesizer.TileSynthesizerAspectInput;
 import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructureElement;
 import com.suslovila.sus_multi_blocked.api.multiblock.block.ITileMultiStructureElement;
 import com.suslovila.sus_multi_blocked.utils.Position;

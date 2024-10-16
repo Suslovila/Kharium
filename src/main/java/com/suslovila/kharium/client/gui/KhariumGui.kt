@@ -9,4 +9,6 @@ enum class KhariumGui {
     ITEM_KHARU_NET_HANDLER,
     ITEM_ASPECT_HOLDER,
     SYNTHESIZER,
+    ADVANCED_SYNTHESIZER,
+
 }

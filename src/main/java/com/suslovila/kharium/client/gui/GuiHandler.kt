@@ -1,14 +1,14 @@
 package com.suslovila.kharium.client.gui
 
-import com.suslovila.kharium.common.block.container.ContainerKharuSnare
 import com.suslovila.kharium.common.container.ContainerImplantHolder
 import com.suslovila.kharium.common.container.ContainerKharuContainer
 import com.suslovila.kharium.common.container.ContainerRuneInstaller
-import com.suslovila.kharium.common.item.ItemKharuNetConfigurator
+import com.suslovila.kharium.common.item.ItemConfigurator
 import com.suslovila.kharium.common.item.ItemPortableAspectContainer
 import com.suslovila.kharium.common.multiStructure.kharuContainer.TileKharuContainer
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import com.suslovila.kharium.common.multiStructure.runeInstaller.TileRuneInstaller
+import com.suslovila.kharium.common.multiStructure.synthesizer.TileAdvancedSynthesizerCore
 import cpw.mods.fml.common.network.IGuiHandler
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.world.World
@@ -49,45 +49,55 @@ class GuiHandler : IGuiHandler {
         }
         val tile = world.getTileEntity(x, y, z)
         val gui = KhariumGui.values()[id]
-        when (gui) {
+        return when (gui) {
             KhariumGui.SYNTHESIZER -> {
-                return if (tile !is TileKharuSnare) {
+                if (tile !is TileKharuSnare) {
                     null
                 } else GuiKharuSnare(player.inventory, tile)
             }
 
             KhariumGui.IMPLANT_INSTALLER -> {
-                return GuiImplantInstaller(player)
+                GuiImplantInstaller(player)
             }
 
             KhariumGui.RUNE_INSTALLER -> {
-                return if (tile !is TileRuneInstaller)
+                if (tile !is TileRuneInstaller)
                     null
                 else GuiRuneInstaller(tile, player)
             }
 
             KhariumGui.KHARU_CONTAINER -> {
-                return if (tile !is TileKharuContainer) {
+                if (tile !is TileKharuContainer) {
                     null
                 } else GuiKharuContainer(tile, player)
             }
             KhariumGui.ITEM_KHARU_NET_HANDLER -> {
-                return if (player.heldItem.item !is ItemKharuNetConfigurator) {
+                if (player.heldItem.item !is ItemConfigurator) {
                     null
                 } else GuiItemKharuNetConfigurator(player.heldItem)
             }
             KhariumGui.ITEM_ASPECT_HOLDER -> {
-                return if (player.heldItem.item !is ItemPortableAspectContainer) {
+                if (player.heldItem.item !is ItemPortableAspectContainer) {
                     null
                 } else GuiItemPortableContainer(player.heldItem)
             }
             KhariumGui.KHARU_SNARE -> {
-                return if (tile !is TileKharuSnare) {
+                if (tile !is TileKharuSnare) {
                     null
                 } else GuiKharuSnare(player.inventory, tile)
             }
             KhariumGui.KHARU_NET_HANDLER -> {
 
+            }
+
+            KhariumGui.ADVANCED_SYNTHESIZER -> {
+                if (tile !is TileAdvancedSynthesizerCore) {
+                    null
+                } else GuiAdvancedSynthesizer(tile)
+            }
+
+            else -> {
+                null
             }
         }
 

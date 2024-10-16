@@ -3,27 +3,39 @@ package com.suslovila.kharium.common.multiStructure.kharuNetHandler
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.client.PostRendered
 import com.suslovila.kharium.api.kharu.IKharuContainer
+import com.suslovila.kharium.api.managment.IConfigurable
+import com.suslovila.kharium.client.gui.KhariumGui
+import com.suslovila.kharium.client.render.tile.toSusVec3
 import com.suslovila.kharium.common.block.container.SimpleInventory
 import com.suslovila.kharium.common.block.tileEntity.TileAntiNode
 import com.suslovila.kharium.common.block.tileEntity.rune.TileRune
-import com.suslovila.kharium.utils.SusNBTHelper
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
-import com.suslovila.kharium.utils.TimeTracker
-import com.suslovila.kharium.utils.getPosition
+import com.suslovila.kharium.common.item.ItemConfigurator
+import com.suslovila.kharium.utils.*
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateInteger
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateTag
 import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
+import com.suslovila.sus_multi_blocked.utils.PlayerInteractionHelper.sendChatMessage
 import com.suslovila.sus_multi_blocked.utils.Position
 import com.suslovila.sus_multi_blocked.utils.getTile
+import net.minecraft.client.Minecraft
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
 import net.minecraft.util.AxisAlignedBB
+import net.minecraft.util.ResourceLocation
+import net.minecraft.world.World
 import net.minecraftforge.client.event.RenderWorldLastEvent
+import org.lwjgl.opengl.GL11
+import thaumcraft.client.lib.UtilsFX
+import java.awt.Color
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.min
 
 class TileNetHandler(
-) : TileDefaultMultiStructureElement(), PostRendered {
+) : TileDefaultMultiStructureElement(), PostRendered, IConfigurable {
     val inventory: IInventory = SimpleInventory(0, 0, "inv", 64)
     override val packetId: Int = 0
     val maxLowerAmount = 10
@@ -124,7 +136,7 @@ class TileNetHandler(
         super.readCustomNBT(nbttagcompound)
         finalisedLayerAmount = nbttagcompound.getInteger(LAYER_AMOUNT_NBT)
 
-        val suppliersList = nbttagcompound.getTagList(NET_SUPPLIERS_NBT, SusNBTHelper.TAG_COMPOUND)
+        val suppliersList = nbttagcompound.getTagList(NET_SUPPLIERS_NBT, KhariumSusNBTHelper.TAG_COMPOUND)
         for (index in 0 until suppliersList.tagCount()) {
             val tag = suppliersList.getCompoundTagAt(index)
             val pos = Position.readFrom(tag)
@@ -139,7 +151,7 @@ class TileNetHandler(
         }
 
 
-        val consumersList = nbttagcompound.getTagList(NET_CONSUMERS_NBT, SusNBTHelper.TAG_COMPOUND)
+        val consumersList = nbttagcompound.getTagList(NET_CONSUMERS_NBT, KhariumSusNBTHelper.TAG_COMPOUND)
         for (index in 0 until consumersList.tagCount()) {
             val tag = consumersList.getCompoundTagAt(index)
             val pos = Position.readFrom(tag)
@@ -186,6 +198,134 @@ class TileNetHandler(
     fun isCheckTime() =
         ((world.worldTime + ownCheckTime)
                 % TileAntiNode.tracker.maxValue) == 0L
+
+    override fun render(configurator: ItemStack, event: RenderWorldLastEvent) {
+        val player = Minecraft.getMinecraft().thePlayer ?: return
+                    val handlerPosition = this.getPosition()
+
+                    GL11.glPushMatrix()
+                    SusGraphicHelper.translateFromPlayerTo(handlerPosition.toSusVec3(), event.partialTicks)
+
+                    val time = SusGraphicHelper.getRenderGlobalTime(event.partialTicks)
+                    this.netSuppliers.forEach { member ->
+                        GL11.glPushMatrix()
+                        UtilsFX.drawFloatyLine(
+                            member.position.x.toDouble(),
+                            member.position.y.toDouble(),
+                            member.position.z.toDouble(),
+
+                            handlerPosition.x.toDouble(),
+                            handlerPosition.y.toDouble(),
+                            handlerPosition.z.toDouble(),
+                            event.partialTicks,
+                            Color.red.rgb,
+                            "${Kharium.MOD_ID}:textures/misc/bubble.png",
+                            0.1f,
+                            Math.min(player.ticksExisted, 10) / 10.0f,
+                            0.3F,
+                        )
+                        GL11.glPopMatrix()
+                    }
+
+                    this.netConsumers.forEach { member ->
+                        val offset = member.position - handlerPosition
+                        GL11.glPushMatrix()
+                        SusGraphicHelper.drawGuideArrows()
+                        GL11.glTranslated(offset.x.toDouble(), offset.y.toDouble(), offset.z.toDouble())
+                        SusGraphicHelper.drawGuideArrows()
+                        val inverted = SusVec3(-offset.x, -offset.y, -offset.z)
+                        SusGraphicHelper.drawFloatyLine(
+                            inverted.x,
+                            inverted.y,
+                            inverted.z,
+                            1,
+                            ResourceLocation(Kharium.MOD_ID, "textures/misc/bubble.png"),
+                            speed = 0.1f,
+                            Math.min(time, 10.0f) / 10.0f,
+                            width = 0.3F,
+                            time = time,
+                            false,
+                            1.0
+                        ) { GL11.glDisable(GL11.GL_BLEND) }
+
+                        GL11.glPopMatrix()
+                    }
+
+                GL11.glPopMatrix()
+    }
+
+    override fun onBlockClick(
+        stack: ItemStack,
+        player: EntityPlayer,
+        world: World,
+        clickedPos: Position,
+        side: Int,
+        clickPos: com.suslovila.sus_multi_blocked.utils.SusVec3
+    ) {
+        val tile = world.getTile(clickedPos)
+        if (tile is IKharuContainer) {
+
+                // supplier
+                if (!player.isSneaking) {
+                    val foundMember = this.netSuppliers.firstOrNull { it.position == clickedPos }?.let { member ->
+                        member.priority = stack.getOrCreateTag().getOrCreateInteger(ItemConfigurator.CURRENT_PRIORITY_NBT, 0)
+                        this.markForSaveAndSync()
+                        player.sendChatMessage("changed supplier priority")
+                    }
+                    if (foundMember == null) {
+                        val success = this.netSuppliers.add(
+                            KharuNetMember(
+                                clickedPos,
+                                stack.getOrCreateTag().getOrCreateInteger(ItemConfigurator.CURRENT_PRIORITY_NBT, 0)
+                            )
+                        )
+                        if(success) {
+                            this.markForSaveAndSync()
+                            player.sendChatMessage("added new supplier to net")
+
+                        }
+                        else {
+                            player.sendChatMessage("error adding supplier to net. Maybe there is already such priority?")
+                        }
+                    }
+                }
+                // consumer
+                else {
+                    val foundMember = this.netConsumers.firstOrNull { it.position == clickedPos }?.let {member ->
+                        member.priority = stack.getOrCreateTag().getOrCreateInteger(ItemConfigurator.CURRENT_PRIORITY_NBT, 0)
+                        this.markForSaveAndSync()
+                        player.sendChatMessage("changed consumer priority")
+                    }
+                    if (foundMember == null) {
+                        val success = this.netConsumers.add(
+                            KharuNetMember(
+                                clickedPos,
+                                stack.getOrCreateTag().getOrCreateInteger(ItemConfigurator.CURRENT_PRIORITY_NBT, 0)
+                            )
+                        )
+                        if(success) {
+                            this.markForSaveAndSync()
+                            player.sendChatMessage("added new consumer to net")
+
+                        }
+                        else {
+                            player.sendChatMessage("error adding consumer to net. Maybe there is already such priority?")
+                        }
+                    }
+                }
+        }
+    }
+
+    override fun onRightClick(itemStackIn: ItemStack, worldIn: World, player: EntityPlayer) {
+        player.openGui(
+            Kharium.MOD_ID,
+            KhariumGui.ITEM_KHARU_NET_HANDLER.ordinal,
+            worldIn,
+            player.posX.toInt(),
+            player.posY.toInt(),
+            player.posZ.toInt()
+        )
+    }
 
 
 }

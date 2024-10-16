@@ -14,6 +14,7 @@ import thaumcraft.api.research.ResearchItem
 import thaumcraft.common.Thaumcraft
 import thaumcraft.common.lib.network.PacketHandler
 import thaumcraft.common.lib.network.playerdata.PacketResearchComplete
+import java.util.LinkedHashMap
 import kotlin.math.min
 
 object ThaumcraftIntegrator {
@@ -47,9 +48,9 @@ object ThaumcraftIntegrator {
         }
     }
 
-    private fun getAspectCompositionActionsRecursively(accumulatedAmount: AtomicInteger, components: Array<Aspect>) {
+    private fun getAspectCompositionActionsRecursively(accumulatedAmount: AtomicInteger, components: Array<Aspect>?) {
         accumulatedAmount.addAndGet(1)
-        components.forEach { getAspectCompositionActionsRecursively(accumulatedAmount, it.components) }
+        components?.forEach { getAspectCompositionActionsRecursively(accumulatedAmount, it.components) }
     }
 
     fun tryTakeFromContainers(
@@ -59,7 +60,7 @@ object ThaumcraftIntegrator {
     ): Boolean {
         val requiredAspectsCopy = aspects.copy()
         aspectHolders.forEach { aspectHolder ->
-            aspectHolder.aspects.aspects.forEach { aspect, amount ->
+            LinkedHashMap(aspectHolder.aspects.aspects).forEach { (aspect, amount) ->
                 val requiredAmount = requiredAspectsCopy.getAmount(aspect)
                 val toTake = min(requiredAmount, amount)
                 requiredAspectsCopy.remove(aspect, toTake)

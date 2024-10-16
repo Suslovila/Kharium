@@ -1,4 +1,4 @@
-package com.suslovila.kharium.common.multiStructure.synthesizer
+package com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.common.block.ModBlocks
@@ -50,7 +50,7 @@ object MultiStructureSynthesizer : MultiStructure<SynthesizerAdditionalData, Syn
         // we need to make synthesizerCore know were are input and outPut tiles
         //todo: rewrite it
         val coreElement = this.elements.first { element-> element.tileEntityByMeta == 3}
-        (world.getTile(masterPosition + coreElement.getRealOffset(facing, rotationAngle)) as TileSynthesizerCore).let {tileCore ->
+        (world.getTile(masterPosition + coreElement.getRealOffset(facing, rotationAngle)) as TileSynthesizerCore).let { tileCore ->
             tileCore.tileAspectInputPositions = this.elements.filter { element-> element.tileEntityByMeta == 1}.map {element ->
                 masterPosition + element.getRealOffset(facing, rotationAngle)
             }.toTypedArray()

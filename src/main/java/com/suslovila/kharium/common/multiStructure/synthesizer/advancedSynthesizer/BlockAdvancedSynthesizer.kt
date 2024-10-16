@@ -1,7 +1,9 @@
-package com.suslovila.kharium.common.multiStructure.synthesizer
+package com.suslovila.kharium.common.multiStructure.synthesizer.advancedSynthesizer
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.client.gui.KhariumGui
+import com.suslovila.kharium.common.multiStructure.synthesizer.TileAdvancedSynthesizerCore
+import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.TileSynthesizerCore
 import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructure
 import com.suslovila.sus_multi_blocked.api.multiblock.block.MultiStructureBlock
 import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
@@ -12,9 +14,9 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.common.util.ForgeDirection
 
-class BlockSynthesizer(name: String
-) : MultiStructureBlock<SynthesizerAdditionalData, SynthesizerElement>() {
-    override val multiStructure: MultiStructure<SynthesizerAdditionalData, SynthesizerElement> by lazy { MultiStructureSynthesizer }
+class BlockAdvancedSynthesizer(name: String
+) : MultiStructureBlock<AdvancedSynthesizerAdditionalData, AdvancedSynthesizerElement>() {
+    override val multiStructure: MultiStructure<AdvancedSynthesizerAdditionalData, AdvancedSynthesizerElement> by lazy { MultiStructureAdvancedSynthesizer }
 
     init {
         this.setHardness(3.0F)
@@ -39,7 +41,7 @@ class BlockSynthesizer(name: String
         val tile = world.getTileEntity(x, y, z) as? TileDefaultMultiStructureElement ?: return false
         val synthesizerCore = (world.getTile(tile.structureMasterPos))
 
-        if(synthesizerCore !is TileSynthesizerCore) return false
+        if(synthesizerCore !is TileAdvancedSynthesizerCore) return false
         if (!player.isSneaking) {
                 player.openGui(Kharium.instance, KhariumGui.SYNTHESIZER.ordinal, world, synthesizerCore.xCoord, synthesizerCore.yCoord, synthesizerCore.zCoord)
                 return true
@@ -47,7 +49,7 @@ class BlockSynthesizer(name: String
         return false
     }
     override fun createNewTileEntity(world: World?, meta: Int) =
-        MultiStructureSynthesizer.possibleTilesByMeta[meta].invoke()
+        MultiStructureAdvancedSynthesizer.possibleTilesByMeta[meta].invoke()
     override fun isOpaqueCube() = false
 
     override fun renderAsNormalBlock() = false

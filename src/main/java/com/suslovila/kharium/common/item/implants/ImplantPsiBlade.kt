@@ -14,6 +14,7 @@ import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler.addKhar
 import com.suslovila.kharium.research.KhariumAspect
 import com.suslovila.kharium.utils.SusGraphicHelper
 import net.minecraft.entity.EntityLiving
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
 import net.minecraftforge.client.event.RenderHandEvent
 import net.minecraftforge.event.entity.player.AttackEntityEvent
@@ -59,7 +60,7 @@ object ImplantPsiBlade : ItemImplant(ImplantType.HEART) {
                         )
                         val hasEnoughFuel = requiredFuel.tryTakeFuelFromPlayer(event.entityPlayer)
                         if(!hasEnoughFuel) return
-                        (event.target as? EntityLiving)?.run {
+                        (event.target as? EntityLivingBase)?.run {
                             this.attackEntityFrom(
                                 DamageSourceEnergy,
                                 (basicDamage + 3 * getRuneAmountOfType(implant, RuneType.EXPANSION)).toFloat()

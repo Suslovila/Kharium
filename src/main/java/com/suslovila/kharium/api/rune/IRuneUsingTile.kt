@@ -2,7 +2,7 @@ package com.suslovila.kharium.api.rune
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.utils.Percentage
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateDouble
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateDouble
 import net.minecraft.nbt.NBTTagCompound
 import com.suslovila.kharium.utils.plusAssign
 

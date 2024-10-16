@@ -1,4 +1,4 @@
-package com.suslovila.kharium.common.multiStructure.synthesizer
+package com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.utils.ThaumcraftIntegrator.compositionAmountToAspect
@@ -12,7 +12,7 @@ import thaumcraft.api.aspects.AspectList
 
 class TileSynthesizerCore() : TileDefaultMultiStructureElement() {
     override val packetId: Int = 0
-    var currentProducingAspect: Aspect? = null
+    var currentProducingAspect: Aspect? = Aspect.ENERGY
 
     // default values are 0, 0, 0
     // represents real-world position
@@ -132,6 +132,11 @@ class TileSynthesizerCore() : TileDefaultMultiStructureElement() {
 
                 if (hasEnoughAspects) {
                     synthesizeTimeLeft = compositionAmountToAspect[currentAspect]!! * 20
+                    tryTakeFromContainers(
+                        aspectHolders = tileAspectInputPositions.mapNotNull { position -> world.getTile(position) as? TileSynthesizerAspectInput },
+                        aspects = requiredAspects,
+                        simulate = false
+                    )
                 }
             }
         }

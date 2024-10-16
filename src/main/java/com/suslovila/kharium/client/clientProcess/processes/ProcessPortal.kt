@@ -1,9 +1,13 @@
 package com.suslovila.kharium.client.clientProcess.processes
 
 import com.suslovila.kharium.api.event.ClientProcess
+import com.suslovila.kharium.api.fuel.FuelKharu
 import com.suslovila.kharium.utils.SusGraphicHelper
+import com.suslovila.kharium.utils.SusGraphicHelper.getRenderPos
 import com.suslovila.kharium.utils.SusVec3
+import com.suslovila.kharium.utils.getPosition
 import cpw.mods.fml.common.gameevent.TickEvent
+import net.minecraft.client.Minecraft
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import org.lwjgl.opengl.GL11
@@ -30,6 +34,8 @@ class ProcessPortal(
 
     override fun render(event: RenderWorldLastEvent) {
         GL11.glPushMatrix()
+        val player = Minecraft.getMinecraft().thePlayer
+        val lookVec = player.getRenderPos(event.partialTicks).add(0.0, player.eyeHeight.toDouble(), 0.0).subtract(SusVec3(x,y,z))
         SusGraphicHelper.translateFromPlayerTo(SusVec3(x, y, z), event.partialTicks)
         val targetVector = SusVec3(1.0f, 2.0f, 3.0f).normalize()
         val currentZ = SusVec3(0.0f, 0.0f, 1.0f)
@@ -46,7 +52,6 @@ class ProcessPortal(
                 rotationAxis.z.toFloat()
             )
         )
-
 
 
         with(rotationMatrix) {
@@ -70,11 +75,12 @@ class ProcessPortal(
             GL11.glLoadMatrix(floatBuffer)
         }
 
-        SusGraphicHelper.renderTexture(
-            ResourceLocation(Thaumcraft.MODID, "textures/misc/vortex.png"),
+        SusGraphicHelper.renderTextureOrth(
+            FuelKharu.texture,
             1.0,
             1.0,
-            1.0
+            1.0,
+            lookVec
         )
         GL11.glPopMatrix()
     }

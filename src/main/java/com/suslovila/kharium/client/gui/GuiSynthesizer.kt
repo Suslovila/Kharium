@@ -1,22 +1,21 @@
 package com.suslovila.kharium.client.gui
 
-import com.suslovila.kharium.common.item.ItemPortableAspectContainer
+import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.TileSynthesizerCore
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.sync.PacketItemPortableContainer
 import com.suslovila.kharium.utils.SusGraphicHelper
 import com.suslovila.sus_multi_blocked.client.gui.GuiMultiBlockFormer
 import com.suslovila.sus_multi_blocked.utils.SerialiseType
+import com.suslovila.sus_multi_blocked.utils.getTile
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.GuiTextField
-import net.minecraft.item.ItemStack
 import org.lwjgl.opengl.GL11
 import thaumcraft.api.aspects.Aspect
 import thaumcraft.client.lib.UtilsFX
-import java.awt.Color
 
-class GuiItemPortableContainer(val itemIn: ItemStack) : GuiScreen() {
+class GuiSynthesizer(val synthesizer: TileSynthesizerCore) : GuiScreen() {
 
 
     protected var xTextureSize = 511
@@ -33,10 +32,7 @@ class GuiItemPortableContainer(val itemIn: ItemStack) : GuiScreen() {
 
     lateinit var requiredAmount: GuiTextField
 
-    var currentAspect: Aspect? = run {
-        val aspect = ItemPortableAspectContainer.getRequiredAspect(itemIn)
-        aspect
-    }
+    var currentAspect: Aspect? = synthesizer.currentProducingAspect
 
     override fun initGui() {
         super.initGui()
@@ -53,7 +49,7 @@ class GuiItemPortableContainer(val itemIn: ItemStack) : GuiScreen() {
         val maxAspectAmountInLine = 9
         buttonAssociations.forEachIndexed { index, aspect ->
             buttonList.add(
-                GuiSynthesizerButtonAspect(
+                GuiButtonAspect(
                     this,
                     index,
                     guiLeft + rowCounter * (buttonSize + offsetBetweenButtons),
@@ -73,7 +69,7 @@ class GuiItemPortableContainer(val itemIn: ItemStack) : GuiScreen() {
         }
         requiredAmount = GuiTextField(fontRendererObj, guiLeft + 100, guiTop + 13, 50, 12)
         setDefaultTextSettings(requiredAmount)
-        requiredAmount.text = ItemPortableAspectContainer.getRequiredAmount(itemIn).toString()
+//        requiredAmount.text = ItemPortableAspectContainer.getRequiredAmount(itemIn).toString()
 
     }
 
@@ -144,8 +140,8 @@ class GuiItemPortableContainer(val itemIn: ItemStack) : GuiScreen() {
     }
 }
 
-class GuiSynthesizerButtonAspect(
-    val gui: GuiItemPortableContainer,
+class GuiButtonAspect(
+    val gui: GuiSynthesizer,
     id: Int,
     x: Int,
     y: Int,
@@ -175,13 +171,13 @@ class GuiSynthesizerButtonAspect(
         SusGraphicHelper.drawFromCenter(12.0)
         GL11.glRotated(90.0, 0.0, 0.0, 1.0)
 
-        GL11.glPushMatrix()
-        val aspectAmount = ItemPortableAspectContainer.getStoredAspects(gui.itemIn).getAmount(aspect).toString()
-        GL11.glTranslated((-4.0 * aspectAmount.length) / 2, 0.0, 1.0)
-        GL11.glScaled(0.7, 0.7, 0.7)
-        Minecraft.getMinecraft().fontRendererObj.drawString(aspectAmount, 0, 0, Color.white.rgb)
-        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
-        GL11.glPopMatrix()
+//        GL11.glPushMatrix()
+//        val aspectAmount = ItemPortableAspectContainer.getStoredAspects(gui.itemIn).getAmount(aspect).toString()
+//        GL11.glTranslated((-4.0 * aspectAmount.length) / 2, 0.0, 1.0)
+//        GL11.glScaled(0.7, 0.7, 0.7)
+//        Minecraft.getMinecraft().fontRendererObj.drawString(aspectAmount, 0, 0, Color.white.rgb)
+//        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
+//        GL11.glPopMatrix()
 
 
         GL11.glPopMatrix()

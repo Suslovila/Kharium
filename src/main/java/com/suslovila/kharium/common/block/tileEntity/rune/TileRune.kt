@@ -7,7 +7,7 @@ import com.suslovila.kharium.common.block.tileEntity.TileKharium
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
 import com.suslovila.kharium.utils.ModelWrapperDisplayList
 import com.suslovila.kharium.utils.SusGraphicHelper
-import com.suslovila.kharium.utils.SusNBTHelper.writeTo
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.writeTo
 import com.suslovila.kharium.utils.SusVec3
 import com.suslovila.kharium.utils.cos
 import com.suslovila.kharium.utils.getPosDouble

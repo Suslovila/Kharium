@@ -18,7 +18,7 @@ public class ModItems {
 
         GameRegistry.registerItem(ItemSpaceDivider.INSTANCE, ItemSpaceDivider.name);
         GameRegistry.registerItem(ItemRune.INSTANCE, ItemRune.name);
-        GameRegistry.registerItem(ItemKharuNetConfigurator.INSTANCE, ItemKharuNetConfigurator.name);
+        GameRegistry.registerItem(ItemConfigurator.INSTANCE, ItemConfigurator.name);
         GameRegistry.registerItem(ItemPortableAspectContainer.INSTANCE, ItemPortableAspectContainer.name);
         registerImplants();
     }

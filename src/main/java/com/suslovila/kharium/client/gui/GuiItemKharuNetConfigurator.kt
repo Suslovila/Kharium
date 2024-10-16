@@ -1,21 +1,12 @@
 package com.suslovila.kharium.client.gui
 
-import com.suslovila.kharium.common.item.ItemKharuNetConfigurator
-import com.suslovila.kharium.common.item.ItemKharuNetConfigurator.CURRENT_PRIORITY_NBT
+import com.suslovila.kharium.common.item.ItemConfigurator.CURRENT_PRIORITY_NBT
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.sync.PacketItemKharuNetConfigurator
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
-import com.suslovila.sus_multi_blocked.common.item.MultiBlockWrapper
-import com.suslovila.sus_multi_blocked.common.item.MultiBlockWrapper.getMode
-import com.suslovila.sus_multi_blocked.common.sync.PacketBlockModifiers
-import com.suslovila.sus_multi_blocked.common.sync.PacketHandler
-import com.suslovila.sus_multi_blocked.utils.SerialiseType
-import com.suslovila.sus_multi_blocked.utils.Position
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateInteger
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateTag
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiScreen
-import net.minecraft.client.gui.GuiTextField
-import net.minecraft.entity.player.InventoryPlayer
 import net.minecraft.item.ItemStack
 import java.awt.Color
 

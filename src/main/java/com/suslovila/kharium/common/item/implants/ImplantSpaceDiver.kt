@@ -2,24 +2,16 @@ package com.suslovila.kharium.common.item.implants
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.fuel.FuelComposite
-import com.suslovila.kharium.api.fuel.FuelEssentia
-import com.suslovila.kharium.api.fuel.FuelKharu
 import com.suslovila.kharium.api.implants.*
 import com.suslovila.kharium.api.implants.RuneUsingItem.Companion.getRuneAmountOfType
 import com.suslovila.kharium.api.rune.RuneType
 import com.suslovila.kharium.client.clientProcess.ClientProcessHandler
 import com.suslovila.kharium.client.clientProcess.processes.ProcessPortal
 import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler.addKharu
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
-import com.suslovila.kharium.utils.SusVec3
 import com.suslovila.kharium.utils.SusWorldHelper
 import com.suslovila.kharium.utils.getPosition
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
-import org.lwjgl.opengl.GL11.*
-import thaumcraft.api.aspects.Aspect
-import thaumcraft.api.aspects.AspectList
 
 object ImplantSpaceDiver : ItemImplant(ImplantType.OCULAR_SYSTEM) {
 

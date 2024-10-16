@@ -2,7 +2,6 @@ package com.suslovila.kharium.utils
 
 import com.suslovila.kharium.Kharium
 import net.minecraft.client.Minecraft
-import net.minecraft.client.particle.EntityFX
 import net.minecraft.client.renderer.ActiveRenderInfo
 import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.client.renderer.RenderHelper
@@ -16,11 +15,15 @@ import net.minecraft.util.Vec3
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
 import net.minecraftforge.client.model.obj.WavefrontObject
+import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL11.*
 import org.lwjgl.opengl.GL12
 import thaumcraft.client.lib.UtilsFX
 import thaumcraft.common.config.Config
 import java.awt.Color
+import java.nio.ByteBuffer
+import javax.vecmath.Matrix4d
+import kotlin.math.sign
 
 object SusGraphicHelper {
     val v1 = 0.0
@@ -340,4 +343,63 @@ object SusGraphicHelper {
         glDisable(3042)
         glPopMatrix()
     }
+
+
+    fun renderTextureOrth(
+        texture: ResourceLocation,
+        scaleX: Double,
+        scaleY: Double,
+        scaleZ: Double,
+        lookVector: SusVec3
+    ) {
+
+        UtilsFX.bindTexture(texture)
+        glPushMatrix()
+        glEnable(3042)
+        glDisable(GL_CULL_FACE)
+        glBlendFunc(770, 771)
+        if (Minecraft.getMinecraft().renderViewEntity is EntityPlayer) {
+            val lookVecXZProjection = SusVec3(lookVector.x, 0.0, lookVector.z)
+            val lookVecYZProjection = SusVec3(0.0, lookVector.y, lookVector.z)
+
+            val angleAroundY = (SusVec3.angleBetweenVec3(SusVec3(0, 0, 1), lookVecXZProjection) * 180.0 / Math.PI) * lookVecXZProjection.x.sign
+            val angleAroundX = (SusVec3.angleBetweenVec3(SusVec3(0, 0, 1), lookVecYZProjection) * 180.0 / Math.PI) * lookVecYZProjection.y.sign
+
+            glRotated(angleAroundY, 0.0, 1.0, 0.0)
+            glRotated(angleAroundX, 1.0, 0.0, 0.0)
+
+            SusGraphicHelper.drawGuideArrows()
+//            GL11.glMultMatrix()
+
+
+            val normalizedLookVector = lookVector.normalize()
+
+            val upVector = SusVec3(0.0, 1.0, 0.0)
+            val xAxis = normalizedLookVector.cross(upVector).normalize()
+            val yAxis = xAxis.cross(normalizedLookVector).normalize()
+
+            val rotationMatrix = Matrix4d(
+                xAxis.x, yAxis.x, -normalizedLookVector.x, 0.0,
+                xAxis.y, yAxis.y, (-normalizedLookVector.y), 0.0,
+                xAxis.z, yAxis.z, (-normalizedLookVector.z), 0.0,
+                0.0, 0.0, 0.0, 1.0
+            )
+
+            with(rotationMatrix) {
+                val doubleBuffer = ByteBuffer.allocateDirect(16 * java.lang.Double.BYTES).asDoubleBuffer()
+                doubleBuffer.put(m00).put(m01).put(m02).put(m03)
+                doubleBuffer.put(m10).put(m11).put(m12).put(m13)
+                doubleBuffer.put(m20).put(m21).put(m22).put(m23)
+                doubleBuffer.put(m30).put(m31).put(m32).put(m33)
+                doubleBuffer.flip()
+                glMultMatrix(doubleBuffer)
+            }
+
+            drawGuideArrows()
+            this.drawFromCenter(1.0)
+        }
+        glDisable(3042)
+        glPopMatrix()
+    }
+
 }
