@@ -1,34 +1,29 @@
 package com.suslovila.kharium.common.sync;
 
-import com.suslovila.kharium.common.item.ItemPortableAspectContainer;
-import com.suslovila.kharium.common.multiStructure.synthesizer.TileAdvancedSynthesizerCore;
-import com.suslovila.kharium.common.multiStructure.synthesizer.advancedSynthesizer.AdvancedSynthesizerElement;
-import com.suslovila.kharium.utils.SusWorldHelper;
+import com.suslovila.kharium.common.multiStructure.synthesizer.advancedSynthesizer.TileAdvancedSynthesizerCore;
 import com.suslovila.sus_multi_blocked.utils.Position;
-import com.suslovila.sus_multi_blocked.utils.SusNBTHelper;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import thaumcraft.api.aspects.Aspect;
 
-public class PacketGuiAdvancedSynthesizer implements IMessage {
+public class PacketGuiAdvancedSynthesizerAddRequest implements IMessage {
     private String aspect;
     private int requiredAmount;
 
     private Position position;
 
-    public PacketGuiAdvancedSynthesizer(Aspect aspect, int amount, Position position) {
+    public PacketGuiAdvancedSynthesizerAddRequest(Aspect aspect, int amount, Position position) {
         this.aspect = aspect.getTag();
         requiredAmount = amount;
         this.position = position;
     }
 
-    public PacketGuiAdvancedSynthesizer() {
+    public PacketGuiAdvancedSynthesizerAddRequest() {
 
     }
 
@@ -48,9 +43,9 @@ public class PacketGuiAdvancedSynthesizer implements IMessage {
     }
 
 
-    public static class Handler implements IMessageHandler<PacketGuiAdvancedSynthesizer, IMessage> {
+    public static class Handler implements IMessageHandler<PacketGuiAdvancedSynthesizerAddRequest, IMessage> {
         @Override
-        public IMessage onMessage(PacketGuiAdvancedSynthesizer packet, MessageContext ctx) {
+        public IMessage onMessage(PacketGuiAdvancedSynthesizerAddRequest packet, MessageContext ctx) {
             if (!Aspect.aspects.containsKey(packet.aspect)) {
                 return null;
             }

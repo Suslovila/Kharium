@@ -21,6 +21,8 @@ import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare;
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnareContainer;
 import com.suslovila.kharium.common.multiStructure.runeInstaller.BlockRuneInstaller;
 import com.suslovila.kharium.common.multiStructure.runeInstaller.TileRuneInstaller;
+import com.suslovila.kharium.common.multiStructure.synthesizer.advancedSynthesizer.BlockAdvancedSynthesizer;
+import com.suslovila.kharium.common.multiStructure.synthesizer.advancedSynthesizer.TileAdvancedSynthesizerCore;
 import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.*;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -40,6 +42,9 @@ public class ModBlocks {
 
     public static BlockKharuSnare KHARU_SNARE = new BlockKharuSnare("block_snare");
     public static BlockSynthesizer SYNTHESIZER = new BlockSynthesizer("block_synthesizer");
+
+    public static BlockAdvancedSynthesizer ADVANCED_SYNTHESIZER = new BlockAdvancedSynthesizer("block_advanced_synthesizer");
+
 
     public static BlockKharuContainer KHARU_CONTAINER = new BlockKharuContainer("block_kharu_container");
     public static BlockNetHandler KHARU_NET_HANDLER = new BlockNetHandler("block_kharu_net_handler");
@@ -83,6 +88,8 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TileKharuSnareContainer.class, MOD_ID + "TileKharuSnareContainer");
 
         GameRegistry.registerTileEntity(TileSynthesizerCore.class, MOD_ID + "TileSynthesizerCore");
+        GameRegistry.registerTileEntity(TileAdvancedSynthesizerCore.class, MOD_ID + "TileAdvancedSynthesizerCore");
+
         GameRegistry.registerTileEntity(TileSynthesizerAspectInput.class, MOD_ID + "TileSynthesizerAspectInput");
         GameRegistry.registerTileEntity(TileSynthesizerAspectOutput.class, MOD_ID + "TileSynthesizerAspectOutput");
         GameRegistry.registerTileEntity(TileSynthesizerKharuInput.class, MOD_ID + "TileSynthesizerKharuInput");

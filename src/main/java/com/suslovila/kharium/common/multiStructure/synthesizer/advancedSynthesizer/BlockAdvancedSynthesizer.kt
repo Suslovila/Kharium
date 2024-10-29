@@ -2,7 +2,6 @@ package com.suslovila.kharium.common.multiStructure.synthesizer.advancedSynthesi
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.client.gui.KhariumGui
-import com.suslovila.kharium.common.multiStructure.synthesizer.TileAdvancedSynthesizerCore
 import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.TileSynthesizerCore
 import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructure
 import com.suslovila.sus_multi_blocked.api.multiblock.block.MultiStructureBlock
@@ -37,13 +36,13 @@ class BlockAdvancedSynthesizer(name: String
         clickY: Float,
         clickZ: Float
     ): Boolean {
-        if (world.isRemote || player == null) return false
+        if (player == null) return false
         val tile = world.getTileEntity(x, y, z) as? TileDefaultMultiStructureElement ?: return false
         val synthesizerCore = (world.getTile(tile.structureMasterPos))
 
         if(synthesizerCore !is TileAdvancedSynthesizerCore) return false
         if (!player.isSneaking) {
-                player.openGui(Kharium.instance, KhariumGui.SYNTHESIZER.ordinal, world, synthesizerCore.xCoord, synthesizerCore.yCoord, synthesizerCore.zCoord)
+                player.openGui(Kharium.instance, KhariumGui.ADVANCED_SYNTHESIZER.ordinal, world, synthesizerCore.xCoord, synthesizerCore.yCoord, synthesizerCore.zCoord)
                 return true
         }
         return false

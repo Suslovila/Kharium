@@ -52,14 +52,14 @@ object MultiStructureAdvancedSynthesizer : MultiStructure<AdvancedSynthesizerAdd
     ) {
         // we need to make synthesizerCore know were are input and outPut tiles
         //todo: rewrite it
-        val coreElement = this.elements.first { element-> element.tileEntityByMeta == 3}
-        (world.getTile(masterPosition + coreElement.getRealOffset(facing, rotationAngle)) as TileSynthesizerCore).let { tileCore ->
+        val coreElement = this.elements.first { element-> element.tileEntityByMeta == 2}
+        (world.getTile(masterPosition + coreElement.getRealOffset(facing, rotationAngle)) as TileAdvancedSynthesizerCore).let { tileCore ->
 
-            tileCore.tileKharuInputPosition = this.elements.first { element-> element.tileEntityByMeta == 2}.run {
+            tileCore.tileKharuInputPosition = this.elements.first { element-> element.tileEntityByMeta == 1}.run {
                 masterPosition + this.getRealOffset(facing, rotationAngle)
             }
 
-            tileCore.tileAspectOutPutPosition = this.elements.first { element-> element.tileEntityByMeta == 4}.run {
+            tileCore.tileAspectOutPutPosition = this.elements.first { element-> element.tileEntityByMeta == 3}.run {
                 masterPosition + this.getRealOffset(facing, rotationAngle)
             }
         }
@@ -156,5 +156,5 @@ class AdvancedSynthesizerElement(
 }
 
 class AdvancedSynthesizerAdditionalData() : AdditionalData() {
-    override val fillingBlock: Block = ModBlocks.SYNTHESIZER
+    override val fillingBlock: Block = ModBlocks.ADVANCED_SYNTHESIZER
 }

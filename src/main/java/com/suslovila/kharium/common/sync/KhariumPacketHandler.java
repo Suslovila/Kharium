@@ -5,9 +5,6 @@ import com.suslovila.kharium.common.sync.implant.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
-import io.netty.channel.Channel;
-import io.netty.channel.SimpleChannelInboundHandler;
-import net.minecraft.network.EnumConnectionState;
 
 public class KhariumPacketHandler {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Kharium.NAME.toLowerCase());
@@ -30,6 +27,9 @@ public class KhariumPacketHandler {
         INSTANCE.registerMessage(PacketRuneInstallerButtonClicked.Handler.class, PacketRuneInstallerButtonClicked.class, idx++, Side.SERVER);
         INSTANCE.registerMessage(PacketItemKharuNetConfigurator.Handler.class, PacketItemKharuNetConfigurator.class, idx++, Side.SERVER);
         INSTANCE.registerMessage(PacketItemPortableContainer.Handler.class, PacketItemPortableContainer.class, idx++, Side.SERVER);
+        INSTANCE.registerMessage(PacketGuiAdvancedSynthesizerAddRequest.Handler.class, PacketGuiAdvancedSynthesizerAddRequest.class, idx++, Side.SERVER);
+        INSTANCE.registerMessage(PacketGuiAdvancedSynthesizerChangeAspectAmount.Handler.class, PacketGuiAdvancedSynthesizerChangeAspectAmount.class, idx++, Side.SERVER);
+
 
     }
 

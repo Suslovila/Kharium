@@ -142,6 +142,8 @@ class GuiItemPortableContainer(val itemIn: ItemStack) : GuiScreen() {
             )
         }
     }
+
+    override fun doesGuiPauseGame(): Boolean = false
 }
 
 class GuiSynthesizerButtonAspect(

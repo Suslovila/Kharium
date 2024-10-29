@@ -108,8 +108,9 @@ object FMLEventListener {
                 MultiStructureKharuContainer.tryConstruct(world, Position(x, y, z), entityPlayer)
                 MultiStructureKharuSnare.tryConstruct(world, Position(x, y, z), entityPlayer)
                 MultiStructureNetHandler.tryConstruct(world, Position(x, y, z), entityPlayer)
-                MultiStructureSynthesizer.tryConstruct(world, Position(x, y, z), entityPlayer)
                 MultiStructureAdvancedSynthesizer.tryConstruct(world, Position(x, y, z), entityPlayer)
+
+//                MultiStructureSynthesizer.tryConstruct(world, Position(x, y, z), entityPlayer)
 
             }
         }

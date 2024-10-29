@@ -1,24 +1,31 @@
-package com.suslovila.kharium.common.multiStructure.synthesizer
+package com.suslovila.kharium.common.multiStructure.synthesizer.advancedSynthesizer
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.managment.IConfigurable
+import com.suslovila.kharium.client.render.tile.toSusVec3
 import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.TileSynthesizerAspectOutput
+import com.suslovila.kharium.utils.SusGraphicHelper
 import com.suslovila.kharium.utils.ThaumcraftIntegrator.compositionAmountToAspect
 import com.suslovila.kharium.utils.ThaumcraftIntegrator.tryTakeFromContainers
+import com.suslovila.kharium.utils.getPosition
 import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
 import com.suslovila.sus_multi_blocked.utils.Position
 import com.suslovila.sus_multi_blocked.utils.SusNBTHelper
 import com.suslovila.sus_multi_blocked.utils.SusVec3
 import com.suslovila.sus_multi_blocked.utils.getTile
+import net.minecraft.client.Minecraft
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
 import net.minecraft.world.World
 import net.minecraftforge.client.event.RenderWorldLastEvent
+import org.lwjgl.opengl.GL11
 import thaumcraft.api.aspects.Aspect
 import thaumcraft.api.aspects.AspectList
 import thaumcraft.api.aspects.IAspectContainer
+import thaumcraft.client.lib.UtilsFX
+import java.awt.Color
 
 class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfigurable {
     override val packetId: Int = 0
@@ -26,7 +33,7 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
     var boundAspectContainersPositions: ArrayList<Position> = arrayListOf()
 
     // using quue is not comfortable here because player can remove queue
-    private var aspectRequestQueue: ArrayList<AspectRequest> = ArrayList()
+    var aspectRequestQueue: ArrayList<AspectRequest> = ArrayList()
 
     // default values are 0, 0, 0
     // represents real-world position
@@ -41,11 +48,15 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
             return aspectRequestQueue.firstOrNull()?.let { request -> compositionAmountToAspect[request.aspect] } ?: 0
         }
 
-    val currentRequestMaxAmount: Int
+    val currentRequestCapacity: Int
         get() {
             return 3
         }
 
+    val maxRequestAmountTotal: Int
+        get() {
+            return 5
+        }
 
     companion object {
         val currentProducingAspectNbt = Kharium.prefixAppender.doAndGet("currentProducingAspect")
@@ -69,6 +80,17 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
         }
 
         nbttagcompound.setTag(aspectContainersNbt, aspectContainersNbtList)
+
+
+        val requestQueueNbtList = NBTTagList()
+        aspectRequestQueue.forEach { request ->
+            val tag = NBTTagCompound()
+            request.writeTo(tag)
+            requestQueueNbtList.appendTag(tag)
+        }
+
+        nbttagcompound.setTag(aspectContainersNbt, requestQueueNbtList)
+
 
         val tileKharuTag = NBTTagCompound()
         tileKharuInputPosition.writeTo(tileKharuTag)
@@ -196,8 +218,42 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
         this.aspectRequestQueue.add(AspectRequest(aspectIn, amountIn))
         this.markForSaveAndSync()
     }
-    override fun render(configurator: ItemStack, event: RenderWorldLastEvent) {
 
+    fun addAmountToRequest(requestId: Int, addedAmount: Int) {
+        if(aspectRequestQueue.size >= requestId) return;
+        this.aspectRequestQueue[requestId].amount += addedAmount
+        this.markForSaveAndSync()
+    }
+
+    override fun render(configurator: ItemStack, event: RenderWorldLastEvent) {
+        val player = Minecraft.getMinecraft().thePlayer ?: return
+        val handlerPosition = this.getPosition()
+
+        GL11.glPushMatrix()
+        SusGraphicHelper.translateFromPlayerTo(handlerPosition.toSusVec3(), event.partialTicks)
+
+        this.boundAspectContainersPositions.forEach { member ->
+            GL11.glPushMatrix()
+            UtilsFX.drawFloatyLine(
+                member.x.toDouble(),
+                member.y.toDouble(),
+                member.z.toDouble(),
+
+                handlerPosition.x.toDouble(),
+                handlerPosition.y.toDouble(),
+                handlerPosition.z.toDouble(),
+                event.partialTicks,
+                Color.red.rgb,
+                "${Kharium.MOD_ID}:textures/misc/bubble.png",
+                0.1f,
+                Math.min(player.ticksExisted, 10) / 10.0f,
+                0.3F,
+            )
+            GL11.glPopMatrix()
+        }
+
+
+        GL11.glPopMatrix()
     }
 
     override fun onBlockClick(
@@ -260,6 +316,21 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
         init {
             aspect = aspectIn
             amount = amountIn.coerceAtLeast(1)
+        }
+
+        companion object {
+            val ASPECT_NBT = Kharium.prefixAppender.doAndGet("aspect")
+            val AMOUNT_NBT = Kharium.prefixAppender.doAndGet("aspect")
+            fun readFrom(nbttagcompound: NBTTagCompound): AspectRequest? {
+                val aspectTag = nbttagcompound.getShort("aspect")
+//                if(!Aspect.aspects.containsKey())
+//                AspectRequest(Asnbttagcompound.getString("aspect"), nbttagcompound.getInteger("amount");
+                return null
+            }
+        }
+        fun writeTo(nbttagcompound: NBTTagCompound) {
+            nbttagcompound.setString("aspect", aspect.tag)
+            nbttagcompound.setInteger("amount", amount)
         }
     }
 }

@@ -43,10 +43,8 @@ object ItemConfigurator : Item() {
         hitY: Float,
         hitZ: Float
     ): Boolean {
-//        if (stack == null || player == null || world == null) return false
 
         if(world.isRemote) return false
-        val stackTag = stack.getOrCreateTag()
         val clickedPos = Position(x, y, z)
 
         val tile = world.getTile(clickedPos)
