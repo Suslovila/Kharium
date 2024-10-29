@@ -1,6 +1,7 @@
 package com.suslovila.kharium.utils
 
 import com.suslovila.sus_multi_blocked.utils.Position
+import com.suslovila.sus_multi_blocked.utils.getTile
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
@@ -14,6 +15,13 @@ import net.minecraft.world.World
 fun TileEntity.getPosDouble() = SusVec3(this.xCoord, this.yCoord, this.zCoord)
 fun TileEntity.getPosition() = Position(this.xCoord, this.yCoord, this.zCoord)
 fun Entity.getPosition() = SusVec3(this.posX, this.posY, this.posZ)
+
+fun World.getTileCheckChunkLoad(pos: Position): TileEntity? {
+    if (!this.blockExists(pos.x, pos.y, pos.z)) {
+        return null
+    }
+    return this.getTile(pos)
+}
 
 fun World.getBlockFromPos(position: Position) = getBlock(position.x, position.y, position.z)
 

@@ -14,6 +14,7 @@ import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler.addKhar
 import com.suslovila.kharium.research.KhariumAspect
 import com.suslovila.kharium.utils.SusGraphicHelper
 import net.minecraft.entity.EntityLiving
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
 import net.minecraftforge.client.event.RenderHandEvent
 import net.minecraftforge.event.entity.player.AttackEntityEvent
@@ -42,10 +43,12 @@ object ImplantPsiBlade : ItemImplant(ImplantType.HEART) {
                 }
 
                 override fun onPlayerAttackEntityEvent(event: AttackEntityEvent, index: Int, implant: ItemStack) {
+                    println("bbb")
                     // both sides for bolt render
                     val basicDamage = 4
                     if (!isOnCooldown(implant) && isActive(implant)) {
-                        val requiredFuel = FuelComposite(
+                        val requiredFuel =
+                            FuelComposite(
                             arrayListOf(
                                 FuelKharu(
                                     50
@@ -55,17 +58,9 @@ object ImplantPsiBlade : ItemImplant(ImplantType.HEART) {
                                 )
                             )
                         )
-                        val lack = requiredFuel.getLack(event.entityPlayer)
-                        val hasEnough = lack.isEmpty()
-                        if (!hasEnough) {
-                            if (event.entityPlayer.worldObj.isRemote) {
-                                lack.notifyPlayerAboutLack()
-                            }
-                            return
-                        }
-
-                        requiredFuel.forceTakeFrom(event.entityPlayer)
-                        (event.target as? EntityLiving)?.run {
+                        val hasEnoughFuel = requiredFuel.tryTakeFuelFromPlayer(event.entityPlayer)
+                        if(!hasEnoughFuel) return
+                        (event.target as? EntityLivingBase)?.run {
                             this.attackEntityFrom(
                                 DamageSourceEnergy,
                                 (basicDamage + 3 * getRuneAmountOfType(implant, RuneType.EXPANSION)).toFloat()

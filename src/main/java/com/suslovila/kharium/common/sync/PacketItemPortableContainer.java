@@ -1,6 +1,5 @@
 package com.suslovila.kharium.common.sync;
 
-import com.suslovila.kharium.common.item.ItemKharuNetConfigurator;
 import com.suslovila.kharium.common.item.ItemPortableAspectContainer;
 import com.suslovila.sus_multi_blocked.utils.SusNBTHelper;
 import cpw.mods.fml.common.network.ByteBufUtils;

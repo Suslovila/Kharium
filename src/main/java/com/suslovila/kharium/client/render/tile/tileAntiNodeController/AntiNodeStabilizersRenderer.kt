@@ -17,6 +17,7 @@ import net.minecraft.world.World
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
+import net.minecraftforge.client.model.obj.WavefrontObject
 import net.minecraftforge.common.util.ForgeDirection
 import org.lwjgl.opengl.GL11.*
 import thaumcraft.client.fx.ParticleEngine
@@ -35,9 +36,23 @@ object AntiNodeStabilizersRenderer {
 
     init {
         glassModel =
-            AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/blocks/stabilizerGlasses.obj"))
+            ModelWrapperDisplayList(
+                AdvancedModelLoader.loadModel(
+                    ResourceLocation(
+                        Kharium.MOD_ID,
+                        "models/blocks/stabilizerGlasses.obj"
+                    )
+                ) as WavefrontObject
+            )
         coreModel =
-            AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/blocks/stabilizerCore2.obj"))
+            ModelWrapperDisplayList(
+                AdvancedModelLoader.loadModel(
+                    ResourceLocation(
+                        Kharium.MOD_ID,
+                        "models/blocks/stabilizerCore2.obj"
+                    )
+                )  as WavefrontObject
+            )
 
     }
 

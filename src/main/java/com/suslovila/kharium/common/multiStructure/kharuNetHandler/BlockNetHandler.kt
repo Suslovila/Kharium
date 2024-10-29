@@ -1,7 +1,7 @@
 package com.suslovila.kharium.common.multiStructure.kharuNetHandler
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.client.gui.GuiIds
+import com.suslovila.kharium.client.gui.KhariumGui
 import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructure
 import com.suslovila.sus_multi_blocked.api.multiblock.block.MultiStructureBlock
 import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
@@ -42,7 +42,7 @@ class BlockNetHandler(name: String
 
         if(netHandler !is TileNetHandler) return false
         if (!player.isSneaking) {
-                player.openGui(Kharium.instance, GuiIds.KHARU_NET_HANDLER, world, netHandler.xCoord, netHandler.yCoord, netHandler.zCoord)
+                player.openGui(Kharium.instance, KhariumGui.KHARU_NET_HANDLER.ordinal, world, netHandler.xCoord, netHandler.yCoord, netHandler.zCoord)
                 return true
         }
         return false

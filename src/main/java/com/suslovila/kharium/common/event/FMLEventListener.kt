@@ -1,15 +1,17 @@
 package com.suslovila.kharium.common.event
 
+import com.suslovila.kharium.api.fuel.IKharuHolderItem
 import com.suslovila.kharium.api.implants.ImplantType
 import com.suslovila.kharium.client.KeyHandler
-import com.suslovila.kharium.client.gui.GuiImplants
-import com.suslovila.kharium.client.gui.GuiMessageNotEnoughFuel
 import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter
 import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter.Companion.globalOwnerName
+import com.suslovila.kharium.common.item.ItemPortableAspectContainer
 import com.suslovila.kharium.common.item.ModItems
 import com.suslovila.kharium.common.multiStructure.kharuContainer.MultiStructureKharuContainer
 import com.suslovila.kharium.common.multiStructure.kharuNetHandler.MultiStructureNetHandler
 import com.suslovila.kharium.common.multiStructure.kharuSnare.MultiStructureKharuSnare
+import com.suslovila.kharium.common.multiStructure.synthesizer.advancedSynthesizer.MultiStructureAdvancedSynthesizer
+import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.MultiStructureSynthesizer
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.sync.implant.PacketAllExtendedPlayerSync
 import com.suslovila.kharium.common.sync.implant.PacketOneExtendedPlayerSync
@@ -17,7 +19,7 @@ import com.suslovila.kharium.common.worldSavedData.CustomWorldData.Companion.cus
 import com.suslovila.kharium.extendedData.KhariumPlayerExtendedData
 import com.suslovila.kharium.research.KhariumAspect
 import com.suslovila.kharium.utils.SusMathHelper
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateTag
 import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.ThaumcraftIntegrator.completeNormalResearch
 import com.suslovila.sus_multi_blocked.utils.Position
@@ -73,12 +75,19 @@ object FMLEventListener {
             event.player.worldObj.spawnEntityInWorld(
                 EntityItem(event.player.worldObj, player.posX, player.posY, player.posZ, nodeJar)
             )
+
+            val container = ItemStack(ItemPortableAspectContainer)
+            (container.item as IKharuHolderItem).setStoredKharu(container,10_000)
+            event.player.worldObj.spawnEntityInWorld(
+                EntityItem(event.player.worldObj, player.posX, player.posY, player.posZ,
+                    container)
+            )
         }
     }
 
     @SubscribeEvent
     fun addDiaryIntoDrops(event: LivingDropsEvent) {
-        if (event.entity is EntityEldritchWarden) event.entity.entityDropItem(ItemStack(ModItems.diary), 1.5f)
+        if (event.entity is EntityEldritchWarden) event.entity.entityDropItem(ItemStack(ModItems.crystallizedKharu), 1.5f)
     }
 
     @SubscribeEvent
@@ -99,6 +108,9 @@ object FMLEventListener {
                 MultiStructureKharuContainer.tryConstruct(world, Position(x, y, z), entityPlayer)
                 MultiStructureKharuSnare.tryConstruct(world, Position(x, y, z), entityPlayer)
                 MultiStructureNetHandler.tryConstruct(world, Position(x, y, z), entityPlayer)
+                MultiStructureAdvancedSynthesizer.tryConstruct(world, Position(x, y, z), entityPlayer)
+
+//                MultiStructureSynthesizer.tryConstruct(world, Position(x, y, z), entityPlayer)
 
             }
         }
@@ -115,6 +127,7 @@ object FMLEventListener {
                             SusMathHelper.nextDouble(-0.01, 0.01),
                             SusMathHelper.nextDouble(-0.01, 0.01)
                         )
+
                     }
                 }
                 world.customData.markDirty()
@@ -130,7 +143,7 @@ object FMLEventListener {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGH)
     fun onPlayerCloneEvent(event: Clone) {
         val oldPlayerNBT = NBTTagCompound()
         val oldPlayerEx = KhariumPlayerExtendedData.get(event.original)
@@ -138,13 +151,13 @@ object FMLEventListener {
 
         val newPlayerEx = KhariumPlayerExtendedData.get(event.entityPlayer)
         newPlayerEx?.loadNBTData(oldPlayerNBT)
+
     }
 
     @SubscribeEvent
     fun onEntityJoinWorld(event: EntityJoinWorldEvent) {
         val entity = event.entity ?: return
         if (!entity.worldObj.isRemote && entity is EntityPlayerMP) {
-            KhariumPlayerExtendedData.loadProxyData(entity)
             val server = entity.worldObj as? WorldServer ?: return
             val playersData =
                 server.playerEntities.map { KhariumPlayerExtendedData.get(it as EntityPlayer) }.filterNotNull()
@@ -154,7 +167,6 @@ object FMLEventListener {
             }
         }
         if (entity.worldObj.isRemote && entity == Minecraft.getMinecraft().thePlayer) {
-            val d = 4
             KhariumPlayerExtendedData.get(Minecraft.getMinecraft().thePlayer)?.let {
                 KeyHandler.setNextImplant(it, Array(ImplantType.slotAmount) { index -> index }.toMutableList())
             }

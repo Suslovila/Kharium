@@ -5,8 +5,9 @@ import com.suslovila.kharium.api.rune.RuneType
 import com.suslovila.kharium.client.render.tile.TileKharuSnareRenderer
 import com.suslovila.kharium.common.block.tileEntity.TileKharium
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
+import com.suslovila.kharium.utils.ModelWrapperDisplayList
 import com.suslovila.kharium.utils.SusGraphicHelper
-import com.suslovila.kharium.utils.SusNBTHelper.writeTo
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.writeTo
 import com.suslovila.kharium.utils.SusVec3
 import com.suslovila.kharium.utils.cos
 import com.suslovila.kharium.utils.getPosDouble
@@ -16,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
+import net.minecraftforge.client.model.obj.WavefrontObject
 import net.minecraftforge.common.util.ForgeDirection
 import org.lwjgl.opengl.GL11.*
 import thaumcraft.client.lib.UtilsFX
@@ -23,7 +25,7 @@ import kotlin.math.abs
 import kotlin.math.sqrt
 
 sealed class TileRune : TileKharium() {
-    abstract val runeType : RuneType
+    abstract val runeType: RuneType
     abstract val disabled: ResourceLocation
 
     abstract val waveColor: Int
@@ -41,9 +43,20 @@ sealed class TileRune : TileKharium() {
 
     init {
         straightModel =
-            AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/blocks/runes/rune_straight.obj"))
+            ModelWrapperDisplayList(
+                AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/blocks/runes/rune_straight.obj"))
+                        as WavefrontObject
+            )
         cornerModel =
-            AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/blocks/runes/rune_corner.obj"))
+            ModelWrapperDisplayList(
+                AdvancedModelLoader.loadModel(
+                    ResourceLocation(
+                        Kharium.MOD_ID,
+                        "models/blocks/runes/rune_corner.obj"
+                    )
+                ) as WavefrontObject
+            )
+
     }
 
     var snarePos: Position? = null
@@ -67,7 +80,6 @@ sealed class TileRune : TileKharium() {
 
     fun getClientPreparationPercent(partialTicks: Float): Double =
         snare?.getClientPreparationPercent(partialTicks) ?: 0.0
-
 
 
     val LAYER_NBT = Kharium.prefixAppender.doAndGet("layer_level")

@@ -8,15 +8,12 @@ import com.suslovila.kharium.api.implants.ImplantType
 import com.suslovila.kharium.api.implants.ItemImplant
 import com.suslovila.kharium.api.implants.RuneUsingItem.Companion.getRuneAmountOfType
 import com.suslovila.kharium.api.rune.RuneType
-import com.suslovila.kharium.extendedData.KhariumPlayerExtendedData.Companion.get
-import com.suslovila.kharium.research.AntiCraftResearchRegistry
+import com.suslovila.kharium.research.KhariumResearchRegistry
 import com.suslovila.kharium.utils.SusMathHelper.tryWithPercentChance
-import com.suslovila.kharium.utils.ThaumcraftIntegrator
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import thaumcraft.api.ThaumcraftApi
-import thaumcraft.api.research.ResearchCategories
 import thaumcraft.api.research.ResearchItem
 import thaumcraft.common.Thaumcraft
 import thaumcraft.common.config.Config
@@ -77,13 +74,13 @@ object ImplantOverthinker : ItemImplant(ImplantType.OCULAR_SYSTEM) {
     @JvmStatic
     fun overThink(player: EntityPlayerMP, index: Int, implant: ItemStack, research: ResearchItem) {
         val overthinkAbility = abilities[0]
-        val hasPlayerFuel = overthinkAbility.getFuelConsumeOnActivation(implant)?.tryTakeFuelFromPlayer(player) ?: true
+        val hasPlayerFuel = overthinkAbility.getFuelConsumeOnActivation(implant)?.tryTakeFuelFromPlayerWithPacket(player) ?: true
         if(!hasPlayerFuel) return
 
         val success = tryWithPercentChance(getChance(implant))
         if (success && overthinkAbility.isActive(implant) && !overthinkAbility.isOnCooldown(implant) && !research.isAutoUnlock) {
             var hasAlreadyOpenedOne = false
-            AntiCraftResearchRegistry.researchItemChildren[research]?.forEach { child ->
+            KhariumResearchRegistry.researchItemChildren[research]?.forEach { child ->
                 if (hasAlreadyOpenedOne || ResearchManager.isResearchComplete(
                         player.commandSenderName,
                         child.key

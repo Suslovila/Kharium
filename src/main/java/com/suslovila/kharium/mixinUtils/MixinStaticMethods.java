@@ -2,7 +2,7 @@ package com.suslovila.kharium.mixinUtils;
 
 import com.suslovila.kharium.common.block.ModBlocks;
 import com.suslovila.kharium.common.block.tileEntity.TileAntiNode;
-import com.suslovila.kharium.utils.SusNBTHelper;
+import com.suslovila.kharium.utils.KhariumSusNBTHelper;
 import com.suslovila.kharium.common.item.ItemCrystallizedAntiMatter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -17,7 +17,7 @@ public class MixinStaticMethods {
 
     public static void startNodeTransformation(TileNode node, ItemStack stack) {
         startNodeTransformation(node);
-        ((IMixinTileNodeProvider) (Object) node).setOwnerName(SusNBTHelper.INSTANCE.getOrCreateTag(stack).getString(ItemCrystallizedAntiMatter.Companion.getGlobalOwnerName()));
+        ((IMixinTileNodeProvider) (Object) node).setOwnerName(KhariumSusNBTHelper.INSTANCE.getOrCreateTag(stack).getString(ItemCrystallizedAntiMatter.Companion.getGlobalOwnerName()));
     }
 
     public static boolean isNodeBeingTransformed(TileNode node) {

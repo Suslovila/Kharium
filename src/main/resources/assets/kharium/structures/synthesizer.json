@@ -1,0 +1,218 @@
+[
+  {
+    "x": -1,
+    "y": 0,
+    "z": -1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": -1,
+    "y": 0,
+    "z": 0,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": -1,
+    "y": 0,
+    "z": 1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": -1,
+    "y": 0,
+    "z": 2,
+    "storedBlock": "Thaumcraft:blockMetalDevice",
+    "meta": 3,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": -1,
+    "y": 1,
+    "z": -1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": -1,
+    "y": 1,
+    "z": 0,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": -1,
+    "y": 1,
+    "z": 1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": -1,
+    "y": 1,
+    "z": 2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 0,
+    "y": 0,
+    "z": -1,
+    "storedBlock": "Thaumcraft:blockMetalDevice",
+    "meta": 3,
+    "tileEntityByMeta": 3,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 2,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 0,
+    "y": 0,
+    "z": 1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 0,
+    "y": 0,
+    "z": 2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 1,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "z": -1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "z": 0,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "z": 1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 0,
+    "y": 1,
+    "z": 2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 1,
+    "y": 0,
+    "z": -1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 1,
+    "y": 0,
+    "z": 0,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 1,
+    "y": 0,
+    "z": 1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 1,
+    "y": 0,
+    "z": 2,
+    "storedBlock": "Thaumcraft:blockMetalDevice",
+    "meta": 3,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 1
+  },
+  {
+    "x": 1,
+    "y": 1,
+    "z": -1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 1,
+    "y": 1,
+    "z": 0,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 1,
+    "y": 1,
+    "z": 1,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  },
+  {
+    "x": 1,
+    "y": 1,
+    "z": 2,
+    "storedBlock": "kharium:blockVoidMetal",
+    "meta": 0,
+    "tileEntityByMeta": 0,
+    "correspondingComponentIndex": 0
+  }
+]

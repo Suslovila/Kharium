@@ -1,6 +1,7 @@
 package com.suslovila.kharium.client.render.tile
 
 import com.suslovila.kharium.common.block.tileEntity.TileEssentiaReservoirVoid
+import com.suslovila.kharium.utils.ModelWrapperDisplayList
 import com.suslovila.kharium.utils.RotatableHandler
 import net.minecraft.client.renderer.RenderBlocks
 import net.minecraft.client.renderer.Tessellator
@@ -9,6 +10,7 @@ import net.minecraft.init.Blocks
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
+import net.minecraftforge.client.model.obj.WavefrontObject
 import org.lwjgl.opengl.GL11
 import thaumcraft.client.lib.UtilsFX
 import thaumcraft.client.renderers.block.BlockRenderer
@@ -23,7 +25,7 @@ object TileEssentiaReservoirVoidRenderer : SusTileRenderer<TileEssentiaReservoir
     val reservoirTexture = ResourceLocation("thaumcraft", "textures/models/reservoir.png")
 
     init {
-        model = AdvancedModelLoader.loadModel(RELAY)
+        model = ModelWrapperDisplayList(AdvancedModelLoader.loadModel(RELAY) as WavefrontObject)
     }
 
     override fun render(tile: TileEssentiaReservoirVoid, partialTicks: Float) {

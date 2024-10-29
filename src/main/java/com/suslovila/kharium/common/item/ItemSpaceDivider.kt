@@ -7,6 +7,7 @@ import com.suslovila.kharium.utils.SusWorldHelper.boundingBoxFromTwoVec
 import com.suslovila.kharium.utils.getPosition
 import com.suslovila.sus_multi_blocked.utils.WorldHelper.boundingBoxFromTwoPos
 import net.minecraft.entity.EntityLiving
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -66,7 +67,7 @@ object ItemSpaceDivider : Item() {
 
         val zone = boundingBoxFromTwoVec(playerPosBefore, playerPosAfter).expand(2.0, 2.0, 2.0)
         world.getEntitiesWithinAABBExcludingEntity(player, zone).forEach { entity ->
-            if (entity !is EntityLiving) return@forEach
+            if (entity !is EntityLivingBase) return@forEach
             val distance = abs(entity.getPosition().subtract(playerPosBefore).cross(facingVec).length())
             if(distance < 5) {
                 entity.attackEntityFrom(DamageSource.outOfWorld, 10f)

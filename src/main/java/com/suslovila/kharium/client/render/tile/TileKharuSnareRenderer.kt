@@ -19,6 +19,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
+import net.minecraftforge.client.model.obj.WavefrontObject
 import net.minecraftforge.common.util.ForgeDirection
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL11.*
@@ -39,9 +40,23 @@ object TileKharuSnareRenderer : SusTileRenderer<TileKharuSnare>() {
 
     init {
         coreModel =
-            AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/blocks/kharu_snare.obj"))
+            ModelWrapperDisplayList(
+                AdvancedModelLoader.loadModel(
+                    ResourceLocation(
+                        Kharium.MOD_ID,
+                        "models/blocks/kharu_snare.obj"
+                    )
+                ) as WavefrontObject
+            )
         fieldModel =
-            AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/field.obj"))
+            ModelWrapperDisplayList(
+                AdvancedModelLoader.loadModel(
+                    ResourceLocation(
+                        Kharium.MOD_ID,
+                        "models/field.obj"
+                    )
+                ) as WavefrontObject
+            )
 
     }
 

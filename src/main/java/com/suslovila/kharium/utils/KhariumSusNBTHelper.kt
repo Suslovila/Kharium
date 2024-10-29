@@ -1,14 +1,12 @@
 package com.suslovila.kharium.utils
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateUUID
-import com.suslovila.kharium.utils.SusNBTHelper.setUUID
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
 import java.util.*
 
-object SusNBTHelper {
+object KhariumSusNBTHelper {
     const val OBJECT_HEADER = 64
     const val ARRAY_HEADER = 96
     const val OBJECT_REFERENCE = 32

@@ -1,13 +1,9 @@
 package com.suslovila.kharium.api.implants
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.api.fuel.FuelComposite
-import com.suslovila.kharium.api.fuel.FuelKharu
 import com.suslovila.kharium.api.rune.RuneType
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.player.EntityPlayerMP
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateInteger
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateTag
 
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -17,7 +13,6 @@ import net.minecraftforge.client.event.RenderPlayerEvent
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.event.entity.living.*
 import net.minecraftforge.event.entity.player.AttackEntityEvent
-import thaumcraft.api.aspects.AspectList
 
 enum class ImplantType(
 ) {

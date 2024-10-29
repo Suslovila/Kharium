@@ -8,11 +8,18 @@ import cpw.mods.fml.relauncher.Side;
 
 public class KhariumPacketHandler {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Kharium.NAME.toLowerCase());
-    public static int idx = 0;
-    public static void init() {
-    }
 
-    public static void registerServer() {
+    public static void init() {
+        int idx = 12;
+
+        INSTANCE.registerMessage(PacketPrimordialExplosions.Handler.class, PacketPrimordialExplosions.class, idx++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketKharuHotbeds.Handler.class, PacketKharuHotbeds.class, idx++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketSyncSingleKharuHotbed.Handler.class, PacketSyncSingleKharuHotbed.class, idx++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketKhariumPlayerExtended.Handler.class, PacketKhariumPlayerExtended.class, idx++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketImplantSync.Handler.class, PacketImplantSync.class, idx++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketAddIllusion.Handler.class, PacketAddIllusion.class, idx++, Side.CLIENT);
+        INSTANCE.registerMessage(PacketLackNotifications.Handler.class, PacketLackNotifications.class, idx++, Side.CLIENT);
+
         INSTANCE.registerMessage(PacketUseImplantSync.Handler.class, PacketUseImplantSync.class, idx++, Side.SERVER);
         INSTANCE.registerMessage(PacketEnableImplantSync.Handler.class, PacketEnableImplantSync.class, idx++, Side.SERVER);
         INSTANCE.registerMessage(PacketAllExtendedPlayerSync.Handler.class, PacketAllExtendedPlayerSync.class, idx++, Side.CLIENT);
@@ -20,14 +27,10 @@ public class KhariumPacketHandler {
         INSTANCE.registerMessage(PacketRuneInstallerButtonClicked.Handler.class, PacketRuneInstallerButtonClicked.class, idx++, Side.SERVER);
         INSTANCE.registerMessage(PacketItemKharuNetConfigurator.Handler.class, PacketItemKharuNetConfigurator.class, idx++, Side.SERVER);
         INSTANCE.registerMessage(PacketItemPortableContainer.Handler.class, PacketItemPortableContainer.class, idx++, Side.SERVER);
-    }
+        INSTANCE.registerMessage(PacketGuiAdvancedSynthesizerAddRequest.Handler.class, PacketGuiAdvancedSynthesizerAddRequest.class, idx++, Side.SERVER);
+        INSTANCE.registerMessage(PacketGuiAdvancedSynthesizerChangeAspectAmount.Handler.class, PacketGuiAdvancedSynthesizerChangeAspectAmount.class, idx++, Side.SERVER);
 
-    public static void registerSClient() {
-        INSTANCE.registerMessage(PacketPrimordialExplosions.Handler.class, PacketPrimordialExplosions.class, idx++, Side.CLIENT);
-        INSTANCE.registerMessage(PacketKharuHotbeds.Handler.class, PacketKharuHotbeds.class, idx++, Side.CLIENT);
-        INSTANCE.registerMessage(PacketSyncSingleKharuHotbed.Handler.class, PacketSyncSingleKharuHotbed.class, idx++, Side.CLIENT);
-        INSTANCE.registerMessage(PacketKhariumPlayerExtended.Handler.class, PacketKhariumPlayerExtended.class, idx++, Side.CLIENT);
-        INSTANCE.registerMessage(PacketImplantSync.Handler.class, PacketImplantSync.class, idx++, Side.CLIENT);
 
     }
+
 }

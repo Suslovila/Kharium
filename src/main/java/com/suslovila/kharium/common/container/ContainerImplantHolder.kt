@@ -15,7 +15,7 @@ import net.minecraft.util.IIcon
 class ContainerImplantHolder(val player: EntityPlayer) : DefaultContainer() {
 
     init {
-        KhariumPlayerExtendedData.get(player)?.implantStorage?.let {storage ->
+        KhariumPlayerExtendedData.get(player)?.implantStorage?.let { storage ->
 
             addImplantSlots(storage)
         }
@@ -62,6 +62,7 @@ class ContainerImplantHolder(val player: EntityPlayer) : DefaultContainer() {
             addSlotToContainer(Slot(player.inventory, hotbarSlot, 161 + 18 * hotbarSlot, 235))
         }
     }
+
     override fun canInteractWith(player: EntityPlayer): Boolean {
         return true
     }

@@ -8,6 +8,7 @@ import com.suslovila.kharium.api.implants.*
 import com.suslovila.kharium.api.implants.RuneUsingItem.Companion.getRuneAmountOfType
 import com.suslovila.kharium.api.rune.RuneType
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraftforge.event.entity.living.LivingDeathEvent
 
@@ -55,9 +56,8 @@ object ImplantPhoenixHeart : ItemImplant(ImplantType.HEART) {
 
                             sendToCooldown(stack)
                             notifyClient(player, index, stack)
-                        }
-                        else {
-                            amountLeft.notifyPlayerAboutLack()
+                        } else {
+                            (player as? EntityPlayerMP)?.let { amountLeft.notifyClientAboutLack(it) }
 
                         }
                     }

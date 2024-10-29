@@ -16,7 +16,7 @@ import thaumcraft.api.research.ResearchItem
 import thaumcraft.api.research.ResearchPage
 import thaumcraft.common.config.ConfigBlocks
 
-object AntiCraftResearchRegistry {
+object KhariumResearchRegistry {
 
     var recipes = HashMap<String, InfusionRecipe>()
 

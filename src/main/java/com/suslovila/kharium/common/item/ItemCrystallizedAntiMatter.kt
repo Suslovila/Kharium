@@ -4,7 +4,7 @@ import com.suslovila.kharium.utils.config.Config
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.mixinUtils.MixinStaticMethods.isNodeBeingTransformed
 import com.suslovila.kharium.mixinUtils.MixinStaticMethods.startNodeTransformation
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateTag
 import com.suslovila.kharium.utils.SusVec3
 import com.suslovila.kharium.common.event.PrimordialExplosionHandler
 import net.minecraft.entity.Entity

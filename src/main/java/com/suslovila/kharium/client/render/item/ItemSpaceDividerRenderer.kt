@@ -2,6 +2,7 @@ package com.suslovila.kharium.client.render.item
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.common.item.ItemSpaceDivider
+import com.suslovila.kharium.utils.ModelWrapperDisplayList
 import com.suslovila.kharium.utils.SusGraphicHelper
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.Tessellator
@@ -13,6 +14,7 @@ import net.minecraftforge.client.IItemRenderer
 import net.minecraftforge.client.IItemRenderer.ItemRenderType
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
+import net.minecraftforge.client.model.obj.WavefrontObject
 import org.lwjgl.opengl.GL11.*
 import thaumcraft.client.lib.UtilsFX
 import java.awt.Color
@@ -25,8 +27,22 @@ object ItemSpaceDividerRenderer : IItemRenderer {
         Array<ResourceLocation>(66) { i -> ResourceLocation(Kharium.MOD_ID, "textures/animated/flame/flame$i.png") }
 
     init {
-        swordModel = AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/items/space_divider.obj"))
-        runeModel = AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/items/sword_rune.obj"))
+        swordModel = ModelWrapperDisplayList(
+            AdvancedModelLoader.loadModel(
+                ResourceLocation(
+                    Kharium.MOD_ID,
+                    "models/items/space_divider.obj"
+                )
+            ) as WavefrontObject
+        )
+        runeModel = ModelWrapperDisplayList(
+            AdvancedModelLoader.loadModel(
+                ResourceLocation(
+                    Kharium.MOD_ID,
+                    "models/items/sword_rune.obj"
+                )
+            ) as WavefrontObject
+        )
     }
 
     override fun handleRenderType(item: ItemStack?, type: IItemRenderer.ItemRenderType?) = true
@@ -66,7 +82,7 @@ object ItemSpaceDividerRenderer : IItemRenderer {
                 glRotated(60.0, 0.0, 1.0, 0.0)
                 SusGraphicHelper.drawGuideArrows()
 
-               glTranslated(-1.4, 0.0, 2.0)
+                glTranslated(-1.4, 0.0, 2.0)
 
                 swordModel.renderAll()
                 val minecraft = Minecraft.getMinecraft() ?: return

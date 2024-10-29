@@ -5,9 +5,9 @@ import com.suslovila.kharium.api.fuel.IEssentiaHolderItem
 import com.suslovila.kharium.api.fuel.IKharuHolderItem
 import com.suslovila.kharium.api.implants.RuneUsingItem
 import com.suslovila.kharium.api.rune.RuneType
-import com.suslovila.kharium.client.gui.GuiIds
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
+import com.suslovila.kharium.client.gui.KhariumGui
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateInteger
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateTag
 import com.suslovila.kharium.utils.config.ConfigPortableContainer
 import com.suslovila.sus_multi_blocked.utils.Position
 import com.suslovila.sus_multi_blocked.utils.getTile
@@ -16,7 +16,6 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.StatCollector
-import net.minecraft.world.World
 import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import thaumcraft.api.aspects.Aspect
 import thaumcraft.api.aspects.AspectList
@@ -123,7 +122,7 @@ object ItemPortableAspectContainer : Item(), RuneUsingItem, IEssentiaHolderItem,
             if (stack.item is ItemPortableAspectContainer) {
                 event.entityPlayer.openGui(
                     Kharium.MOD_ID,
-                    GuiIds.ITEM_ASPECT_HOLDER,
+                    KhariumGui.ITEM_ASPECT_HOLDER.ordinal,
                     event.world,
                     event.entityPlayer.posX.toInt(),
                     event.entityPlayer.posY.toInt(),
@@ -140,7 +139,7 @@ object ItemPortableAspectContainer : Item(), RuneUsingItem, IEssentiaHolderItem,
                     event.z
                 )
             ) as? IAspectContainer)?.let { blockAspectContainer ->
-                val requiredAspect = getRequiredAspect(stack)
+                val requiredAspect = getRequiredAspect(stack) ?: return
                 val requiredAmount = getRequiredAmount(stack)
                 val stored = this.getStoredAspects(stack)
                 val hasEnough = blockAspectContainer.doesContainerContainAmount(requiredAspect, requiredAmount)

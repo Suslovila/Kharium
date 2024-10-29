@@ -1,24 +1,14 @@
 package com.suslovila.kharium.mixin;
 
 import com.suslovila.kharium.common.item.implants.ImplantOverthinker;
-import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler;
 import com.suslovila.kharium.extendedData.KhariumPlayerExtendedData;
-import com.suslovila.kharium.research.AntiCraftResearchItem;
-import com.suslovila.kharium.research.AntiCraftResearchRegistry;
-import com.suslovila.kharium.utils.config.Config;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.research.ResearchCategories;
-import thaumcraft.common.items.wands.ItemWandCasting;
 import thaumcraft.common.lib.research.ResearchManager;
 
 @Mixin(value = ResearchManager.class, remap = false)

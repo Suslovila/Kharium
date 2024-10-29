@@ -1,22 +1,18 @@
 package com.suslovila.kharium.common.worldSavedData
 
-import com.emoniph.witchery.infusion.Infusion
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.common.worldSavedData.AxisWrapper.writeTo
 import com.suslovila.kharium.common.worldSavedData.CustomWorldData.Companion.customData
 import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler.AMOUNT_NBT
 import com.suslovila.kharium.integration.hooks.Hooks
 import com.suslovila.kharium.utils.*
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.getOrCreateTag
 import com.suslovila.kharium.utils.config.Config
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import io.netty.buffer.ByteBuf
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
-import net.minecraft.init.Items
-import net.minecraft.item.ItemPotion
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
@@ -25,9 +21,6 @@ import net.minecraft.util.DamageSource
 import net.minecraft.world.World
 import net.minecraftforge.event.entity.living.LivingEvent
 import thaumcraft.api.aspects.Aspect
-import thaumcraft.api.aspects.AspectList
-import thaumcraft.common.items.wands.ItemWandCasting
-import vazkii.botania.api.mana.IManaItem
 import kotlin.math.pow
 
 object KharuInfluenceHandler {

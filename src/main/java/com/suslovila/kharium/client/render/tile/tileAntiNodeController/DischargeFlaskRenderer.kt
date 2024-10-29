@@ -2,6 +2,7 @@ package com.suslovila.kharium.client.render.tile.tileAntiNodeController
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare
+import com.suslovila.kharium.utils.ModelWrapperDisplayList
 import com.suslovila.kharium.utils.SusGraphicHelper
 import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.SusVec3
@@ -10,6 +11,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
+import net.minecraftforge.client.model.obj.WavefrontObject
 import net.minecraftforge.common.util.ForgeDirection
 import org.lwjgl.opengl.GL11
 import thaumcraft.client.lib.UtilsFX
@@ -23,7 +25,14 @@ object DischargeFlaskRenderer {
 
     init {
         flaskModel =
-            AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/blocks/discharge_flask.obj"))
+            ModelWrapperDisplayList(
+                AdvancedModelLoader.loadModel(
+                    ResourceLocation(
+                        Kharium.MOD_ID,
+                        "models/blocks/discharge_flask.obj"
+                    )
+                ) as WavefrontObject
+            )
     }
 
     fun render(tile: TileKharuSnare, partialTicks: Float) {
@@ -41,7 +50,7 @@ object DischargeFlaskRenderer {
             flaskModel.renderOnly("bottom_Cube.004")
             GL11.glPopMatrix()
         }
-        if(tile.isPrepared) renderDischarges(tile)
+        if (tile.isPrepared) renderDischarges(tile)
         GL11.glPopMatrix()
 
 

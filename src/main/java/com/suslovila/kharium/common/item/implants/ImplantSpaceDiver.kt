@@ -2,22 +2,16 @@ package com.suslovila.kharium.common.item.implants
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.fuel.FuelComposite
-import com.suslovila.kharium.api.fuel.FuelEssentia
-import com.suslovila.kharium.api.fuel.FuelKharu
 import com.suslovila.kharium.api.implants.*
 import com.suslovila.kharium.api.implants.RuneUsingItem.Companion.getRuneAmountOfType
 import com.suslovila.kharium.api.rune.RuneType
+import com.suslovila.kharium.client.clientProcess.ClientProcessHandler
+import com.suslovila.kharium.client.clientProcess.processes.ProcessPortal
 import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler.addKharu
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
-import com.suslovila.kharium.utils.SusVec3
 import com.suslovila.kharium.utils.SusWorldHelper
 import com.suslovila.kharium.utils.getPosition
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
-import org.lwjgl.opengl.GL11.*
-import thaumcraft.api.aspects.Aspect
-import thaumcraft.api.aspects.AspectList
 
 object ImplantSpaceDiver : ItemImplant(ImplantType.OCULAR_SYSTEM) {
 
@@ -38,20 +32,29 @@ object ImplantSpaceDiver : ItemImplant(ImplantType.OCULAR_SYSTEM) {
                             1.0f,
                             1.4f + player.worldObj.rand.nextFloat() * 0.2f,
                         )
-                        onActivated(player, index, implant)
                         val position = player.getPosition()
+                        val entityPos = foundEntity.entityHit.getPosition()
                         SusWorldHelper.teleportEntity(player, foundEntity.entityHit.getPosition())
                         SusWorldHelper.teleportEntity(foundEntity.entityHit, position)
                         requiredFuel.forceTakeFrom(player)
                         player.addKharu(getKharuEmissionOnActivation(implant))
                         sendToCooldown(implant)
-                        notifyClient(player, index, implant)
                         player.worldObj.playSoundAtEntity(
                             player,
                             Kharium.MOD_ID + ":swap_places",
                             1.0f,
                             1.4f + player.worldObj.rand.nextFloat() * 0.2f,
                         )
+
+                        if(player.worldObj.isRemote) {
+                            ClientProcessHandler.processes.add(
+                                ProcessPortal(position.x, position.y, position.z, 2000)
+                            )
+
+                            ClientProcessHandler.processes.add(
+                                ProcessPortal(entityPos.x, entityPos.y, entityPos.z, 2000)
+                            )
+                        }
                     } else {
                         lack.notifyPlayerAboutLack()
                     }

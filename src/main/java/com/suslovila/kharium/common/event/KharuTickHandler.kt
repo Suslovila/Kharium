@@ -6,6 +6,7 @@ import com.suslovila.kharium.common.worldSavedData.AxisWrapper.center
 import com.suslovila.kharium.common.worldSavedData.CustomWorldData.Companion.customData
 import com.suslovila.kharium.common.worldSavedData.Explosion
 import com.suslovila.kharium.common.worldSavedData.KharuHotbed
+import com.suslovila.kharium.utils.ModelWrapperDisplayList
 import com.suslovila.kharium.utils.SusGraphicHelper
 import com.suslovila.kharium.utils.SusUtils
 import com.suslovila.kharium.utils.SusVec3
@@ -21,6 +22,7 @@ import net.minecraft.world.World
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.client.model.AdvancedModelLoader
 import net.minecraftforge.client.model.IModelCustom
+import net.minecraftforge.client.model.obj.WavefrontObject
 import net.minecraftforge.event.world.WorldEvent
 import org.lwjgl.opengl.GL11
 import thaumcraft.client.lib.UtilsFX
@@ -30,26 +32,28 @@ object KharuTickHandler {
     val clientKharuHotbeds = ArrayList<KharuHotbed>()
 
     val MODEL = ResourceLocation(Kharium.MOD_ID, "models/shieldSphere.obj")
-    val model: IModelCustom = AdvancedModelLoader.loadModel(MODEL)
+    val model: IModelCustom by lazy { ModelWrapperDisplayList(AdvancedModelLoader.loadModel(MODEL) as WavefrontObject) }
 
     @SubscribeEvent
     fun kharuHotBedTick(event: TickEvent.WorldTickEvent) {
 
     }
+
     @SubscribeEvent
     fun kharuHotBedTick(event: WorldEvent.Load) {
         with(event) {
-            if(!world.isRemote) {
+            if (!world.isRemote) {
                 world.customData.syncAllHotbeds(world)
             }
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     fun explosionRenderer(event: RenderWorldLastEvent) {
         val player = Minecraft.getMinecraft().thePlayer ?: return
         UtilsFX.bindTexture(Kharium.MOD_ID, "textures/antinode/controller/field.png")
-        clientKharuHotbeds.forEach {hotbed ->
+        clientKharuHotbeds.forEach { hotbed ->
             val clientTime = SusGraphicHelper.getRenderGlobalTime(event.partialTicks)
             GL11.glPushMatrix()
             SusGraphicHelper.translateFromPlayerTo(hotbed.zone.center, event.partialTicks)

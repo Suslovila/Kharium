@@ -1,18 +1,5 @@
 package com.suslovila.kharium.common.item.implants
 
-import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.api.implants.*
-import com.suslovila.kharium.client.render.item.ItemSpaceDividerRenderer
-import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler.addKharu
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
-import net.minecraft.entity.EntityLiving
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.ItemStack
-import net.minecraft.util.DamageSource
-import net.minecraftforge.client.event.RenderHandEvent
-import net.minecraftforge.event.entity.player.AttackEntityEvent
-import kotlin.math.abs
-
 //class ImplantReactiveSkin() :
 //    ItemImplant(ImplantType.SKIN) {
 //    init {

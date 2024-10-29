@@ -6,6 +6,8 @@ import com.suslovila.kharium.common.event.PrimordialExplosionHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -48,6 +50,7 @@ public class PacketPrimordialExplosions implements IMessage {
     }
 
     public static class Handler implements IMessageHandler<PacketPrimordialExplosions, IMessage> {
+        @SideOnly(Side.CLIENT)
         @Override
         public IMessage onMessage(PacketPrimordialExplosions packet, MessageContext ctx) {
             ArrayList<Explosion> onClient = PrimordialExplosionHandler.INSTANCE.getClientExplosions();

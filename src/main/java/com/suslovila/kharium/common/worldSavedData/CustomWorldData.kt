@@ -1,13 +1,13 @@
 package com.suslovila.kharium.common.worldSavedData
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.utils.SusNBTHelper
+import com.suslovila.kharium.utils.KhariumSusNBTHelper
 import com.suslovila.kharium.utils.SusVec3
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.sync.PacketKharuHotbeds
 import com.suslovila.kharium.common.sync.PacketPrimordialExplosions
 import com.suslovila.kharium.common.sync.PacketSyncSingleKharuHotbed
-import com.suslovila.kharium.utils.SusNBTHelper.forEach
+import com.suslovila.kharium.utils.KhariumSusNBTHelper.forEach
 import com.suslovila.kharium.utils.SusUtils
 import io.netty.buffer.ByteBuf
 import net.minecraft.nbt.*
@@ -40,12 +40,12 @@ class CustomWorldData(datakey: String) : WorldSavedData(datakey) {
     val kharuHotbeds = arrayListOf<KharuHotbed>()
 
     override fun readFromNBT(tag: NBTTagCompound?) {
-        val explosionList = tag?.getTagList(TAG_EXPLOSION_DATA, SusNBTHelper.TAG_COMPOUND) ?: return
+        val explosionList = tag?.getTagList(TAG_EXPLOSION_DATA, KhariumSusNBTHelper.TAG_COMPOUND) ?: return
         explosions.clear()
         explosionList.forEach { explosionTag ->
             with(explosionTag) {
                 val remainingBlocksToDestroy = LinkedList<SusVec3>()
-                getTagList("blocks", SusNBTHelper.TAG_COMPOUND).forEach { pos ->
+                getTagList("blocks", KhariumSusNBTHelper.TAG_COMPOUND).forEach { pos ->
                     remainingBlocksToDestroy.add(
                         SusVec3(
                             pos.getInteger("x"),
@@ -65,7 +65,7 @@ class CustomWorldData(datakey: String) : WorldSavedData(datakey) {
                 )
             }
         }
-        val kharuInfo = tag.getTagList(TAG_KHARU_DATA, SusNBTHelper.TAG_COMPOUND) ?: return
+        val kharuInfo = tag.getTagList(TAG_KHARU_DATA, KhariumSusNBTHelper.TAG_COMPOUND) ?: return
         kharuHotbeds.clear()
         kharuInfo.forEach { hotbedTag ->
             val hotbed = KharuHotbed.readFrom(hotbedTag) ?: return@forEach

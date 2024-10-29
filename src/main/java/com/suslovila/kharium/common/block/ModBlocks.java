@@ -5,8 +5,6 @@ import com.suslovila.kharium.common.block.container.BlockAntiNode;
 import com.suslovila.kharium.common.block.container.BlockAntiNodeWatcher;
 import com.suslovila.kharium.common.block.container.BlockEssentiaReservoirVoid;
 import com.suslovila.kharium.common.block.container.BlockKharuExtractor;
-import com.suslovila.kharium.common.block.multiblocks.BlockSynthesizer;
-import com.suslovila.kharium.common.block.multiblocks.tile.TileSynthesizer;
 import com.suslovila.kharium.common.block.tileEntity.*;
 import com.suslovila.kharium.common.block.tileEntity.rune.TileStabiliserRune;
 import com.suslovila.kharium.common.block.tileEntity.tileAntiNodeController.TileAntiNodeControllerBase;
@@ -23,6 +21,9 @@ import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnare;
 import com.suslovila.kharium.common.multiStructure.kharuSnare.TileKharuSnareContainer;
 import com.suslovila.kharium.common.multiStructure.runeInstaller.BlockRuneInstaller;
 import com.suslovila.kharium.common.multiStructure.runeInstaller.TileRuneInstaller;
+import com.suslovila.kharium.common.multiStructure.synthesizer.advancedSynthesizer.BlockAdvancedSynthesizer;
+import com.suslovila.kharium.common.multiStructure.synthesizer.advancedSynthesizer.TileAdvancedSynthesizerCore;
+import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.*;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -34,13 +35,17 @@ public class ModBlocks {
 
     public static BlockAntiNode ANTI_NODE = new BlockAntiNode();
     public static BlockAntiNodeWatcher ANTI_NODE_WATCHER = new BlockAntiNodeWatcher();
-    public static BlockSynthesizer synthesizer = new BlockSynthesizer("synthesizer");
     public static BlockAntiNodeControllerBase BLOCK_ANTI_NODE_CONTROLLER = new BlockAntiNodeControllerBase();
     public static final BlockEssentiaReservoirVoid BlockEssentiaReservoirVoid = (new BlockEssentiaReservoirVoid());
     public static BlockKharuExtractor KHARU_EXTRACTOR = new BlockKharuExtractor();
     public static BlockRestrainedGlass glass = new BlockRestrainedGlass(MOD_ID + "_restrained_glass");
 
     public static BlockKharuSnare KHARU_SNARE = new BlockKharuSnare("block_snare");
+    public static BlockSynthesizer SYNTHESIZER = new BlockSynthesizer("block_synthesizer");
+
+    public static BlockAdvancedSynthesizer ADVANCED_SYNTHESIZER = new BlockAdvancedSynthesizer("block_advanced_synthesizer");
+
+
     public static BlockKharuContainer KHARU_CONTAINER = new BlockKharuContainer("block_kharu_container");
     public static BlockNetHandler KHARU_NET_HANDLER = new BlockNetHandler("block_kharu_net_handler");
 
@@ -61,12 +66,14 @@ public class ModBlocks {
         GameRegistry.registerBlock(blockVoidMetal,"blockVoidMetal");
 //        GameRegistry.registerBlock(KHARU_SNARE,"blockKharuSnare");
 
+
+        GameRegistry.registerTileEntity(TileFilling.class, MOD_ID + "TileFilling");
+
         GameRegistry.registerTileEntity(TileEssentiaReservoirVoid.class, MOD_ID + "TileEssentiaReservoirVoid");
         GameRegistry.registerTileEntity(TileAntiNode.class, MOD_ID + "TileAntiNode");
         GameRegistry.registerTileEntity(TileAntiNodeControllerBase.class, MOD_ID + "TileControllerBase");
         GameRegistry.registerTileEntity(TileAntiNodeWatcher.class, MOD_ID + "TileAntiNodeWatcher");
-        GameRegistry.registerTileEntity(TileSynthesizer.class, MOD_ID + "TileSynthesizer");
-        GameRegistry.registerTileEntity(TileKharuSnare.class, MOD_ID + "TileKharuSnare");
+         GameRegistry.registerTileEntity(TileKharuSnare.class, MOD_ID + "TileKharuSnare");
 
         GameRegistry.registerTileEntity(TileKharuExtractor.class, MOD_ID + "TileKharuExtractor");
         GameRegistry.registerTileEntity(TileRestrainedGlass.class, MOD_ID + "TileRestrainedGlass");
@@ -78,8 +85,15 @@ public class ModBlocks {
 
         GameRegistry.registerTileEntity(TileNetHandler.class, MOD_ID + "TileNetHandler");
 
-        GameRegistry.registerTileEntity(TileFilling.class, MOD_ID + "TileFilling");
         GameRegistry.registerTileEntity(TileKharuSnareContainer.class, MOD_ID + "TileKharuSnareContainer");
+
+        GameRegistry.registerTileEntity(TileSynthesizerCore.class, MOD_ID + "TileSynthesizerCore");
+        GameRegistry.registerTileEntity(TileAdvancedSynthesizerCore.class, MOD_ID + "TileAdvancedSynthesizerCore");
+
+        GameRegistry.registerTileEntity(TileSynthesizerAspectInput.class, MOD_ID + "TileSynthesizerAspectInput");
+        GameRegistry.registerTileEntity(TileSynthesizerAspectOutput.class, MOD_ID + "TileSynthesizerAspectOutput");
+        GameRegistry.registerTileEntity(TileSynthesizerKharuInput.class, MOD_ID + "TileSynthesizerKharuInput");
+
     }
 
     public static void registerRender() {

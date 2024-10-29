@@ -2,10 +2,12 @@ package com.suslovila.kharium.client
 
 import com.suslovila.kharium.Kharium
 import com.suslovila.kharium.api.implants.ImplantType
+import com.suslovila.kharium.api.implants.ItemImplant
 import com.suslovila.kharium.client.gui.GuiImplants
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.sync.implant.PacketEnableImplantSync
 import com.suslovila.kharium.extendedData.KhariumPlayerExtendedData
+import com.suslovila.kharium.extendedData.KhariumPlayerExtendedData.Companion.get
 import com.suslovila.kharium.utils.SusUtils
 import cpw.mods.fml.client.registry.ClientRegistry
 import cpw.mods.fml.common.FMLCommonHandler
@@ -13,6 +15,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent
 import net.minecraft.client.Minecraft
 import net.minecraft.client.settings.KeyBinding
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraftforge.common.MinecraftForge
 import org.lwjgl.input.Keyboard
 import java.util.*
@@ -48,44 +51,60 @@ object KeyHandler {
     fun onKeyInput(event: KeyInputEvent?) {
         checkImplantSwitch()
         if (firstAbilityTrigger.isPressed) {
-            KhariumPacketHandler.INSTANCE.sendToServer(PacketEnableImplantSync(GuiImplants.currentImplantSlotId, 0))
+            handleAbilityClick(0)
         }
         if (secondAbilityTrigger.isPressed) {
-            KhariumPacketHandler.INSTANCE.sendToServer(PacketEnableImplantSync(GuiImplants.currentImplantSlotId, 1))
+            handleAbilityClick(1)
         }
         if (renderImplants.isPressed) {
             GuiImplants.shouldRenderGui = !GuiImplants.shouldRenderGui
         }
     }
 
-    fun checkImplantSwitch() {
-        if (nextImplantTrigger.isPressed) {
-            Minecraft.getMinecraft()?.thePlayer?.let { player ->
-                val data = KhariumPlayerExtendedData.get(player) ?: return@let
-                val nextIndex = (GuiImplants.currentImplantSlotId + 1) % ImplantType.slotAmount
-                val indexes = SusUtils.getIndicesCycledFrom(nextIndex, ImplantType.slotAmount)
-                setNextImplant(data, indexes)
-            }
-        }
-
-        if (previousImplantTrigger.isPressed) {
-
-            Minecraft.getMinecraft()?.thePlayer?.let { player ->
-                val data = KhariumPlayerExtendedData.get(player) ?: return@let
-                val previousIndex = GuiImplants.currentImplantSlotId
-                val indexes = SusUtils.getIndicesCycledFrom(previousIndex, ImplantType.slotAmount).reversed()
-                setNextImplant(data, indexes)
-            }
-        }
-    }
-
-    fun setNextImplant(data: KhariumPlayerExtendedData, indexes: List<Int>) {
-        for (index in indexes) {
-            val implant = data.implantStorage.getStackInSlot(index)
+    fun handleAbilityClick(abilityId: Int) {
+        KhariumPacketHandler.INSTANCE.sendToServer(PacketEnableImplantSync(GuiImplants.currentImplantSlotId, abilityId))
+        val player = Minecraft.getMinecraft().thePlayer ?: return
+        KhariumPlayerExtendedData.get(player)?.let { data ->
+            val implant = data.implantStorage.getStackInSlot(GuiImplants.currentImplantSlotId)
             if (implant != null) {
-                GuiImplants.currentImplantSlotId = index
-                return
+                val implantClass = implant.item as ItemImplant
+                val abilities = implantClass.abilities
+                if (abilities.size > abilityId) {
+                    abilities[abilityId].onEnableButtonClicked(player, GuiImplants.currentImplantSlotId, implant)
+                }
             }
         }
+
     }
+
+fun checkImplantSwitch() {
+    if (nextImplantTrigger.isPressed) {
+        Minecraft.getMinecraft()?.thePlayer?.let { player ->
+            val data = KhariumPlayerExtendedData.get(player) ?: return@let
+            val nextIndex = (GuiImplants.currentImplantSlotId + 1) % ImplantType.slotAmount
+            val indexes = SusUtils.getIndicesCycledFrom(nextIndex, ImplantType.slotAmount)
+            setNextImplant(data, indexes)
+        }
+    }
+
+    if (previousImplantTrigger.isPressed) {
+
+        Minecraft.getMinecraft()?.thePlayer?.let { player ->
+            val data = KhariumPlayerExtendedData.get(player) ?: return@let
+            val previousIndex = GuiImplants.currentImplantSlotId
+            val indexes = SusUtils.getIndicesCycledFrom(previousIndex, ImplantType.slotAmount).reversed()
+            setNextImplant(data, indexes)
+        }
+    }
+}
+
+fun setNextImplant(data: KhariumPlayerExtendedData, indexes: List<Int>) {
+    for (index in indexes) {
+        val implant = data.implantStorage.getStackInSlot(index)
+        if (implant != null) {
+            GuiImplants.currentImplantSlotId = index
+            return
+        }
+    }
+}
 }

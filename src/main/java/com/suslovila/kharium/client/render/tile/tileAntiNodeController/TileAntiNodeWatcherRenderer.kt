@@ -4,6 +4,7 @@ import com.suslovila.kharium.Kharium;
 import com.suslovila.kharium.client.render.tile.SusTileRenderer
 import com.suslovila.kharium.utils.SusMathHelper
 import com.suslovila.kharium.common.block.tileEntity.TileAntiNodeWatcher;
+import com.suslovila.kharium.utils.ModelWrapperDisplayList
 import com.suslovila.kharium.utils.SusUtils.random
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -11,17 +12,24 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
+import net.minecraftforge.client.model.obj.WavefrontObject
 import org.lwjgl.opengl.GL11.*
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.codechicken.lib.math.MathHelper
 import kotlin.math.abs
 
 object TileAntiNodeWatcherRenderer : SusTileRenderer<TileAntiNodeWatcher>() {
-    private val watcher: IModelCustom
-
-    init {
-        watcher = AdvancedModelLoader.loadModel(ResourceLocation(Kharium.MOD_ID, "models/blocks/watcher.obj"));
-    }
+    private val watcher
+            by lazy {
+                ModelWrapperDisplayList(
+                    AdvancedModelLoader.loadModel(
+                        ResourceLocation(
+                            Kharium.MOD_ID,
+                            "models/blocks/watcher.obj"
+                        )
+                    ) as WavefrontObject
+                )
+            }
 
     override fun render(tile: TileAntiNodeWatcher, partialTicks: Float) {
         this.renderLenses(tile, partialTicks);

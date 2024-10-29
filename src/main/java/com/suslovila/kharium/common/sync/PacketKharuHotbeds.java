@@ -8,6 +8,8 @@ import com.suslovila.kharium.utils.SusVec3;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 
 import java.lang.reflect.Array;
@@ -40,6 +42,7 @@ public class PacketKharuHotbeds implements IMessage {
     }
 
     public static class Handler implements IMessageHandler<PacketKharuHotbeds, IMessage> {
+        @SideOnly(Side.CLIENT)
         @Override
         public IMessage onMessage(PacketKharuHotbeds packet, MessageContext ctx) {
             ArrayList<KharuHotbed> onClient = KharuTickHandler.INSTANCE.getClientKharuHotbeds();

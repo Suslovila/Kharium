@@ -1,14 +1,13 @@
 package com.suslovila.kharium.common
 
 
-import com.suslovila.kharium.client.gui.GuiImplants
 import com.suslovila.kharium.utils.config.Config
 import com.suslovila.kharium.common.block.ModBlocks
 import com.suslovila.kharium.common.event.*
 import com.suslovila.kharium.common.item.ItemPortableAspectContainer
 import com.suslovila.kharium.common.item.ModItems
 import com.suslovila.kharium.research.KhariumAspect
-import com.suslovila.kharium.research.AntiCraftResearchRegistry
+import com.suslovila.kharium.research.KhariumResearchRegistry
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler
 import com.suslovila.kharium.utils.config.ConfigPortableContainer
@@ -20,6 +19,7 @@ import cpw.mods.fml.common.FMLCommonHandler
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.event.FMLPostInitializationEvent
 import cpw.mods.fml.common.event.FMLPreInitializationEvent
+import cpw.mods.fml.common.registry.EntityRegistry
 import net.minecraft.world.World
 import net.minecraftforge.common.MinecraftForge
 
@@ -52,8 +52,6 @@ open class CommonProxy {
         FMLCommonHandler.instance().bus().register(KharuInfluenceHandler)
         MinecraftForge.EVENT_BUS.register(KharuInfluenceHandler)
 
-        FMLCommonHandler.instance().bus().register(GuiImplants)
-        MinecraftForge.EVENT_BUS.register(GuiImplants)
 
 
         MinecraftForge.EVENT_BUS.register(MixinListener)
@@ -77,8 +75,8 @@ open class CommonProxy {
 
     open fun postInit(event: FMLPostInitializationEvent) {
         KhariumAspect.initItemsAspects()
-        AntiCraftResearchRegistry.integrateInfusion()
-        AntiCraftResearchRegistry.integrateResearch()
+        KhariumResearchRegistry.integrateInfusion()
+        KhariumResearchRegistry.integrateResearch()
 
 
     }

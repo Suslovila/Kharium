@@ -1,7 +1,7 @@
 package com.suslovila.kharium.common.multiStructure.kharuSnare
 
 import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.client.gui.GuiIds
+import com.suslovila.kharium.client.gui.KhariumGui
 import com.suslovila.sus_multi_blocked.api.multiblock.MultiStructure
 import com.suslovila.sus_multi_blocked.api.multiblock.block.MultiStructureBlock
 import com.suslovila.sus_multi_blocked.api.multiblock.block.TileDefaultMultiStructureElement
@@ -41,7 +41,7 @@ class BlockKharuSnare(name: String
 
         if(snare !is TileKharuSnare) return false
         if (!player.isSneaking) {
-                player.openGui(Kharium.instance, GuiIds.KHARU_SNARE, world, snare.xCoord, snare.yCoord, snare.zCoord)
+                player.openGui(Kharium.instance, KhariumGui.KHARU_SNARE.ordinal, world, snare.xCoord, snare.yCoord, snare.zCoord)
                 return true
         }
         return false

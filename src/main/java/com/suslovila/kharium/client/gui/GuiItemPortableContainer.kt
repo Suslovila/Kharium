@@ -1,19 +1,10 @@
 package com.suslovila.kharium.client.gui
 
-import com.suslovila.kharium.Kharium
-import com.suslovila.kharium.common.item.ItemKharuNetConfigurator.CURRENT_PRIORITY_NBT
 import com.suslovila.kharium.common.item.ItemPortableAspectContainer
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
-import com.suslovila.kharium.common.sync.PacketItemKharuNetConfigurator
 import com.suslovila.kharium.common.sync.PacketItemPortableContainer
 import com.suslovila.kharium.utils.SusGraphicHelper
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateInteger
-import com.suslovila.kharium.utils.SusNBTHelper.getOrCreateTag
 import com.suslovila.sus_multi_blocked.client.gui.GuiMultiBlockFormer
-import com.suslovila.sus_multi_blocked.common.item.Modifier
-import com.suslovila.sus_multi_blocked.common.sync.PacketBlockModifiers
-import com.suslovila.sus_multi_blocked.common.sync.PacketHandler
-import com.suslovila.sus_multi_blocked.common.sync.PacketSetGlobalModifiers
 import com.suslovila.sus_multi_blocked.utils.SerialiseType
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiButton
@@ -62,7 +53,7 @@ class GuiItemPortableContainer(val itemIn: ItemStack) : GuiScreen() {
         val maxAspectAmountInLine = 9
         buttonAssociations.forEachIndexed { index, aspect ->
             buttonList.add(
-                GuiButtonAspect(
+                GuiSynthesizerButtonAspect(
                     this,
                     index,
                     guiLeft + rowCounter * (buttonSize + offsetBetweenButtons),
@@ -151,9 +142,11 @@ class GuiItemPortableContainer(val itemIn: ItemStack) : GuiScreen() {
             )
         }
     }
+
+    override fun doesGuiPauseGame(): Boolean = false
 }
 
-class GuiButtonAspect(
+class GuiSynthesizerButtonAspect(
     val gui: GuiItemPortableContainer,
     id: Int,
     x: Int,
