@@ -13,6 +13,7 @@ import com.suslovila.kharium.client.render.item.ItemSpaceDividerRenderer
 import com.suslovila.kharium.common.worldSavedData.KharuInfluenceHandler.addKharu
 import com.suslovila.kharium.research.KhariumAspect
 import com.suslovila.kharium.utils.SusGraphicHelper
+import com.suslovila.kharium.utils.SusGraphicHelper.getRenderPos
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
@@ -43,7 +44,7 @@ object ImplantPsiBlade : ItemImplant(ImplantType.HEART) {
                 }
 
                 override fun onPlayerAttackEntityEvent(event: AttackEntityEvent, index: Int, implant: ItemStack) {
-                    println("bbb")
+
                     // both sides for bolt render
                     val basicDamage = 4
                     if (!isOnCooldown(implant) && isActive(implant)) {

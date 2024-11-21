@@ -54,7 +54,7 @@ object ItemSpaceDivider : Item() {
         val elapsedTicks = getMaxItemUseDuration(itemstack) - countdown
         player.fallDistance = 0.0f
         val maxTeleportDistance = 10 * elapsedTicks / 20
-        val hitMOP = SusWorldHelper.doCustomRayTrace(world, player, true, maxTeleportDistance.toDouble())
+        val hitMOP = SusWorldHelper.raytraceEntities(world, player, maxTeleportDistance.toDouble())
         if (hitMOP != null) {
             SusWorldHelper.teleportEntity(player, hitMOP)
         } else {

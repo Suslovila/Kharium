@@ -1,6 +1,7 @@
 package com.suslovila.kharium.common.multiStructure.synthesizer.advancedSynthesizer
 
 import com.suslovila.kharium.Kharium
+import com.suslovila.kharium.api.kharu.IKharuContainer
 import com.suslovila.kharium.api.managment.IConfigurable
 import com.suslovila.kharium.client.render.tile.toSusVec3
 import com.suslovila.kharium.common.multiStructure.synthesizer.simpleSynthesizer.TileSynthesizerAspectOutput
@@ -26,14 +27,16 @@ import thaumcraft.api.aspects.AspectList
 import thaumcraft.api.aspects.IAspectContainer
 import thaumcraft.client.lib.UtilsFX
 import java.awt.Color
+import java.lang.IndexOutOfBoundsException
 
 class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfigurable {
     override val packetId: Int = 0
 
-    var boundAspectContainersPositions: ArrayList<Position> = arrayListOf()
+    var boundAspectContainersPositions: HashSet<Position> = hashSetOf()
+    var boundKharuContainersPositions: HashSet<Position> = hashSetOf()
 
     // using quue is not comfortable here because player can remove queue
-    var aspectRequestQueue: ArrayList<AspectRequest> = ArrayList()
+    private var aspectRequestQueue: ArrayList<AspectRequest> = ArrayList()
 
     // default values are 0, 0, 0
     // represents real-world position
@@ -61,6 +64,9 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
     companion object {
         val currentProducingAspectNbt = Kharium.prefixAppender.doAndGet("currentProducingAspect")
         val aspectContainersNbt = Kharium.prefixAppender.doAndGet("aspect_countainers")
+        val kharuContainersNbt = Kharium.prefixAppender.doAndGet("kharu_countainers")
+
+        val requestQueueNbt = Kharium.prefixAppender.doAndGet("request_queue")
 
     }
 
@@ -68,6 +74,16 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
 
     fun getBoundAspectContainers() =
         boundAspectContainersPositions.mapNotNull { position -> world.getTile(position) as? IAspectContainer }
+
+    fun getBoundKharuContainers() =
+        boundKharuContainersPositions.mapNotNull { position -> world.getTile(position) as? IKharuContainer }
+    fun getRequestByIndex(index: Int) =
+        try {
+            aspectRequestQueue[index]
+        }
+        catch (exception: IndexOutOfBoundsException) {
+            null
+        }
 
     override fun writeCustomNBT(nbttagcompound: NBTTagCompound) {
         super.writeCustomNBT(nbttagcompound)
@@ -81,6 +97,15 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
 
         nbttagcompound.setTag(aspectContainersNbt, aspectContainersNbtList)
 
+        val kharuContainersNbtList = NBTTagList()
+        boundKharuContainersPositions.forEach { containerPos ->
+            val tag = NBTTagCompound()
+            containerPos.writeTo(tag)
+            kharuContainersNbtList.appendTag(tag)
+        }
+
+        nbttagcompound.setTag(kharuContainersNbt, kharuContainersNbtList)
+
 
         val requestQueueNbtList = NBTTagList()
         aspectRequestQueue.forEach { request ->
@@ -89,7 +114,7 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
             requestQueueNbtList.appendTag(tag)
         }
 
-        nbttagcompound.setTag(aspectContainersNbt, requestQueueNbtList)
+        nbttagcompound.setTag(requestQueueNbt, requestQueueNbtList)
 
 
         val tileKharuTag = NBTTagCompound()
@@ -110,10 +135,25 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
 
 
         val listOfAspectContainers = nbttagcompound.getTagList(aspectContainersNbt, SusNBTHelper.TAG_COMPOUND)
+        val listOfKharuContainers = nbttagcompound.getTagList(kharuContainersNbt, SusNBTHelper.TAG_COMPOUND)
+        val listOfRequests = nbttagcompound.getTagList(requestQueueNbt, SusNBTHelper.TAG_COMPOUND)
 
+        this.boundAspectContainersPositions = hashSetOf()
         for (i in 0 until listOfAspectContainers.tagCount()) {
             this.boundAspectContainersPositions.add(Position.readFrom(listOfAspectContainers.getCompoundTagAt(i)))
         }
+
+        this.boundKharuContainersPositions = hashSetOf()
+        for (i in 0 until listOfKharuContainers.tagCount()) {
+            this.boundKharuContainersPositions.add(Position.readFrom(listOfKharuContainers.getCompoundTagAt(i)))
+        }
+
+        this.aspectRequestQueue = arrayListOf()
+        for (i in 0 until listOfRequests.tagCount()) {
+            val request = AspectRequest.readFrom(listOfRequests.getCompoundTagAt(i)) ?: continue
+            this.aspectRequestQueue.add(request)
+        }
+
 
         val tileKharuTag = nbttagcompound.getCompoundTag("kharuInput")
         tileKharuInputPosition = Position.readFrom(tileKharuTag)
@@ -140,6 +180,7 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
     private fun validateSynthesizing(): Boolean {
         if (aspectRequestQueue.isEmpty()) {
             synthesizeTimeLeft = 0
+            markForSaveAndSync()
             return false
         }
         (world.getTile(tileAspectOutPutPosition) as? TileSynthesizerAspectOutput)?.let { output ->
@@ -166,6 +207,8 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
                         }
                     }
                 }
+
+                markForSaveAndSync()
             }
         }
     }
@@ -209,19 +252,27 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
                         simulate = false
                     )
                 synthesizeTimeLeft = compositionAmountToAspect[aspectRequest.aspect]!! * 20
-
+                markForSaveAndSync()
             }
         }
     }
 
     fun addAspectRequest(aspectIn: Aspect, amountIn: Int) {
-        this.aspectRequestQueue.add(AspectRequest(aspectIn, amountIn))
-        this.markForSaveAndSync()
+        if (aspectRequestQueue.size < this.currentRequestCapacity) {
+            this.aspectRequestQueue.add(AspectRequest(aspectIn, amountIn))
+            this.markForSaveAndSync()
+        }
     }
 
     fun addAmountToRequest(requestId: Int, addedAmount: Int) {
-        if(aspectRequestQueue.size >= requestId) return;
-        this.aspectRequestQueue[requestId].amount += addedAmount
+        if(aspectRequestQueue.size <= requestId) return
+        val request = aspectRequestQueue[requestId]
+        if(request.amount + addedAmount <= 0) {
+            aspectRequestQueue.removeAt(requestId)
+        }
+        else {
+            aspectRequestQueue[requestId].amount += addedAmount
+        }
         this.markForSaveAndSync()
     }
 
@@ -230,8 +281,8 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
         val handlerPosition = this.getPosition()
 
         GL11.glPushMatrix()
-        SusGraphicHelper.translateFromPlayerTo(handlerPosition.toSusVec3(), event.partialTicks)
-
+//        SusGraphicHelper.translateFromPlayerTo(handlerPosition.toSusVec3(), event.partialTicks)
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
         this.boundAspectContainersPositions.forEach { member ->
             GL11.glPushMatrix()
             UtilsFX.drawFloatyLine(
@@ -264,10 +315,16 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
         side: Int,
         clickPos: SusVec3
     ) {
-        this.boundAspectContainersPositions.add(pos)
-        this.markForSaveAndSync()
-    }
+        if (world.getTile(pos) is IAspectContainer) {
+            this.boundAspectContainersPositions.add(pos)
+            this.markForSaveAndSync()
+        }
+        if (world.getTile(pos) is IKharuContainer) {
+            this.boundKharuContainersPositions.add(pos)
+            this.markForSaveAndSync()
+        }
 
+    }
     override fun onRightClick(itemStackIn: ItemStack, worldIn: World, player: EntityPlayer) {
 
     }
@@ -320,17 +377,17 @@ class TileAdvancedSynthesizerCore() : TileDefaultMultiStructureElement(), IConfi
 
         companion object {
             val ASPECT_NBT = Kharium.prefixAppender.doAndGet("aspect")
-            val AMOUNT_NBT = Kharium.prefixAppender.doAndGet("aspect")
+            val AMOUNT_NBT = Kharium.prefixAppender.doAndGet("amount")
             fun readFrom(nbttagcompound: NBTTagCompound): AspectRequest? {
-                val aspectTag = nbttagcompound.getShort("aspect")
-//                if(!Aspect.aspects.containsKey())
-//                AspectRequest(Asnbttagcompound.getString("aspect"), nbttagcompound.getInteger("amount");
-                return null
+                val aspectTag = nbttagcompound.getString(ASPECT_NBT)
+                if(!Aspect.aspects.containsKey(aspectTag)) return null
+                return AspectRequest(Aspect.aspects[aspectTag]!!, nbttagcompound.getInteger(AMOUNT_NBT))
+
             }
         }
         fun writeTo(nbttagcompound: NBTTagCompound) {
-            nbttagcompound.setString("aspect", aspect.tag)
-            nbttagcompound.setInteger("amount", amount)
+            nbttagcompound.setString(ASPECT_NBT, aspect.tag)
+            nbttagcompound.setInteger(AMOUNT_NBT, amount)
         }
     }
 }

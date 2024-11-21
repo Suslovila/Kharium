@@ -1,4 +1,4 @@
-package com.suslovila.kharium.api.event
+package com.suslovila.kharium.api.process
 
 // is not serialised
 abstract class ClientProcess(

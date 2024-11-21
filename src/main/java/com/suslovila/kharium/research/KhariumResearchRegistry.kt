@@ -127,6 +127,64 @@ object KhariumResearchRegistry {
             ResourceLocation(Kharium.MOD_ID, "textures/aspects/humilitas.png")
         ).setPages(ResearchPage("1"), ResearchPage("2")).setSpecial()
             .setParents("ANTI_NODE").registerResearchItem()
+
+        AntiCraftResearchItem(
+            "KHARU_INFLUENCE",
+            khariumCategory,
+            AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.TAINT, 4).add(Aspect.MAGIC, 6).add(Aspect.ENERGY, 1).add(Aspect.TRAP, 1),
+            8,
+            7,
+            0,
+            ResourceLocation(Kharium.MOD_ID, "textures/aspects/humilitas.png")
+        ).setPages(ResearchPage("1"), ResearchPage("2"), ResearchPage("3"))
+            .setParents("KHARU_SNARE").registerResearchItem()
+
+
+        AntiCraftResearchItem(
+            "STANDART_SYNTHESIZER",
+            khariumCategory,
+            AspectList().add(Aspect.MAGIC, 8).add(Aspect.ENERGY, 4).add(Aspect.CRAFT, 6).add(Aspect.MECHANISM, 1).add(Aspect.EXCHANGE, 1),
+            6,
+            9,
+            0,
+            ResourceLocation(Kharium.MOD_ID, "textures/misc/synthesize.png")
+        ).setPages(ResearchPage("1"), ResearchPage("2"))
+            .setParents("KHARU_SNARE").registerResearchItem()
+
+        AntiCraftResearchItem(
+            "ADVANCED_SYNTHESIZER",
+            khariumCategory,
+            AspectList().add(Aspect.MAGIC, 8).add(Aspect.ENERGY, 4).add(Aspect.CRAFT, 6).add(Aspect.MECHANISM, 1).add(Aspect.EXCHANGE, 1),
+            8,
+            10,
+            0,
+            ResourceLocation(Kharium.MOD_ID, "textures/misc/synthesize.png")
+        ).setPages(ResearchPage("1"), ResearchPage("2"))
+            .setParents("STANDART_SYNTHESIZER").registerResearchItem()
+
+
+        AntiCraftResearchItem(
+            "PRIMORDIAL_WELDING",
+            khariumCategory,
+            AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.ENERGY, 4).add(Aspect.CRAFT, 6).add(Aspect.MECHANISM, 1),
+            10,
+            9,
+            0,
+            ResourceLocation(Kharium.MOD_ID, "textures/misc/primordial_welding.png")
+        ).setPages(ResearchPage("1"), ResearchPage("2"))
+            .setParents("KHARU_SNARE").registerResearchItem()
+
+        AntiCraftResearchItem(
+            "IMPLANT_INSTALLER",
+            khariumCategory,
+            AspectList().add(Aspect.ELDRITCH, 8).add(Aspect.ENERGY, 4).add(Aspect.CRAFT, 6).add(Aspect.MECHANISM, 1),
+            11,
+            11,
+            0,
+            ResourceLocation(Kharium.MOD_ID, "textures/misc/research/implant_installer.png")
+        ).setPages(ResearchPage("1"), ResearchPage("2"))
+            .setParents("PRIMORDIAL_WELDING").registerResearchItem()
+
 //        AntiCraftResearchItem(
 //            "ANTI_NODE",
 //            khariumCategory,

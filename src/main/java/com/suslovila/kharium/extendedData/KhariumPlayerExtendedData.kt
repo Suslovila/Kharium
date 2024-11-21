@@ -3,6 +3,7 @@ package com.suslovila.kharium.extendedData
 import com.suslovila.kharium.api.implants.ImplantStorage
 import com.suslovila.kharium.common.sync.KhariumPacketHandler
 import com.suslovila.kharium.common.sync.PacketKhariumPlayerExtended
+import com.suslovila.kharium.common.sync.implant.PacketOneExtendedPlayerSync
 import io.netty.buffer.ByteBuf
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
@@ -70,7 +71,8 @@ class KhariumPlayerExtendedData(
 
     fun sync() {
         if (!player.worldObj.isRemote) KhariumPacketHandler.INSTANCE.sendToAll(
-            PacketKhariumPlayerExtended(this)
+//            PacketKhariumPlayerExtended(this)
+            PacketOneExtendedPlayerSync(this, this.player)
         )
     }
 }

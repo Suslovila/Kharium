@@ -171,14 +171,5 @@ object FMLEventListener {
                 KeyHandler.setNextImplant(it, Array(ImplantType.slotAmount) { index -> index }.toMutableList())
             }
         }
-
-//        @SubscribeEvent
-//        fun onEntityJoinWorld(event: EntityJoinWorldEvent) {
-//            if (entity.worldObj.isRemote && entity == Minecraft.getMinecraft().thePlayer) {
-//                KhariumPlayerExtendedData.get(Minecraft.getMinecraft().thePlayer)?.let {
-//                    KeyHandler.setNextImplant(it, Array(ImplantType.slotAmount) { index -> index }.toMutableList())
-//                }
-//            }
-//        }
     }
 }

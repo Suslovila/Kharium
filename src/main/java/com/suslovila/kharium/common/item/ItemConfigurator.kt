@@ -31,7 +31,7 @@ object ItemConfigurator : Item() {
     }
 
 
-    override fun onItemUse(
+    override fun onItemUseFirst(
         stack: ItemStack,
         player: EntityPlayer,
         world: World,
@@ -44,7 +44,7 @@ object ItemConfigurator : Item() {
         hitZ: Float
     ): Boolean {
 
-        if(world.isRemote) return false
+        if (world.isRemote) return false
         val clickedPos = Position(x, y, z)
 
         val tile = world.getTile(clickedPos)
@@ -52,9 +52,14 @@ object ItemConfigurator : Item() {
             setCurrentConfigurable(world, clickedPos, stack)
         }
 
-        if(!player.isSneaking) {
-            (getCurrentConfigurable(world, stack))?.onBlockClick(stack, player, world, Position(x, y, z), side, SusVec3(hitX, hitY, hitZ))
-        }
+        (getCurrentConfigurable(world, stack))?.onBlockClick(
+            stack,
+            player,
+            world,
+            Position(x, y, z),
+            side,
+            SusVec3(hitX, hitY, hitZ)
+        )
 
         return true
     }
@@ -62,7 +67,7 @@ object ItemConfigurator : Item() {
     override fun onItemRightClick(stack: ItemStack?, world: World?, player: EntityPlayer?): ItemStack? {
         if (stack == null || world == null || player == null) return stack
         (getCurrentConfigurable(world, stack))?.onRightClick(stack, world, player)
-            return stack
+        return stack
     }
 
 
@@ -78,9 +83,9 @@ object ItemConfigurator : Item() {
 
     fun getCurrentConfigurable(world: World, configurator: ItemStack): IConfigurable? {
         val tag = configurator.getOrCreateTag()
-        if(!tag.hasKey(DIMENSION_NBT)) return null
-        if(!tag.hasKey(CURRENT_CONFIGURABLE_NBT)) return null
-        if(tag.getInteger(DIMENSION_NBT) != world.provider.dimensionId) return null
+        if (!tag.hasKey(DIMENSION_NBT)) return null
+        if (!tag.hasKey(CURRENT_CONFIGURABLE_NBT)) return null
+        if (tag.getInteger(DIMENSION_NBT) != world.provider.dimensionId) return null
         val pos = Position.readFrom(tag.getCompoundTag(CURRENT_CONFIGURABLE_NBT))
 
         return world.getTileCheckChunkLoad(pos) as? IConfigurable

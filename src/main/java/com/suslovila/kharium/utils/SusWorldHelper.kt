@@ -68,26 +68,6 @@ object SusWorldHelper {
         entity.setPosition(pos.x, pos.y, pos.z)
     }
 
-    fun doCustomRayTrace(
-        world: World,
-        player: EntityPlayer,
-        collisionFlag: Boolean,
-        reachDistance: Double
-    ): MovingObjectPosition? {
-        val pickedBlock = raytraceBlocks(world, player, collisionFlag, reachDistance)
-//        val pickedEntity = raytraceEntities(world, player, collisionFlag, reachDistance)
-//        if (pickedBlock == null) return pickedEntity
-//        if (pickedEntity == null) {
-//            return pickedBlock
-//        }
-        return pickedBlock
-//        val playerPosition = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ)
-//        val dBlock = pickedBlock.hitVec.distanceTo(playerPosition)
-//        val dEntity = pickedEntity.hitVec.distanceTo(playerPosition)
-//        return if (dEntity < dBlock) {
-//            pickedEntity
-//        } else pickedBlock
-    }
 
     fun raytraceBlocks(
         world: World,

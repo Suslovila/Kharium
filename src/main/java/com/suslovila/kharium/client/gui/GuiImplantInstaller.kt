@@ -129,27 +129,6 @@ class GuiImplantInstaller(
         zLevel = 0.0f
     }
 
-    fun renderImplants() {
-        val implantTypes = ImplantType.values()
-        val halfIndex = implantTypes.size / 2
-        var index = 0
-
-        var yOffset = 10
-        for (implantTypeIndex in implantTypes.indices) {
-            val type = implantTypes[implantTypeIndex]
-            val isLeftSide = (implantTypeIndex % 2 == 0)
-            UtilsFX.bindTexture(slotTextures[type.ordinal])
-            val offsetForTypeSlots = DefaultContainer.oneSlotStep * type.slotAmount * (if (isLeftSide) -1 else 0)
-            for (typeIndex in 0 until type.slotAmount) {
-                drawTexturedModalRect(
-                    120 + (if (!isLeftSide) 200 else 0) + typeIndex * DefaultContainer.oneSlotStep + offsetForTypeSlots,
-                    yOffset,
-                    0, 0, 16, 16
-                )
-            }
-            if (implantTypeIndex % 2 != 0) yOffset += 18
-        }
-    }
 
     fun renderPlayerModel(x: Int, y: Int, scale: Int, yaw: Float, pitch: Float, playerdrawn: EntityLivingBase) {
         GL11.glEnable(2903)

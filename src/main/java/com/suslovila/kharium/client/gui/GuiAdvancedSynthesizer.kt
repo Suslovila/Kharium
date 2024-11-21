@@ -55,6 +55,7 @@ class GuiAdvancedSynthesizer(val synthesizer: TileAdvancedSynthesizerCore) : Gui
         var lineCounter = 1
         var rowCounter = 0
         val yOffset = 50
+
         buttonAssociations.forEachIndexed { index, aspect ->
             buttonList.add(
                 GuiButtonAspectAdvanced(
@@ -80,17 +81,20 @@ class GuiAdvancedSynthesizer(val synthesizer: TileAdvancedSynthesizerCore) : Gui
     }
 
     private fun addRequestButtons() {
+        val center = (width / 2)
+
         val basicOffsetBetweenButtons = 4
         val basicButtonSize = 24
+        val buttonsLength = synthesizer.currentRequestCapacity * (basicButtonSize + basicOffsetBetweenButtons)
 
-        for (i in 0..synthesizer.currentRequestCapacity) {
+        for (i in 0 until synthesizer.currentRequestCapacity) {
             buttonList.add(
                 GuiButtonAspectRequest(
                     buttonAssociations.size + i,
                     i,
                     this,
-                    guiLeft + i * (basicButtonSize + basicOffsetBetweenButtons),
-                    guiTop + 20,
+                    (center - buttonsLength / 2) + i * (basicButtonSize + basicOffsetBetweenButtons),
+                    guiTop + 35,
                     basicButtonSize,
                     basicButtonSize,
                     ""
@@ -175,7 +179,13 @@ class GuiAdvancedSynthesizer(val synthesizer: TileAdvancedSynthesizerCore) : Gui
                         1
                     }) * increaseOrDecrease
 
-                    KhariumPacketHandler.INSTANCE.sendToServer(PacketGuiAdvancedSynthesizerChangeAspectAmount(button.requestId, addedAmount, synthesizer.getPosition()))
+                    KhariumPacketHandler.INSTANCE.sendToServer(
+                        PacketGuiAdvancedSynthesizerChangeAspectAmount(
+                            button.requestId,
+                            addedAmount,
+                            synthesizer.getPosition()
+                        )
+                    )
 
                 }
             }
@@ -189,8 +199,8 @@ class GuiAdvancedSynthesizer(val synthesizer: TileAdvancedSynthesizerCore) : Gui
 
 
     fun isMouseOnButton(button: GuiButton, xClick: Int, yClick: Int): Boolean =
-        ((xClick + guiLeft) < (button.xPosition + button.width) && (xClick + guiLeft) > button.xPosition)
-                && ((yClick + guiTop) < (button.yPosition + button.height) && (yClick + guiTop) > button.yPosition)
+        ((xClick) < (button.xPosition + button.width) && (xClick) > button.xPosition)
+                && ((yClick) < (button.yPosition + button.height) && (yClick) > button.yPosition)
 
 
     override fun onGuiClosed() {
@@ -217,7 +227,7 @@ class GuiButtonAspectAdvanced(
 ) {
     override fun drawButton(mc: Minecraft?, mouseX: Int, mouseY: Int) {
         GL11.glPushMatrix()
-        val aspect = GuiItemPortableContainer.buttonAssociations[this.id]!!
+        val aspect = GuiAdvancedSynthesizer.buttonAssociations[this.id]!!
         val alpha = 1.0f
         UtilsFX.bindTexture(aspect.image)
         SusGraphicHelper.bindColor(aspect.color, alpha, 1.0f)
@@ -253,12 +263,7 @@ class GuiButtonAspectRequest(
     text
 ) {
     override fun drawButton(mc: Minecraft?, mouseX: Int, mouseY: Int) {
-        val request = try {
-            gui.synthesizer.aspectRequestQueue[this.requestId]
-        }
-        catch (exception: IndexOutOfBoundsException) {
-            return
-        }
+        val request = gui.synthesizer.getRequestByIndex(this.requestId) ?: return
 
         GL11.glPushMatrix()
 
@@ -275,6 +280,12 @@ class GuiButtonAspectRequest(
         SusGraphicHelper.drawFromCenter(12.0)
         GL11.glPopMatrix()
 
-        this.drawString(this.gui.getFontRenderer(),request.amount.toString(), this.xPosition, this.yPosition, Color.white.rgb)
+        this.drawString(
+            this.gui.getFontRenderer(),
+            request.amount.toString(),
+            this.xPosition,
+            this.yPosition,
+            Color.white.rgb
+        )
     }
 }
